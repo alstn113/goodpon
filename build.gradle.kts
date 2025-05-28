@@ -23,14 +23,19 @@ repositories {
 dependencies {
     // spring
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    // database
+    // db
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.9.10")
+    runtimeOnly ("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
+
+    // redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
