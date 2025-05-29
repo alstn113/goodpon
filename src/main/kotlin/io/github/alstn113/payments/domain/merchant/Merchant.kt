@@ -13,6 +13,12 @@ class Merchant(
     @Column(nullable = false, unique = true)
     val businessNumber: String,
 
+    @Column(nullable = false, unique = true)
+    val clientKey: String,
+
+    @Column(nullable = false, unique = true)
+    val secretKey: String,
+
     @Embedded
     val timestamps: Timestamps = Timestamps()
 ) {

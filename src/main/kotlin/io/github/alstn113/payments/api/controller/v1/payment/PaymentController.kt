@@ -1,6 +1,6 @@
-package io.github.alstn113.payments.api.controller.v1
+package io.github.alstn113.payments.api.controller.v1.payment
 
-import io.github.alstn113.payments.api.controller.v1.request.PaymentRequestDto
+import io.github.alstn113.payments.api.controller.v1.payment.request.PaymentRequest
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -9,7 +9,7 @@ class PaymentController {
 
     @PostMapping
     fun create(
-        @RequestBody request: PaymentRequestDto
+        @RequestBody request: PaymentRequest
     ) {
         return
     }

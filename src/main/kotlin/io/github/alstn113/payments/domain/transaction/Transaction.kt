@@ -40,5 +40,5 @@ class Transaction(
 
     @Id
     @Tsid
-    val transactionKey: String? = null
+    val id: String? = null
 }

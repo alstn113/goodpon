@@ -1,8 +1,8 @@
-package io.github.alstn113.payments.api.controller.v1.request
+package io.github.alstn113.payments.api.controller.v1.payment.request
 
 import java.math.BigDecimal
 
-data class PaymentRequestDto(
+data class PaymentRequest(
     val method: String,
     val amount: Amount,
     val orderId: String,
