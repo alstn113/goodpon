@@ -24,7 +24,7 @@ class Transaction(
     @Column(nullable = false)
     val customerKey: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(25)")
     @Enumerated(EnumType.STRING)
     val status: PaymentStatus,
 

@@ -12,7 +12,7 @@ class MerchantAccount(
     @Column(nullable = false)
     val accountId: Long,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(25)")
     @Enumerated(EnumType.STRING)
     val merchantAccountRole: MerchantAccountRole,
 

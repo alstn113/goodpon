@@ -28,7 +28,7 @@ class Payment(
     @Column(nullable = false)
     val totalAmount: BigDecimal,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(25)")
     @Enumerated(EnumType.STRING)
     val status: PaymentStatus,
 
