@@ -1,4 +1,4 @@
-package io.github.alstn113.payments.api.controller.v1.payment.request
+package io.github.alstn113.payments.application.payment.request
 
 import java.math.BigDecimal
 
@@ -9,6 +9,7 @@ data class CreatePaymentRequest(
     val orderName: String,
     val customerEmail: String? = null,
     val customerName: String? = null,
+    val mId: Long
 )
 
 data class Amount(

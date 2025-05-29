@@ -2,45 +2,49 @@ package io.github.alstn113.payments.api.controller.v1.payment
 
 import io.github.alstn113.payments.api.argumentresolver.ApiKey
 import io.github.alstn113.payments.api.argumentresolver.ApiKeyType
-import io.github.alstn113.payments.api.controller.v1.payment.request.AuthenticatePaymentRequest
-import io.github.alstn113.payments.api.controller.v1.payment.request.ConfirmPaymentRequest
-import io.github.alstn113.payments.api.controller.v1.payment.request.CreatePaymentRequest
+import io.github.alstn113.payments.api.controller.v1.payment.request.AuthenticatePaymentWebRequest
+import io.github.alstn113.payments.api.controller.v1.payment.request.ConfirmPaymentWebRequest
+import io.github.alstn113.payments.api.controller.v1.payment.request.CreatePaymentWebRequest
+import io.github.alstn113.payments.application.payment.PaymentMapper
 import io.github.alstn113.payments.application.payment.PaymentService
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/v1/payments")
 class PaymentController(
-    private val paymentService: PaymentService
+    private val paymentService: PaymentService,
 ) {
 
     @PostMapping
     fun createPayment(
-        @RequestBody request: CreatePaymentRequest,
-        @ApiKey(ApiKeyType.CLIENT_KEY) merchantId: Long
+        @RequestBody request: CreatePaymentWebRequest,
+        @ApiKey(ApiKeyType.CLIENT_KEY) mId: Long,
     ) {
-        return
+        val appRequest = PaymentMapper.toCreatePaymentRequest(request, mId)
+        return paymentService.createPayment(appRequest)
     }
 
     @PostMapping("/authenticate")
     fun authenticatePayment(
-        @RequestBody request: AuthenticatePaymentRequest,
-        @ApiKey(ApiKeyType.CLIENT_KEY) merchantId: Long
+        @RequestBody request: AuthenticatePaymentWebRequest,
+        @ApiKey(ApiKeyType.CLIENT_KEY) merchantId: Long,
     ) {
-        return
+        val appRequest = PaymentMapper.toAuthenticatePaymentRequest(request, merchantId)
+        return paymentService.authenticatePayment(appRequest)
     }
 
     @PostMapping("/confirm")
     fun confirmPayment(
-        @RequestBody request: ConfirmPaymentRequest,
-        @ApiKey(ApiKeyType.SECRET_KEY) merchantId: Long
+        @RequestBody request: ConfirmPaymentWebRequest,
+        @ApiKey(ApiKeyType.SECRET_KEY) merchantId: Long,
     ) {
-        return
+        val appRequest = PaymentMapper.toConfirmPaymentRequest(request, merchantId)
+        return paymentService.confirmPayment(appRequest)
     }
 
     @PostMapping("/{paymentKey}/cancel")
     fun cancelPayment(
-        @PathVariable paymentKey: String
+        @PathVariable paymentKey: String,
     ) {
         // TODO: Implement the logic to confirm the payment
         return
@@ -48,7 +52,7 @@ class PaymentController(
 
     @GetMapping("/{paymentKey}")
     fun getPaymentByPaymentKey(
-        @PathVariable paymentKey: String
+        @PathVariable paymentKey: String,
     ) {
         // TODO: Implement the logic to confirm the payment
         return
@@ -56,7 +60,7 @@ class PaymentController(
 
     @GetMapping("/orders/{orderId}")
     fun getPaymentByOrderId(
-        @PathVariable orderId: String
+        @PathVariable orderId: String,
     ) {
         // TODO: Implement the logic to confirm the payment
         return
