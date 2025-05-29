@@ -8,7 +8,7 @@ class FakeCardCompanyClient : CardCompanyClient {
         TODO("Not yet implemented")
     }
 
-    override fun requestApproval() {
+    override fun requestConfirmation() {
         TODO("Not yet implemented")
     }
 }

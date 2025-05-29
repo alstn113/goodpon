@@ -1,15 +1,16 @@
 package io.github.alstn113.payments.api.config
 
+import io.github.alstn113.payments.api.argumentresolver.ApiKeyArgumentResolver
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class WebConfig(
-    private val merchantSecretKeyArgumentResolver: MerchantSecretKeyArgumentResolver,
+    private val apiKeyArgumentResolver: ApiKeyArgumentResolver
 ) : WebMvcConfigurer {
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
-        resolvers.add(merchantSecretKeyArgumentResolver)
+        resolvers.add(apiKeyArgumentResolver)
     }
 }
