@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AccountService(
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
 ) {
 
     @Transactional

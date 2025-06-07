@@ -1,22 +1,22 @@
-package io.github.alstn113.payments.domain
+package io.github.alstn113.payments.infra.persistence
 
 import jakarta.persistence.Column
-import jakarta.persistence.Embeddable
 import jakarta.persistence.EntityListeners
+import jakarta.persistence.MappedSuperclass
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
-import java.time.Instant
+import java.time.LocalDateTime
 
-@Embeddable
+@MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-class Timestamps {
+abstract class AuditableEntity {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    val createdAt: Instant = Instant.MIN
+    val createdAt: LocalDateTime = LocalDateTime.MIN
 
     @LastModifiedDate
     @Column(nullable = false)
-    val updatedAt: Instant = Instant.MIN
+    val updatedAt: LocalDateTime = LocalDateTime.MIN
 }

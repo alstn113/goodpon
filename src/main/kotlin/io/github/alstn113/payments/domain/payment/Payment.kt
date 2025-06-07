@@ -1,48 +1,39 @@
 package io.github.alstn113.payments.domain.payment
 
-import io.github.alstn113.payments.domain.Timestamps
-import io.hypersistence.utils.hibernate.id.Tsid
-import jakarta.persistence.*
 import java.math.BigDecimal
-import java.time.Instant
+import java.time.LocalDateTime
 
-@Entity
-@Table(name = "payments")
-class Payment(
-
-    @Column(nullable = false)
-    val orderId: String,
-
-    @Column(nullable = false)
+data class Payment(
+    val id: String,
     val orderName: String,
-
-    @Column(nullable = false)
     val mId: String,
-
-    @Column
-    val currency: String = "KRW",
-
-    @Column(nullable = false)
-    val method: String = "CARD",
-
-    @Column(nullable = false)
+    val currency: String,
+    val method: String,
     val totalAmount: BigDecimal,
-
-    @Column(nullable = false, columnDefinition = "VARCHAR(25)")
-    @Enumerated(EnumType.STRING)
     val status: PaymentStatus,
-
-    @Column(nullable = false)
-    val requestedAt: Instant,
-
-    @Column
-    val approvedAt: Instant? = null,
-
-    @Embedded
-    val timestamps: Timestamps = Timestamps()
+    val requestedAt: LocalDateTime,
+    val approvedAt: LocalDateTime?,
 ) {
 
-    @Id
-    @Tsid
-    val id: String? = null
+    companion object {
+        fun create(
+            orderName: String,
+            mId: String,
+            currency: String = "KRW",
+            method: String = "CARD",
+            totalAmount: BigDecimal,
+        ): Payment {
+            return Payment(
+                id = "",
+                orderName = orderName,
+                mId = mId,
+                currency = currency,
+                method = method,
+                totalAmount = totalAmount,
+                status = PaymentStatus.READY,
+                requestedAt = LocalDateTime.now(),
+                approvedAt = null
+            )
+        }
+    }
 }

@@ -1,18 +1,18 @@
 package io.github.alstn113.payments.application.merchant
 
 import io.github.alstn113.payments.application.merchant.response.MerchantResponse
-import io.github.alstn113.payments.domain.merchant.MerchantRepository
+import io.github.alstn113.payments.infra.persistence.merchant.MerchantJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MerchantService(
-    private val merchantRepository: MerchantRepository
+    private val merchantJpaRepository: MerchantJpaRepository
 ) {
 
     @Transactional(readOnly = true)
     fun getMerchantByClientKey(clientKey: String): MerchantResponse {
-        val merchant = merchantRepository.findByClientKey(clientKey)
+        val merchant = merchantJpaRepository.findByClientKey(clientKey)
             ?: throw IllegalArgumentException("Merchant not found for client key")
 
         return MerchantResponse(
@@ -26,7 +26,7 @@ class MerchantService(
 
     @Transactional(readOnly = true)
     fun getMerchantBySecretKey(secretKey: String): MerchantResponse {
-        val merchant = merchantRepository.findBySecretKey(secretKey)
+        val merchant = merchantJpaRepository.findBySecretKey(secretKey)
             ?: throw IllegalArgumentException("Merchant not found for secret key")
 
         return MerchantResponse(
