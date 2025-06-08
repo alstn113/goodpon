@@ -21,6 +21,10 @@ repositories {
 }
 
 val jjwtVersion by extra("0.12.6")
+val kotestVersion by extra("5.9.1")
+val mockkVersion by extra("1.13.17")
+val springMockkVersion by extra("4.0.2")
+val testcontainersVersion by extra("1.21.1")
 
 dependencies {
     // spring
@@ -46,6 +50,16 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
     runtimeOnly("io.jsonwebtoken:jjwt-gson:$jjwtVersion")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
+
+    // kotest & mockk
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
+
+    // testcontainers
+    testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
+    testImplementation("org.testcontainers:mysql:$testcontainersVersion")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
