@@ -7,10 +7,6 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "accounts")
 class AccountEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-
     @Column(nullable = false, unique = true)
     val email: String,
 
@@ -20,6 +16,9 @@ class AccountEntity(
     @Column(nullable = false)
     val name: String,
 ) : AuditableEntity() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
 
     fun toAccount(): Account {
         return Account(
@@ -27,8 +26,6 @@ class AccountEntity(
             email = email,
             password = password,
             name = name,
-            createdAt = createdAt,
-            updatedAt = updatedAt
         )
     }
 }

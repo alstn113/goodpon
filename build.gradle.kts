@@ -31,7 +31,7 @@ dependencies {
     // db
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.9.10")
-    runtimeOnly ("com.h2database:h2")
+    runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
 
     // redis

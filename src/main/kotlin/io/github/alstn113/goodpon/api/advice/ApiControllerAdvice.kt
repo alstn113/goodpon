@@ -14,7 +14,6 @@ import org.springframework.web.context.request.RequestContextHolder
 
 @RestControllerAdvice
 class ApiControllerAdvice {
-
     private val log = LoggerFactory.getLogger(javaClass)
 
     @ExceptionHandler(CoreException::class)

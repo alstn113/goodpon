@@ -14,7 +14,6 @@ import java.util.*
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class MdcLoggingFilter : Filter {
-
     companion object {
         private const val TRACE_ID = "traceId"
     }

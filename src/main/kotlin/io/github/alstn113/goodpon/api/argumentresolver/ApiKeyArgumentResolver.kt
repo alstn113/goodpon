@@ -11,9 +11,8 @@ import java.util.*
 
 @Component
 class ApiKeyArgumentResolver(
-    private val merchantService: MerchantService
+    private val merchantService: MerchantService,
 ) : HandlerMethodArgumentResolver {
-
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         val hasApiKeyAnnotation = parameter.hasParameterAnnotation(ApiKey::class.java)
         val isLongClass = Long::class.java.isAssignableFrom(parameter.parameterType)
@@ -25,7 +24,7 @@ class ApiKeyArgumentResolver(
         parameter: MethodParameter,
         mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
-        binderFactory: WebDataBinderFactory?
+        binderFactory: WebDataBinderFactory?,
     ): Long {
         val annotation = requireNotNull(parameter.getParameterAnnotation(ApiKey::class.java))
         val apiKey = extractApiKey(webRequest)
@@ -39,8 +38,9 @@ class ApiKeyArgumentResolver(
     }
 
     private fun extractApiKey(webRequest: NativeWebRequest): String {
-        val authorizationHeader = webRequest.getHeader("Authorization")
-            ?: throw IllegalArgumentException("Authorization header is missing")
+        val authorizationHeader =
+            webRequest.getHeader("Authorization")
+                ?: throw IllegalArgumentException("Authorization header is missing")
 
         if (!authorizationHeader.startsWith("Basic ")) {
             throw IllegalArgumentException("Authorization header must start with 'Basic '")
@@ -55,7 +55,10 @@ class ApiKeyArgumentResolver(
         }
     }
 
-    private fun getMerchantIdByApiKey(apiKey: String, apiKeyType: ApiKeyType): Long {
+    private fun getMerchantIdByApiKey(
+        apiKey: String,
+        apiKeyType: ApiKeyType,
+    ): Long {
         return try {
             when (apiKeyType) {
                 ApiKeyType.CLIENT_KEY -> merchantService.getMerchantByClientKey(apiKey).id

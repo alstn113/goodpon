@@ -8,9 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 class AccountService(
     private val accountRepository: AccountRepository,
 ) {
-
     @Transactional
     fun createAccount() {
-
     }
 }

@@ -8,10 +8,6 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "merchant_accounts")
 class MerchantAccountEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-
     @Column(nullable = false)
     val mId: Long,
 
@@ -22,13 +18,16 @@ class MerchantAccountEntity(
     @Enumerated(EnumType.STRING)
     val role: MerchantAccountRole,
 ) : AuditableEntity() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
 
     fun toMerchantAccount(): MerchantAccount {
         return MerchantAccount(
             id = id,
             mid = mId,
             accountId = accountId,
-            role = role
+            role = role,
         )
     }
 }
