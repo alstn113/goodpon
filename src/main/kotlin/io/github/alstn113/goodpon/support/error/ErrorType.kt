@@ -1,6 +1,6 @@
 package io.github.alstn113.goodpon.support.error
 
-import io.netty.handler.logging.LogLevel
+import org.springframework.boot.logging.LogLevel
 import org.springframework.http.HttpStatus
 
 enum class ErrorType(
