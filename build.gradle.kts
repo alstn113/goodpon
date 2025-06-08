@@ -20,6 +20,8 @@ repositories {
     mavenCentral()
 }
 
+val jjwtVersion by extra("0.12.6")
+
 dependencies {
     // spring
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -36,6 +38,14 @@ dependencies {
 
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    // security
+    implementation("org.mindrot:jbcrypt:0.4")
+
+    // jwt
+    implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
+    runtimeOnly("io.jsonwebtoken:jjwt-gson:$jjwtVersion")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
