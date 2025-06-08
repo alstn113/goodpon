@@ -2,6 +2,8 @@ package io.github.alstn113.goodpon.api.controller.v1.auth
 
 import io.github.alstn113.goodpon.application.auth.AuthService
 import io.github.alstn113.goodpon.application.auth.request.RegisterRequest
+import io.github.alstn113.goodpon.application.auth.request.ResendVerificationEmailRequest
+import io.github.alstn113.goodpon.application.auth.request.VerifyEmailRequest
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -16,7 +18,15 @@ class AuthController(
     }
 
     @GetMapping("/verify")
-    fun verify(@RequestParam("code") code: String) {
-        // This endpoint is used to verify the email address of the user
+    fun verify(@RequestBody request: VerifyEmailRequest) {
+        authService.verify(request)
+    }
+
+    // 인증 이메일 재전송
+    @PostMapping("/verify/resend")
+    fun resendVerificationEmail(
+        @RequestBody request: ResendVerificationEmailRequest,
+    ) {
+        authService.resendVerificationEmail(request)
     }
 }

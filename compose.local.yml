@@ -1,0 +1,7 @@
+services:
+  redis:
+    container_name: valkey
+    image: valkey/valkey:8.0.1
+    restart: always
+    ports:
+      - '6379:6379'

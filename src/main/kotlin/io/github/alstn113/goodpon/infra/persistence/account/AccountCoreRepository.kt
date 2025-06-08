@@ -20,4 +20,8 @@ class AccountCoreRepository(
         return accountJpaRepository.findByEmail(email)
             ?.let(AccountEntity::toDomain)
     }
+
+    override fun existsByEmail(email: String): Boolean {
+        return accountJpaRepository.existsByEmail(email)
+    }
 }

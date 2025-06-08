@@ -19,4 +19,14 @@ class AccountEventListener(
             name = event.name
         )
     }
+
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    fun handleVerificationEmailResentEvent(event: VerificationEmailResentEvent) {
+        emailVerificationService.sendVerificationEmail(
+            accountId = event.accountId,
+            email = event.email,
+            name = event.name
+        )
+    }
 }

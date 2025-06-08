@@ -29,6 +29,7 @@ val testcontainersVersion by extra("1.21.1")
 dependencies {
     // spring
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -46,10 +47,10 @@ dependencies {
     // security
     implementation("org.mindrot:jbcrypt:0.4")
 
-    // jwt
-    implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
-    runtimeOnly("io.jsonwebtoken:jjwt-gson:$jjwtVersion")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
+    // email
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("aws.sdk.kotlin:ses:1.4.100")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 
     // kotest & mockk
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
