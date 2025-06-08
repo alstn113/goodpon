@@ -9,6 +9,12 @@ class AccountReader(
 ) {
 
     @Transactional(readOnly = true)
+    fun readById(id: Long): Account {
+        return accountRepository.findById(id)
+            ?: throw IllegalArgumentException("Account with id $id not found")
+    }
+
+    @Transactional(readOnly = true)
     fun readByEmail(email: String): Account {
         return accountRepository.findByEmail(email)
             ?: throw IllegalArgumentException("Account with email $email not found")

@@ -1,6 +1,6 @@
 package io.github.alstn113.goodpon.api.controller.v1.auth
 
-import io.github.alstn113.goodpon.application.auth.AuthService
+import io.github.alstn113.goodpon.application.auth.AuthFacadeService
 import io.github.alstn113.goodpon.application.auth.request.RegisterRequest
 import io.github.alstn113.goodpon.application.auth.request.ResendVerificationEmailRequest
 import io.github.alstn113.goodpon.application.auth.request.VerifyEmailRequest
@@ -9,24 +9,21 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/v1/auth")
 class AuthController(
-    private val authService: AuthService,
+    private val authFacadeService: AuthFacadeService,
 ) {
 
     @PostMapping("/register")
-    fun register(@RequestBody request: RegisterRequest) {
-        authService.register(request)
+    fun registerAccount(@RequestBody request: RegisterRequest) {
+        authFacadeService.registerAccount(request)
     }
 
     @GetMapping("/verify")
-    fun verify(@RequestBody request: VerifyEmailRequest) {
-        authService.verify(request)
+    fun verifyEmail(@RequestBody request: VerifyEmailRequest) {
+        authFacadeService.verifyEmail(request)
     }
 
-    // 인증 이메일 재전송
     @PostMapping("/verify/resend")
-    fun resendVerificationEmail(
-        @RequestBody request: ResendVerificationEmailRequest,
-    ) {
-        authService.resendVerificationEmail(request)
+    fun resendVerificationEmail(@RequestBody request: ResendVerificationEmailRequest) {
+        authFacadeService.resendVerificationEmail(request)
     }
 }

@@ -47,10 +47,14 @@ dependencies {
     // security
     implementation("org.mindrot:jbcrypt:0.4")
 
-    // email
+    // aws
+    implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.3.1"))
+    implementation("io.awspring.cloud:spring-cloud-aws-starter-ses")
+
+    // mail
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("aws.sdk.kotlin:ses:1.4.100")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    implementation("jakarta.mail:jakarta.mail-api")
+    implementation("org.eclipse.angus:jakarta.mail")
 
     // kotest & mockk
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")

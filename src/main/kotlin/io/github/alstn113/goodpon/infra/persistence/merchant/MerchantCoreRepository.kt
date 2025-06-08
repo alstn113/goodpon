@@ -10,10 +10,12 @@ class MerchantCoreRepository(
 ) : MerchantRepository {
 
     override fun findByClientKey(clientKey: String): Merchant? {
-        return merchantJpaRepository.findByClientKey(clientKey)?.toMerchant()
+        return merchantJpaRepository.findByClientKey(clientKey)
+            ?.toMerchant()
     }
 
     override fun findBySecretKey(secretKey: String): Merchant? {
-        return merchantJpaRepository.findBySecretKey(secretKey)?.toMerchant()
+        return merchantJpaRepository.findBySecretKey(secretKey)
+            ?.toMerchant()
     }
 }

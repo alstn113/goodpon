@@ -25,15 +25,7 @@ data class Account(
         return copy(status = AccountStatus.ACTIVE)
     }
 
-    fun isActive(): Boolean {
-        return status == AccountStatus.ACTIVE
-    }
-
-    fun isBlocked(): Boolean {
-        return status == AccountStatus.BLOCKED
-    }
-
-    fun isPending(): Boolean {
-        return status == AccountStatus.PENDING
+    fun isNotPending(): Boolean {
+        return status != AccountStatus.PENDING
     }
 }

@@ -4,7 +4,6 @@ import io.github.alstn113.goodpon.domain.account.Account
 import io.github.alstn113.goodpon.domain.account.AccountStatus
 import io.github.alstn113.goodpon.infra.persistence.AuditableEntity
 import jakarta.persistence.*
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 
 @Entity
 @Table(name = "accounts")

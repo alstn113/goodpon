@@ -1,32 +1,33 @@
 package io.github.alstn113.goodpon.application.auth
 
+import io.github.alstn113.goodpon.application.auth.event.AccountRegisteredEvent
+import io.github.alstn113.goodpon.application.auth.event.VerificationEmailResendRequestedEvent
+import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
-import org.springframework.transaction.event.TransactionPhase
-import org.springframework.transaction.event.TransactionalEventListener
 
 @Component
 class AccountEventListener(
-    private val emailVerificationService: EmailVerificationService,
+    private val verificationEmailService: VerificationEmailService,
 ) {
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    fun handleAccountRegisteredEvent(event: AccountRegisteredEvent) {
-        emailVerificationService.sendVerificationEmail(
-            accountId = event.accountId,
-            email = event.email,
-            name = event.name
+    @EventListener
+    fun handleAccountRegistered(event: AccountRegisteredEvent) {
+        verificationEmailService.sendVerificationEmail(
+            event.accountId,
+            event.email,
+            event.name
         )
     }
 
     @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    fun handleVerificationEmailResentEvent(event: VerificationEmailResentEvent) {
-        emailVerificationService.sendVerificationEmail(
-            accountId = event.accountId,
-            email = event.email,
-            name = event.name
+    @EventListener
+    fun handleVerificationEmailResendRequested(event: VerificationEmailResendRequestedEvent) {
+        verificationEmailService.sendVerificationEmail(
+            event.accountId,
+            event.email,
+            event.name
         )
     }
 }
