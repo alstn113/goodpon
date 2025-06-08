@@ -10,26 +10,10 @@ class MerchantCoreRepository(
 ) : MerchantRepository {
 
     override fun findByClientKey(clientKey: String): Merchant? {
-        return merchantJpaRepository.findByClientKey(clientKey)?.let { entity ->
-            Merchant(
-                id = entity.id,
-                name = entity.name,
-                businessNumber = entity.businessNumber,
-                clientKey = entity.clientKey,
-                secretKey = entity.secretKey
-            )
-        }
+        return merchantJpaRepository.findByClientKey(clientKey)?.toMerchant()
     }
 
     override fun findBySecretKey(secretKey: String): Merchant? {
-        return merchantJpaRepository.findBySecretKey(secretKey)?.let { entity ->
-            Merchant(
-                id = entity.id,
-                name = entity.name,
-                businessNumber = entity.businessNumber,
-                clientKey = entity.clientKey,
-                secretKey = entity.secretKey
-            )
-        }
+        return merchantJpaRepository.findBySecretKey(secretKey)?.toMerchant()
     }
 }
