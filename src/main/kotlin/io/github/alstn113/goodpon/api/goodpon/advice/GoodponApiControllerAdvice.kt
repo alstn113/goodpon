@@ -14,6 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder
 
 @RestControllerAdvice(basePackages = ["io.github.alstn113.goodpon.api.goodpon"])
 class GoodponApiControllerAdvice {
+
     private val log = LoggerFactory.getLogger(javaClass)
 
     @ExceptionHandler(CoreException::class)

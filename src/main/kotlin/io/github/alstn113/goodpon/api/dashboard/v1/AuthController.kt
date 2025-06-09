@@ -1,4 +1,4 @@
-package io.github.alstn113.goodpon.api.dashboard.v1.auth
+package io.github.alstn113.goodpon.api.dashboard.v1
 
 import io.github.alstn113.goodpon.application.auth.AuthFacadeService
 import io.github.alstn113.goodpon.application.auth.request.RegisterRequest
