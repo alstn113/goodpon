@@ -1,6 +1,6 @@
-package io.github.alstn113.goodpon.api.advice
+package io.github.alstn113.goodpon.api.goodpon.advice
 
-import io.github.alstn113.goodpon.support.response.ApiResponse
+import io.github.alstn113.goodpon.api.goodpon.response.ApiResponse
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType
 import org.springframework.http.converter.HttpMessageConverter

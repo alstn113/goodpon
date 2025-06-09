@@ -1,4 +1,4 @@
-package io.github.alstn113.goodpon.api.argumentresolver
+package io.github.alstn113.goodpon.api.goodpon.argumentresolver
 
 enum class ApiKeyType(
     val prefixes: Set<String>,

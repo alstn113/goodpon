@@ -1,8 +1,8 @@
-package io.github.alstn113.goodpon.api.advice
+package io.github.alstn113.goodpon.api.goodpon.advice
 
 import io.github.alstn113.goodpon.support.error.CoreException
 import io.github.alstn113.goodpon.support.error.ErrorType
-import io.github.alstn113.goodpon.support.response.ApiErrorResponse
+import io.github.alstn113.goodpon.api.goodpon.response.ApiErrorResponse
 import org.slf4j.LoggerFactory
 import org.springframework.boot.logging.LogLevel
 import org.springframework.http.HttpStatus
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.RequestAttributes
 import org.springframework.web.context.request.RequestContextHolder
 
-@RestControllerAdvice
-class ApiControllerAdvice {
+@RestControllerAdvice(basePackages = ["io.github.alstn113.goodpon.api.goodpon"])
+class GoodponApiControllerAdvice {
     private val log = LoggerFactory.getLogger(javaClass)
 
     @ExceptionHandler(CoreException::class)

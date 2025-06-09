@@ -1,4 +1,4 @@
-package io.github.alstn113.goodpon.api.controller.v1.merchant
+package io.github.alstn113.goodpon.api.goodpon.v1.merchant
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

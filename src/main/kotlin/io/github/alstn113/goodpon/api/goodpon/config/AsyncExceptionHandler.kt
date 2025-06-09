@@ -1,4 +1,4 @@
-package io.github.alstn113.goodpon.api.config
+package io.github.alstn113.goodpon.api.goodpon.config
 
 import io.github.alstn113.goodpon.support.error.CoreException
 import org.slf4j.LoggerFactory

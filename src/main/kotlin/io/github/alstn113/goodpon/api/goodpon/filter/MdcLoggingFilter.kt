@@ -1,4 +1,4 @@
-package io.github.alstn113.goodpon.api.filter
+package io.github.alstn113.goodpon.api.goodpon.filter
 
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain

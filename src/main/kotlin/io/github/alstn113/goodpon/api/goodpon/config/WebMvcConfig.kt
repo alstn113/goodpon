@@ -1,6 +1,6 @@
-package io.github.alstn113.goodpon.api.config
+package io.github.alstn113.goodpon.api.goodpon.config
 
-import io.github.alstn113.goodpon.api.argumentresolver.ApiKeyArgumentResolver
+import io.github.alstn113.goodpon.api.goodpon.argumentresolver.ApiKeyArgumentResolver
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer

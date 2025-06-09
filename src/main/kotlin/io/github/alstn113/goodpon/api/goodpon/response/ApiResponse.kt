@@ -1,4 +1,4 @@
-package io.github.alstn113.goodpon.support.response
+package io.github.alstn113.goodpon.api.goodpon.response
 
 data class ApiResponse<T> private constructor(
     val version: String,
@@ -7,10 +7,7 @@ data class ApiResponse<T> private constructor(
     val entityBody: T,
 ) {
     companion object {
-        fun <T> of(
-            entityType: String,
-            entityBody: T,
-        ): ApiResponse<T> {
+        fun <T> of(entityType: String, entityBody: T): ApiResponse<T> {
             return ApiResponse(
                 version = "2025-05-29",
                 traceId = "",
