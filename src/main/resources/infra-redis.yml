@@ -1,0 +1,21 @@
+---
+spring.config.activate.on-profile: local
+
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      ssl:
+        enabled: false
+
+---
+spring.config.activate.on-profile: prod
+
+spring:
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      ssl:
+        enabled: true

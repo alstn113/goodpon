@@ -45,6 +45,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
     // security
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.mindrot:jbcrypt:0.4")
 
     // aws
