@@ -1,14 +1,11 @@
 plugins {
-    id("org.springframework.boot") version "3.5.0"
-    id("io.spring.dependency-management") version "1.1.7"
-
     kotlin("jvm") version "1.9.25"
-    kotlin("plugin.spring") version "1.9.25"
-    kotlin("plugin.jpa") version "1.9.25"
-}
+    kotlin("plugin.spring") version "1.9.25" apply false
+    kotlin("plugin.jpa") version "1.9.25" apply false
 
-group = "io.github.alstn113"
-version = "0.0.1-SNAPSHOT"
+    id("org.springframework.boot") version "3.5.0" apply false
+    id("io.spring.dependency-management") version "1.1.7"
+}
 
 java {
     toolchain {
@@ -16,76 +13,64 @@ java {
     }
 }
 
-repositories {
-    mavenCentral()
-}
+allprojects {
+    group = "com.goodpon"
+    version = "0.0.1-SNAPSHOT"
 
-val jjwtVersion by extra("0.12.6")
-val kotestVersion by extra("5.9.1")
-val mockkVersion by extra("1.13.17")
-val springMockkVersion by extra("4.0.2")
-val testcontainersVersion by extra("1.21.1")
-
-dependencies {
-    // spring
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-
-    // kotlin
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-
-    // db
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.9.10")
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("com.mysql:mysql-connector-j")
-
-    // redis
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-
-    // security
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.mindrot:jbcrypt:0.4")
-
-    // aws
-    implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.3.1"))
-    implementation("io.awspring.cloud:spring-cloud-aws-starter-ses")
-
-    // mail
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("jakarta.mail:jakarta.mail-api")
-    implementation("org.eclipse.angus:jakarta.mail")
-
-    // kotest & mockk
-    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
-    testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
-
-    // testcontainers
-    testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
-    testImplementation("org.testcontainers:mysql:$testcontainersVersion")
-
-    // test
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+    repositories {
+        mavenCentral()
     }
 }
 
-allOpen {
-    annotation("jakarta.persistence.Entity")
-    annotation("jakarta.persistence.MappedSuperclass")
-    annotation("jakarta.persistence.Embeddable")
-}
+val kotestVersion by extra("5.9.1")
+val mockkVersion by extra("1.13.17")
+val springMockkVersion by extra("4.0.2")
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+subprojects {
+    apply(plugin = "kotlin")
+    apply(plugin = "kotlin-spring")
+    apply(plugin = "kotlin-jpa")
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:2024.0.1")
+        }
+    }
+
+    dependencies {
+        // kotlin
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+        // kotest & mockk
+        testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+        testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+        testImplementation("io.mockk:mockk:$mockkVersion")
+        testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
+
+        // test
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+        testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    }
+
+    tasks.getByName("bootJar") {
+        enabled = false
+    }
+
+    tasks.getByName("jar") {
+        enabled = true
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_21.toString()
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+        }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
