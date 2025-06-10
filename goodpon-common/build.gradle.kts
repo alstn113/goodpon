@@ -1,4 +1,3 @@
-val jjwtVersion by extra("0.12.6")
 val testcontainersVersion by extra("1.21.1")
 
 dependencies {
@@ -11,11 +10,6 @@ dependencies {
     implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.9.10")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
-
-    // jjwt
-    implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
-    runtimeOnly("io.jsonwebtoken:jjwt-gson:$jjwtVersion")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
 
     // redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
