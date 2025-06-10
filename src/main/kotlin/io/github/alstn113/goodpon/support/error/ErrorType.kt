@@ -1,13 +1,11 @@
 package io.github.alstn113.goodpon.support.error
 
-import org.springframework.boot.logging.LogLevel
-import org.springframework.http.HttpStatus
-
 enum class ErrorType(
-    val status: HttpStatus,
+    val statusCode: Int,
     val message: String,
-    val logLevel: LogLevel,
+    val errorLevel: ErrorLevel,
 ) {
-    INVALID_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다.", LogLevel.WARN),
-    COMMON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.", LogLevel.ERROR),
+
+    INVALID_REQUEST(400, "잘못된 요청입니다.", ErrorLevel.WARN),
+    COMMON_ERROR(500, "일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.", ErrorLevel.ERROR),
 }

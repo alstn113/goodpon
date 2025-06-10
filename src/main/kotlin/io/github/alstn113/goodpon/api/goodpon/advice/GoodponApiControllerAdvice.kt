@@ -2,9 +2,9 @@ package io.github.alstn113.goodpon.api.goodpon.advice
 
 import io.github.alstn113.goodpon.api.goodpon.response.ApiErrorResponse
 import io.github.alstn113.goodpon.support.error.CoreException
+import io.github.alstn113.goodpon.support.error.ErrorLevel
 import io.github.alstn113.goodpon.support.error.ErrorType
 import org.slf4j.LoggerFactory
-import org.springframework.boot.logging.LogLevel
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -19,15 +19,16 @@ class GoodponApiControllerAdvice {
 
     @ExceptionHandler(CoreException::class)
     fun handleCoreException(e: CoreException): ResponseEntity<ApiErrorResponse> {
-        when (e.errorType.logLevel) {
-            LogLevel.ERROR -> log.error("CoreException : {}", e.message, e)
-            LogLevel.WARN -> log.warn("CoreException : {}", e.message, e)
+        when (e.errorType.errorLevel) {
+            ErrorLevel.ERROR -> log.error("CoreException : {}", e.message, e)
+            ErrorLevel.WARN -> log.warn("CoreException : {}", e.message, e)
             else -> log.info("CoreException : {}", e.message, e)
         }
 
         val traceId = getTraceId()
         val response = ApiErrorResponse.of(traceId, e.errorType)
-        return ResponseEntity(response, e.errorType.status)
+        val status = HttpStatus.valueOf(e.errorType.statusCode)
+        return ResponseEntity(response, status)
     }
 
     @ExceptionHandler(Exception::class)

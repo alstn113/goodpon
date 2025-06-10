@@ -29,6 +29,7 @@ val testcontainersVersion by extra("1.21.1")
 dependencies {
     // spring
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
     // kotlin
