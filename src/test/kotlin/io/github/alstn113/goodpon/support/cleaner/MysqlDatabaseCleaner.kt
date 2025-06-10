@@ -1,11 +1,11 @@
-package io.github.alstn113.goodpon.support.cleaner;
+package io.github.alstn113.goodpon.support.cleaner
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class MysqlDatabaseCleaner(
@@ -19,7 +19,7 @@ class MysqlDatabaseCleaner(
     @Transactional
     override fun clear() {
         em.clear()
-        truncate();
+        truncate()
     }
 
     private fun truncate() {
