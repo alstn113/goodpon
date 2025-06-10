@@ -1,7 +1,7 @@
-package com.goodpon.api.core.config
+package com.goodpon.api.core.api.config
 
-import com.goodpon.common.error.CoreException
-import com.goodpon.common.error.ErrorLevel
+import com.goodpon.common.support.error.CoreException
+import com.goodpon.common.support.error.ErrorLevel
 import org.slf4j.LoggerFactory
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
 import java.lang.reflect.Method

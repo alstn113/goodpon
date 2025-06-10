@@ -1,6 +1,6 @@
-package com.goodpon.api.core.advice
+package com.goodpon.api.core.api.advice
 
-import com.goodpon.api.core.response.ApiResponse
+import com.goodpon.api.core.api.response.ApiResponse
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType
 import org.springframework.http.converter.HttpMessageConverter

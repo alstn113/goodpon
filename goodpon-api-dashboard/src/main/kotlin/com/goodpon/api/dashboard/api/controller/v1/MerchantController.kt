@@ -1,4 +1,4 @@
-package com.goodpon.api.dashboard.v1
+package com.goodpon.api.dashboard.api.controller.v1
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

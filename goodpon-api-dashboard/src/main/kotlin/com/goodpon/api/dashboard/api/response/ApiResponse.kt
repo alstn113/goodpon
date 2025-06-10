@@ -1,7 +1,7 @@
-package com.goodpon.api.dashboard.response
+package com.goodpon.api.dashboard.api.response
 
-import com.goodpon.common.error.ErrorMessage
-import com.goodpon.common.error.ErrorType
+import com.goodpon.common.support.error.ErrorMessage
+import com.goodpon.common.support.error.ErrorType
 
 
 data class ApiResponse<T> private constructor(

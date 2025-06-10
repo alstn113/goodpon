@@ -1,4 +1,4 @@
-package com.goodpon.api.core.argumentresolver
+package com.goodpon.api.core.api.argumentresolver
 
 import com.goodpon.common.application.merchant.MerchantService
 import org.springframework.core.MethodParameter

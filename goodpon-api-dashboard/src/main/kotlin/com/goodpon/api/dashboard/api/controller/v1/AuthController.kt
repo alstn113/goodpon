@@ -1,6 +1,6 @@
-package com.goodpon.api.dashboard.v1
+package com.goodpon.api.dashboard.api.controller.v1
 
-import com.goodpon.api.dashboard.response.ApiResponse
+import com.goodpon.api.dashboard.api.response.ApiResponse
 import com.goodpon.common.application.auth.AuthFacadeService
 import com.goodpon.common.application.auth.request.RegisterRequest
 import com.goodpon.common.application.auth.request.ResendVerificationEmailRequest

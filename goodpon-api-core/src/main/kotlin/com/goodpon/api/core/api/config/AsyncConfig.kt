@@ -1,4 +1,4 @@
-import com.goodpon.api.core.config.AsyncExceptionHandler
+import com.goodpon.api.core.api.config.AsyncExceptionHandler
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.AsyncConfigurer

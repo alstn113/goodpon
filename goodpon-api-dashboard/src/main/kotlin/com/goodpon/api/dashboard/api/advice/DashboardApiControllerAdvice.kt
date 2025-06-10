@@ -1,16 +1,16 @@
-package com.goodpon.api.dashboard.advice
+package com.goodpon.api.dashboard.api.advice
 
-import com.goodpon.api.dashboard.response.ApiResponse
-import com.goodpon.common.error.CoreException
-import com.goodpon.common.error.ErrorLevel
-import com.goodpon.common.error.ErrorType
+import com.goodpon.api.dashboard.api.response.ApiResponse
+import com.goodpon.common.support.error.CoreException
+import com.goodpon.common.support.error.ErrorLevel
+import com.goodpon.common.support.error.ErrorType
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@RestControllerAdvice(basePackages = ["com.goodpon.goodpon.api.dashboard"])
+@RestControllerAdvice(basePackages = ["com.goodpon.api.dashboard"])
 class DashboardApiControllerAdvice {
 
     private val log = LoggerFactory.getLogger(javaClass)

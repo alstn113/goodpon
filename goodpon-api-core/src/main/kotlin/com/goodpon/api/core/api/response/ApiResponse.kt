@@ -1,4 +1,4 @@
-package com.goodpon.api.core.response
+package com.goodpon.api.core.api.response
 
 data class ApiResponse<T> private constructor(
     val version: String,

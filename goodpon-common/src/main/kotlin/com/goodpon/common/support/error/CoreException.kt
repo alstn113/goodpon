@@ -1,4 +1,4 @@
-package com.goodpon.common.error
+package com.goodpon.common.support.error
 
 class CoreException(
     val errorType: ErrorType,

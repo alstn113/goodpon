@@ -1,4 +1,4 @@
-package com.goodpon.common.error
+package com.goodpon.common.support.error
 
 data class ErrorMessage private constructor(
     val code: String,
