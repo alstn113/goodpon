@@ -1,21 +1,15 @@
-plugins {
-    kotlin("jvm")
-}
-
-group = "com.goodpon"
-version = "0.0.1-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    testImplementation(kotlin("test"))
+    implementation(project(":goodpon-common"))
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks.getByName("bootJar") {
+    enabled = true
 }
-kotlin {
-    jvmToolchain(21)
+
+tasks.getByName("jar") {
+    enabled = false
 }

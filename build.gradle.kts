@@ -27,9 +27,9 @@ val mockkVersion by extra("1.13.17")
 val springMockkVersion by extra("4.0.2")
 
 subprojects {
-    apply(plugin = "kotlin")
-    apply(plugin = "kotlin-spring")
-    apply(plugin = "kotlin-jpa")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+    apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
 
@@ -67,6 +67,12 @@ subprojects {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_21.toString()
             freeCompilerArgs = listOf("-Xjsr305=strict")
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
         }
     }
 
