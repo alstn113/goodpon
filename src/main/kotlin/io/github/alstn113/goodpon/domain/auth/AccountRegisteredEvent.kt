@@ -1,4 +1,4 @@
-package io.github.alstn113.goodpon.application.auth.event
+package io.github.alstn113.goodpon.domain.auth
 
 data class AccountRegisteredEvent(
     val accountId: Long,

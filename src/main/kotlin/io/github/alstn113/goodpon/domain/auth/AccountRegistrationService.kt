@@ -5,7 +5,6 @@ import io.github.alstn113.goodpon.domain.account.AccountAppender
 import io.github.alstn113.goodpon.domain.account.AccountReader
 import io.github.alstn113.goodpon.domain.account.PasswordEncoder
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 @Component
 class AccountRegistrationService(
@@ -14,7 +13,6 @@ class AccountRegistrationService(
     private val passwordEncoder: PasswordEncoder,
 ) {
 
-    @Transactional
     fun registerAccount(email: String, password: String, name: String): Account {
         validateUniqueEmail(email)
 

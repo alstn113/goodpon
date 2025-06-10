@@ -1,5 +1,6 @@
 ---
 spring.config.activate.on-profile: local
+
 spring:
   cloud:
     aws:
