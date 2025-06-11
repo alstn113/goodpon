@@ -44,7 +44,6 @@ class SecurityConfig(
                 it
                     .requestMatchers(
                         "/v1/auth/**",
-                        "/error"
                     ).permitAll()
                     .anyRequest().authenticated()
             }
@@ -61,7 +60,7 @@ class SecurityConfig(
     fun corsConfigurationSource(): CorsConfigurationSource {
         val corsConfiguration = CorsConfiguration().apply {
             allowedOrigins = listOf("http://localhost:5173")
-            allowedMethods = listOf("GET", "POST", "OPTIONS")
+            allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
             allowedHeaders = listOf("*")
             allowCredentials = true
         }
