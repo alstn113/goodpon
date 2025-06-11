@@ -15,8 +15,8 @@ class EmailVerificationService(
     fun validateResendRequest(email: String): Account {
         val account = accountReader.readByEmail(email)
 
-        if (account.isNotPending()) {
-            throw IllegalStateException("Account is already active")
+        if (account.isNotUnverified()) {
+            throw IllegalStateException("Account is already verified")
         }
 
         return account
@@ -26,11 +26,11 @@ class EmailVerificationService(
         val accountId = verificationTokenService.validateAndConsumeToken(token)
         val account = accountReader.readById(accountId)
 
-        if (account.isNotPending()) {
-            throw IllegalStateException("Account is already active")
+        if (account.isNotUnverified()) {
+            throw IllegalStateException("Account is already verified")
         }
 
-        account.activate()
+        account.verify()
         accountUpdater.update(account)
     }
 }

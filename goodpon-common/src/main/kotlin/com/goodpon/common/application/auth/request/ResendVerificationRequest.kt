@@ -1,5 +1,5 @@
 package com.goodpon.common.application.auth.request
 
-data class VerificationEmailResendRequest(
+data class ResendVerificationEmailRequest(
     val email: String,
 )

@@ -9,8 +9,15 @@ class MerchantCoreRepository(
     private val merchantJpaRepository: MerchantJpaRepository,
 ) : MerchantRepository {
 
+    override fun save(merchant: Merchant): Merchant {
+        val entity = MerchantEntity.fromDomain(merchant)
+        val savedEntity = merchantJpaRepository.save(entity)
+
+        return savedEntity.toDomain()
+    }
+
     override fun findBySecretKey(secretKey: String): Merchant? {
         return merchantJpaRepository.findBySecretKey(secretKey)
-            ?.toMerchant()
+            ?.toDomain()
     }
 }

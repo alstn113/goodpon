@@ -17,7 +17,8 @@ class AccountService(
         return AccountInfo(
             accountId = account.id,
             email = account.email,
-            name = account.name
+            name = account.name,
+            status = account.status,
         )
     }
 }

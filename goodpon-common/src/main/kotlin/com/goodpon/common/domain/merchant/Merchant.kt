@@ -1,8 +1,7 @@
 package com.goodpon.common.domain.merchant
 
 data class Merchant(
-    val id: Long,
+    val id: Long = 0,
     val name: String,
-    val businessNumber: String,
     val secretKey: String,
 )

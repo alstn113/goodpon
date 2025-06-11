@@ -16,20 +16,24 @@ data class Account(
                 email = email,
                 password = password,
                 name = name,
-                status = AccountStatus.PENDING
+                status = AccountStatus.UNVERIFIED
             )
         }
     }
 
-    fun activate(): Account {
-        return copy(status = AccountStatus.ACTIVE)
+    fun verify(): Account {
+        return copy(status = AccountStatus.VERIFIED)
     }
 
-    fun isNotPending(): Boolean {
-        return status != AccountStatus.PENDING
+    fun isNotVerified(): Boolean {
+        return status != AccountStatus.VERIFIED
     }
 
-    fun isPending(): Boolean {
-        return status == AccountStatus.PENDING
+    fun isNotUnverified(): Boolean {
+        return status != AccountStatus.UNVERIFIED
+    }
+
+    fun isUnverified(): Boolean {
+        return status == AccountStatus.UNVERIFIED
     }
 }

@@ -1,7 +1,10 @@
 package com.goodpon.common.application.merchant
 
-import com.goodpon.common.application.merchant.request.MerchantCreateRequest
+import com.goodpon.common.application.merchant.request.CreateMerchantRequest
+import com.goodpon.common.application.merchant.response.CreateMerchantResponse
 import com.goodpon.common.application.merchant.response.MerchantInfo
+import com.goodpon.common.domain.account.AccountReader
+import com.goodpon.common.domain.merchant.MerchantAppender
 import com.goodpon.common.domain.merchant.MerchantReader
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -9,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class MerchantService(
     private val merchantReader: MerchantReader,
+    private val accountReader: AccountReader,
+    private val merchantAppender: MerchantAppender,
 ) {
 
     @Transactional(readOnly = true)
@@ -18,11 +23,25 @@ class MerchantService(
         return MerchantInfo(
             id = merchant.id,
             name = merchant.name,
-            businessNumber = merchant.businessNumber,
             secretKey = merchant.secretKey,
         )
     }
 
     @Transactional
-    fun createMerchant(request: MerchantCreateRequest)
+    fun createMerchant(request: CreateMerchantRequest): CreateMerchantResponse {
+        val account = accountReader.readById(request.accountPrincipal.accountId)
+        if (account.isNotVerified()) {
+            throw IllegalArgumentException("Account is not verified")
+        }
+
+        val merchant = merchantAppender.append(
+            merchantName = request.name,
+            account = account
+        )
+
+        return CreateMerchantResponse(
+            id = merchant.id,
+            name = merchant.name,
+        )
+    }
 }

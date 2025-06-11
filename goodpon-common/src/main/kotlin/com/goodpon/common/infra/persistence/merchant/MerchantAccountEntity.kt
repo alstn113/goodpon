@@ -9,7 +9,7 @@ import jakarta.persistence.*
 @Table(name = "merchant_accounts")
 class MerchantAccountEntity(
     @Column(nullable = false)
-    val mId: Long,
+    val merchantId: Long,
 
     @Column(nullable = false)
     val accountId: Long,
@@ -23,10 +23,20 @@ class MerchantAccountEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    fun toMerchantAccount(): MerchantAccount {
+    companion object {
+        fun fromDomain(merchantAccount: MerchantAccount): MerchantAccountEntity {
+            return MerchantAccountEntity(
+                merchantId = merchantAccount.merchantId,
+                accountId = merchantAccount.accountId,
+                role = merchantAccount.role,
+            )
+        }
+    }
+
+    fun toDomain(): MerchantAccount {
         return MerchantAccount(
             id = id,
-            mid = mId,
+            merchantId = merchantId,
             accountId = accountId,
             role = role,
         )

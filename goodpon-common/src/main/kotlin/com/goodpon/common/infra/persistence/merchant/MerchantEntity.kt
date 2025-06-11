@@ -11,20 +11,25 @@ class MerchantEntity(
     val name: String,
 
     @Column(nullable = false, unique = true)
-    val businessNumber: String,
-
-    @Column(nullable = false, unique = true)
     val secretKey: String,
 ) : AuditableEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    fun toMerchant(): Merchant {
+    companion object {
+        fun fromDomain(merchant: Merchant): MerchantEntity {
+            return MerchantEntity(
+                name = merchant.name,
+                secretKey = merchant.secretKey
+            )
+        }
+    }
+
+    fun toDomain(): Merchant {
         return Merchant(
             id = id,
             name = name,
-            businessNumber = businessNumber,
             secretKey = secretKey,
         )
     }

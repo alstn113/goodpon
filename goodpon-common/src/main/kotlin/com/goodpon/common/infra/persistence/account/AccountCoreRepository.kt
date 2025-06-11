@@ -11,10 +11,10 @@ class AccountCoreRepository(
 ) : AccountRepository {
 
     override fun save(account: Account): Account {
-        val accountEntity = AccountEntity.fromDomain(account)
-        val savedAccountEntity = accountJpaRepository.save(accountEntity)
+        val entity = AccountEntity.fromDomain(account)
+        val savedEntity = accountJpaRepository.save(entity)
 
-        return savedAccountEntity.toDomain()
+        return savedEntity.toDomain()
     }
 
     override fun findById(id: Long): Account? {
