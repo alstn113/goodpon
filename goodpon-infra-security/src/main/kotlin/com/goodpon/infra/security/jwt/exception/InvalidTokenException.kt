@@ -1,4 +1,4 @@
-package com.goodpon.infra.security.exception
+package com.goodpon.infra.security.jwt.exception
 
 class InvalidTokenException(
     cause: Throwable? = null,

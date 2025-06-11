@@ -15,7 +15,7 @@ object AuthHeaderUtil {
         return extractToken(request, BEARER_PREFIX)
     }
 
-    fun extractBasicToken(request: HttpServletRequest): String? {
+    fun extractBasicAuthUsername(request: HttpServletRequest): String? {
         val basic64Token = extractToken(request, BASIC_PREFIX)
         if (basic64Token.isNullOrBlank()) return null
 

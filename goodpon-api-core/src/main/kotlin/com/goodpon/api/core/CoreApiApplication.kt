@@ -1,7 +1,6 @@
 package com.goodpon.api.core
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
 @SpringBootApplication(
@@ -9,13 +8,7 @@ import org.springframework.boot.runApplication
         [
             "com.goodpon.api.core",
             "com.goodpon.common",
-        ]
-)
-@ConfigurationPropertiesScan(
-    basePackages =
-        [
-            "com.goodpon.api.core",
-            "com.goodpon.common",
+            "com.goodpon.infra.security",
         ]
 )
 class CoreApiApplication

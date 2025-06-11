@@ -1,5 +1,0 @@
-security:
-  jwt:
-    access-token:
-       secret-key: abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz
-       expiration-time: 86400000 # 1 day

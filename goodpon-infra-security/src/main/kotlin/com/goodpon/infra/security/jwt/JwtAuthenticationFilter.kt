@@ -1,14 +1,12 @@
-package com.goodpon.infra.security.filter
+package com.goodpon.infra.security.jwt
 
-import com.goodpon.common.application.account.response.AccountInfo
 import com.goodpon.common.application.account.AccountService
+import com.goodpon.common.application.account.response.AccountInfo
 import com.goodpon.common.support.error.CoreException
 import com.goodpon.common.support.error.ErrorType
-import com.goodpon.infra.security.JwtAuthenticationToken
-import com.goodpon.infra.security.exception.BlankTokenException
-import com.goodpon.infra.security.exception.InvalidTokenException
-import com.goodpon.infra.security.exception.TokenExpiredException
-import com.goodpon.infra.security.provider.JwtTokenProvider
+import com.goodpon.infra.security.jwt.exception.BlankTokenException
+import com.goodpon.infra.security.jwt.exception.InvalidTokenException
+import com.goodpon.infra.security.jwt.exception.TokenExpiredException
 import com.goodpon.infra.security.util.AuthHeaderUtil
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

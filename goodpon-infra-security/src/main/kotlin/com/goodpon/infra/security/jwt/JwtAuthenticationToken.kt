@@ -1,4 +1,4 @@
-package com.goodpon.infra.security
+package com.goodpon.infra.security.jwt
 
 import com.goodpon.common.domain.auth.AccountPrincipal
 import org.springframework.security.authentication.AbstractAuthenticationToken

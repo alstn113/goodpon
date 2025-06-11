@@ -7,10 +7,13 @@ spring:
       - infra-db.yml
       - infra-redis.yml
       - infra-aws.yml
+      - infra-security.yml
   web.resources.add-mappings: false
 
 ---
 spring.config.activate.on-profile: local
+
+server.port: 8081
 
 client-host: http://localhost:5173
 

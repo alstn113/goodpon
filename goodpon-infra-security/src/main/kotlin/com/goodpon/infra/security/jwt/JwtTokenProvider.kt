@@ -1,14 +1,16 @@
-package com.goodpon.infra.security.provider
+package com.goodpon.infra.security.jwt
 
-import com.goodpon.infra.security.exception.BlankTokenException
-import com.goodpon.infra.security.exception.InvalidTokenException
-import com.goodpon.infra.security.exception.TokenExpiredException
+import com.goodpon.infra.security.jwt.exception.BlankTokenException
+import com.goodpon.infra.security.jwt.exception.InvalidTokenException
+import com.goodpon.infra.security.jwt.exception.TokenExpiredException
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.stereotype.Component
 import java.util.*
 
 
+@Component
 @EnableConfigurationProperties(JwtTokenProperties::class)
 class JwtTokenProvider(
     private val properties: JwtTokenProperties,

@@ -14,9 +14,6 @@ class MerchantEntity(
     val businessNumber: String,
 
     @Column(nullable = false, unique = true)
-    val clientKey: String,
-
-    @Column(nullable = false, unique = true)
     val secretKey: String,
 ) : AuditableEntity() {
     @Id
@@ -28,7 +25,6 @@ class MerchantEntity(
             id = id,
             name = name,
             businessNumber = businessNumber,
-            clientKey = clientKey,
             secretKey = secretKey,
         )
     }
