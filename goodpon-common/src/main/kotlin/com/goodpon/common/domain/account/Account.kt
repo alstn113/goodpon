@@ -28,4 +28,8 @@ data class Account(
     fun isNotPending(): Boolean {
         return status != AccountStatus.PENDING
     }
+
+    fun isPending(): Boolean {
+        return status == AccountStatus.PENDING
+    }
 }

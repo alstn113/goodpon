@@ -5,6 +5,9 @@ enum class ErrorType(
     val message: String,
     val errorLevel: ErrorLevel,
 ) {
+    ACCOUNT_NOT_FOUND(404, "존재하지 않는 계정입니다.", ErrorLevel.WARN),
+    ACCOUNT_PENDING(403, "이메일 인증이 완료되지 않았습니다.", ErrorLevel.WARN),
+
     INVALID_REQUEST(400, "잘못된 요청입니다.", ErrorLevel.WARN),
     BLANK_TOKEN(401, "토큰이 비어있습니다.", ErrorLevel.WARN),
     INVALID_TOKEN(401, "유효하지 않은 토큰입니다.", ErrorLevel.WARN),
