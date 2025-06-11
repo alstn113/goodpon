@@ -20,7 +20,7 @@ data class ApiResponse<T> private constructor(
         }
 
         fun <S> error(errorType: ErrorType, errorData: Any? = null): ApiResponse<S> {
-            return ApiResponse(ResultType.ERROR, null, ErrorMessage(errorType, errorData))
+            return ApiResponse(ResultType.ERROR, null, ErrorMessage(errorType))
         }
     }
 }

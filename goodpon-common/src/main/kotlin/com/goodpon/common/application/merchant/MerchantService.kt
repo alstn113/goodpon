@@ -1,5 +1,6 @@
 package com.goodpon.common.application.merchant
 
+import com.goodpon.common.application.merchant.request.MerchantCreateRequest
 import com.goodpon.common.application.merchant.response.MerchantInfo
 import com.goodpon.common.domain.merchant.MerchantReader
 import org.springframework.stereotype.Service
@@ -21,4 +22,7 @@ class MerchantService(
             secretKey = merchant.secretKey,
         )
     }
+
+    @Transactional
+    fun createMerchant(request: MerchantCreateRequest)
 }

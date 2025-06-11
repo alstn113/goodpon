@@ -1,5 +1,6 @@
 package com.goodpon.common.application.auth.request
 
-data class VerificationEmailResendRequest(
+data class LoginRequest(
     val email: String,
+    val password: String,
 )

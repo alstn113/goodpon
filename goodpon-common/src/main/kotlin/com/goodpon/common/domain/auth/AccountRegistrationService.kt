@@ -13,7 +13,7 @@ class AccountRegistrationService(
     private val passwordEncoder: PasswordEncoder,
 ) {
 
-    fun registerAccount(email: String, password: String, name: String): Account {
+    fun register(email: String, password: String, name: String): Account {
         validateUniqueEmail(email)
 
         val hashedPassword = passwordEncoder.encode(password)

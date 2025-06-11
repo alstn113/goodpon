@@ -1,7 +1,8 @@
 package com.goodpon.common.application.auth
 
+import com.goodpon.common.application.auth.request.EmailVerifyRequest
 import com.goodpon.common.application.auth.request.RegisterRequest
-import com.goodpon.common.application.auth.request.VerifyEmailRequest
+import com.goodpon.common.application.auth.request.VerificationEmailResendRequest
 import com.goodpon.common.domain.auth.AccountRegisteredEvent
 import com.goodpon.common.domain.auth.AccountRegistrationService
 import com.goodpon.common.domain.auth.EmailVerificationService
@@ -19,8 +20,8 @@ class AuthFacadeService(
 ) {
 
     @Transactional
-    fun registerAccount(request: RegisterRequest): Long {
-        val savedAccount = accountRegistrationService.registerAccount(
+    fun register(request: RegisterRequest): Long {
+        val savedAccount = accountRegistrationService.register(
             request.email,
             request.password,
             request.name
@@ -33,7 +34,7 @@ class AuthFacadeService(
     }
 
     @Transactional(readOnly = true)
-    fun resendVerificationEmail(request: com.goodpon.common.application.auth.request.ResendVerificationEmailRequest) {
+    fun resendVerificationEmail(request: VerificationEmailResendRequest) {
         val account = emailVerificationService.validateResendRequest(request.email)
 
         val event = VerificationEmailResendRequestedEvent(account.id, account.email, account.name)
@@ -41,7 +42,7 @@ class AuthFacadeService(
     }
 
     @Transactional
-    fun verifyEmail(request: VerifyEmailRequest) {
+    fun verifyEmail(request: EmailVerifyRequest) {
         emailVerificationService.verifyAccountEmail(request.token)
     }
 }

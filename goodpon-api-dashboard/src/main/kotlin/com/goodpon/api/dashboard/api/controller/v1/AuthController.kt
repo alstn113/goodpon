@@ -3,8 +3,8 @@ package com.goodpon.api.dashboard.api.controller.v1
 import com.goodpon.api.dashboard.api.response.ApiResponse
 import com.goodpon.common.application.auth.AuthFacadeService
 import com.goodpon.common.application.auth.request.RegisterRequest
-import com.goodpon.common.application.auth.request.ResendVerificationEmailRequest
-import com.goodpon.common.application.auth.request.VerifyEmailRequest
+import com.goodpon.common.application.auth.request.VerificationEmailResendRequest
+import com.goodpon.common.application.auth.request.EmailVerifyRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -15,17 +15,17 @@ class AuthController(
 ) {
 
     @PostMapping("/register")
-    fun registerAccount(
+    fun register(
         @RequestBody request: RegisterRequest,
     ): ResponseEntity<ApiResponse<Unit>> {
-        authFacadeService.registerAccount(request)
+        authFacadeService.register(request)
 
         return ResponseEntity.ok(ApiResponse.success())
     }
 
     @GetMapping("/verify")
     fun verifyEmail(
-        @RequestBody request: VerifyEmailRequest,
+        @RequestBody request: EmailVerifyRequest,
     ): ResponseEntity<ApiResponse<Unit>> {
         authFacadeService.verifyEmail(request)
 
@@ -34,7 +34,7 @@ class AuthController(
 
     @PostMapping("/verify/resend")
     fun resendVerificationEmail(
-        @RequestBody request: ResendVerificationEmailRequest,
+        @RequestBody request: VerificationEmailResendRequest,
     ): ResponseEntity<ApiResponse<Unit>> {
         authFacadeService.resendVerificationEmail(request)
 
