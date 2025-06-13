@@ -41,15 +41,15 @@ data class CouponPeriod private constructor(
             issueEndAt: LocalDateTime?,
             useEndAt: LocalDateTime?,
         ) {
-            if (issueEndAt != null && !issueEndAt.isAfter(issueStartAt)) {
+            if (issueEndAt != null && issueEndAt <= issueStartAt) {
                 throw IllegalArgumentException("발급 종료 기간은 발급 시작 기간 이후여야 합니다.")
             }
 
-            if (useEndAt != null && !useEndAt.isAfter(issueStartAt)) {
+            if (useEndAt != null && useEndAt <= issueStartAt) {
                 throw IllegalArgumentException("사용 종료 기간은 발급 시작 기간 이후여야 합니다.")
             }
 
-            if (issueEndAt != null && useEndAt != null && useEndAt.isBefore(issueEndAt)) {
+            if (issueEndAt != null && useEndAt != null && useEndAt < issueEndAt) {
                 throw IllegalArgumentException("사용 종료 기간은 발급 종료 기간 이후이거나 같아야 합니다.")
             }
 
@@ -66,12 +66,21 @@ data class CouponPeriod private constructor(
     }
 
     fun isIssuable(now: LocalDateTime = LocalDateTime.now()): Boolean {
-        val started = !now.isBefore(issueStartAt)
-        val notExpired = issueEndAt?.let { now.isBefore(it) } ?: true
-        return started && notExpired
+        val started = issueStartAt <= now
+        val notEnded = issueEndAt == null || now < issueEndAt
+        return started && notEnded
     }
 
-    fun calculateUseEndAt(issueDate: LocalDate): LocalDateTime? {
-        return validityDays?.let { issueDate.plusDays(it + 1).atStartOfDay() }
+    fun calculateFinalUseEndAt(issueDate: LocalDate): LocalDateTime? {
+        val validityEndAt = validityDays?.let {
+            issueDate.plusDays(it + 1).atStartOfDay()
+        }
+
+        return when {
+            validityEndAt != null && useEndAt != null -> minOf(validityEndAt, useEndAt)
+            validityEndAt != null -> validityEndAt
+            useEndAt != null -> useEndAt
+            else -> null
+        }
     }
 }
