@@ -18,11 +18,8 @@ data class CouponPeriod private constructor(
             validityDays: Long? = null,
             useEndDate: LocalDate? = null,
         ): CouponPeriod {
-            // 발급 시작일은 자정부터 시작
-            val issueStartAt = issueStartDate.atStartOfDay()
-
-            // 종료일은 "포함하지 않는" 날짜의 자정으로 표현 (exclusive end)
-            val issueEndAt = issueEndDate?.plusDays(1)?.atStartOfDay()
+            val issueStartAt = issueStartDate.atStartOfDay() // 발급 시작일은 자정부터 시작
+            val issueEndAt = issueEndDate?.plusDays(1)?.atStartOfDay() // 종료일은 "포함하지 않는" 날짜의 자정으로 표현 (exclusive end)
             val useEndAt = useEndDate?.plusDays(1)?.atStartOfDay()
 
             validateDateRanges(issueStartAt, issueEndAt, useEndAt)
