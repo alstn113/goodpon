@@ -7,6 +7,7 @@ data class CouponTemplate(
     val merchantId: Long,
     val name: String,
     val description: String,
+    val usageCondition: CouponUsageCondition,
     val discountPolicy: DiscountPolicy,
     val couponPeriod: CouponPeriod,
     val usageLimit: UsageLimit,
