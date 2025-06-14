@@ -1,5 +1,6 @@
 package com.goodpon.common.domain.coupon
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class CouponTemplate(
@@ -48,6 +49,10 @@ data class CouponTemplate(
 
     fun isUsable(): Boolean {
         return validateIsUsable().isSuccess
+    }
+
+    fun calculateFinalUseEndAt(now: LocalDate): LocalDateTime? {
+        return couponPeriod.calculateFinalUseEndAt(now)
     }
 
     private fun validateIsIssuable(now: LocalDateTime): Result<Unit> {
