@@ -43,11 +43,11 @@ data class CouponTemplate(
             )
     }
 
-    fun isIssuable(now: LocalDateTime): Boolean {
+    fun canIssue(now: LocalDateTime): Boolean {
         return validateIsIssuable(now).isSuccess
     }
 
-    fun isUsable(): Boolean {
+    fun canUse(): Boolean {
         return validateIsUsable().isSuccess
     }
 

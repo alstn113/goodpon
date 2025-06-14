@@ -1,9 +1,10 @@
 package com.goodpon.common.domain.coupon
 
 import java.time.LocalDateTime
+import java.util.UUID
 
 data class IssuedCoupon(
-    val id: String?,
+    val id: UUID,
     val couponTemplate: CouponTemplate,
     val accountId: String,
     val issuedAt: LocalDateTime,
@@ -22,7 +23,7 @@ data class IssuedCoupon(
         ): IssuedCoupon {
 
             return IssuedCoupon(
-                id = null,
+                id = UUID.randomUUID(),
                 couponTemplate = couponTemplate.issue(now),
                 accountId = accountId,
                 issuedAt = now,
