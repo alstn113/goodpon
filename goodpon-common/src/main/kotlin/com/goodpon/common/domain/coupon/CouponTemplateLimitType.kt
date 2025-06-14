@@ -7,11 +7,11 @@ enum class CouponTemplateLimitType {
     USE_COUNT,
     ;
 
-    fun isNotIssueCount(): Boolean {
+    fun isNotIssueCountLimit(): Boolean {
         return this != ISSUE_COUNT
     }
 
-    fun isNotUseCount(): Boolean {
+    fun isNotUseCountLimit(): Boolean {
         return this != USE_COUNT
     }
 }
