@@ -1,7 +1,7 @@
 package com.goodpon.api.dashboard.api.controller.v1.request
 
-import com.goodpon.common.application.merchant.request.CreateMerchantRequest
-import com.goodpon.common.domain.auth.AccountPrincipal
+import com.goodpon.core.application.merchant.request.CreateMerchantRequest
+import com.goodpon.core.domain.auth.AccountPrincipal
 
 data class CreateMerchantWebRequest(
     val name: String,

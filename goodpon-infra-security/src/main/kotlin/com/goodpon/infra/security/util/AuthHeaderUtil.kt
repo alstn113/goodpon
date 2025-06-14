@@ -1,7 +1,7 @@
 package com.goodpon.infra.security.util
 
-import com.goodpon.common.support.error.CoreException
-import com.goodpon.common.support.error.ErrorType
+import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.support.error.ErrorType
 import jakarta.servlet.http.HttpServletRequest
 import java.util.*
 

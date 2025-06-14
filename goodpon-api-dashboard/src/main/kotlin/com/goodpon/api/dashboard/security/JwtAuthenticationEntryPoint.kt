@@ -2,7 +2,7 @@ package com.goodpon.api.dashboard.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.api.dashboard.api.response.ApiResponse
-import com.goodpon.common.support.error.ErrorType
+import com.goodpon.core.support.error.ErrorType
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType

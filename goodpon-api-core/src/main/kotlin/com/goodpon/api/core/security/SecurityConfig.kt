@@ -1,6 +1,6 @@
 package com.goodpon.api.core.security
 
-import com.goodpon.common.application.merchant.MerchantService
+import com.goodpon.core.application.merchant.MerchantService
 import com.goodpon.infra.security.apikey.ApiKeyAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

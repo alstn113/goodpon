@@ -1,8 +1,8 @@
 package com.goodpon.api.dashboard.api.controller.v1
 
 import com.goodpon.api.dashboard.api.controller.v1.request.CreateMerchantWebRequest
-import com.goodpon.common.application.merchant.MerchantService
-import com.goodpon.common.domain.auth.AccountPrincipal
+import com.goodpon.core.application.merchant.MerchantService
+import com.goodpon.core.domain.auth.AccountPrincipal
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

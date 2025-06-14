@@ -1,10 +1,10 @@
 package com.goodpon.api.dashboard.api.controller.v1
 
 import com.goodpon.api.dashboard.api.response.ApiResponse
-import com.goodpon.common.application.auth.AuthFacadeService
-import com.goodpon.common.application.auth.request.RegisterRequest
-import com.goodpon.common.application.auth.request.ResendVerificationEmailRequest
-import com.goodpon.common.application.auth.request.VerifyEmailRequest
+import com.goodpon.core.application.auth.AuthFacadeService
+import com.goodpon.core.application.auth.request.RegisterRequest
+import com.goodpon.core.application.auth.request.ResendVerificationEmailRequest
+import com.goodpon.core.application.auth.request.VerifyEmailRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

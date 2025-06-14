@@ -7,7 +7,9 @@ import org.springframework.boot.runApplication
     scanBasePackages =
         [
             "com.goodpon.api.dashboard",
-            "com.goodpon.common",
+            "com.goodpon.core",
+            "com.goodpon.infra.db",
+            "com.goodpon.infra.common",
             "com.goodpon.infra.security",
         ]
 )

@@ -1,9 +1,9 @@
 package com.goodpon.infra.security.apikey
 
-import com.goodpon.common.application.merchant.MerchantService
-import com.goodpon.common.application.merchant.response.MerchantInfo
-import com.goodpon.common.support.error.CoreException
-import com.goodpon.common.support.error.ErrorType
+import com.goodpon.core.application.merchant.MerchantService
+import com.goodpon.core.application.merchant.response.MerchantInfo
+import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.support.error.ErrorType
 import com.goodpon.infra.security.util.AuthHeaderUtil
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

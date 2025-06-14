@@ -3,7 +3,7 @@ package com.goodpon.api.core.security
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.api.core.api.response.ApiErrorResponse
 import com.goodpon.api.core.util.RequestUtils
-import com.goodpon.common.support.error.ErrorType
+import com.goodpon.core.support.error.ErrorType
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType

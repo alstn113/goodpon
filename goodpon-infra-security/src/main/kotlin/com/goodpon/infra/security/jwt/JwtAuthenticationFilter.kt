@@ -1,9 +1,9 @@
 package com.goodpon.infra.security.jwt
 
-import com.goodpon.common.application.account.AccountService
-import com.goodpon.common.application.account.response.AccountInfo
-import com.goodpon.common.support.error.CoreException
-import com.goodpon.common.support.error.ErrorType
+import com.goodpon.core.application.account.AccountService
+import com.goodpon.core.application.account.response.AccountInfo
+import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.support.error.ErrorType
 import com.goodpon.infra.security.jwt.exception.BlankTokenException
 import com.goodpon.infra.security.jwt.exception.InvalidTokenException
 import com.goodpon.infra.security.jwt.exception.TokenExpiredException

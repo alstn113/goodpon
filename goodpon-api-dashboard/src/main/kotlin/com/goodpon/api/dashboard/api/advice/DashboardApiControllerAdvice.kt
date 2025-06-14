@@ -1,9 +1,9 @@
 package com.goodpon.api.dashboard.api.advice
 
 import com.goodpon.api.dashboard.api.response.ApiResponse
-import com.goodpon.common.support.error.CoreException
-import com.goodpon.common.support.error.ErrorLevel
-import com.goodpon.common.support.error.ErrorType
+import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.support.error.ErrorLevel
+import com.goodpon.core.support.error.ErrorType
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

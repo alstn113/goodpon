@@ -1,6 +1,6 @@
 package com.goodpon.infra.security.jwt
 
-import com.goodpon.common.domain.auth.AccountPrincipal
+import com.goodpon.core.domain.auth.AccountPrincipal
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 

@@ -1,0 +1,46 @@
+package com.goodpon.infra.db.merchant
+
+import com.goodpon.core.domain.merchant.MerchantAccount
+import com.goodpon.core.domain.merchant.MerchantAccountRole
+import jakarta.persistence.*
+
+@Entity
+@Table(name = "merchant_accounts")
+class MerchantAccountEntity(
+    @Column(nullable = false)
+    val merchantId: Long,
+
+    @Column(nullable = false)
+    val accountId: Long,
+
+    @Column(nullable = false, columnDefinition = "VARCHAR(25)")
+    @Enumerated(EnumType.STRING)
+    val role: MerchantAccountRole,
+) : com.goodpon.infra.db.AuditableEntity() {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
+
+    companion object {
+        fun fromDomain(merchantAccount: MerchantAccount): MerchantAccountEntity {
+            return MerchantAccountEntity(
+                merchantId = merchantAccount.merchantId,
+                accountId = merchantAccount.accountId,
+                role = merchantAccount.role,
+            )
+        }
+    }
+
+    fun toDomain(): MerchantAccount {
+        return MerchantAccount(
+            id = id,
+            merchantId = merchantId,
+            accountId = accountId,
+            role = role,
+        )
+    }
+
+    fun update(merchantAccount: MerchantAccount) {
+    }
+}
