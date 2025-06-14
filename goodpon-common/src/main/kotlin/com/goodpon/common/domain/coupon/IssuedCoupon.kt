@@ -3,7 +3,7 @@ package com.goodpon.common.domain.coupon
 import java.time.LocalDateTime
 
 data class IssuedCoupon(
-    val id: Long,
+    val id: String?,
     val couponTemplate: CouponTemplate,
     val accountId: String,
     val issuedAt: LocalDateTime,
@@ -22,7 +22,7 @@ data class IssuedCoupon(
         ): IssuedCoupon {
 
             return IssuedCoupon(
-                id = 0L,
+                id = null,
                 couponTemplate = couponTemplate.issue(now),
                 accountId = accountId,
                 issuedAt = now,

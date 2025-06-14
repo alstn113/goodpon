@@ -46,4 +46,6 @@ class AccountEntity(
             status = status
         )
     }
+
+    fun update(account: Account) {}
 }

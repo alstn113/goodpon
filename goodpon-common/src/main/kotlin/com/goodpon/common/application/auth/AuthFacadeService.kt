@@ -27,7 +27,7 @@ class AuthFacadeService(
             request.name
         )
 
-        val event = AccountRegisteredEvent(savedAccount.id, savedAccount.email, savedAccount.name)
+        val event = AccountRegisteredEvent(savedAccount.id!!, savedAccount.email, savedAccount.name)
         eventPublisher.publishEvent(event)
 
         return savedAccount.id
@@ -37,7 +37,7 @@ class AuthFacadeService(
     fun resendVerificationEmail(request: ResendVerificationEmailRequest) {
         val account = emailVerificationService.validateResendRequest(request.email)
 
-        val event = VerificationEmailResendRequestedEvent(account.id, account.email, account.name)
+        val event = VerificationEmailResendRequestedEvent(account.id!!, account.email, account.name)
         eventPublisher.publishEvent(event)
     }
 

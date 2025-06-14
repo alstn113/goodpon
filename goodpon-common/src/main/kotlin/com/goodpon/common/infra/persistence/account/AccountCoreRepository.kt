@@ -11,9 +11,16 @@ class AccountCoreRepository(
 ) : AccountRepository {
 
     override fun save(account: Account): Account {
-        val entity = AccountEntity.fromDomain(account)
-        val savedEntity = accountJpaRepository.save(entity)
+        if (account.id == 0L) {
+            val entity = AccountEntity.fromDomain(account)
+            val savedEntity = accountJpaRepository.save(entity)
+            return savedEntity.toDomain()
+        }
 
+        val entity = accountJpaRepository.findByIdOrNull(account.id)
+            ?: throw IllegalArgumentException("Account with id ${account.id} not found")
+        entity.update(account)
+        val savedEntity = accountJpaRepository.save(entity)
         return savedEntity.toDomain()
     }
 

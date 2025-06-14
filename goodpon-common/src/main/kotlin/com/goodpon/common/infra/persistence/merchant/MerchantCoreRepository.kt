@@ -2,6 +2,7 @@ package com.goodpon.common.infra.persistence.merchant
 
 import com.goodpon.common.domain.merchant.Merchant
 import com.goodpon.common.domain.merchant.MerchantRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -10,9 +11,16 @@ class MerchantCoreRepository(
 ) : MerchantRepository {
 
     override fun save(merchant: Merchant): Merchant {
-        val entity = MerchantEntity.fromDomain(merchant)
-        val savedEntity = merchantJpaRepository.save(entity)
+        if (merchant.id == 0L) {
+            val entity = MerchantEntity.fromDomain(merchant)
+            val savedEntity = merchantJpaRepository.save(entity)
+            return savedEntity.toDomain()
+        }
 
+        val entity = merchantJpaRepository.findByIdOrNull(merchant.id)
+            ?: throw IllegalArgumentException("Merchant with id ${merchant.id} not found")
+        entity.update(merchant)
+        val savedEntity = merchantJpaRepository.save(entity)
         return savedEntity.toDomain()
     }
 

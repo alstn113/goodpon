@@ -41,4 +41,7 @@ class MerchantAccountEntity(
             role = role,
         )
     }
+
+    fun update(merchantAccount: MerchantAccount) {
+    }
 }
