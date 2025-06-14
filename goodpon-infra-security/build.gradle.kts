@@ -1,7 +1,7 @@
 val jjwtVersion by extra("0.12.6")
 
 dependencies {
-    implementation(project(":goodpon-common"))
+    implementation(project(":goodpon-core"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")

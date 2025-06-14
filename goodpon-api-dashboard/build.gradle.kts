@@ -7,7 +7,7 @@ tasks.getByName("jar") {
 }
 
 dependencies {
-    implementation(project(":goodpon-common"))
+    implementation(project(":goodpon-core"))
     implementation(project(":goodpon-infra-security"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")

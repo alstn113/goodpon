@@ -3,6 +3,6 @@ rootProject.name = "goodpon"
 include(
     "goodpon-api-core",
     "goodpon-api-dashboard",
-    "goodpon-common",
+    "goodpon-core",
     "goodpon-infra-security"
 )
