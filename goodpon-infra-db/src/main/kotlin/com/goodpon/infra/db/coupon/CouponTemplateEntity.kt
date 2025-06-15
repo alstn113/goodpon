@@ -1,9 +1,10 @@
 package com.goodpon.infra.db.coupon
 
 import com.goodpon.core.domain.coupon.CouponTemplate
-import com.goodpon.core.domain.coupon.CouponTemplateLimitType
-import com.goodpon.core.domain.coupon.CouponTemplateStatus
-import com.goodpon.core.domain.coupon.DiscountType
+import com.goodpon.core.domain.coupon.CouponTemplateFactory
+import com.goodpon.core.domain.coupon.vo.CouponTemplateLimitType
+import com.goodpon.core.domain.coupon.vo.CouponTemplateStatus
+import com.goodpon.core.domain.coupon.vo.DiscountType
 import com.goodpon.infra.db.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -67,7 +68,7 @@ class CouponTemplateEntity(
     val id: Long = 0
 
     fun toDomain(): CouponTemplate {
-        return CouponTemplate.reconstitute(
+        return CouponTemplateFactory.reconstitute(
             id = id,
             merchantId = merchantId,
             name = name,

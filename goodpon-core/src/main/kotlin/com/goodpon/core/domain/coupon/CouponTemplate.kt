@@ -1,9 +1,10 @@
 package com.goodpon.core.domain.coupon
 
+import com.goodpon.core.domain.coupon.vo.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-data class CouponTemplate private constructor(
+data class CouponTemplate(
     val id: Long,
     val merchantId: Long,
     val name: String,
@@ -42,100 +43,5 @@ data class CouponTemplate private constructor(
             return Result.failure(IllegalStateException("쿠폰 사용 한도를 초과했습니다."))
         }
         return Result.success(Unit)
-    }
-
-    companion object {
-
-        fun create(
-            merchantId: Long,
-            name: String,
-            description: String,
-            minimumOrderAmount: Long? = null,
-            discountType: DiscountType,
-            discountValue: Int,
-            issueStartDate: LocalDate,
-            issueEndDate: LocalDate?,
-            validityDays: Int?,
-            useEndDateTime: LocalDate?,
-            limitType: CouponTemplateLimitType,
-            issueLimit: Long? = null,
-            useLimit: Long? = null,
-        ): CouponTemplate {
-            return CouponTemplate(
-                id = 0,
-                merchantId = merchantId,
-                name = name,
-                description = description,
-                usageCondition = CouponUsageCondition.create(
-                    minimumOrderAmount = minimumOrderAmount
-                ),
-                discountPolicy = DiscountPolicy.create(
-                    discountType = discountType,
-                    discountValue = discountValue
-                ),
-                couponPeriod = CouponPeriodFactory.create(
-                    issueStartDate = issueStartDate,
-                    issueEndDate = issueEndDate,
-                    validityDays = validityDays,
-                    useEndDate = useEndDateTime
-                ),
-                usageLimitPolicy = UsageLimitPolicy.create(
-                    limitType = limitType,
-                    issueLimit = issueLimit,
-                    useLimit = useLimit
-                ),
-                status = CouponTemplateStatus.DRAFT,
-                isIssuable = true,
-                isUsable = true
-            )
-        }
-
-        fun reconstitute(
-            id: Long,
-            merchantId: Long,
-            name: String,
-            description: String,
-            minimumOrderAmount: Long? = null,
-            discountType: DiscountType,
-            discountValue: Int,
-            issueStartAt: LocalDateTime,
-            issueEndAt: LocalDateTime?,
-            validityDays: Int?,
-            useEndAt: LocalDateTime?,
-            limitType: CouponTemplateLimitType,
-            issueLimit: Long? = null,
-            useLimit: Long? = null,
-            status: CouponTemplateStatus,
-            isIssuable: Boolean,
-            isUsable: Boolean,
-        ): CouponTemplate {
-            return CouponTemplate(
-                id = id,
-                merchantId = merchantId,
-                name = name,
-                description = description,
-                usageCondition = CouponUsageCondition.create(
-                    minimumOrderAmount = minimumOrderAmount
-                ),
-                discountPolicy = DiscountPolicy.create(
-                    discountType = discountType,
-                    discountValue = discountValue
-                ),
-                couponPeriod = CouponPeriod.create(
-                    issueStartAt = issueStartAt,
-                    issueEndAt = issueEndAt,
-                    validityDays = validityDays,
-                    useEndAt = useEndAt
-                ),
-                usageLimitPolicy = UsageLimitPolicy.create(
-                    limitType = limitType,
-                    issueLimit = issueLimit,
-                    useLimit = useLimit
-                ),
-                status = status,
-                isIssuable = isIssuable,
-                isUsable = isUsable
-            )
-        }
     }
 }

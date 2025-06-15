@@ -1,6 +1,7 @@
-package com.goodpon.core.domain.coupon
+package com.goodpon.core.domain.coupon.vo
 
 enum class DiscountType {
+
     FIXED_AMOUNT {
         override fun calculate(orderAmount: Int, discountValue: Int): Int {
             return discountValue

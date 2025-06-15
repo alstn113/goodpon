@@ -1,5 +1,7 @@
 package com.goodpon.core.domain.coupon
 
+import com.goodpon.core.domain.coupon.vo.DiscountPolicy
+import com.goodpon.core.domain.coupon.vo.DiscountType
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 
