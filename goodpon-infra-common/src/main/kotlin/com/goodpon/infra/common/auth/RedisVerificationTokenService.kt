@@ -11,10 +11,6 @@ class RedisVerificationTokenService(
     private val redisTemplate: RedisTemplate<String, Any>,
 ) : VerificationTokenService {
 
-    companion object {
-        private val TOKEN_TTL: Duration = Duration.ofMinutes(10)
-    }
-
     override fun generateToken(accountId: Long): String {
         invalidateExistingToken(accountId)
 
@@ -56,4 +52,8 @@ class RedisVerificationTokenService(
 
     private fun accountIdKey(accountId: Long) = "email-verification:account:$accountId"
     private fun tokenKey(token: String) = "email-verification:token:$token"
+
+    companion object {
+        private val TOKEN_TTL: Duration = Duration.ofMinutes(10)
+    }
 }

@@ -25,16 +25,6 @@ class MerchantAccountEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    companion object {
-        fun fromDomain(merchantAccount: MerchantAccount): MerchantAccountEntity {
-            return MerchantAccountEntity(
-                merchantId = merchantAccount.merchantId,
-                accountId = merchantAccount.accountId,
-                role = merchantAccount.role,
-            )
-        }
-    }
-
     fun toDomain(): MerchantAccount {
         return MerchantAccount(
             id = id,
@@ -45,5 +35,15 @@ class MerchantAccountEntity(
     }
 
     fun update(merchantAccount: MerchantAccount) {
+    }
+
+    companion object {
+        fun fromDomain(merchantAccount: MerchantAccount): MerchantAccountEntity {
+            return MerchantAccountEntity(
+                merchantId = merchantAccount.merchantId,
+                accountId = merchantAccount.accountId,
+                role = merchantAccount.role,
+            )
+        }
     }
 }

@@ -28,18 +28,6 @@ class AccountEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-
-    companion object {
-        fun fromDomain(account: Account): AccountEntity {
-            return AccountEntity(
-                email = account.email,
-                password = account.password,
-                name = account.name,
-                status = account.status,
-            )
-        }
-    }
-
     fun toDomain(): Account {
         return Account(
             id = id,
@@ -51,5 +39,16 @@ class AccountEntity(
     }
 
     fun update(account: Account) {
+    }
+
+    companion object {
+        fun fromDomain(account: Account): AccountEntity {
+            return AccountEntity(
+                email = account.email,
+                password = account.password,
+                name = account.name,
+                status = account.status,
+            )
+        }
     }
 }

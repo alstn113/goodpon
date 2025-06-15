@@ -66,14 +66,6 @@ class CouponTemplateEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    companion object {
-
-        fun fromDomain(domain: CouponTemplate): CouponTemplateEntity {
-            return CouponTemplateEntity(
-            )
-        }
-    }
-
     fun toDomain(): CouponTemplate {
         return CouponTemplate(
             id = id,
@@ -92,5 +84,13 @@ class CouponTemplateEntity(
 
     fun update(couponTemplate: CouponTemplate) {
 
+    }
+
+    companion object {
+
+        fun fromDomain(domain: CouponTemplate): CouponTemplateEntity {
+            return CouponTemplateEntity(
+            )
+        }
     }
 }

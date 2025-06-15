@@ -13,6 +13,14 @@ data class IssuedCoupon(
     val usedAt: LocalDateTime?,
 ) {
 
+    fun use(now: LocalDateTime): IssuedCoupon {
+        if (isUsed) {
+            throw IllegalStateException("이미 사용된 쿠폰입니다.")
+        }
+
+        return copy(isUsed = true, usedAt = now)
+    }
+
     companion object {
 
         fun issue(
@@ -32,13 +40,5 @@ data class IssuedCoupon(
                 usedAt = null,
             )
         }
-    }
-
-    fun use(now: LocalDateTime): IssuedCoupon {
-        if (isUsed) {
-            throw IllegalStateException("이미 사용된 쿠폰입니다.")
-        }
-
-        return copy(isUsed = true, usedAt = now)
     }
 }

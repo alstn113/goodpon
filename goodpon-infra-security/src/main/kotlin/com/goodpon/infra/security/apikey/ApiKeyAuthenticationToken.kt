@@ -9,6 +9,12 @@ class ApiKeyAuthenticationToken private constructor(
     private val authorities: Collection<GrantedAuthority> = emptyList(),
 ) : AbstractAuthenticationToken(authorities) {
 
+    override fun getPrincipal(): MerchantPrincipal = merchantPrincipal
+
+    override fun getCredentials(): Any? = null
+
+    override fun getName(): String = merchantPrincipal.merchantId.toString()
+
     companion object {
         fun of(
             merchantId: Long,
@@ -20,10 +26,4 @@ class ApiKeyAuthenticationToken private constructor(
             )
         }
     }
-
-    override fun getPrincipal(): MerchantPrincipal = merchantPrincipal
-
-    override fun getCredentials(): Any? = null
-
-    override fun getName(): String = merchantPrincipal.merchantId.toString()
 }

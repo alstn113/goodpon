@@ -33,20 +33,6 @@ class IssuedCouponEntity(
     val usedAt: LocalDateTime?,
 ) : AuditableEntity() {
 
-    companion object {
-        fun fromDomain(issuedCoupon: IssuedCoupon): IssuedCouponEntity {
-            return IssuedCouponEntity(
-                id = issuedCoupon.id,
-                couponTemplateId =,
-                accountId = TODO(),
-                issuedAt = TODO(),
-                expiresAt = TODO(),
-                isUsed = TODO(),
-                usedAt = TODO(),
-            )
-        }
-    }
-
     fun toDomain(): IssuedCoupon {
         return IssuedCoupon(
             id = id,
@@ -62,5 +48,19 @@ class IssuedCouponEntity(
 
     fun update(issuedCoupon: IssuedCoupon) {
         // Update logic here if needed
+    }
+
+    companion object {
+        fun fromDomain(issuedCoupon: IssuedCoupon): IssuedCouponEntity {
+            return IssuedCouponEntity(
+                id = issuedCoupon.id,
+                couponTemplateId =,
+                accountId = TODO(),
+                issuedAt = TODO(),
+                expiresAt = TODO(),
+                isUsed = TODO(),
+                usedAt = TODO(),
+            )
+        }
     }
 }

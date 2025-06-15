@@ -9,6 +9,7 @@ data class ApiErrorResponse private constructor(
     val traceId: String,
     val error: ErrorMessage,
 ) {
+
     companion object {
         fun of(traceId: String, errorType: ErrorType): ApiErrorResponse {
             return ApiErrorResponse(

@@ -1,6 +1,6 @@
 package com.goodpon.core.domain.coupon
 
-data class UsageLimitPolicy private constructor(
+data class UsageLimitPolicy(
     val limitType: CouponTemplateLimitType,
     val issueLimit: Long? = null,
     val useLimit: Long? = null,
