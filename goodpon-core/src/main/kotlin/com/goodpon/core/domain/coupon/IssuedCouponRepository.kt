@@ -1,3 +1,9 @@
 package com.goodpon.core.domain.coupon
 
-interface IssuedCouponRepository
+import java.util.*
+
+interface IssuedCouponRepository {
+
+    fun save(issuedCoupon: IssuedCoupon): IssuedCoupon
+    fun findById(id: UUID): IssuedCoupon?
+}

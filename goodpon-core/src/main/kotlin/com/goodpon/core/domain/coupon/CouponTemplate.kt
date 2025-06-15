@@ -53,10 +53,10 @@ data class CouponTemplate private constructor(
             minimumOrderAmount: Long? = null,
             discountType: DiscountType,
             discountValue: Int,
-            issueStartAt: LocalDateTime,
-            issueEndAt: LocalDateTime?,
+            issueStartDate: LocalDate,
+            issueEndDate: LocalDate?,
             validityDays: Int?,
-            useEndAt: LocalDateTime?,
+            useEndDateTime: LocalDate?,
             limitType: CouponTemplateLimitType,
             issueLimit: Long? = null,
             useLimit: Long? = null,
@@ -66,15 +66,20 @@ data class CouponTemplate private constructor(
                 merchantId = merchantId,
                 name = name,
                 description = description,
-                usageCondition = CouponUsageCondition(minimumOrderAmount),
-                discountPolicy = DiscountPolicy(discountType, discountValue),
-                couponPeriod = CouponPeriod.create(
-                    issueStartDate = issueStartAt.toLocalDate(),
-                    issueEndDate = issueEndAt?.toLocalDate(),
-                    validityDays = validityDays,
-                    useEndDate = useEndAt?.toLocalDate()
+                usageCondition = CouponUsageCondition.create(
+                    minimumOrderAmount = minimumOrderAmount
                 ),
-                usageLimitPolicy = UsageLimitPolicy(
+                discountPolicy = DiscountPolicy.create(
+                    discountType = discountType,
+                    discountValue = discountValue
+                ),
+                couponPeriod = CouponPeriodFactory.create(
+                    issueStartDate = issueStartDate,
+                    issueEndDate = issueEndDate,
+                    validityDays = validityDays,
+                    useEndDate = useEndDateTime
+                ),
+                usageLimitPolicy = UsageLimitPolicy.create(
                     limitType = limitType,
                     issueLimit = issueLimit,
                     useLimit = useLimit
@@ -109,15 +114,20 @@ data class CouponTemplate private constructor(
                 merchantId = merchantId,
                 name = name,
                 description = description,
-                usageCondition = CouponUsageCondition(minimumOrderAmount),
-                discountPolicy = DiscountPolicy(discountType, discountValue),
-                couponPeriod = CouponPeriod.create(
-                    issueStartDate = issueStartAt.toLocalDate(),
-                    issueEndDate = issueEndAt?.toLocalDate(),
-                    validityDays = validityDays,
-                    useEndDate = useEndAt?.toLocalDate()
+                usageCondition = CouponUsageCondition.create(
+                    minimumOrderAmount = minimumOrderAmount
                 ),
-                usageLimitPolicy = UsageLimitPolicy(
+                discountPolicy = DiscountPolicy.create(
+                    discountType = discountType,
+                    discountValue = discountValue
+                ),
+                couponPeriod = CouponPeriod.create(
+                    issueStartAt = issueStartAt,
+                    issueEndAt = issueEndAt,
+                    validityDays = validityDays,
+                    useEndAt = useEndAt
+                ),
+                usageLimitPolicy = UsageLimitPolicy.create(
                     limitType = limitType,
                     issueLimit = issueLimit,
                     useLimit = useLimit

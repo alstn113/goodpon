@@ -4,17 +4,22 @@ import com.goodpon.core.domain.coupon.IssuedCoupon
 import com.goodpon.core.domain.coupon.IssuedCouponRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class IssuedCouponCoreRepository(
     private val issuedCouponJpaRepository: IssuedCouponJpaRepository,
 ) : IssuedCouponRepository {
 
-    fun save(issuedCoupon: IssuedCoupon): IssuedCoupon {
+    override fun save(issuedCoupon: IssuedCoupon): IssuedCoupon {
         val entity = issuedCouponJpaRepository.findByIdOrNull(issuedCoupon.id)
             ?: throw IllegalArgumentException("IssuedCoupon with id ${issuedCoupon.id} not found")
         entity.update(issuedCoupon)
         val savedEntity = issuedCouponJpaRepository.save(entity)
         return savedEntity.toDomain()
+    }
+
+    override fun findById(id: UUID): IssuedCoupon? {
+        return issuedCouponJpaRepository.findByIdOrNull(id)?.toDomain()
     }
 }

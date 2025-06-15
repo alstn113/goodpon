@@ -10,7 +10,7 @@ class CouponTemplateCoreRepository(
     private val couponTemplateJpaRepository: CouponTemplateJpaRepository,
 ) : CouponTemplateRepository {
 
-    fun save(couponTemplate: CouponTemplate): CouponTemplate {
+    override fun save(couponTemplate: CouponTemplate): CouponTemplate {
         if (couponTemplate.id == 0L) {
             val entity = CouponTemplateEntity.fromDomain(couponTemplate)
             val savedEntity = couponTemplateJpaRepository.save(entity)
@@ -22,5 +22,9 @@ class CouponTemplateCoreRepository(
         entity.update(couponTemplate)
         val savedEntity = couponTemplateJpaRepository.save(entity)
         return savedEntity.toDomain()
+    }
+
+    override fun findById(id: Long): CouponTemplate? {
+        return couponTemplateJpaRepository.findByIdOrNull(id)?.toDomain()
     }
 }
