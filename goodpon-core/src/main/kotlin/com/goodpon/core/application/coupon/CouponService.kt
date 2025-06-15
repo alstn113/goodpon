@@ -24,8 +24,11 @@ class CouponService(
 
     @Transactional
     fun issueCoupon() {
+        // given
         val couponTemplateId = 1L
         val accountId = 1L
+
+        // when
 
         // 1. 쿠폰 템플릿 조회
         val template = couponTemplateRepository.findById(couponTemplateId)
@@ -55,11 +58,29 @@ class CouponService(
 
     @Transactional
     fun useCoupon() {
+        // given
+        val couponTemplateId = 1L
+        val accountId = 1L
+
+        // when
+
         // 1. 쿠폰 템플릿 조회
+        val template = couponTemplateRepository.findById(couponTemplateId)
+            ?: throw IllegalArgumentException("쿠폰 템플릿이 존재하지 않습니다.")
         // 2. 쿠폰 통계 조회
+        val stats = couponTemplateStatsCounter.getStats(couponTemplateId)
+
         // 3. 도메인 서비스 - 정책 검증
+        val issuedCoupon = issuedCouponRepository.findByAccountIdAndCouponTemplateId(accountId, couponTemplateId)
+            ?: throw IllegalArgumentException("발급된 쿠폰이 존재하지 않습니다.")
+        template.checkUsePossible(stats.useCount)
+            .onFailure { throw it }
+
         // 4. 쿠폰 사용
+        val usedCoupon = issuedCoupon.use()
+
         // 5. 쿠폰 사용 이력 저장 - (사용된 쿠폰, 사용 수량)
-        // 6. 응답
+        issuedCouponRepository.save(usedCoupon)
+        couponTemplateStatsCounter.increaseUseCount(couponTemplateId)
     }
 }

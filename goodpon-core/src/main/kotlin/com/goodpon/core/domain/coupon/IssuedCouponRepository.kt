@@ -5,5 +5,5 @@ import java.util.*
 interface IssuedCouponRepository {
 
     fun save(issuedCoupon: IssuedCoupon): IssuedCoupon
-    fun findById(id: UUID): IssuedCoupon?
+    fun findByAccountIdAndCouponTemplateId(accountId: Long, couponTemplateId: Long): IssuedCoupon?
 }

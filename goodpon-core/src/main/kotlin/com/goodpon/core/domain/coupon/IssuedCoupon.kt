@@ -13,7 +13,7 @@ data class IssuedCoupon private constructor(
     val usedAt: LocalDateTime?,
 ) {
 
-    fun use(now: LocalDateTime): IssuedCoupon {
+    fun use(now: LocalDateTime = LocalDateTime.now()): IssuedCoupon {
         if (isUsed) {
             throw IllegalStateException("이미 사용된 쿠폰입니다.")
         }

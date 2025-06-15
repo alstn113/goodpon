@@ -4,7 +4,6 @@ import com.goodpon.core.domain.coupon.IssuedCoupon
 import com.goodpon.core.domain.coupon.IssuedCouponRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
-import java.util.*
 
 @Repository
 class IssuedCouponCoreRepository(
@@ -19,7 +18,8 @@ class IssuedCouponCoreRepository(
         return savedEntity.toDomain()
     }
 
-    override fun findById(id: UUID): IssuedCoupon? {
-        return issuedCouponJpaRepository.findByIdOrNull(id)?.toDomain()
+    override fun findByAccountIdAndCouponTemplateId(accountId: Long, couponTemplateId: Long): IssuedCoupon? {
+        return issuedCouponJpaRepository.findFirstByAccountIdAndCouponTemplateId(accountId, couponTemplateId)
+            ?.toDomain()
     }
 }
