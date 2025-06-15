@@ -1,11 +1,9 @@
 package com.goodpon.core.domain.coupon
 
-data class UsageLimit private constructor(
+data class UsageLimitPolicy private constructor(
     val limitType: CouponTemplateLimitType,
     val issueLimit: Long? = null,
     val useLimit: Long? = null,
-    val issueCount: Long = 0,
-    val useCount: Long = 0,
 ) {
 
     init {
@@ -38,31 +36,17 @@ data class UsageLimit private constructor(
         }
     }
 
-    fun isIssuable(): Boolean {
+    fun isIssuable(issueCount: Long): Boolean {
         return when (limitType) {
             CouponTemplateLimitType.ISSUE_COUNT -> issueLimit?.let { issueCount < it } ?: true
             else -> true
         }
     }
 
-    fun isUsable(): Boolean {
+    fun isUsable(useCount: Long): Boolean {
         return when (limitType) {
             CouponTemplateLimitType.USE_COUNT -> useLimit?.let { useCount < it } ?: true
             else -> true
         }
-    }
-
-    fun recordIssuance(): UsageLimit {
-        if (!isIssuable()) {
-            throw IllegalStateException("쿠폰을 더 이상 발급할 수 없습니다.")
-        }
-        return copy(issueCount = issueCount + 1)
-    }
-
-    fun recordUsage(): UsageLimit {
-        if (!isUsable()) {
-            throw IllegalStateException("쿠폰을 더 이상 사용할 수 없습니다.")
-        }
-        return copy(useCount = useCount + 1)
     }
 }

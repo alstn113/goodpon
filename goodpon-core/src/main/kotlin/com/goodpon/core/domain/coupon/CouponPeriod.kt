@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class CouponPeriod private constructor(
     val issueStartAt: LocalDateTime,
     val issueEndAt: LocalDateTime?,
-    val validityDays: Long?,
+    val validityDays: Int?,
     val useEndAt: LocalDateTime?,
 ) {
 
@@ -15,7 +15,7 @@ data class CouponPeriod private constructor(
         fun create(
             issueStartDate: LocalDate,
             issueEndDate: LocalDate? = null,
-            validityDays: Long? = null,
+            validityDays: Int? = null,
             useEndDate: LocalDate? = null,
         ): CouponPeriod {
             val issueStartAt = issueStartDate.atStartOfDay() // 발급 시작일은 자정부터 시작
@@ -55,7 +55,7 @@ data class CouponPeriod private constructor(
             }
         }
 
-        private fun validateValidityDays(validityDays: Long?) {
+        private fun validateValidityDays(validityDays: Int?) {
             if (validityDays != null && validityDays <= 0) {
                 throw IllegalArgumentException("유효 기간은 0보다 커야 합니다.")
             }
@@ -70,7 +70,7 @@ data class CouponPeriod private constructor(
 
     fun calculateFinalUseEndAt(issueDate: LocalDate): LocalDateTime? {
         val validityEndAt = validityDays?.let {
-            issueDate.plusDays(it + 1).atStartOfDay()
+            issueDate.plusDays(it + 1L).atStartOfDay()
         }
 
         return when {
