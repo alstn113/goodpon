@@ -6,7 +6,7 @@ import java.util.*
 data class IssuedCoupon(
     val id: UUID,
     val couponTemplate: CouponTemplate,
-    val accountId: String,
+    val accountId: Long,
     val issuedAt: LocalDateTime,
     val expiresAt: LocalDateTime?,
     val isUsed: Boolean,
@@ -17,7 +17,7 @@ data class IssuedCoupon(
     companion object {
 
         fun issue(
-            accountId: String,
+            accountId: Long,
             couponTemplate: CouponTemplate,
             now: LocalDateTime = LocalDateTime.now(),
         ): IssuedCoupon {

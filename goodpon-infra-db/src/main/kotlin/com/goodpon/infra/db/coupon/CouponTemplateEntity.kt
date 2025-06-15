@@ -1,13 +1,14 @@
 package com.goodpon.infra.db.coupon
 
 import com.goodpon.core.domain.coupon.CouponTemplate
+import com.goodpon.infra.db.AuditableEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-class CouponTemplateEntity {
+class CouponTemplateEntity : AuditableEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

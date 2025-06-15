@@ -14,9 +14,9 @@ abstract class AuditableEntity {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    val createdAt: LocalDateTime = LocalDateTime.MIN
+    var createdAt: LocalDateTime = LocalDateTime.MIN
 
     @LastModifiedDate
     @Column(nullable = false)
-    val updatedAt: LocalDateTime = LocalDateTime.MIN
+    var updatedAt: LocalDateTime = LocalDateTime.MIN
 }

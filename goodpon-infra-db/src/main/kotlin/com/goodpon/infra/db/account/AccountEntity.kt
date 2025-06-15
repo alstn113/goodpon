@@ -2,10 +2,13 @@ package com.goodpon.infra.db.account
 
 import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.AccountStatus
+import com.goodpon.infra.db.AuditableEntity
 import jakarta.persistence.*
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
 @Table(name = "accounts")
+@EntityListeners(AuditingEntityListener::class)
 class AccountEntity(
     @Column(nullable = false, unique = true)
     val email: String,
@@ -19,11 +22,12 @@ class AccountEntity(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val status: AccountStatus,
-) : com.goodpon.infra.db.AuditableEntity() {
+) : AuditableEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
+
 
     companion object {
         fun fromDomain(account: Account): AccountEntity {
@@ -31,7 +35,7 @@ class AccountEntity(
                 email = account.email,
                 password = account.password,
                 name = account.name,
-                status = account.status
+                status = account.status,
             )
         }
     }
@@ -46,5 +50,6 @@ class AccountEntity(
         )
     }
 
-    fun update(account: Account) {}
+    fun update(account: Account) {
+    }
 }
