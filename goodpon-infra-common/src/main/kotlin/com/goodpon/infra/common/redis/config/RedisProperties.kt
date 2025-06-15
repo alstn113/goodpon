@@ -1,4 +1,4 @@
-package com.goodpon.infra.common.redis
+package com.goodpon.infra.common.redis.config
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull

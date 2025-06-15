@@ -1,4 +1,4 @@
-package com.goodpon.infra.common.auth
+package com.goodpon.infra.common.redis
 
 import com.goodpon.core.domain.auth.VerificationTokenService
 import org.springframework.data.redis.core.RedisTemplate

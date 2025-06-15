@@ -1,4 +1,4 @@
-package com.goodpon.infra.common.redis
+package com.goodpon.infra.common.redis.config
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.databind.ObjectMapper
