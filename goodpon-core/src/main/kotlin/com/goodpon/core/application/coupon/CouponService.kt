@@ -2,9 +2,11 @@ package com.goodpon.core.application.coupon
 
 import com.goodpon.core.domain.coupon.CouponTemplateRepository
 import com.goodpon.core.domain.coupon.CouponTemplateStatsCounter
+import com.goodpon.core.domain.coupon.IssuedCoupon
 import com.goodpon.core.domain.coupon.IssuedCouponRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 class CouponService(
@@ -22,19 +24,33 @@ class CouponService(
 
     @Transactional
     fun issueCoupon() {
-        // given
         val couponTemplateId = 1L
+        val accountId = 1L
 
-        // when
-        val couponTemplate = couponTemplateRepository.findById(couponTemplateId)
-            ?: throw IllegalArgumentException("쿠폰 템플릿이 존재하지 않습니다.")
-        val couponTemplateStats =
         // 1. 쿠폰 템플릿 조회
-        // 2. 쿠폰 통계 조회
+        val template = couponTemplateRepository.findById(couponTemplateId)
+            ?: throw IllegalArgumentException("쿠폰 템플릿이 존재하지 않습니다.")
+        // 2. 쿠폰 템플릿 상태 검증
+        val stats = couponTemplateStatsCounter.getStats(couponTemplateId)
+
+        val now = LocalDateTime.now()
         // 3. 도메인 서비스 - 정책 검증
+        template.checkIssuePossible(stats.issueCount, now)
+            .onFailure { throw it }
+        val expiresAt = template.calculateFinalUseEndAt(now.toLocalDate())
+
         // 4. 쿠폰 발급
-        // 5. 쿠폰 발급 이력 저장 - (발급된 쿠폰, 발급 수량)
-        // 6. 응답
+        val issuedCoupon = IssuedCoupon.issue(
+            accountId = accountId,
+            couponTemplateId = couponTemplateId,
+            expiresAt = expiresAt,
+            now = now
+        )
+
+        // 5. 쿠폰 발급 이력 저장
+        issuedCouponRepository.save(issuedCoupon)
+        // 6. 쿠폰 발급 통계 증가
+        couponTemplateStatsCounter.increaseIssueCount(couponTemplateId)
     }
 
     @Transactional
