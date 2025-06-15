@@ -3,7 +3,7 @@ package com.goodpon.core.domain.coupon
 import java.time.LocalDateTime
 import java.util.*
 
-data class IssuedCoupon(
+data class IssuedCoupon private constructor(
     val id: UUID,
     val couponTemplateId: Long,
     val accountId: Long,
@@ -29,7 +29,6 @@ data class IssuedCoupon(
             expiresAt: LocalDateTime?,
             now: LocalDateTime,
         ): IssuedCoupon {
-
             return IssuedCoupon(
                 id = UUID.randomUUID(),
                 couponTemplateId = couponTemplateId,
@@ -38,6 +37,26 @@ data class IssuedCoupon(
                 expiresAt = expiresAt,
                 isUsed = false,
                 usedAt = null,
+            )
+        }
+
+        fun reconstitute(
+            id: UUID,
+            couponTemplateId: Long,
+            accountId: Long,
+            issuedAt: LocalDateTime,
+            expiresAt: LocalDateTime?,
+            isUsed: Boolean,
+            usedAt: LocalDateTime?,
+        ): IssuedCoupon {
+            return IssuedCoupon(
+                id = id,
+                couponTemplateId = couponTemplateId,
+                accountId = accountId,
+                issuedAt = issuedAt,
+                expiresAt = expiresAt,
+                isUsed = isUsed,
+                usedAt = usedAt
             )
         }
     }

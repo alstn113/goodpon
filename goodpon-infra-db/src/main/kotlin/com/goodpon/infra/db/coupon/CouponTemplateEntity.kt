@@ -67,29 +67,49 @@ class CouponTemplateEntity(
     val id: Long = 0
 
     fun toDomain(): CouponTemplate {
-        return CouponTemplate(
+        return CouponTemplate.reconstitute(
             id = id,
-            merchantId = TODO(),
-            name = TODO(),
-            description = TODO(),
-            usageCondition = TODO(),
-            discountPolicy = TODO(),
-            couponPeriod = TODO(),
-            usageLimitPolicy = TODO(),
-            status = TODO(),
-            isIssuable = TODO(),
-            isUsable = TODO(),
+            merchantId = merchantId,
+            name = name,
+            description = description,
+            minimumOrderAmount = minimumOrderAmount,
+            discountType = discountType,
+            discountValue = discountAmount,
+            issueStartAt = issueStartAt,
+            issueEndAt = issueEndAt,
+            validityDays = validityDays,
+            useEndAt = useEndAt,
+            limitType = limitType,
+            issueLimit = issueLimit,
+            useLimit = useLimit,
+            status = status,
+            isIssuable = isIssuable,
+            isUsable = isUsable
         )
     }
 
-    fun update(couponTemplate: CouponTemplate) {
-
-    }
+    fun update(couponTemplate: CouponTemplate) {}
 
     companion object {
 
         fun fromDomain(domain: CouponTemplate): CouponTemplateEntity {
             return CouponTemplateEntity(
+                merchantId = domain.merchantId,
+                name = domain.name,
+                description = domain.description,
+                minimumOrderAmount = domain.usageCondition.minimumOrderAmount,
+                discountType = domain.discountPolicy.discountType,
+                discountAmount = domain.discountPolicy.discountValue,
+                issueStartAt = domain.couponPeriod.issueStartAt,
+                issueEndAt = domain.couponPeriod.issueEndAt,
+                validityDays = domain.couponPeriod.validityDays,
+                useEndAt = domain.couponPeriod.useEndAt,
+                limitType = domain.usageLimitPolicy.limitType,
+                issueLimit = domain.usageLimitPolicy.issueLimit,
+                useLimit = domain.usageLimitPolicy.useLimit,
+                status = domain.status,
+                isIssuable = domain.isIssuable,
+                isUsable = domain.isUsable
             )
         }
     }

@@ -15,7 +15,7 @@ class IssuedCouponEntity(
     val id: UUID,
 
     @Column(nullable = false)
-    val couponTemplateId: UUID,
+    val couponTemplateId: Long,
 
     @Column(nullable = false)
     val accountId: Long,
@@ -34,32 +34,29 @@ class IssuedCouponEntity(
 ) : AuditableEntity() {
 
     fun toDomain(): IssuedCoupon {
-        return IssuedCoupon(
+        return IssuedCoupon.reconstitute(
             id = id,
-            couponTemplate = TODO(),
-            accountId = TODO(),
-            issuedAt = TODO(),
-            expiresAt = TODO(),
-            isUsed = TODO(),
-            usedAt = TODO(),
-            updatedAt = TODO()
+            couponTemplateId = couponTemplateId,
+            accountId = accountId,
+            issuedAt = issuedAt,
+            expiresAt = expiresAt,
+            isUsed = isUsed,
+            usedAt = usedAt
         )
     }
 
-    fun update(issuedCoupon: IssuedCoupon) {
-        // Update logic here if needed
-    }
+    fun update(issuedCoupon: IssuedCoupon) {}
 
     companion object {
         fun fromDomain(issuedCoupon: IssuedCoupon): IssuedCouponEntity {
             return IssuedCouponEntity(
                 id = issuedCoupon.id,
-                couponTemplateId =,
-                accountId = TODO(),
-                issuedAt = TODO(),
-                expiresAt = TODO(),
-                isUsed = TODO(),
-                usedAt = TODO(),
+                couponTemplateId = issuedCoupon.couponTemplateId,
+                accountId = issuedCoupon.accountId,
+                issuedAt = issuedCoupon.issuedAt,
+                expiresAt = issuedCoupon.expiresAt,
+                isUsed = issuedCoupon.isUsed,
+                usedAt = issuedCoupon.usedAt
             )
         }
     }
