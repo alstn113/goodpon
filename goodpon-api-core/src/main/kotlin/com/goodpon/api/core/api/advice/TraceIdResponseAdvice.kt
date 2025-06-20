@@ -1,5 +1,6 @@
 package com.goodpon.api.core.api.advice
 
+import com.goodpon.api.core.api.TraceIdProvider
 import com.goodpon.api.core.api.response.ApiResponse
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType
@@ -7,16 +8,17 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import org.springframework.web.context.request.RequestAttributes
-import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
 @RestControllerAdvice
-class TraceIdResponseAdvice : ResponseBodyAdvice<Any> {
+class TraceIdResponseAdvice(
+    private val tracerIdProvider: TraceIdProvider,
+) : ResponseBodyAdvice<Any> {
+
     override fun supports(
         returnType: MethodParameter,
         converterType: Class<out HttpMessageConverter<*>>,
-    ): Boolean = true
+    ): Boolean = returnType.parameterType == ApiResponse::class.java
 
     override fun beforeBodyWrite(
         body: Any?,
@@ -27,14 +29,9 @@ class TraceIdResponseAdvice : ResponseBodyAdvice<Any> {
         response: ServerHttpResponse,
     ): Any? {
         if (body is ApiResponse<*>) {
-            val traceId = extractTraceId()
+            val traceId = tracerIdProvider.getTraceId()
             return body.copy(traceId = traceId)
         }
         return body
-    }
-
-    private fun extractTraceId(): String {
-        val reqAttributes = RequestContextHolder.getRequestAttributes()
-        return reqAttributes?.getAttribute("traceId", RequestAttributes.SCOPE_REQUEST) as? String ?: "N/A"
     }
 }
