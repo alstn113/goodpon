@@ -1,6 +1,6 @@
 package com.goodpon.infra.db.coupon
 
-import com.goodpon.core.domain.coupon.IssuedCoupon
+import com.goodpon.core.domain.coupon.Coupon
 import com.goodpon.infra.db.AuditableEntity
 import jakarta.persistence.*
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
@@ -10,7 +10,7 @@ import java.util.*
 @Entity
 @Table(name = "issued_coupons")
 @EntityListeners(AuditingEntityListener::class)
-class IssuedCouponEntity(
+class CouponEntity(
     @Id
     val id: UUID,
 
@@ -33,8 +33,8 @@ class IssuedCouponEntity(
     val usedAt: LocalDateTime?,
 ) : AuditableEntity() {
 
-    fun toDomain(): IssuedCoupon {
-        return IssuedCoupon.reconstitute(
+    fun toDomain(): Coupon {
+        return Coupon.reconstitute(
             id = id,
             couponTemplateId = couponTemplateId,
             accountId = accountId,
@@ -45,18 +45,18 @@ class IssuedCouponEntity(
         )
     }
 
-    fun update(issuedCoupon: IssuedCoupon) {}
+    fun update(coupon: Coupon) {}
 
     companion object {
-        fun fromDomain(issuedCoupon: IssuedCoupon): IssuedCouponEntity {
-            return IssuedCouponEntity(
-                id = issuedCoupon.id,
-                couponTemplateId = issuedCoupon.couponTemplateId,
-                accountId = issuedCoupon.accountId,
-                issuedAt = issuedCoupon.issuedAt,
-                expiresAt = issuedCoupon.expiresAt,
-                isUsed = issuedCoupon.isUsed,
-                usedAt = issuedCoupon.usedAt
+        fun fromDomain(coupon: Coupon): CouponEntity {
+            return CouponEntity(
+                id = coupon.id,
+                couponTemplateId = coupon.couponTemplateId,
+                accountId = coupon.accountId,
+                issuedAt = coupon.issuedAt,
+                expiresAt = coupon.expiresAt,
+                isUsed = coupon.isUsed,
+                usedAt = coupon.usedAt
             )
         }
     }

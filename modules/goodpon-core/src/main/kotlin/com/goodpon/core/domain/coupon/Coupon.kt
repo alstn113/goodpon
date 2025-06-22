@@ -3,7 +3,7 @@ package com.goodpon.core.domain.coupon
 import java.time.LocalDateTime
 import java.util.*
 
-data class IssuedCoupon private constructor(
+data class Coupon private constructor(
     val id: UUID,
     val couponTemplateId: Long,
     val accountId: Long,
@@ -13,7 +13,7 @@ data class IssuedCoupon private constructor(
     val usedAt: LocalDateTime?,
 ) {
 
-    fun use(now: LocalDateTime = LocalDateTime.now()): IssuedCoupon {
+    fun use(now: LocalDateTime = LocalDateTime.now()): Coupon {
         if (isUsed) {
             throw IllegalStateException("이미 사용된 쿠폰입니다.")
         }
@@ -28,8 +28,8 @@ data class IssuedCoupon private constructor(
             couponTemplateId: Long,
             expiresAt: LocalDateTime?,
             now: LocalDateTime,
-        ): IssuedCoupon {
-            return IssuedCoupon(
+        ): Coupon {
+            return Coupon(
                 id = UUID.randomUUID(),
                 couponTemplateId = couponTemplateId,
                 accountId = accountId,
@@ -48,8 +48,8 @@ data class IssuedCoupon private constructor(
             expiresAt: LocalDateTime?,
             isUsed: Boolean,
             usedAt: LocalDateTime?,
-        ): IssuedCoupon {
-            return IssuedCoupon(
+        ): Coupon {
+            return Coupon(
                 id = id,
                 couponTemplateId = couponTemplateId,
                 accountId = accountId,

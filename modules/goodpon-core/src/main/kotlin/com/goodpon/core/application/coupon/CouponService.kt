@@ -2,8 +2,8 @@ package com.goodpon.core.application.coupon
 
 import com.goodpon.core.domain.coupon.CouponTemplateRepository
 import com.goodpon.core.domain.coupon.CouponTemplateStatsCounter
-import com.goodpon.core.domain.coupon.IssuedCoupon
-import com.goodpon.core.domain.coupon.IssuedCouponRepository
+import com.goodpon.core.domain.coupon.Coupon
+import com.goodpon.core.domain.coupon.CouponRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 @Service
 class CouponService(
     private val couponTemplateRepository: CouponTemplateRepository,
-    private val issuedCouponRepository: IssuedCouponRepository,
+    private val couponRepository: CouponRepository,
     private val couponTemplateStatsCounter: CouponTemplateStatsCounter,
 ) {
 
@@ -43,7 +43,7 @@ class CouponService(
         val expiresAt = template.calculateFinalUseEndAt(now.toLocalDate())
 
         // 4. 쿠폰 발급
-        val issuedCoupon = IssuedCoupon.issue(
+        val coupon = Coupon.issue(
             accountId = accountId,
             couponTemplateId = couponTemplateId,
             expiresAt = expiresAt,
@@ -51,7 +51,7 @@ class CouponService(
         )
 
         // 5. 쿠폰 발급 이력 저장
-        issuedCouponRepository.save(issuedCoupon)
+        couponRepository.save(coupon)
         // 6. 쿠폰 발급 통계 증가
         couponTemplateStatsCounter.increaseIssueCount(couponTemplateId)
     }
@@ -71,7 +71,7 @@ class CouponService(
         val stats = couponTemplateStatsCounter.getStats(couponTemplateId)
 
         // 3. 도메인 서비스 - 정책 검증
-        val issuedCoupon = issuedCouponRepository.findByAccountIdAndCouponTemplateId(accountId, couponTemplateId)
+        val issuedCoupon = couponRepository.findByAccountIdAndCouponTemplateId(accountId, couponTemplateId)
             ?: throw IllegalArgumentException("발급된 쿠폰이 존재하지 않습니다.")
         template.checkUsePossible(stats.useCount)
             .onFailure { throw it }
@@ -80,7 +80,7 @@ class CouponService(
         val usedCoupon = issuedCoupon.use()
 
         // 5. 쿠폰 사용 이력 저장 - (사용된 쿠폰, 사용 수량)
-        issuedCouponRepository.save(usedCoupon)
+        couponRepository.save(usedCoupon)
         couponTemplateStatsCounter.increaseUseCount(couponTemplateId)
     }
 }
