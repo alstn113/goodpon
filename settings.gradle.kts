@@ -1,11 +1,11 @@
 rootProject.name = "goodpon"
 
 include(
-    "goodpon-api-core",
-    "goodpon-api-dashboard",
-    "goodpon-core",
-    "goodpon-infra-db",
-    "goodpon-infra-common",
-    "goodpon-infra-security",
-    "goodpon-support-logging",
+    "modules:goodpon-api-core",
+    "modules:goodpon-api-dashboard",
+    "modules:goodpon-core",
+    "modules:goodpon-infra-db",
+    "modules:goodpon-infra-common",
+    "modules:goodpon-infra-security",
+    "modules:goodpon-support-logging",
 )

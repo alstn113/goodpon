@@ -1,7 +1,7 @@
 val testcontainersVersion by extra("1.21.1")
 
 dependencies {
-    compileOnly(project(":goodpon-core"))
+    compileOnly(project(":modules:goodpon-core"))
 
     // db
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

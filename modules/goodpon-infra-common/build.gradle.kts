@@ -1,7 +1,7 @@
 val testcontainersVersion by extra("1.21.1")
 
 dependencies {
-    implementation(project(":goodpon-core"))
+    implementation(project(":modules:goodpon-core"))
     implementation("jakarta.validation:jakarta.validation-api")
 
     // security

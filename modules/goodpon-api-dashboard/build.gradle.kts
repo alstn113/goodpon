@@ -7,11 +7,11 @@ tasks.getByName("jar") {
 }
 
 dependencies {
-    implementation(project(":goodpon-core"))
-    implementation(project(":goodpon-infra-db"))
-    implementation(project(":goodpon-infra-common"))
-    implementation(project(":goodpon-infra-security"))
-    implementation(project(":goodpon-support-logging"))
+    implementation(project(":modules:goodpon-core"))
+    implementation(project(":modules:goodpon-infra-db"))
+    implementation(project(":modules:goodpon-infra-common"))
+    implementation(project(":modules:goodpon-infra-security"))
+    implementation(project(":modules:goodpon-support-logging"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
