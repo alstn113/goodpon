@@ -2,14 +2,15 @@ package com.goodpon.infra.db.coupon
 
 import com.goodpon.core.domain.coupon.IssuedCoupon
 import com.goodpon.infra.db.AuditableEntity
-import jakarta.persistence.*
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import java.time.LocalDateTime
 import java.util.*
 
 @Entity
 @Table(name = "issued_coupons")
-@EntityListeners(AuditingEntityListener::class)
 class IssuedCouponEntity(
     @Id
     val id: UUID,
@@ -18,7 +19,7 @@ class IssuedCouponEntity(
     val couponTemplateId: Long,
 
     @Column(nullable = false)
-    val accountId: Long,
+    val userId: Long,
 
     @Column(nullable = false)
     val issuedAt: LocalDateTime,
@@ -37,7 +38,7 @@ class IssuedCouponEntity(
         return IssuedCoupon.reconstitute(
             id = id,
             couponTemplateId = couponTemplateId,
-            accountId = accountId,
+            userId = userId,
             issuedAt = issuedAt,
             expiresAt = expiresAt,
             isUsed = isUsed,
@@ -52,7 +53,7 @@ class IssuedCouponEntity(
             return IssuedCouponEntity(
                 id = issuedCoupon.id,
                 couponTemplateId = issuedCoupon.couponTemplateId,
-                accountId = issuedCoupon.accountId,
+                userId = issuedCoupon.userId,
                 issuedAt = issuedCoupon.issuedAt,
                 expiresAt = issuedCoupon.expiresAt,
                 isUsed = issuedCoupon.isUsed,

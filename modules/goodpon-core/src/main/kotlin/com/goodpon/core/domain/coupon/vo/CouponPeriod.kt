@@ -7,11 +7,11 @@ data class CouponPeriod(
     val issueStartAt: LocalDateTime,
     val issueEndAt: LocalDateTime? = null,
     val validityDays: Int? = null,
-    val useEndAt: LocalDateTime? = null,
+    val usageEndAt: LocalDateTime? = null,
 ) {
 
     init {
-        validateDateRanges(issueStartAt, issueEndAt, useEndAt)
+        validateDateRanges(issueStartAt, issueEndAt, usageEndAt)
         validateValidityDays(validityDays)
     }
 
@@ -21,15 +21,15 @@ data class CouponPeriod(
         return started && notEnded
     }
 
-    fun calculateFinalUseEndAt(issueDate: LocalDate): LocalDateTime? {
+    fun calculateFinalUsageEndAt(issueDate: LocalDate): LocalDateTime? {
         val validityEndAt = validityDays?.let {
             issueDate.plusDays(it + 1L).atStartOfDay()
         }
 
         return when {
-            validityEndAt != null && useEndAt != null -> minOf(validityEndAt, useEndAt)
+            validityEndAt != null && usageEndAt != null -> minOf(validityEndAt, usageEndAt)
             validityEndAt != null -> validityEndAt
-            useEndAt != null -> useEndAt
+            usageEndAt != null -> usageEndAt
             else -> null
         }
     }

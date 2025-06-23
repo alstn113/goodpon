@@ -38,13 +38,13 @@ class CouponService(
 
         val now = LocalDateTime.now()
         // 3. 도메인 서비스 - 정책 검증
-        template.checkIssuePossible(stats.issueCount, now)
+        template.validateIssue(stats.issueCount, now)
             .onFailure { throw it }
-        val expiresAt = template.calculateFinalUseEndAt(now.toLocalDate())
+        val expiresAt = template.calculateFinalUsageEndAt(now.toLocalDate())
 
         // 4. 쿠폰 발급
         val issuedCoupon = IssuedCoupon.issue(
-            accountId = accountId,
+            userId = accountId,
             couponTemplateId = couponTemplateId,
             expiresAt = expiresAt,
             now = now
@@ -73,11 +73,11 @@ class CouponService(
         // 3. 도메인 서비스 - 정책 검증
         val issuedCoupon = issuedCouponRepository.findByAccountIdAndCouponTemplateId(accountId, couponTemplateId)
             ?: throw IllegalArgumentException("발급된 쿠폰이 존재하지 않습니다.")
-        template.checkUsePossible(stats.useCount)
+        template.validateUsage(stats.usageCount)
             .onFailure { throw it }
 
         // 4. 쿠폰 사용
-        val usedCoupon = issuedCoupon.use()
+        val usedCoupon = issuedCoupon.markAsUsed()
 
         // 5. 쿠폰 사용 이력 저장 - (사용된 쿠폰, 사용 수량)
         issuedCouponRepository.save(usedCoupon)

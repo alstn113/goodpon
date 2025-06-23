@@ -10,32 +10,34 @@ object CouponTemplateFactory {
         merchantId: Long,
         name: String,
         description: String,
-        minimumOrderAmount: Long? = null,
-        discountType: DiscountType,
+        minOrderAmount: Long? = null,
+        discountType: CouponDiscountType,
         discountValue: Int,
+        maxDiscountAmount: Int? = null,
         issueStartDate: LocalDate,
         issueEndDate: LocalDate?,
         validityDays: Int?,
-        useEndDateTime: LocalDate?,
-        limitType: CouponTemplateLimitType,
-        issueLimit: Long? = null,
-        useLimit: Long? = null,
+        usageEndDate: LocalDate?,
+        limitType: CouponLimitType,
+        maxIssueLimit: Long? = null,
+        maxUsageLimit: Long? = null,
     ): CouponTemplate {
-        val usageCondition = CouponUsageCondition(minimumOrderAmount)
-        val discountPolicy = DiscountPolicy(
+        val usageCondition = CouponUsageCondition(minOrderAmount = minOrderAmount)
+        val discountPolicy = CouponDiscountPolicy(
             discountType = discountType,
-            discountValue = discountValue
+            discountValue = discountValue,
+            maxDiscountAmount = maxDiscountAmount
         )
-        val couponPeriod = CouponPeriodFactory.create(
+        val period = CouponPeriodFactory.create(
             issueStartDate = issueStartDate,
             issueEndDate = issueEndDate,
             validityDays = validityDays,
-            useEndDate = useEndDateTime
+            usageEndDate = usageEndDate
         )
-        val usageLimitPolicy = UsageLimitPolicy(
+        val limitPolicy = CouponLimitPolicy(
             limitType = limitType,
-            issueLimit = issueLimit,
-            useLimit = useLimit
+            maxIssueLimit = maxIssueLimit,
+            maxUsageLimit = maxUsageLimit
         )
 
         return CouponTemplate(
@@ -45,8 +47,8 @@ object CouponTemplateFactory {
             description = description,
             usageCondition = usageCondition,
             discountPolicy = discountPolicy,
-            couponPeriod = couponPeriod,
-            usageLimitPolicy = usageLimitPolicy,
+            period = period,
+            limitPolicy = limitPolicy,
             status = CouponTemplateStatus.DRAFT,
             isIssuable = true,
             isUsable = true
@@ -58,16 +60,17 @@ object CouponTemplateFactory {
         merchantId: Long,
         name: String,
         description: String,
-        minimumOrderAmount: Long? = null,
-        discountType: DiscountType,
+        minOrderAmount: Long? = null,
+        discountType: CouponDiscountType,
         discountValue: Int,
+        maxDiscountAmount: Int? = null,
         issueStartAt: LocalDateTime,
         issueEndAt: LocalDateTime?,
         validityDays: Int?,
-        useEndAt: LocalDateTime?,
-        limitType: CouponTemplateLimitType,
-        issueLimit: Long? = null,
-        useLimit: Long? = null,
+        usageEndAt: LocalDateTime?,
+        limitType: CouponLimitType,
+        maxIssueLimit: Long? = null,
+        maxUsageLimit: Long? = null,
         status: CouponTemplateStatus,
         isIssuable: Boolean,
         isUsable: Boolean,
@@ -77,10 +80,10 @@ object CouponTemplateFactory {
             merchantId = merchantId,
             name = name,
             description = description,
-            usageCondition = CouponUsageCondition(minimumOrderAmount),
-            discountPolicy = DiscountPolicy(discountType, discountValue),
-            couponPeriod = CouponPeriod(issueStartAt, issueEndAt, validityDays, useEndAt),
-            usageLimitPolicy = UsageLimitPolicy(limitType, issueLimit, useLimit),
+            usageCondition = CouponUsageCondition(minOrderAmount),
+            discountPolicy = CouponDiscountPolicy(discountType, discountValue, maxDiscountAmount),
+            period = CouponPeriod(issueStartAt, issueEndAt, validityDays, usageEndAt),
+            limitPolicy = CouponLimitPolicy(limitType, maxIssueLimit, maxUsageLimit),
             status = status,
             isIssuable = isIssuable,
             isUsable = isUsable

@@ -4,11 +4,9 @@ import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.AccountStatus
 import com.goodpon.infra.db.AuditableEntity
 import jakarta.persistence.*
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
 @Table(name = "accounts")
-@EntityListeners(AuditingEntityListener::class)
 class AccountEntity(
     @Column(nullable = false, unique = true)
     val email: String,

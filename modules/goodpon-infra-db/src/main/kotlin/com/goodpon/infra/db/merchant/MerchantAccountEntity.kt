@@ -4,11 +4,9 @@ import com.goodpon.core.domain.merchant.MerchantAccount
 import com.goodpon.core.domain.merchant.MerchantAccountRole
 import com.goodpon.infra.db.AuditableEntity
 import jakarta.persistence.*
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
 @Table(name = "merchant_accounts")
-@EntityListeners(AuditingEntityListener::class)
 class MerchantAccountEntity(
     @Column(nullable = false)
     val merchantId: Long,

@@ -12,15 +12,15 @@ class RedisCouponTemplateStatsCounter(
 
     override fun getStats(couponTemplateId: Long): CouponTemplateStats {
         val key = generateKey(couponTemplateId)
-        val fields = listOf("issueCount", "useCount")
+        val fields = listOf("issueCount", "usageCount")
         val results = redisTemplate.opsForHash<String, String>().multiGet(key, fields)
         val issueCount = results[0]?.toLongOrNull() ?: 0L
-        val useCount = results[1]?.toLongOrNull() ?: 0L
+        val usageCount = results[1]?.toLongOrNull() ?: 0L
 
         return CouponTemplateStats(
             couponTemplateId = couponTemplateId,
             issueCount = issueCount,
-            useCount = useCount
+            usageCount = usageCount
         )
     }
 
@@ -31,7 +31,7 @@ class RedisCouponTemplateStatsCounter(
 
     override fun increaseUseCount(couponTemplateId: Long, count: Long) {
         val key = generateKey(couponTemplateId)
-        redisTemplate.opsForHash<String, String>().increment(key, "useCount", count)
+        redisTemplate.opsForHash<String, String>().increment(key, "usageCount", count)
     }
 
     private fun generateKey(couponTemplateId: Long): String =

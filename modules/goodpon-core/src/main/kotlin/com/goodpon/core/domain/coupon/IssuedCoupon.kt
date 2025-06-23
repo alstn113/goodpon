@@ -6,14 +6,14 @@ import java.util.*
 data class IssuedCoupon private constructor(
     val id: UUID,
     val couponTemplateId: Long,
-    val accountId: Long,
+    val userId: Long,
     val issuedAt: LocalDateTime,
     val expiresAt: LocalDateTime?,
     val isUsed: Boolean,
     val usedAt: LocalDateTime?,
 ) {
 
-    fun use(now: LocalDateTime = LocalDateTime.now()): IssuedCoupon {
+    fun markAsUsed(now: LocalDateTime = LocalDateTime.now()): IssuedCoupon {
         if (isUsed) {
             throw IllegalStateException("이미 사용된 쿠폰입니다.")
         }
@@ -24,7 +24,7 @@ data class IssuedCoupon private constructor(
     companion object {
 
         fun issue(
-            accountId: Long,
+            userId: Long,
             couponTemplateId: Long,
             expiresAt: LocalDateTime?,
             now: LocalDateTime,
@@ -32,7 +32,7 @@ data class IssuedCoupon private constructor(
             return IssuedCoupon(
                 id = UUID.randomUUID(),
                 couponTemplateId = couponTemplateId,
-                accountId = accountId,
+                userId = userId,
                 issuedAt = now,
                 expiresAt = expiresAt,
                 isUsed = false,
@@ -43,7 +43,7 @@ data class IssuedCoupon private constructor(
         fun reconstitute(
             id: UUID,
             couponTemplateId: Long,
-            accountId: Long,
+            userId: Long,
             issuedAt: LocalDateTime,
             expiresAt: LocalDateTime?,
             isUsed: Boolean,
@@ -52,7 +52,7 @@ data class IssuedCoupon private constructor(
             return IssuedCoupon(
                 id = id,
                 couponTemplateId = couponTemplateId,
-                accountId = accountId,
+                userId = userId,
                 issuedAt = issuedAt,
                 expiresAt = expiresAt,
                 isUsed = isUsed,

@@ -2,9 +2,9 @@ package com.goodpon.infra.db.coupon
 
 import com.goodpon.core.domain.coupon.CouponTemplate
 import com.goodpon.core.domain.coupon.CouponTemplateFactory
-import com.goodpon.core.domain.coupon.vo.CouponTemplateLimitType
+import com.goodpon.core.domain.coupon.vo.CouponLimitType
 import com.goodpon.core.domain.coupon.vo.CouponTemplateStatus
-import com.goodpon.core.domain.coupon.vo.DiscountType
+import com.goodpon.core.domain.coupon.vo.CouponDiscountType
 import com.goodpon.infra.db.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -21,14 +21,17 @@ class CouponTemplateEntity(
     val description: String,
 
     @Column
-    val minimumOrderAmount: Long? = null,
+    val minOrderAmount: Long? = null,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    val discountType: DiscountType,
+    val discountType: CouponDiscountType,
 
     @Column(nullable = false)
-    val discountAmount: Int,
+    val discountValue: Int,
+
+    @Column
+    val maxDiscountAmount: Int? = null,
 
     @Column(nullable = false)
     val issueStartAt: LocalDateTime,
@@ -40,17 +43,17 @@ class CouponTemplateEntity(
     val validityDays: Int? = null,
 
     @Column
-    val useEndAt: LocalDateTime? = null,
+    val usageEndAt: LocalDateTime? = null,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    val limitType: CouponTemplateLimitType,
+    val limitType: CouponLimitType,
 
     @Column
-    val issueLimit: Long? = null,
+    val maxIssueLimit: Long? = null,
 
     @Column
-    val useLimit: Long? = null,
+    val maxUsageLimit: Long? = null,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -73,16 +76,16 @@ class CouponTemplateEntity(
             merchantId = merchantId,
             name = name,
             description = description,
-            minimumOrderAmount = minimumOrderAmount,
+            minOrderAmount = minOrderAmount,
             discountType = discountType,
-            discountValue = discountAmount,
+            discountValue = discountValue,
             issueStartAt = issueStartAt,
             issueEndAt = issueEndAt,
             validityDays = validityDays,
-            useEndAt = useEndAt,
+            usageEndAt = usageEndAt,
             limitType = limitType,
-            issueLimit = issueLimit,
-            useLimit = useLimit,
+            maxIssueLimit = maxIssueLimit,
+            maxUsageLimit = maxUsageLimit,
             status = status,
             isIssuable = isIssuable,
             isUsable = isUsable
@@ -98,16 +101,16 @@ class CouponTemplateEntity(
                 merchantId = domain.merchantId,
                 name = domain.name,
                 description = domain.description,
-                minimumOrderAmount = domain.usageCondition.minimumOrderAmount,
+                minOrderAmount = domain.usageCondition.minOrderAmount,
                 discountType = domain.discountPolicy.discountType,
-                discountAmount = domain.discountPolicy.discountValue,
-                issueStartAt = domain.couponPeriod.issueStartAt,
-                issueEndAt = domain.couponPeriod.issueEndAt,
-                validityDays = domain.couponPeriod.validityDays,
-                useEndAt = domain.couponPeriod.useEndAt,
-                limitType = domain.usageLimitPolicy.limitType,
-                issueLimit = domain.usageLimitPolicy.issueLimit,
-                useLimit = domain.usageLimitPolicy.useLimit,
+                discountValue = domain.discountPolicy.discountValue,
+                issueStartAt = domain.period.issueStartAt,
+                issueEndAt = domain.period.issueEndAt,
+                validityDays = domain.period.validityDays,
+                usageEndAt = domain.period.usageEndAt,
+                limitType = domain.limitPolicy.limitType,
+                maxIssueLimit = domain.limitPolicy.maxIssueLimit,
+                maxUsageLimit = domain.limitPolicy.maxUsageLimit,
                 status = domain.status,
                 isIssuable = domain.isIssuable,
                 isUsable = domain.isUsable
