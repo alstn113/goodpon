@@ -30,6 +30,7 @@ class MerchantEntity(
 
     fun update(merchant: Merchant) {
     }
+
     companion object {
         fun fromDomain(merchant: Merchant): MerchantEntity {
             return MerchantEntity(
