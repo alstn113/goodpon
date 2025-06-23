@@ -1,4 +1,4 @@
-package com.goodpon.infra.db
+package com.goodpon.infra.jpa
 
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners

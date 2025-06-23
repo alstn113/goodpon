@@ -1,4 +1,4 @@
-package com.goodpon.infra.db.coupon
+package com.goodpon.infra.jpa.coupon
 
 import com.goodpon.core.domain.coupon.CouponTemplate
 import com.goodpon.core.domain.coupon.CouponTemplateRepository

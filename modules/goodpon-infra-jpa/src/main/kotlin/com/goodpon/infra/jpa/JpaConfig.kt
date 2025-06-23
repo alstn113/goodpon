@@ -1,4 +1,4 @@
-package com.goodpon.infra.db
+package com.goodpon.infra.jpa
 
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Configuration
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 
 @Configuration
 @EnableTransactionManagement
-@EntityScan("com.goodpon.infra.db")
-@EnableJpaRepositories("com.goodpon.infra.db")
+@EntityScan("com.goodpon.infra.jpa")
+@EnableJpaRepositories("com.goodpon.infra.jpa")
 @EnableJpaAuditing
 class JpaConfig

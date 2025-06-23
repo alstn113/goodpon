@@ -1,4 +1,4 @@
-package com.goodpon.infra.db.account
+package com.goodpon.infra.jpa.account
 
 import org.springframework.data.jpa.repository.JpaRepository
 

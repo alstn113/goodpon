@@ -1,4 +1,4 @@
-package com.goodpon.infra.db.account
+package com.goodpon.infra.jpa.account
 
 import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.AccountRepository

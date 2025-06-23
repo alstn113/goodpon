@@ -1,9 +1,9 @@
-package com.goodpon.infra.db.coupon
+package com.goodpon.infra.jpa.coupon
 
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface IssuedCouponJpaRepository : JpaRepository<IssuedCouponEntity, UUID> {
 
-    fun findFirstByAccountIdAndCouponTemplateId(accountId: Long, couponTemplateId: Long): IssuedCouponEntity?
+    fun findFirstByUserIdAndCouponTemplateId(userId: Long, couponTemplateId: Long): IssuedCouponEntity?
 }

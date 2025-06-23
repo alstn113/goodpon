@@ -26,7 +26,7 @@ class CouponService(
     fun issueCoupon() {
         // given
         val couponTemplateId = 1L
-        val accountId = 1L
+        val userId = 1L
 
         // when
 
@@ -44,7 +44,7 @@ class CouponService(
 
         // 4. 쿠폰 발급
         val issuedCoupon = IssuedCoupon.issue(
-            userId = accountId,
+            userId = userId,
             couponTemplateId = couponTemplateId,
             expiresAt = expiresAt,
             now = now
@@ -60,7 +60,7 @@ class CouponService(
     fun useCoupon() {
         // given
         val couponTemplateId = 1L
-        val accountId = 1L
+        val userId = 1L
 
         // when
 
@@ -71,7 +71,7 @@ class CouponService(
         val stats = couponTemplateStatsCounter.getStats(couponTemplateId)
 
         // 3. 도메인 서비스 - 정책 검증
-        val issuedCoupon = issuedCouponRepository.findByAccountIdAndCouponTemplateId(accountId, couponTemplateId)
+        val issuedCoupon = issuedCouponRepository.findByUserIdAndCouponTemplateId(userId, couponTemplateId)
             ?: throw IllegalArgumentException("발급된 쿠폰이 존재하지 않습니다.")
         template.validateUsage(stats.usageCount)
             .onFailure { throw it }

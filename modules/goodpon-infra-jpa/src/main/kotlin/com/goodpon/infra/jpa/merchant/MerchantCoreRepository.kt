@@ -1,4 +1,4 @@
-package com.goodpon.infra.db.merchant
+package com.goodpon.infra.jpa.merchant
 
 import com.goodpon.core.domain.merchant.Merchant
 import com.goodpon.core.domain.merchant.MerchantRepository

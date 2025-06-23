@@ -1,4 +1,4 @@
-package com.goodpon.infra.db.coupon
+package com.goodpon.infra.jpa.coupon
 
 import org.springframework.data.jpa.repository.JpaRepository
 

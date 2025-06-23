@@ -1,4 +1,4 @@
-package com.goodpon.infra.db.coupon
+package com.goodpon.infra.jpa.coupon
 
 import com.goodpon.core.domain.coupon.IssuedCoupon
 import com.goodpon.core.domain.coupon.IssuedCouponRepository
@@ -18,8 +18,8 @@ class IssuedCouponCoreRepository(
         return savedEntity.toDomain()
     }
 
-    override fun findByAccountIdAndCouponTemplateId(accountId: Long, couponTemplateId: Long): IssuedCoupon? {
-        return issuedCouponJpaRepository.findFirstByAccountIdAndCouponTemplateId(accountId, couponTemplateId)
+    override fun findByUserIdAndCouponTemplateId(userId: Long, couponTemplateId: Long): IssuedCoupon? {
+        return issuedCouponJpaRepository.findFirstByUserIdAndCouponTemplateId(userId, couponTemplateId)
             ?.toDomain()
     }
 }

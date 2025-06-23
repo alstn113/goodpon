@@ -1,8 +1,8 @@
-package com.goodpon.infra.db.account
+package com.goodpon.infra.jpa.account
 
 import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.AccountStatus
-import com.goodpon.infra.db.AuditableEntity
+import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 
 @Entity

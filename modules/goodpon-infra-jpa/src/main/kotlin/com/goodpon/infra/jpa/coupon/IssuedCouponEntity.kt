@@ -1,7 +1,7 @@
-package com.goodpon.infra.db.coupon
+package com.goodpon.infra.jpa.coupon
 
 import com.goodpon.core.domain.coupon.IssuedCoupon
-import com.goodpon.infra.db.AuditableEntity
+import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

@@ -1,4 +1,4 @@
-package com.goodpon.infra.db.merchant
+package com.goodpon.infra.jpa.merchant
 
 import org.springframework.data.jpa.repository.JpaRepository
 

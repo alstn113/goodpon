@@ -1,11 +1,11 @@
-package com.goodpon.infra.db.coupon
+package com.goodpon.infra.jpa.coupon
 
 import com.goodpon.core.domain.coupon.CouponTemplate
 import com.goodpon.core.domain.coupon.CouponTemplateFactory
 import com.goodpon.core.domain.coupon.vo.CouponLimitType
 import com.goodpon.core.domain.coupon.vo.CouponTemplateStatus
 import com.goodpon.core.domain.coupon.vo.CouponDiscountType
-import com.goodpon.infra.db.AuditableEntity
+import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

@@ -8,7 +8,7 @@ tasks.getByName("jar") {
 
 dependencies {
     implementation(project(":modules:goodpon-core"))
-    implementation(project(":modules:goodpon-infra-db"))
+    implementation(project(":modules:goodpon-infra-jpa"))
     implementation(project(":modules:goodpon-infra-common"))
     implementation(project(":modules:goodpon-infra-security"))
     implementation(project(":modules:goodpon-support-logging"))
