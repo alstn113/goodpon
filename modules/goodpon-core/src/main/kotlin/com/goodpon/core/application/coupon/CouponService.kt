@@ -77,7 +77,7 @@ class CouponService(
             .onFailure { throw it }
 
         // 4. 쿠폰 사용
-        val usedCoupon = issuedCoupon.markAsUsed()
+        val usedCoupon = issuedCoupon.use()
 
         // 5. 쿠폰 사용 이력 저장 - (사용된 쿠폰, 사용 수량)
         issuedCouponRepository.save(usedCoupon)
