@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice(basePackages = ["com.goodpon.goodpon.api.goodpon"])
-class GoodponApiControllerAdvice(
+class CoreApiControllerAdvice(
     private val traceIdProvider: TraceIdProvider,
 ) {
 
