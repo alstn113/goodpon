@@ -1,9 +1,5 @@
-package com.goodpon.core.domain.auth
+package com.goodpon.core.domain.account
 
-import com.goodpon.core.domain.account.Account
-import com.goodpon.core.domain.account.AccountAppender
-import com.goodpon.core.domain.account.AccountReader
-import com.goodpon.core.domain.account.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component

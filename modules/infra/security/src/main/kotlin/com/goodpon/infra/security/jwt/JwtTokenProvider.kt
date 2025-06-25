@@ -1,5 +1,6 @@
 package com.goodpon.infra.security.jwt
 
+import com.goodpon.core.domain.auth.TokenProvider
 import com.goodpon.infra.security.jwt.exception.BlankTokenException
 import com.goodpon.infra.security.jwt.exception.InvalidTokenException
 import com.goodpon.infra.security.jwt.exception.TokenExpiredException
@@ -14,12 +15,12 @@ import java.util.*
 @EnableConfigurationProperties(JwtTokenProperties::class)
 class JwtTokenProvider(
     private val properties: JwtTokenProperties,
-) {
+): TokenProvider {
 
     private val accessTokenSecretKey = Keys.hmacShaKeyFor(properties.accessTokenSecretKey.toByteArray())
     private val accessTokenExpirationTime = properties.accessTokenExpirationTime
 
-    fun generateAccessToken(accountId: Long): String {
+    override fun generateAccessToken(accountId: Long): String {
         val now = Date()
         val expiration = Date(now.time + accessTokenExpirationTime)
 
@@ -31,7 +32,7 @@ class JwtTokenProvider(
             .compact()
     }
 
-    fun getAccountId(accessToken: String): Long {
+    override fun getAccountId(accessToken: String): Long {
         val claims = toClaims(accessToken)
         val accountIdString = claims.subject
 

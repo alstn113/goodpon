@@ -1,6 +1,6 @@
 package com.goodpon.infra.common.ses
 
-import com.goodpon.core.application.auth.EmailSender
+import com.goodpon.core.domain.auth.EmailSender
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
@@ -13,7 +13,7 @@ class SesEmailSender(
 
     override fun sendVerificationEmail(name: String, email: String, verificationLink: String) {
         val htmlContent = templateRenderer.render(
-            "email/email-verification",
+            "email-verification",
             mapOf(
                 "name" to name,
                 "verificationLink" to verificationLink

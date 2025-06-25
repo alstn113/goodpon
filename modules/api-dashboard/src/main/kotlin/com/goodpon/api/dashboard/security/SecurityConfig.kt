@@ -43,7 +43,10 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it
                     .requestMatchers(
-                        "/v1/auth/register",
+                        "/api/v1/account/sign-up",
+                        "/api/v1/auth/login",
+                        "/api/v1/auth/verify",
+                        "/api/v1/auth/verify/resend",
                     ).permitAll()
                     .anyRequest().authenticated()
             }

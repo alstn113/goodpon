@@ -2,6 +2,7 @@ package com.goodpon.core.domain.merchant
 
 import com.goodpon.core.domain.account.Account
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class MerchantAppender(
@@ -10,6 +11,7 @@ class MerchantAppender(
     private val secretKeyGenerator: SecretKeyGenerator,
 ) {
 
+    @Transactional
     fun append(merchantName: String, account: Account): Merchant {
         val merchant = Merchant(
             name = merchantName,

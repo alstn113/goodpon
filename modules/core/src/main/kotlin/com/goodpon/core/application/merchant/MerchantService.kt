@@ -30,7 +30,7 @@ class MerchantService(
     @Transactional
     fun createMerchant(request: CreateMerchantRequest): CreateMerchantResponse {
         val account = accountReader.readById(request.accountPrincipal.id)
-        if (account.isNotVerified()) {
+        if (!account.verified) {
             throw IllegalArgumentException("Account is not verified")
         }
 
