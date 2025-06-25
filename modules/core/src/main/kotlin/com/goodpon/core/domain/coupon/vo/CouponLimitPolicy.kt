@@ -17,6 +17,7 @@ data class CouponLimitPolicy(
                     throw IllegalArgumentException("발급 제한이 설정된 쿠폰은 사용 제한 수량을 설정할 수 없습니다.")
                 }
             }
+
             CouponLimitType.USAGE_COUNT -> {
                 if (maxUsageLimit == null || maxUsageLimit <= 0) {
                     throw IllegalArgumentException("사용 제한이 설정된 쿠폰은 사용 제한 수량이 필요합니다.")
@@ -26,6 +27,7 @@ data class CouponLimitPolicy(
                     throw IllegalArgumentException("사용 제한이 설정된 쿠폰은 발급 제한 수량을 설정할 수 없습니다.")
                 }
             }
+
             CouponLimitType.NONE -> {
                 if (maxIssueLimit != null || maxUsageLimit != null) {
                     throw IllegalArgumentException("제한이 없는 쿠폰은 발급 제한과 사용 제한을 설정할 수 없습니다.")

@@ -47,6 +47,7 @@ class JwtAuthenticationFilter(
         val authentication = JwtAuthenticationToken.of(
             id = accountInfo.id,
             email = accountInfo.email,
+            verified = accountInfo.verified,
         )
         SecurityContextHolder.getContext().authentication = authentication
     }

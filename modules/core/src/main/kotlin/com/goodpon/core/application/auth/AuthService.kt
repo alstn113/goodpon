@@ -48,6 +48,7 @@ class AuthService(
         emailVerificationRepository.delete(token = token, accountId = verification.accountId)
     }
 
+    @Transactional(readOnly = true)
     fun resendVerificationEmail(email: String) {
         val account = accountReader.readByEmail(email)
         if (account.verified) {

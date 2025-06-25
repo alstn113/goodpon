@@ -18,7 +18,7 @@ class AccountUpdater(
     fun verifyEmail(accountId: Long) {
         val account = accountReader.readById(accountId)
 
-        account.verify()
-        accountRepository.save(account)
+        val verifiedAccount = account.verify()
+        accountRepository.save(verifiedAccount)
     }
 }

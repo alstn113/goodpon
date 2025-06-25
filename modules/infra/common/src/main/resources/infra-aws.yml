@@ -1,23 +1,8 @@
----
-spring.config.activate.on-profile: local
-
 spring:
   cloud:
     aws:
-      ses:
-        region: ap-northeast-2
-        source-arn: arn:aws:ses:ap-northeast-2:123456789012:identity/example.com
-        from-arn: arn:aws:ses:ap-northeast-2:123456789012:identity/example.com
-        configuration-set-name: ConfigSet
-
----
-spring.config.activate.on-profile: prod
-
-spring:
-  cloud:
-    aws:
-      ses:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      static:
         region: ${AWS_REGION}
-        source-arn: ${SES_SOURCE_ARN}
-        from-arn: ${SES_FROM_ARN}
-        configuration-set-name: ${SES_CONFIGURATION_SET_NAME}

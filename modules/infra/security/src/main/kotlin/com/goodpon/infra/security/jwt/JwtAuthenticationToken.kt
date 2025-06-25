@@ -9,6 +9,10 @@ data class JwtAuthenticationToken private constructor(
     private val authorities: Collection<GrantedAuthority> = emptyList(),
 ) : AbstractAuthenticationToken(authorities) {
 
+    init {
+        isAuthenticated = true
+    }
+
     override fun getPrincipal(): AccountPrincipal = accountPrincipal
 
     override fun getCredentials(): Any? = null
@@ -19,10 +23,11 @@ data class JwtAuthenticationToken private constructor(
         fun of(
             id: Long,
             email: String,
+            verified: Boolean,
             authorities: Collection<GrantedAuthority> = emptyList(),
         ): JwtAuthenticationToken {
             return JwtAuthenticationToken(
-                accountPrincipal = AccountPrincipal(id, email),
+                accountPrincipal = AccountPrincipal(id, email, verified),
                 authorities = authorities,
             )
         }

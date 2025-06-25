@@ -1,6 +1,7 @@
 package com.goodpon.api.dashboard.security
 
 import com.goodpon.core.application.account.AccountService
+import com.goodpon.infra.security.AccountVerifiedFilter
 import com.goodpon.infra.security.jwt.JwtAuthenticationFilter
 import com.goodpon.infra.security.jwt.JwtTokenProvider
 import org.springframework.context.annotation.Bean
@@ -33,6 +34,16 @@ class SecurityConfig(
             authenticationEntryPoint = authenticationEntryPoint,
         )
 
+        val accountVerifierFilter = AccountVerifiedFilter(
+            allowListPaths = listOf(
+                "/api/v1/auth/login",
+                "/api/v1/auth/verify",
+                "/api/v1/auth/verify/resend",
+                "/api/v1/account/sign-up",
+                "/api/v1/account",
+            )
+        )
+
         http
             .httpBasic { it.disable() }
             .csrf { it.disable() }
@@ -55,6 +66,7 @@ class SecurityConfig(
                 it.accessDeniedHandler(accessDeniedHandler)
             }
             .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(accountVerifierFilter, JwtAuthenticationFilter::class.java)
 
         return http.build()
     }

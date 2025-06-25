@@ -18,10 +18,10 @@ class AccountEntity(
     val name: String,
 
     @Column(nullable = false)
-    val verified: Boolean,
+    var verified: Boolean,
 
     @Column
-    val verifiedAt: LocalDateTime?,
+    var verifiedAt: LocalDateTime?,
 ) : AuditableEntity() {
 
     @Id
@@ -40,6 +40,8 @@ class AccountEntity(
     }
 
     fun update(account: Account) {
+        this.verified = account.verified
+        this.verifiedAt = account.verifiedAt
     }
 
     companion object {

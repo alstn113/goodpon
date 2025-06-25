@@ -22,7 +22,8 @@ class SesEmailSender(
 
         javaMailSender.send { mimeMessage ->
             val helper = MimeMessageHelper(mimeMessage, false, "UTF-8")
-            helper.setFrom("no-reply@example.com")
+            // helper.setFrom("no-reply@goodpon.site")
+            helper.setFrom("alstn113@gmail.com")
             helper.setTo(email)
             helper.setSubject("[Goodpon] 이메일 인증")
             helper.setText(htmlContent, true)
