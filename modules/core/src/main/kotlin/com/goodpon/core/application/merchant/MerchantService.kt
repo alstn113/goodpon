@@ -2,6 +2,7 @@ package com.goodpon.core.application.merchant
 
 import com.goodpon.core.application.merchant.request.CreateMerchantRequest
 import com.goodpon.core.application.merchant.response.CreateMerchantResponse
+import com.goodpon.core.application.merchant.response.MerchantAccountInfo
 import com.goodpon.core.application.merchant.response.MerchantInfo
 import com.goodpon.core.domain.account.AccountReader
 import com.goodpon.core.domain.merchant.MerchantAppender
@@ -30,18 +31,18 @@ class MerchantService(
     @Transactional
     fun createMerchant(request: CreateMerchantRequest): CreateMerchantResponse {
         val account = accountReader.readById(request.accountPrincipal.id)
-        if (!account.verified) {
-            throw IllegalArgumentException("Account is not verified")
-        }
+        val (merchant, merchantAccount) = merchantAppender.append(merchantName = request.name, account = account)
 
-        val merchant = merchantAppender.append(
-            merchantName = request.name,
-            account = account
+        val merchantOwnerInfo = MerchantAccountInfo(
+            id = merchantAccount.id,
+            accountId = account.id,
+            role = merchantAccount.role,
         )
-
         return CreateMerchantResponse(
             id = merchant.id,
             name = merchant.name,
+            secretKey = merchant.secretKey,
+            accounts = listOf(merchantOwnerInfo)
         )
     }
 }

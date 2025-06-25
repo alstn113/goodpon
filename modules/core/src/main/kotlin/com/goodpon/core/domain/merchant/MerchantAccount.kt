@@ -1,6 +1,6 @@
 package com.goodpon.core.domain.merchant
 
-data class MerchantAccount(
+data class MerchantAccount private constructor(
     val id: Long = 0,
     val merchantId: Long,
     val accountId: Long,

@@ -10,7 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/v1/account")
+@RequestMapping("/v1/account")
 class AccountController(
     private val accountService: AccountService,
 ) {

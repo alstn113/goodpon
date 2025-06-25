@@ -36,11 +36,11 @@ class SecurityConfig(
 
         val accountVerifierFilter = AccountVerifiedFilter(
             allowListPaths = listOf(
-                "/api/v1/auth/login",
-                "/api/v1/auth/verify",
-                "/api/v1/auth/verify/resend",
-                "/api/v1/account/sign-up",
-                "/api/v1/account",
+                "/v1/auth/login",
+                "/v1/auth/verify",
+                "/v1/auth/verify/resend",
+                "/v1/account/sign-up",
+                "/v1/account",
             )
         )
 
@@ -54,10 +54,10 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it
                     .requestMatchers(
-                        "/api/v1/account/sign-up",
-                        "/api/v1/auth/login",
-                        "/api/v1/auth/verify",
-                        "/api/v1/auth/verify/resend",
+                        "/v1/account/sign-up",
+                        "/v1/auth/login",
+                        "/v1/auth/verify",
+                        "/v1/auth/verify/resend",
                     ).permitAll()
                     .anyRequest().authenticated()
             }

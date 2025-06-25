@@ -12,20 +12,13 @@ class MerchantAppender(
 ) {
 
     @Transactional
-    fun append(merchantName: String, account: Account): Merchant {
-        val merchant = Merchant(
-            name = merchantName,
-            secretKey = secretKeyGenerator.generate(),
-        )
+    fun append(merchantName: String, account: Account): Pair<Merchant, MerchantAccount> {
+        val merchant = Merchant(name = merchantName, secretKey = secretKeyGenerator.generate())
         val savedMerchant = merchantRepository.save(merchant)
 
-        val merchantOwner = MerchantAccount(
-            merchantId = savedMerchant.id,
-            accountId = account.id,
-            role = MerchantAccountRole.OWNER
-        )
-        merchantAccountRepository.save(merchantOwner)
+        val merchantAccount = MerchantAccount.createOwner(merchantId = savedMerchant.id, accountId = account.id)
+        val savedMerchantAccount = merchantAccountRepository.save(merchantAccount)
 
-        return savedMerchant
+        return Pair(savedMerchant, savedMerchantAccount)
     }
 }
