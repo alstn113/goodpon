@@ -9,16 +9,14 @@ import com.goodpon.core.application.auth.response.LoginResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/v1/auth")
 class AuthController(
     private val authService: AuthService,
 ) {
 
-    @PostMapping("/login")
+    @PostMapping("/v1/auth/login")
     fun login(
         @RequestBody request: LoginRequest,
     ): ResponseEntity<ApiResponse<LoginResponse>> {
@@ -27,7 +25,7 @@ class AuthController(
         return ResponseEntity.ok(ApiResponse.success(response))
     }
 
-    @PostMapping("/verify")
+    @PostMapping("/v1/auth/verify")
     fun verifyEmail(
         @RequestBody request: VerifyEmailRequest,
     ): ResponseEntity<ApiResponse<String>> {
@@ -36,7 +34,7 @@ class AuthController(
         return ResponseEntity.ok(ApiResponse.success("이메일 인증이 완료되었습니다."))
     }
 
-    @PostMapping("/verify/resend")
+    @PostMapping("/v1/auth/verify/resend")
     fun resendVerificationEmail(
         @RequestBody request: ResendVerificationEmailRequest,
     ): ResponseEntity<ApiResponse<String>> {

@@ -10,12 +10,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/v1/account")
 class AccountController(
     private val accountService: AccountService,
 ) {
 
-    @PostMapping("/sign-up")
+    @PostMapping("/v1/account/sign-up")
     fun signUp(
         @RequestBody request: SignUpRequest,
     ): ResponseEntity<ApiResponse<AccountInfo>> {
@@ -24,7 +23,7 @@ class AccountController(
         return ResponseEntity.ok(ApiResponse.success(accountInfo))
     }
 
-    @GetMapping
+    @GetMapping("/v1/account")
     fun getAccountInfo(
         @AuthenticationPrincipal principal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<AccountInfo>> {

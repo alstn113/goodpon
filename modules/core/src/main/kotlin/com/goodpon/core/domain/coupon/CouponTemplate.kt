@@ -14,8 +14,6 @@ data class CouponTemplate(
     val period: CouponPeriod,
     val limitPolicy: CouponLimitPolicy,
     val status: CouponTemplateStatus,
-    val isIssuable: Boolean,
-    val isUsable: Boolean,
 ) {
 
     fun calculateFinalUsageEndAt(now: LocalDate): LocalDateTime? {
@@ -26,7 +24,7 @@ data class CouponTemplate(
         if (!period.isIssuable(now)) {
             return Result.failure(IllegalStateException("쿠폰을 발급할 수 있는 기간이 아닙니다."))
         }
-        if (status.isNotIssuable() || !isIssuable) {
+        if (status.isNotIssuable()) {
             return Result.failure(IllegalStateException("쿠폰을 발급할 수 있는 상태가 아닙니다."))
         }
         if (!limitPolicy.canIssue(issueCount)) {
@@ -36,7 +34,7 @@ data class CouponTemplate(
     }
 
     fun validateUsage(usageCount: Long): Result<Unit> {
-        if (status.isNotUsable() || !isUsable) {
+        if (status.isNotUsable()) {
             return Result.failure(IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다."))
         }
         if (!limitPolicy.canUse(usageCount)) {

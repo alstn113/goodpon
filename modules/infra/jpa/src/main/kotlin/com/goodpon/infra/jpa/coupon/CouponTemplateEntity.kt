@@ -58,12 +58,6 @@ class CouponTemplateEntity(
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     val status: CouponTemplateStatus,
-
-    @Column(nullable = false)
-    val isIssuable: Boolean,
-
-    @Column(nullable = false)
-    val isUsable: Boolean,
 ) : AuditableEntity() {
 
     @Id
@@ -79,6 +73,7 @@ class CouponTemplateEntity(
             minOrderAmount = minOrderAmount,
             discountType = discountType,
             discountValue = discountValue,
+            maxDiscountAmount = maxDiscountAmount,
             issueStartAt = issueStartAt,
             issueEndAt = issueEndAt,
             validityDays = validityDays,
@@ -87,8 +82,6 @@ class CouponTemplateEntity(
             maxIssueLimit = maxIssueLimit,
             maxUsageLimit = maxUsageLimit,
             status = status,
-            isIssuable = isIssuable,
-            isUsable = isUsable
         )
     }
 
@@ -104,6 +97,7 @@ class CouponTemplateEntity(
                 minOrderAmount = domain.usageCondition.minOrderAmount,
                 discountType = domain.discountPolicy.discountType,
                 discountValue = domain.discountPolicy.discountValue,
+                maxDiscountAmount = domain.discountPolicy.maxDiscountAmount,
                 issueStartAt = domain.period.issueStartAt,
                 issueEndAt = domain.period.issueEndAt,
                 validityDays = domain.period.validityDays,
@@ -112,8 +106,6 @@ class CouponTemplateEntity(
                 maxIssueLimit = domain.limitPolicy.maxIssueLimit,
                 maxUsageLimit = domain.limitPolicy.maxUsageLimit,
                 status = domain.status,
-                isIssuable = domain.isIssuable,
-                isUsable = domain.isUsable
             )
         }
     }

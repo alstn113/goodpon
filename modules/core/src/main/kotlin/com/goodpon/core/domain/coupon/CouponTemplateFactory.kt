@@ -50,8 +50,6 @@ object CouponTemplateFactory {
             period = period,
             limitPolicy = limitPolicy,
             status = CouponTemplateStatus.DRAFT,
-            isIssuable = true,
-            isUsable = true
         )
     }
 
@@ -72,8 +70,6 @@ object CouponTemplateFactory {
         maxIssueLimit: Long? = null,
         maxUsageLimit: Long? = null,
         status: CouponTemplateStatus,
-        isIssuable: Boolean,
-        isUsable: Boolean,
     ): CouponTemplate {
         return CouponTemplate(
             id = id,
@@ -85,8 +81,6 @@ object CouponTemplateFactory {
             period = CouponPeriod(issueStartAt, issueEndAt, validityDays, usageEndAt),
             limitPolicy = CouponLimitPolicy(limitType, maxIssueLimit, maxUsageLimit),
             status = status,
-            isIssuable = isIssuable,
-            isUsable = isUsable
         )
     }
 }

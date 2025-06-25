@@ -10,12 +10,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/v1/merchants")
 class MerchantController(
     private val merchantService: MerchantService,
 ) {
 
-    @PostMapping
+    @PostMapping("/v1/merchants")
     fun createMerchant(
         @RequestBody request: CreateMerchantWebRequest,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
@@ -26,11 +25,16 @@ class MerchantController(
         return ResponseEntity.ok(ApiResponse.success(response))
     }
 
-    @GetMapping
-    fun getMerchants() {}
+    @GetMapping("/v1/merchants")
+    fun getMerchants(
+        @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
+    ) {
+    }
 
-    @GetMapping("/{merchantId}")
+    @GetMapping("/v1/merchants/{merchantId}")
     fun getMerchant(
-        @PathVariable merchantId: String
-    ) {}
+        @PathVariable merchantId: Long,
+        @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
+    ) {
+    }
 }
