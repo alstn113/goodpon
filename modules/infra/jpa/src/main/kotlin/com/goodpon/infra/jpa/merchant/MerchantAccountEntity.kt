@@ -24,7 +24,7 @@ class MerchantAccountEntity(
     val id: Long = 0
 
     fun toDomain(): MerchantAccount {
-        return MerchantAccount(
+        return MerchantAccount.reconstitute(
             id = id,
             merchantId = merchantId,
             accountId = accountId,

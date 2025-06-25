@@ -16,5 +16,19 @@ data class MerchantAccount private constructor(
                 role = MerchantAccountRole.OWNER
             )
         }
+
+        fun reconstitute(
+            id: Long,
+            merchantId: Long,
+            accountId: Long,
+            role: MerchantAccountRole,
+        ): MerchantAccount {
+            return MerchantAccount(
+                id = id,
+                merchantId = merchantId,
+                accountId = accountId,
+                role = role
+            )
+        }
     }
 }

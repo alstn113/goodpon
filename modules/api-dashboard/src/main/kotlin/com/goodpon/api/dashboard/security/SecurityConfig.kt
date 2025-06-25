@@ -1,8 +1,8 @@
 package com.goodpon.api.dashboard.security
 
 import com.goodpon.core.application.account.AccountService
-import com.goodpon.infra.security.AccountVerifiedFilter
-import com.goodpon.infra.security.jwt.JwtAuthenticationFilter
+import com.goodpon.infra.security.filter.AccountVerifiedFilter
+import com.goodpon.infra.security.filter.JwtAuthenticationFilter
 import com.goodpon.infra.security.jwt.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

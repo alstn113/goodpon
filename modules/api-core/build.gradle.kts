@@ -9,7 +9,8 @@ tasks.getByName("jar") {
 dependencies {
     implementation(project(":modules:core"))
     implementation(project(":modules:infra:jpa"))
-    implementation(project(":modules:infra:common"))
+    implementation(project(":modules:infra:aws"))
+    implementation(project(":modules:infra:redis"))
     implementation(project(":modules:infra:security"))
     implementation(project(":modules:support:logging"))
 
