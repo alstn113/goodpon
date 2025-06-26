@@ -2,15 +2,20 @@ package com.goodpon.infra.jpa.coupon
 
 import com.goodpon.core.domain.coupon.IssuedCoupon
 import com.goodpon.infra.jpa.AuditableEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-@Table(name = "issued_coupons")
+@Table(
+    name = "issued_coupons",
+    uniqueConstraints = [
+        UniqueConstraint(
+            name = "uk_issued_coupons_coupon_template_user",
+            columnNames = ["coupon_template_id", "user_id"]
+        )
+    ]
+)
 class IssuedCouponEntity(
     @Id
     val id: UUID,
@@ -19,7 +24,7 @@ class IssuedCouponEntity(
     val couponTemplateId: Long,
 
     @Column(nullable = false)
-    val userId: Long,
+    val userId: String,
 
     @Column(nullable = false)
     val issuedAt: LocalDateTime,

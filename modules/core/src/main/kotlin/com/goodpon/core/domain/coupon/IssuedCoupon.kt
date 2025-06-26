@@ -6,7 +6,7 @@ import java.util.*
 data class IssuedCoupon private constructor(
     val id: UUID,
     val couponTemplateId: Long,
-    val userId: Long,
+    val userId: String,
     val issuedAt: LocalDateTime,
     val expiresAt: LocalDateTime?,
     val isUsed: Boolean,
@@ -24,7 +24,7 @@ data class IssuedCoupon private constructor(
     companion object {
 
         fun issue(
-            userId: Long,
+            userId: String,
             couponTemplateId: Long,
             expiresAt: LocalDateTime?,
             now: LocalDateTime,
@@ -43,7 +43,7 @@ data class IssuedCoupon private constructor(
         fun reconstitute(
             id: UUID,
             couponTemplateId: Long,
-            userId: Long,
+            userId: String,
             issuedAt: LocalDateTime,
             expiresAt: LocalDateTime?,
             isUsed: Boolean,
