@@ -8,6 +8,7 @@ data class CouponHistory private constructor(
     val userCouponId: String,
     val actionType: CouponActionType,
     val orderId: String?,
+    val reason: String? = null,
     val recordedAt: LocalDateTime,
 ) {
 
@@ -36,11 +37,13 @@ data class CouponHistory private constructor(
         fun cancelRedemption(
             userCouponId: String,
             orderId: String,
+            reason: String,
             now: LocalDateTime = LocalDateTime.now(),
         ): CouponHistory = record(
             userCouponId = userCouponId,
             actionType = CouponActionType.CANCEL_REDEMPTION,
             orderId = orderId,
+            reason = reason,
             now = now
         )
 
@@ -56,9 +59,11 @@ data class CouponHistory private constructor(
         fun discarded(
             userCouponId: String,
             now: LocalDateTime = LocalDateTime.now(),
+            reason: String,
         ): CouponHistory = record(
             userCouponId = userCouponId,
             actionType = CouponActionType.DISCARD,
+            reason = reason,
             now = now
         )
 
@@ -66,6 +71,7 @@ data class CouponHistory private constructor(
             userCouponId: String,
             actionType: CouponActionType,
             orderId: String? = null,
+            reason: String? = null,
             now: LocalDateTime = LocalDateTime.now(),
         ): CouponHistory {
             return CouponHistory(
@@ -73,6 +79,7 @@ data class CouponHistory private constructor(
                 userCouponId = userCouponId,
                 actionType = actionType,
                 orderId = orderId,
+                reason = reason,
                 recordedAt = now
             )
         }

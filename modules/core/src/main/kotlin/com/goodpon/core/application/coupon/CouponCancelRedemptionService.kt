@@ -1,40 +1,36 @@
 package com.goodpon.core.application.coupon
 
-import com.goodpon.core.application.coupon.request.RedeemCouponRequest
+import com.goodpon.core.application.coupon.request.CancelCouponRedemptionRequest
 import com.goodpon.core.domain.coupon.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
-class CouponRedeemService(
+class CouponCancelRedemptionService(
     private val couponTemplateReader: CouponTemplateReader,
     private val couponTemplateStatsReader: CouponTemplateStatsReader,
     private val userCouponReader: UserCouponReader,
     private val couponTemplateStatsUpdater: CouponTemplateStatsUpdater,
-    private val couponRedeemer: CouponRedeemer,
+    private val couponRedemptionCanceler: CouponRedemptionCanceler,
 ) {
 
     @Transactional
-    fun redeemCoupon(request: RedeemCouponRequest): CouponRedemptionResult {
+    fun cancelCouponRedemption(request: CancelCouponRedemptionRequest): CouponCancelRedemptionResult {
         val userCoupon = userCouponReader.readByIdForUpdate(request.couponId)
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         val couponTemplate = couponTemplateReader.readByIdForRead(userCoupon.couponTemplateId)
 
         couponTemplate.validateOwnership(request.merchantPrincipal.merchantId)
-        userCoupon.validateOwnership(request.userId)
 
         val now = LocalDateTime.now()
-        val couponRedemptionResult = couponRedeemer.redeemCoupon(
-            couponTemplate = couponTemplate,
+        val couponCancelRedemptionResult = couponRedemptionCanceler.cancelRedemption(
             userCoupon = userCoupon,
-            redeemCount = stats.redeemCount,
-            orderAmount = request.orderAmount,
-            orderId = request.orderId,
+            reason = request.cancelReason,
             now = now
         )
-        couponTemplateStatsUpdater.incrementRedeemCount(stats)
+        couponTemplateStatsUpdater.decrementRedeemCount(stats)
 
-        return couponRedemptionResult
+        return couponCancelRedemptionResult
     }
 }

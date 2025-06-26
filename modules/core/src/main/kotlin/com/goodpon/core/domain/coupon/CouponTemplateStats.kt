@@ -13,4 +13,8 @@ data class CouponTemplateStats(
     fun incrementRedeemCount(): CouponTemplateStats {
         return this.copy(redeemCount = redeemCount + 1)
     }
+
+    fun decrementRedeemCount(): CouponTemplateStats {
+        return this.copy(redeemCount = redeemCount - 1)
+    }
 }

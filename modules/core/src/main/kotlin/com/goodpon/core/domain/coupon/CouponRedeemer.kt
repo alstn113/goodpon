@@ -17,7 +17,7 @@ class CouponRedeemer(
         redeemCount: Long,
         orderAmount: Int,
         orderId: String,
-        now: LocalDateTime = LocalDateTime.now(),
+        now: LocalDateTime,
     ): CouponRedemptionResult {
         couponTemplate.validateRedeem(redeemCount = redeemCount)
             .onFailure { throw it }

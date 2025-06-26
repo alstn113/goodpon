@@ -56,4 +56,8 @@ data class CouponTemplate(
     fun calculateFinalPrice(orderAmount: Int): Int {
         return discountPolicy.calculateFinalPrice(orderAmount)
     }
+
+    fun expire(): CouponTemplate {
+        return this.copy(status = CouponTemplateStatus.EXPIRED)
+    }
 }

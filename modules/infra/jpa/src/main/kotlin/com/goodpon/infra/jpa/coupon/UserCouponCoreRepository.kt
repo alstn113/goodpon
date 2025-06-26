@@ -1,9 +1,11 @@
 package com.goodpon.infra.jpa.coupon
 
+import com.goodpon.core.domain.coupon.CouponStatus
 import com.goodpon.core.domain.coupon.UserCoupon
 import com.goodpon.core.domain.coupon.UserCouponRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 class UserCouponCoreRepository(
@@ -23,6 +25,12 @@ class UserCouponCoreRepository(
         return savedEntity.toDomain()
     }
 
+    override fun saveAll(userCoupons: List<UserCoupon>): List<UserCoupon> {
+        val entities = userCoupons.map { UserCouponEntity.fromDomain(it) }
+        val savedEntities = userCouponJpaRepository.saveAll(entities)
+        return savedEntities.map { it.toDomain() }
+    }
+
     override fun findByIdForUpdate(id: String): UserCoupon? {
         return userCouponJpaRepository.findByIdForUpdate(id)
             ?.toDomain()
@@ -30,5 +38,13 @@ class UserCouponCoreRepository(
 
     override fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean {
         return userCouponJpaRepository.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)
+    }
+
+    override fun findByStatusAndExpiresAtLessThanEqual(
+        status: CouponStatus,
+        expiresAt: LocalDateTime,
+    ): List<UserCoupon> {
+        return userCouponJpaRepository.findByStatusAndExpiresAtLessThanEqual(status, expiresAt)
+            .map { it.toDomain() }
     }
 }

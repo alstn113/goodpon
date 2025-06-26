@@ -4,6 +4,7 @@ import com.goodpon.core.application.coupon.request.IssueCouponRequest
 import com.goodpon.core.domain.coupon.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 
 @Service
@@ -23,10 +24,12 @@ class CouponIssueService(
         couponTemplate.validateOwnership(request.merchantPrincipal.merchantId)
         validateAlreadyIssued(userId = request.userId, couponTemplateId = request.couponTemplateId)
 
+        val now = LocalDateTime.now()
         val couponIssueResult = couponIssuer.issueCoupon(
             couponTemplate = couponTemplate,
             userId = request.userId,
             issueCount = stats.issueCount,
+            now = now
         )
         couponTemplateStatsUpdater.incrementIssueCount(stats)
 

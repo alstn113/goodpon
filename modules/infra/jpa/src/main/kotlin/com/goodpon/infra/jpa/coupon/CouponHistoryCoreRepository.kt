@@ -22,4 +22,9 @@ class CouponHistoryCoreRepository(
         val savedEntity = couponHistoryJpaRepository.save(entity)
         return savedEntity.toDomain()
     }
+
+    override fun findByUserCouponIdOrderByRecordedAtDesc(userCouponId: String): List<CouponHistory> {
+        return couponHistoryJpaRepository.findByUserCouponIdOrderByRecordedAtDesc(userCouponId)
+            .map { it.toDomain() }
+    }
 }

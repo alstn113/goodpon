@@ -4,6 +4,7 @@ import com.goodpon.api.core.api.controller.v1.request.CancelCouponRedemptionWebR
 import com.goodpon.api.core.api.controller.v1.request.IssueCouponWebRequest
 import com.goodpon.api.core.api.controller.v1.request.RedeemCouponWebRequest
 import com.goodpon.api.core.api.response.ApiResponse
+import com.goodpon.core.application.coupon.CouponCancelRedemptionService
 import com.goodpon.core.application.coupon.CouponIssueService
 import com.goodpon.core.application.coupon.CouponRedeemService
 import com.goodpon.core.domain.auth.MerchantPrincipal
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 class CouponController(
     private val couponIssueService: CouponIssueService,
     private val couponRedeemService: CouponRedeemService,
+    private val couponCancelRedemptionService: CouponCancelRedemptionService,
 ) {
 
     @PostMapping("/v1/coupons/issue")
@@ -52,5 +54,7 @@ class CouponController(
         @RequestBody request: CancelCouponRedemptionWebRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ) {
+        val appRequest = request.toAppRequest(merchantPrincipal, couponId)
+        val result = couponCancelRedemptionService.cancelCouponRedemption(appRequest)
     }
 }

@@ -15,7 +15,7 @@ class CouponIssuer(
         couponTemplate: CouponTemplate,
         userId: String,
         issueCount: Long,
-        now: LocalDateTime = LocalDateTime.now(),
+        now: LocalDateTime,
     ): CouponIssueResult {
 
         couponTemplate.validateIssue(issueCount = issueCount, now = now)

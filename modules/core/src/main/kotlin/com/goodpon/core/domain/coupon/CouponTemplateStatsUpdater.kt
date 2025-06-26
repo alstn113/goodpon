@@ -19,4 +19,10 @@ class CouponTemplateStatsUpdater(
         val updatedStats = stats.incrementRedeemCount()
         return couponTemplateStatsRepository.save(updatedStats)
     }
+
+    @Transactional
+    fun decrementRedeemCount(stats: CouponTemplateStats): CouponTemplateStats {
+        val updatedStats = stats.decrementRedeemCount()
+        return couponTemplateStatsRepository.save(updatedStats)
+    }
 }
