@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 class CouponIssueService(
     private val couponTemplateReader: CouponTemplateReader,
     private val couponTemplateStatsReader: CouponTemplateStatsReader,
-    private val issuedCouponReader: UserCouponReader,
+    private val userCouponReader: UserCouponReader,
     private val couponTemplateStatsUpdater: CouponTemplateStatsUpdater,
     private val couponIssuer: CouponIssuer,
 ) {
@@ -34,7 +34,8 @@ class CouponIssueService(
     }
 
     private fun validateAlreadyIssued(userId: String, couponTemplateId: Long) {
-        issuedCouponReader.readByUserIdAndCouponTemplateId(userId, couponTemplateId)
-            ?.let { throw IllegalArgumentException("이미 발급된 쿠폰이 존재합니다.") }
+        if (userCouponReader.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)) {
+            throw IllegalArgumentException("이미 발급된 쿠폰이 존재합니다.")
+        }
     }
 }

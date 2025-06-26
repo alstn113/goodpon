@@ -6,7 +6,8 @@ import java.time.LocalDateTime
 
 @Component
 class CouponRedeemer(
-    private val issuedCouponRepository: UserCouponRepository,
+    private val userCouponRepository: UserCouponRepository,
+    private val couponHistoryRepository: CouponHistoryRepository,
 ) {
 
     @Transactional
@@ -15,6 +16,7 @@ class CouponRedeemer(
         userCoupon: UserCoupon,
         redeemCount: Long,
         orderAmount: Int,
+        orderId: String,
         now: LocalDateTime = LocalDateTime.now(),
     ): CouponRedemptionResult {
         couponTemplate.validateUsage(redeemCount = redeemCount)
@@ -24,13 +26,20 @@ class CouponRedeemer(
         val finalPrice = couponTemplate.calculateFinalPrice(orderAmount)
 
         val redeemedCoupon = userCoupon.redeem(now = now)
-        issuedCouponRepository.save(redeemedCoupon)
+        userCouponRepository.save(redeemedCoupon)
+        val history = CouponHistory.redeemed(
+            userCouponId = redeemedCoupon.id,
+            orderId = orderId,
+            now = now
+        )
+        couponHistoryRepository.save(history)
 
         return CouponRedemptionResult(
             couponId = userCoupon.id,
             discountAmount = discountAmount,
             originalPrice = orderAmount,
             finalPrice = finalPrice,
+            orderId = orderId,
             redeemedAt = now
         )
     }

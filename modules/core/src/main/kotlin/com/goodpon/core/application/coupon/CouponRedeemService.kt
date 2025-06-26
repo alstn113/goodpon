@@ -9,25 +9,26 @@ import org.springframework.transaction.annotation.Transactional
 class CouponRedeemService(
     private val couponTemplateReader: CouponTemplateReader,
     private val couponTemplateStatsReader: CouponTemplateStatsReader,
-    private val issuedCouponReader: UserCouponReader,
+    private val userCouponReader: UserCouponReader,
     private val couponTemplateStatsUpdater: CouponTemplateStatsUpdater,
     private val couponRedeemer: CouponRedeemer,
 ) {
 
     @Transactional
     fun redeemCoupon(request: RedeemCouponRequest): CouponRedemptionResult {
-        val issuedCoupon = issuedCouponReader.readByIdForUpdate(request.couponId)
-        val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(issuedCoupon.couponTemplateId)
-        val couponTemplate = couponTemplateReader.readByIdForRead(issuedCoupon.couponTemplateId)
+        val userCoupon = userCouponReader.readByIdForUpdate(request.couponId)
+        val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
+        val couponTemplate = couponTemplateReader.readByIdForRead(userCoupon.couponTemplateId)
 
         couponTemplate.validateOwnership(request.merchantPrincipal.merchantId)
-        issuedCoupon.validateOwnership(request.userId)
+        userCoupon.validateOwnership(request.userId)
 
         val couponUsageResult = couponRedeemer.redeemCoupon(
             couponTemplate = couponTemplate,
-            userCoupon = issuedCoupon,
+            userCoupon = userCoupon,
             redeemCount = stats.redeemCount,
             orderAmount = request.orderAmount,
+            orderId = request.orderId,
         )
         couponTemplateStatsUpdater.incrementUsageCount(stats)
 

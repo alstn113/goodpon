@@ -7,24 +7,28 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class UserCouponCoreRepository(
-    private val issuedCouponJpaRepository: UserCouponJpaRepository,
+    private val userCouponJpaRepository: UserCouponJpaRepository,
 ) : UserCouponRepository {
 
-    override fun save(issuedCoupon: UserCoupon): UserCoupon {
-        val entity = issuedCouponJpaRepository.findByIdOrNull(issuedCoupon.id)
-            ?: throw IllegalArgumentException("Coupon with id ${issuedCoupon.id} not found")
-        entity.update(issuedCoupon)
-        val savedEntity = issuedCouponJpaRepository.save(entity)
+    override fun save(userCoupon: UserCoupon): UserCoupon {
+        val entity = userCouponJpaRepository.findByIdOrNull(userCoupon.id)
+        if (entity == null) {
+            val newEntity = UserCouponEntity.fromDomain(userCoupon)
+            val savedEntity = userCouponJpaRepository.save(newEntity)
+            return savedEntity.toDomain()
+        }
+
+        entity.update(userCoupon)
+        val savedEntity = userCouponJpaRepository.save(entity)
         return savedEntity.toDomain()
     }
 
-    override fun findByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): UserCoupon? {
-        return issuedCouponJpaRepository.findFirstByUserIdAndCouponTemplateId(userId, couponTemplateId)
+    override fun findByIdForUpdate(id: String): UserCoupon? {
+        return userCouponJpaRepository.findByIdForUpdate(id)
             ?.toDomain()
     }
 
-    override fun findByIdForUpdate(id: String): UserCoupon? {
-        return issuedCouponJpaRepository.findByIdForUpdate(id)
-            ?.toDomain()
+    override fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean {
+        return userCouponJpaRepository.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)
     }
 }

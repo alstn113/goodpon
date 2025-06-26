@@ -7,5 +7,6 @@ data class CouponRedemptionResult(
     val discountAmount: Int,
     val originalPrice: Int,
     val finalPrice: Int,
-    val redeemedAt: LocalDateTime
+    val orderId: String,
+    val redeemedAt: LocalDateTime,
 )

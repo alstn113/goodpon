@@ -57,7 +57,7 @@ class CouponTemplateEntity(
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    val status: CouponTemplateStatus,
+    var status: CouponTemplateStatus,
 ) : AuditableEntity() {
 
     @Id
@@ -85,7 +85,9 @@ class CouponTemplateEntity(
         )
     }
 
-    fun update(couponTemplate: CouponTemplate) {}
+    fun update(couponTemplate: CouponTemplate) {
+        this.status = couponTemplate.status
+    }
 
     companion object {
 

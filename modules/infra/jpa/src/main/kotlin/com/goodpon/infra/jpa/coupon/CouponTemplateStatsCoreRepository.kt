@@ -12,7 +12,12 @@ class CouponTemplateStatsCoreRepository(
 
     override fun save(couponTemplateStats: CouponTemplateStats): CouponTemplateStats {
         val entity = couponTemplateStatsJpaRepository.findByIdOrNull(couponTemplateStats.couponTemplateId)
-            ?: throw IllegalArgumentException("CouponTemplateStats not found")
+        if (entity == null) {
+            val newEntity = CouponTemplateStatsEntity.fromDomain(couponTemplateStats)
+            val savedEntity = couponTemplateStatsJpaRepository.save(newEntity)
+            return savedEntity.toDomain()
+        }
+
         entity.update(couponTemplateStats)
         val savedEntity = couponTemplateStatsJpaRepository.save(entity)
         return savedEntity.toDomain()

@@ -5,17 +5,17 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class UserCouponReader(
-    private val issuedCouponRepository: UserCouponRepository,
+    private val userCouponRepository: UserCouponRepository,
 ) {
 
     @Transactional(readOnly = true)
     fun readByIdForUpdate(id: String): UserCoupon {
-        return issuedCouponRepository.findByIdForUpdate(id)
+        return userCouponRepository.findByIdForUpdate(id)
             ?: throw IllegalArgumentException("발급된 쿠폰이 존재하지 않습니다.")
     }
 
     @Transactional(readOnly = true)
-    fun readByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): UserCoupon? {
-        return issuedCouponRepository.findByUserIdAndCouponTemplateId(userId, couponTemplateId)
+    fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean {
+        return userCouponRepository.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)
     }
 }

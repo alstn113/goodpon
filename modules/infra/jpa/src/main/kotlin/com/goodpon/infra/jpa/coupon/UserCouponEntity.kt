@@ -1,5 +1,6 @@
 package com.goodpon.infra.jpa.coupon
 
+import com.goodpon.core.domain.coupon.CouponStatus
 import com.goodpon.core.domain.coupon.UserCoupon
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
@@ -7,10 +8,10 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(
-    name = "issued_coupons",
+    name = "user_coupons",
     uniqueConstraints = [
         UniqueConstraint(
-            name = "uk_issued_coupons_coupon_template_user",
+            name = "uk_user_coupons_coupon_template_user",
             columnNames = ["coupon_template_id", "user_id"]
         )
     ]
@@ -26,16 +27,17 @@ class UserCouponEntity(
     val userId: String,
 
     @Column(nullable = false)
-    val issuedAt: LocalDateTime,
-
-    @Column(nullable = true)
-    val expiresAt: LocalDateTime?,
+    @Enumerated(EnumType.STRING)
+    var status: CouponStatus,
 
     @Column(nullable = false)
-    val isUsed: Boolean,
+    var issuedAt: LocalDateTime,
 
     @Column(nullable = true)
-    val redeemedAt: LocalDateTime?,
+    var expiresAt: LocalDateTime?,
+
+    @Column(nullable = true)
+    var redeemedAt: LocalDateTime?,
 ) : AuditableEntity() {
 
     fun toDomain(): UserCoupon {
@@ -43,25 +45,30 @@ class UserCouponEntity(
             id = id,
             couponTemplateId = couponTemplateId,
             userId = userId,
+            status = status,
             issuedAt = issuedAt,
             expiresAt = expiresAt,
-            isUsed = isUsed,
-            redeemedAt = redeemedAt
+            redeemedAt = redeemedAt,
         )
     }
 
-    fun update(issuedCoupon: UserCoupon) {}
+    fun update(userCoupon: UserCoupon) {
+        this.status = userCoupon.status
+        this.issuedAt = userCoupon.issuedAt
+        this.expiresAt = userCoupon.expiresAt
+        this.redeemedAt = userCoupon.redeemedAt
+    }
 
     companion object {
-        fun fromDomain(issuedCoupon: UserCoupon): UserCouponEntity {
+        fun fromDomain(userCoupon: UserCoupon): UserCouponEntity {
             return UserCouponEntity(
-                id = issuedCoupon.id,
-                couponTemplateId = issuedCoupon.couponTemplateId,
-                userId = issuedCoupon.userId,
-                issuedAt = issuedCoupon.issuedAt,
-                expiresAt = issuedCoupon.expiresAt,
-                isUsed = issuedCoupon.isUsed,
-                redeemedAt = issuedCoupon.redeemedAt
+                id = userCoupon.id,
+                couponTemplateId = userCoupon.couponTemplateId,
+                userId = userCoupon.userId,
+                status = userCoupon.status,
+                issuedAt = userCoupon.issuedAt,
+                expiresAt = userCoupon.expiresAt,
+                redeemedAt = userCoupon.redeemedAt
             )
         }
     }

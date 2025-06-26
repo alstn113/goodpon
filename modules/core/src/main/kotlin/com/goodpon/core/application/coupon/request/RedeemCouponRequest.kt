@@ -7,5 +7,5 @@ data class RedeemCouponRequest(
     val couponId: String,
     val userId: String,
     val orderAmount: Int,
-    val orderId: String
+    val orderId: String,
 )
