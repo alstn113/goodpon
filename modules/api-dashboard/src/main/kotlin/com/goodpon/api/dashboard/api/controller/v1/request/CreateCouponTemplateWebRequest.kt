@@ -1,17 +1,14 @@
-package com.goodpon.core.application.coupon.request
+package com.goodpon.api.dashboard.api.controller.v1.request
 
+import com.goodpon.core.application.coupon.request.CreateCouponTemplateRequest
 import com.goodpon.core.domain.auth.AccountPrincipal
-import com.goodpon.core.domain.coupon.CouponTemplate
-import com.goodpon.core.domain.coupon.CouponTemplateFactory
 import com.goodpon.core.domain.coupon.vo.CouponDiscountType
 import com.goodpon.core.domain.coupon.vo.CouponLimitType
 import java.time.LocalDate
 
-data class CreateCouponTemplateRequest(
-    val accountPrincipal: AccountPrincipal,
+data class CreateCouponTemplateWebRequest(
     val name: String,
     val description: String,
-    val merchantId: Long,
     val minOrderAmount: Long?,
     val discountType: CouponDiscountType,
     val discountValue: Int,
@@ -25,8 +22,8 @@ data class CreateCouponTemplateRequest(
     val maxUsageLimit: Long?,
 ) {
 
-    fun toCouponTemplate(): CouponTemplate {
-        return CouponTemplateFactory.create(
+    fun toAppRequest(merchantId: Long, accountPrincipal: AccountPrincipal): CreateCouponTemplateRequest {
+        return CreateCouponTemplateRequest(
             name = name,
             description = description,
             merchantId = merchantId,
@@ -41,6 +38,7 @@ data class CreateCouponTemplateRequest(
             limitType = limitType,
             maxIssueLimit = maxIssueLimit,
             maxUsageLimit = maxUsageLimit,
+            accountPrincipal = accountPrincipal
         )
     }
 }

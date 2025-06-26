@@ -23,4 +23,9 @@ class MerchantAccountCoreRepository(
         val savedEntity = merchantAccountJpaRepository.save(entity)
         return savedEntity.toDomain()
     }
+
+    override fun findByMerchantIdAndAccountId(merchantId: Long, accountId: Long): MerchantAccount? {
+        return merchantAccountJpaRepository.findByMerchantIdAndAccountId(merchantId, accountId)
+            ?.toDomain()
+    }
 }

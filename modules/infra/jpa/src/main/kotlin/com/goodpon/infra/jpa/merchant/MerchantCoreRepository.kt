@@ -24,6 +24,11 @@ class MerchantCoreRepository(
         return savedEntity.toDomain()
     }
 
+    override fun findById(id: Long): Merchant? {
+        return merchantJpaRepository.findByIdOrNull(id)
+            ?.toDomain()
+    }
+
     override fun findBySecretKey(secretKey: String): Merchant? {
         return merchantJpaRepository.findBySecretKey(secretKey)
             ?.toDomain()

@@ -24,8 +24,8 @@ class CouponService(
         return CreateCouponTemplateResponse.from(couponTemplate = savedCouponTemplate)
     }
 
-    // 0. merchantId와 CouponTemplate.merchantId가 일치하는지 검증 - 본인 쿠폰 템플릿만 핸들링 가능
-    // 1. 쿠폰 템플릿 읽기 락으로 조회 - CouponTemplate
+    // 0. 쿠폰 템플릿 읽기 락으로 조회 - CouponTemplate
+    // 1. merchantId와 CouponTemplate.merchantId가 일치하는지 검증 - 본인 쿠폰 템플릿만 핸들링 가능
     // 2. 내가 이미 발급한 쿠폰이 있는지 확인 - IssuedCouponRepository.findByUserIdAndCouponTemplateId
     // 3. 쿠폰 통계 쓰기 락으로 조회 - CouponTemplateStats
     // 4. 발급 개수를 이용해서 쿠폼 템플릿의 메서드로 발급 가능 여부 확인 - CouponTemplate.validateIssue
