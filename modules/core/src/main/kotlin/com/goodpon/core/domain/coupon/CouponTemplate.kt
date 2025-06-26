@@ -9,7 +9,7 @@ data class CouponTemplate(
     val merchantId: Long,
     val name: String,
     val description: String,
-    val usageCondition: CouponUsageCondition,
+    val redeemCondition: CouponRedeemCondition,
     val discountPolicy: CouponDiscountPolicy,
     val period: CouponPeriod,
     val limitPolicy: CouponLimitPolicy,
@@ -29,11 +29,11 @@ data class CouponTemplate(
         return Result.success(Unit)
     }
 
-    fun validateUsage(usageCount: Long): Result<Unit> {
+    fun validateUsage(redeemCount: Long): Result<Unit> {
         if (status.isNotUsable()) {
             return Result.failure(IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다."))
         }
-        if (!limitPolicy.canUse(usageCount)) {
+        if (!limitPolicy.canRedeem(redeemCount)) {
             return Result.failure(IllegalStateException("쿠폰 사용 한도를 초과했습니다."))
         }
         return Result.success(Unit)

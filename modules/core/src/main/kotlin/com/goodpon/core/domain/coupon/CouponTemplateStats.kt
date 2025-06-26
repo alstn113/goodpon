@@ -3,7 +3,7 @@ package com.goodpon.core.domain.coupon
 data class CouponTemplateStats(
     val couponTemplateId: Long,
     val issueCount: Long,
-    val usageCount: Long,
+    val redeemCount: Long,
 ) {
 
     fun incrementIssueCount(): CouponTemplateStats {
@@ -11,6 +11,6 @@ data class CouponTemplateStats(
     }
 
     fun incrementUsageCount(): CouponTemplateStats {
-        return this.copy(usageCount = usageCount + 1)
+        return this.copy(redeemCount = redeemCount + 1)
     }
 }

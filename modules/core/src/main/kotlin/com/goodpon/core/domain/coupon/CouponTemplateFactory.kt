@@ -17,12 +17,12 @@ object CouponTemplateFactory {
         issueStartDate: LocalDate,
         issueEndDate: LocalDate?,
         validityDays: Int?,
-        usageEndDate: LocalDate?,
+        redeemEndAt: LocalDate?,
         limitType: CouponLimitType,
         maxIssueLimit: Long? = null,
         maxUsageLimit: Long? = null,
     ): CouponTemplate {
-        val usageCondition = CouponUsageCondition(minOrderAmount = minOrderAmount)
+        val redeemCondition = CouponRedeemCondition(minOrderAmount = minOrderAmount)
         val discountPolicy = CouponDiscountPolicy(
             discountType = discountType,
             discountValue = discountValue,
@@ -32,7 +32,7 @@ object CouponTemplateFactory {
             issueStartDate = issueStartDate,
             issueEndDate = issueEndDate,
             validityDays = validityDays,
-            usageEndDate = usageEndDate
+            redeemEndAt = redeemEndAt
         )
         val limitPolicy = CouponLimitPolicy(
             limitType = limitType,
@@ -45,7 +45,7 @@ object CouponTemplateFactory {
             merchantId = merchantId,
             name = name,
             description = description,
-            usageCondition = usageCondition,
+            redeemCondition = redeemCondition,
             discountPolicy = discountPolicy,
             period = period,
             limitPolicy = limitPolicy,
@@ -65,7 +65,7 @@ object CouponTemplateFactory {
         issueStartAt: LocalDateTime,
         issueEndAt: LocalDateTime?,
         validityDays: Int?,
-        usageEndAt: LocalDateTime?,
+        redeemEndAt: LocalDateTime?,
         limitType: CouponLimitType,
         maxIssueLimit: Long? = null,
         maxUsageLimit: Long? = null,
@@ -76,9 +76,9 @@ object CouponTemplateFactory {
             merchantId = merchantId,
             name = name,
             description = description,
-            usageCondition = CouponUsageCondition(minOrderAmount),
+            redeemCondition = CouponRedeemCondition(minOrderAmount),
             discountPolicy = CouponDiscountPolicy(discountType, discountValue, maxDiscountAmount),
-            period = CouponPeriod(issueStartAt, issueEndAt, validityDays, usageEndAt),
+            period = CouponPeriod(issueStartAt, issueEndAt, validityDays, redeemEndAt),
             limitPolicy = CouponLimitPolicy(limitType, maxIssueLimit, maxUsageLimit),
             status = status,
         )

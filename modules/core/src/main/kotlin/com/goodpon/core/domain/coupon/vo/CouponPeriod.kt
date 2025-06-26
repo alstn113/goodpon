@@ -7,11 +7,11 @@ data class CouponPeriod(
     val issueStartAt: LocalDateTime,
     val issueEndAt: LocalDateTime? = null,
     val validityDays: Int? = null,
-    val usageEndAt: LocalDateTime? = null,
+    val redeemEndAt: LocalDateTime? = null,
 ) {
 
     init {
-        validateDateRanges(issueStartAt, issueEndAt, usageEndAt)
+        validateDateRanges(issueStartAt, issueEndAt, redeemEndAt)
         validateValidityDays(validityDays)
     }
 
@@ -27,9 +27,9 @@ data class CouponPeriod(
         }
 
         return when {
-            validityEndAt != null && usageEndAt != null -> minOf(validityEndAt, usageEndAt)
+            validityEndAt != null && redeemEndAt != null -> minOf(validityEndAt, redeemEndAt)
             validityEndAt != null -> validityEndAt
-            usageEndAt != null -> usageEndAt
+            redeemEndAt != null -> redeemEndAt
             else -> null
         }
     }
@@ -37,21 +37,21 @@ data class CouponPeriod(
     private fun validateDateRanges(
         issueStartAt: LocalDateTime,
         issueEndAt: LocalDateTime?,
-        useEndAt: LocalDateTime?,
+        redeemEndAt: LocalDateTime?,
     ) {
         if (issueEndAt != null && issueEndAt <= issueStartAt) {
             throw IllegalArgumentException("발급 종료 기간은 발급 시작 기간 이후여야 합니다.")
         }
 
-        if (useEndAt != null && useEndAt <= issueStartAt) {
+        if (redeemEndAt != null && redeemEndAt <= issueStartAt) {
             throw IllegalArgumentException("사용 종료 기간은 발급 시작 기간 이후여야 합니다.")
         }
 
-        if (issueEndAt != null && useEndAt != null && useEndAt < issueEndAt) {
+        if (issueEndAt != null && redeemEndAt != null && redeemEndAt < issueEndAt) {
             throw IllegalArgumentException("사용 종료 기간은 발급 종료 기간 이후이거나 같아야 합니다.")
         }
 
-        if (issueEndAt == null && useEndAt != null) {
+        if (issueEndAt == null && redeemEndAt != null) {
             throw IllegalArgumentException("발급 종료 기간이 없으면 사용 종료 기간을 설정할 수 없습니다.")
         }
     }

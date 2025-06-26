@@ -10,10 +10,10 @@ data class UserCoupon private constructor(
     val issuedAt: LocalDateTime,
     val expiresAt: LocalDateTime?,
     val isUsed: Boolean,
-    val usedAt: LocalDateTime?,
+    val redeemedAt: LocalDateTime?,
 ) {
 
-    fun use(now: LocalDateTime = LocalDateTime.now()): UserCoupon {
+    fun redeem(now: LocalDateTime = LocalDateTime.now()): UserCoupon {
         if (isUsed) {
             throw IllegalStateException("이미 사용된 쿠폰입니다.")
         }
@@ -22,7 +22,7 @@ data class UserCoupon private constructor(
             throw IllegalStateException("쿠폰 사용 기간이 만료되었습니다. 만료일: $expiresAt, 현재일: $now")
         }
 
-        return copy(isUsed = true, usedAt = now)
+        return copy(isUsed = true, redeemedAt = now)
     }
 
     fun validateOwnership(userId: String) {
@@ -46,7 +46,7 @@ data class UserCoupon private constructor(
                 issuedAt = now,
                 expiresAt = expiresAt,
                 isUsed = false,
-                usedAt = null,
+                redeemedAt = null,
             )
         }
 
@@ -57,7 +57,7 @@ data class UserCoupon private constructor(
             issuedAt: LocalDateTime,
             expiresAt: LocalDateTime?,
             isUsed: Boolean,
-            usedAt: LocalDateTime?,
+            redeemedAt: LocalDateTime?,
         ): UserCoupon {
             return UserCoupon(
                 id = id,
@@ -66,7 +66,7 @@ data class UserCoupon private constructor(
                 issuedAt = issuedAt,
                 expiresAt = expiresAt,
                 isUsed = isUsed,
-                usedAt = usedAt
+                redeemedAt = redeemedAt
             )
         }
     }

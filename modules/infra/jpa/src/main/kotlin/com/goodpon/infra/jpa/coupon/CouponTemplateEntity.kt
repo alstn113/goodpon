@@ -43,7 +43,7 @@ class CouponTemplateEntity(
     val validityDays: Int? = null,
 
     @Column
-    val usageEndAt: LocalDateTime? = null,
+    val redeemEndAt: LocalDateTime? = null,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -77,7 +77,7 @@ class CouponTemplateEntity(
             issueStartAt = issueStartAt,
             issueEndAt = issueEndAt,
             validityDays = validityDays,
-            usageEndAt = usageEndAt,
+            redeemEndAt = redeemEndAt,
             limitType = limitType,
             maxIssueLimit = maxIssueLimit,
             maxUsageLimit = maxUsageLimit,
@@ -94,14 +94,14 @@ class CouponTemplateEntity(
                 merchantId = domain.merchantId,
                 name = domain.name,
                 description = domain.description,
-                minOrderAmount = domain.usageCondition.minOrderAmount,
+                minOrderAmount = domain.redeemCondition.minOrderAmount,
                 discountType = domain.discountPolicy.discountType,
                 discountValue = domain.discountPolicy.discountValue,
                 maxDiscountAmount = domain.discountPolicy.maxDiscountAmount,
                 issueStartAt = domain.period.issueStartAt,
                 issueEndAt = domain.period.issueEndAt,
                 validityDays = domain.period.validityDays,
-                usageEndAt = domain.period.usageEndAt,
+                redeemEndAt = domain.period.redeemEndAt,
                 limitType = domain.limitPolicy.limitType,
                 maxIssueLimit = domain.limitPolicy.maxIssueLimit,
                 maxUsageLimit = domain.limitPolicy.maxUsageLimit,

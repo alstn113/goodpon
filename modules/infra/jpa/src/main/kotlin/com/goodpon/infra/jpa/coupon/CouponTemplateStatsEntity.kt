@@ -15,21 +15,21 @@ class CouponTemplateStatsEntity(
     @Column(name = "issue_count", nullable = false)
     var issueCount: Long,
 
-    @Column(name = "usage_count", nullable = false)
-    var usageCount: Long,
+    @Column(name = "redeem_count", nullable = false)
+    var redeemCount: Long,
 ) : AuditableEntity() {
 
     fun toDomain(): CouponTemplateStats {
         return CouponTemplateStats(
             couponTemplateId = this.couponTemplateId,
             issueCount = this.issueCount,
-            usageCount = this.usageCount
+            redeemCount = this.redeemCount
         )
     }
 
     fun update(couponTemplateStats: CouponTemplateStats) {
         this.issueCount = couponTemplateStats.issueCount
-        this.usageCount = couponTemplateStats.usageCount
+        this.redeemCount = couponTemplateStats.redeemCount
     }
 
     companion object {
@@ -37,7 +37,7 @@ class CouponTemplateStatsEntity(
             return CouponTemplateStatsEntity(
                 couponTemplateId = couponTemplateStats.couponTemplateId,
                 issueCount = couponTemplateStats.issueCount,
-                usageCount = couponTemplateStats.usageCount
+                redeemCount = couponTemplateStats.redeemCount
             )
         }
     }

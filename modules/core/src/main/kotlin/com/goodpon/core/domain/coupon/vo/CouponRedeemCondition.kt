@@ -1,6 +1,6 @@
 package com.goodpon.core.domain.coupon.vo
 
-data class CouponUsageCondition(
+data class CouponRedeemCondition(
     val minOrderAmount: Long? = null,
 ) {
 

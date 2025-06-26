@@ -35,7 +35,7 @@ class UserCouponEntity(
     val isUsed: Boolean,
 
     @Column(nullable = true)
-    val usedAt: LocalDateTime?,
+    val redeemedAt: LocalDateTime?,
 ) : AuditableEntity() {
 
     fun toDomain(): UserCoupon {
@@ -46,7 +46,7 @@ class UserCouponEntity(
             issuedAt = issuedAt,
             expiresAt = expiresAt,
             isUsed = isUsed,
-            usedAt = usedAt
+            redeemedAt = redeemedAt
         )
     }
 
@@ -61,7 +61,7 @@ class UserCouponEntity(
                 issuedAt = issuedCoupon.issuedAt,
                 expiresAt = issuedCoupon.expiresAt,
                 isUsed = issuedCoupon.isUsed,
-                usedAt = issuedCoupon.usedAt
+                redeemedAt = issuedCoupon.redeemedAt
             )
         }
     }

@@ -18,7 +18,7 @@ data class CouponLimitPolicy(
                 }
             }
 
-            CouponLimitType.USAGE_COUNT -> {
+            CouponLimitType.REDEEM_COUNT -> {
                 if (maxUsageLimit == null || maxUsageLimit <= 0) {
                     throw IllegalArgumentException("사용 제한이 설정된 쿠폰은 사용 제한 수량이 필요합니다.")
                 }
@@ -43,9 +43,9 @@ data class CouponLimitPolicy(
         }
     }
 
-    fun canUse(usageCount: Long): Boolean {
+    fun canRedeem(redeemCount: Long): Boolean {
         return when (limitType) {
-            CouponLimitType.USAGE_COUNT -> maxUsageLimit?.let { usageCount < it } ?: true
+            CouponLimitType.REDEEM_COUNT -> maxUsageLimit?.let { redeemCount < it } ?: true
             else -> true
         }
     }

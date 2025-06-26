@@ -8,17 +8,17 @@ object CouponPeriodFactory {
         issueStartDate: LocalDate,
         issueEndDate: LocalDate? = null,
         validityDays: Int? = null,
-        usageEndDate: LocalDate? = null,
+        redeemEndAt: LocalDate? = null,
     ): CouponPeriod {
         val issueStartAt = issueStartDate.atStartOfDay() // 발급 시작일은 자정부터 시작
         val issueEndAt = issueEndDate?.plusDays(1)?.atStartOfDay() // 종료일은 "포함하지 않는" 날짜의 자정으로 표현 (exclusive end)
-        val usageEndAt = usageEndDate?.plusDays(1)?.atStartOfDay()
+        val redeemEndAt = redeemEndAt?.plusDays(1)?.atStartOfDay()
 
         return CouponPeriod(
             issueStartAt = issueStartAt,
             issueEndAt = issueEndAt,
             validityDays = validityDays,
-            usageEndAt = usageEndAt
+            redeemEndAt = redeemEndAt
         )
     }
 }

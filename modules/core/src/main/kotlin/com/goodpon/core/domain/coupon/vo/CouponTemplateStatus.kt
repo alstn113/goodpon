@@ -5,7 +5,7 @@ enum class CouponTemplateStatus {
     DRAFT,
     ISSUABLE,
     EXPIRED,
-    TERMINATED,
+    DISCARDED,
     ;
 
     fun isNotIssuable(): Boolean {
@@ -13,6 +13,6 @@ enum class CouponTemplateStatus {
     }
 
     fun isNotUsable(): Boolean {
-        return this == DRAFT || this == TERMINATED
+        return this == DRAFT || this == DISCARDED
     }
 }

@@ -1,21 +1,21 @@
 package com.goodpon.core.application.coupon
 
-import com.goodpon.core.application.coupon.request.UseCouponRequest
+import com.goodpon.core.application.coupon.request.RedeemCouponRequest
 import com.goodpon.core.domain.coupon.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class CouponUseService(
+class CouponRedeemService(
     private val couponTemplateReader: CouponTemplateReader,
     private val couponTemplateStatsReader: CouponTemplateStatsReader,
     private val issuedCouponReader: UserCouponReader,
     private val couponTemplateStatsUpdater: CouponTemplateStatsUpdater,
-    private val couponUser: CouponUser,
+    private val couponRedeemer: CouponRedeemer,
 ) {
 
     @Transactional
-    fun useCoupon(request: UseCouponRequest): CouponUsageResult {
+    fun redeemCoupon(request: RedeemCouponRequest): CouponRedemptionResult {
         val issuedCoupon = issuedCouponReader.readByIdForUpdate(request.couponId)
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(issuedCoupon.couponTemplateId)
         val couponTemplate = couponTemplateReader.readByIdForRead(issuedCoupon.couponTemplateId)
@@ -23,10 +23,10 @@ class CouponUseService(
         couponTemplate.validateOwnership(request.merchantPrincipal.merchantId)
         issuedCoupon.validateOwnership(request.userId)
 
-        val couponUsageResult = couponUser.useCoupon(
+        val couponUsageResult = couponRedeemer.redeemCoupon(
             couponTemplate = couponTemplate,
-            issuedCoupon = issuedCoupon,
-            usageCount = stats.usageCount,
+            userCoupon = issuedCoupon,
+            redeemCount = stats.redeemCount,
             orderAmount = request.orderAmount,
         )
         couponTemplateStatsUpdater.incrementUsageCount(stats)

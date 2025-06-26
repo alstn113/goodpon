@@ -5,33 +5,33 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Component
-class CouponUser(
+class CouponRedeemer(
     private val issuedCouponRepository: UserCouponRepository,
 ) {
 
     @Transactional
-    fun useCoupon(
+    fun redeemCoupon(
         couponTemplate: CouponTemplate,
-        issuedCoupon: UserCoupon,
-        usageCount: Long,
+        userCoupon: UserCoupon,
+        redeemCount: Long,
         orderAmount: Int,
         now: LocalDateTime = LocalDateTime.now(),
-    ): CouponUsageResult {
-        couponTemplate.validateUsage(usageCount = usageCount)
+    ): CouponRedemptionResult {
+        couponTemplate.validateUsage(redeemCount = redeemCount)
             .onFailure { throw it }
 
         val discountAmount = couponTemplate.calculateDiscountAmount(orderAmount)
         val finalPrice = couponTemplate.calculateFinalPrice(orderAmount)
 
-        val usedCoupon = issuedCoupon.use(now = now)
-        issuedCouponRepository.save(usedCoupon)
+        val redeemedCoupon = userCoupon.redeem(now = now)
+        issuedCouponRepository.save(redeemedCoupon)
 
-        return CouponUsageResult(
-            couponId = issuedCoupon.id,
+        return CouponRedemptionResult(
+            couponId = userCoupon.id,
             discountAmount = discountAmount,
             originalPrice = orderAmount,
             finalPrice = finalPrice,
-            usedAt = now
+            redeemedAt = now
         )
     }
 }
