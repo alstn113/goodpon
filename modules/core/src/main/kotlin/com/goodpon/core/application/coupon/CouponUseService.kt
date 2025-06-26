@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 class CouponUseService(
     private val couponTemplateReader: CouponTemplateReader,
     private val couponTemplateStatsReader: CouponTemplateStatsReader,
-    private val issuedCouponReader: IssuedCouponReader,
+    private val issuedCouponReader: UserCouponReader,
     private val couponTemplateStatsUpdater: CouponTemplateStatsUpdater,
     private val couponUser: CouponUser,
 ) {

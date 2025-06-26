@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 @Component
 class CouponIssuer(
-    private val issuedCouponRepository: IssuedCouponRepository,
+    private val issuedCouponRepository: UserCouponRepository,
 ) {
 
     fun issueCoupon(
@@ -18,21 +18,21 @@ class CouponIssuer(
         couponTemplate.validateIssue(issueCount = issueCount, now = now)
             .onFailure { throw it }
 
-        val issuedCoupon = IssuedCoupon.issue(
+        val issuedCoupon = UserCoupon.issue(
             userId = userId,
             couponTemplateId = couponTemplate.id,
             expiresAt = couponTemplate.calculateFinalUsageEndAt(now.toLocalDate()),
             now = now
         )
-        val savedIssuedCoupon = issuedCouponRepository.save(issuedCoupon)
+        val savedUserCoupon = issuedCouponRepository.save(issuedCoupon)
 
         return CouponIssueResult(
-            issuedCouponId = savedIssuedCoupon.id,
-            userId = savedIssuedCoupon.userId,
-            couponTemplateId = savedIssuedCoupon.couponTemplateId,
+            issuedCouponId = savedUserCoupon.id,
+            userId = savedUserCoupon.userId,
+            couponTemplateId = savedUserCoupon.couponTemplateId,
             couponTemplateName = couponTemplate.name,
-            issuedAt = savedIssuedCoupon.issuedAt,
-            expiresAt = savedIssuedCoupon.expiresAt
+            issuedAt = savedUserCoupon.issuedAt,
+            expiresAt = savedUserCoupon.expiresAt
         )
     }
 }

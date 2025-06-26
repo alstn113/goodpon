@@ -1,6 +1,6 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.IssuedCoupon
+import com.goodpon.core.domain.coupon.UserCoupon
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -15,7 +15,7 @@ import java.time.LocalDateTime
         )
     ]
 )
-class IssuedCouponEntity(
+class UserCouponEntity(
     @Id
     val id: String,
 
@@ -38,8 +38,8 @@ class IssuedCouponEntity(
     val usedAt: LocalDateTime?,
 ) : AuditableEntity() {
 
-    fun toDomain(): IssuedCoupon {
-        return IssuedCoupon.reconstitute(
+    fun toDomain(): UserCoupon {
+        return UserCoupon.reconstitute(
             id = id,
             couponTemplateId = couponTemplateId,
             userId = userId,
@@ -50,11 +50,11 @@ class IssuedCouponEntity(
         )
     }
 
-    fun update(issuedCoupon: IssuedCoupon) {}
+    fun update(issuedCoupon: UserCoupon) {}
 
     companion object {
-        fun fromDomain(issuedCoupon: IssuedCoupon): IssuedCouponEntity {
-            return IssuedCouponEntity(
+        fun fromDomain(issuedCoupon: UserCoupon): UserCouponEntity {
+            return UserCouponEntity(
                 id = issuedCoupon.id,
                 couponTemplateId = issuedCoupon.couponTemplateId,
                 userId = issuedCoupon.userId,

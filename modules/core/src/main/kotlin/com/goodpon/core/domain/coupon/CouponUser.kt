@@ -6,13 +6,13 @@ import java.time.LocalDateTime
 
 @Component
 class CouponUser(
-    private val issuedCouponRepository: IssuedCouponRepository,
+    private val issuedCouponRepository: UserCouponRepository,
 ) {
 
     @Transactional
     fun useCoupon(
         couponTemplate: CouponTemplate,
-        issuedCoupon: IssuedCoupon,
+        issuedCoupon: UserCoupon,
         usageCount: Long,
         orderAmount: Int,
         now: LocalDateTime = LocalDateTime.now(),
