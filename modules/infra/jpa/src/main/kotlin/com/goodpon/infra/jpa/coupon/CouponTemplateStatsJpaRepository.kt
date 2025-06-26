@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query
 
 interface CouponTemplateStatsJpaRepository : JpaRepository<CouponTemplateStatsEntity, Long> {
 
-    @Lock(value = LockModeType.PESSIMISTIC_READ)
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT c FROM CouponTemplateStatsEntity c WHERE c.couponTemplateId = :couponTemplateId")
-    fun findByCouponTemplateIdWithLock(couponTemplateId: Long): CouponTemplateStatsEntity?
+    fun findByCouponTemplateIdForUpdate(couponTemplateId: Long): CouponTemplateStatsEntity?
 }

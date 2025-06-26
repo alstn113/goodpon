@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 data class IssuedCoupon private constructor(
-    val id: UUID,
+    val id: String,
     val couponTemplateId: Long,
     val userId: String,
     val issuedAt: LocalDateTime,
@@ -18,7 +18,17 @@ data class IssuedCoupon private constructor(
             throw IllegalStateException("이미 사용된 쿠폰입니다.")
         }
 
+        if (expiresAt != null && now.isAfter(expiresAt)) {
+            throw IllegalStateException("쿠폰 사용 기간이 만료되었습니다. 만료일: $expiresAt, 현재일: $now")
+        }
+
         return copy(isUsed = true, usedAt = now)
+    }
+
+    fun validateOwnership(userId: String) {
+        if (this.userId != userId) {
+            throw IllegalStateException("쿠폰 사용자가 일치하지 않습니다. 쿠폰 사용자: $userId, 요청 사용자: ${this.userId}")
+        }
     }
 
     companion object {
@@ -30,7 +40,7 @@ data class IssuedCoupon private constructor(
             now: LocalDateTime,
         ): IssuedCoupon {
             return IssuedCoupon(
-                id = UUID.randomUUID(),
+                id = UUID.randomUUID().toString().replace("-", ""),
                 couponTemplateId = couponTemplateId,
                 userId = userId,
                 issuedAt = now,
@@ -41,7 +51,7 @@ data class IssuedCoupon private constructor(
         }
 
         fun reconstitute(
-            id: UUID,
+            id: String,
             couponTemplateId: Long,
             userId: String,
             issuedAt: LocalDateTime,

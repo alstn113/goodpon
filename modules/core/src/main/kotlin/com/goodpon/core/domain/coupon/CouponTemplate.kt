@@ -16,10 +16,6 @@ data class CouponTemplate(
     val status: CouponTemplateStatus,
 ) {
 
-    fun calculateFinalUsageEndAt(now: LocalDate): LocalDateTime? {
-        return period.calculateFinalUsageEndAt(now)
-    }
-
     fun validateIssue(issueCount: Long, now: LocalDateTime = LocalDateTime.now()): Result<Unit> {
         if (!period.isIssuable(now)) {
             return Result.failure(IllegalStateException("쿠폰을 발급할 수 있는 기간이 아닙니다."))
@@ -41,5 +37,23 @@ data class CouponTemplate(
             return Result.failure(IllegalStateException("쿠폰 사용 한도를 초과했습니다."))
         }
         return Result.success(Unit)
+    }
+
+    fun validateOwnership(merchantId: Long) {
+        if (this.merchantId != merchantId) {
+            throw IllegalArgumentException("쿠폰 템플릿을 발급할 권한이 없습니다.")
+        }
+    }
+
+    fun calculateFinalUsageEndAt(now: LocalDate): LocalDateTime? {
+        return period.calculateFinalUsageEndAt(now)
+    }
+
+    fun calculateDiscountAmount(orderAmount: Int): Int {
+        return discountPolicy.calculateDiscountAmount(orderAmount)
+    }
+
+    fun calculateFinalPrice(orderAmount: Int): Int {
+        return discountPolicy.calculateFinalPrice(orderAmount)
     }
 }

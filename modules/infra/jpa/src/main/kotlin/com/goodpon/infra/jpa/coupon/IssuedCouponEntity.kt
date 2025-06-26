@@ -4,7 +4,6 @@ import com.goodpon.core.domain.coupon.IssuedCoupon
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
-import java.util.*
 
 @Entity
 @Table(
@@ -18,7 +17,7 @@ import java.util.*
 )
 class IssuedCouponEntity(
     @Id
-    val id: UUID,
+    val id: String,
 
     @Column(nullable = false)
     val couponTemplateId: Long,

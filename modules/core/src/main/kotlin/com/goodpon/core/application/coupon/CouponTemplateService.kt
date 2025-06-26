@@ -18,10 +18,8 @@ class CouponTemplateService(
     @Transactional
     fun createCouponTemplate(request: CreateCouponTemplateRequest): CreateCouponTemplateResponse {
         merchantReader.readById(request.merchantId)
-        merchantAccountReader.readByMerchantIdAndAccountId(
-            merchantId = request.merchantId,
-            accountId = request.accountPrincipal.id
-        ) ?: throw IllegalArgumentException("쿠폰 템플릿을 생성할 권한이 없습니다.")
+        merchantAccountReader.readByMerchantIdAndAccountId(request.merchantId, request.accountPrincipal.id)
+            ?: throw IllegalArgumentException("쿠폰 템플릿을 생성할 권한이 없습니다.")
 
         val couponTemplate = request.toCouponTemplate()
         val savedCouponTemplate = couponTemplateRepository.save(couponTemplate)

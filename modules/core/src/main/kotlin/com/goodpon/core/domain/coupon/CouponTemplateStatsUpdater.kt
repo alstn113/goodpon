@@ -9,17 +9,13 @@ class CouponTemplateStatsUpdater(
 ) {
 
     @Transactional
-    fun incrementIssueCount(couponTemplateId: Long): CouponTemplateStats {
-        val stats = couponTemplateStatsRepository.findByCouponTemplateIdWithLock(couponTemplateId)
-            ?: throw IllegalArgumentException("Coupon template stats not found for ID: $couponTemplateId")
+    fun incrementIssueCount(stats: CouponTemplateStats): CouponTemplateStats {
         val updatedStats = stats.incrementIssueCount()
         return couponTemplateStatsRepository.save(updatedStats)
     }
 
     @Transactional
-    fun incrementUsageCount(couponTemplateId: Long): CouponTemplateStats {
-        val stats = couponTemplateStatsRepository.findByCouponTemplateIdWithLock(couponTemplateId)
-            ?: throw IllegalArgumentException("Coupon template stats not found for ID: $couponTemplateId")
+    fun incrementUsageCount(stats: CouponTemplateStats): CouponTemplateStats {
         val updatedStats = stats.incrementUsageCount()
         return couponTemplateStatsRepository.save(updatedStats)
     }

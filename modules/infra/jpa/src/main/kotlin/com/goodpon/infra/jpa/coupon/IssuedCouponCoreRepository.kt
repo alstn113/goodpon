@@ -18,8 +18,13 @@ class IssuedCouponCoreRepository(
         return savedEntity.toDomain()
     }
 
-    override fun findByUserIdAndCouponTemplateId(userId: Long, couponTemplateId: Long): IssuedCoupon? {
+    override fun findByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): IssuedCoupon? {
         return issuedCouponJpaRepository.findFirstByUserIdAndCouponTemplateId(userId, couponTemplateId)
+            ?.toDomain()
+    }
+
+    override fun findByIdForUpdate(id: String): IssuedCoupon? {
+        return issuedCouponJpaRepository.findByIdForUpdate(id)
             ?.toDomain()
     }
 }

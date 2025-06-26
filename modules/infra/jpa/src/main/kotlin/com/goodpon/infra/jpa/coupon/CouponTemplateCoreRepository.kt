@@ -25,6 +25,12 @@ class CouponTemplateCoreRepository(
     }
 
     override fun findById(id: Long): CouponTemplate? {
-        return couponTemplateJpaRepository.findByIdOrNull(id)?.toDomain()
+        return couponTemplateJpaRepository.findByIdOrNull(id)
+            ?.toDomain()
+    }
+
+    override fun findByIdForRead(id: Long): CouponTemplate? {
+        return couponTemplateJpaRepository.findByIdForRead(id)
+            ?.toDomain()
     }
 }

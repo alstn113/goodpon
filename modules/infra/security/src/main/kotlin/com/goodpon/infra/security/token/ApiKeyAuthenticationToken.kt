@@ -4,10 +4,14 @@ import com.goodpon.core.domain.auth.MerchantPrincipal
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
-class ApiKeyAuthenticationToken private constructor(
+data class ApiKeyAuthenticationToken private constructor(
     private val merchantPrincipal: MerchantPrincipal,
     private val authorities: Collection<GrantedAuthority> = emptyList(),
 ) : AbstractAuthenticationToken(authorities) {
+
+    init {
+        isAuthenticated = true
+    }
 
     override fun getPrincipal(): MerchantPrincipal = merchantPrincipal
 

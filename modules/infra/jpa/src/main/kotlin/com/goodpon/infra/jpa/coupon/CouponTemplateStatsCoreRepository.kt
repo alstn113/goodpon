@@ -18,8 +18,8 @@ class CouponTemplateStatsCoreRepository(
         return savedEntity.toDomain()
     }
 
-    override fun findByCouponTemplateIdWithLock(couponTemplateId: Long): CouponTemplateStats? {
-        return couponTemplateStatsJpaRepository.findByCouponTemplateIdWithLock(couponTemplateId)
+    override fun findByCouponTemplateIdForUpdate(couponTemplateId: Long): CouponTemplateStats? {
+        return couponTemplateStatsJpaRepository.findByCouponTemplateIdForUpdate(couponTemplateId)
             ?.toDomain()
     }
 }
