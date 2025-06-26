@@ -1,18 +1,18 @@
 package com.goodpon.core.domain.coupon
 
-import com.goodpon.core.domain.coupon.vo.CouponRedeemCondition
+import com.goodpon.core.domain.coupon.vo.CouponRedemptionCondition
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 
-class CouponUsageConditionTest : DescribeSpec({
+class CouponRedemptionConditionTest : DescribeSpec({
 
     describe("constructor") {
 
         it("최소 주문 금액이 있을 경우 0보다 커야 한다.") {
             // when
             val exception = shouldThrow<IllegalArgumentException> {
-                CouponRedeemCondition(minOrderAmount = 0)
+                CouponRedemptionCondition(minOrderAmount = 0)
             }
 
             // then
@@ -24,7 +24,7 @@ class CouponUsageConditionTest : DescribeSpec({
 
         it("최소 주문 금액이 없을 경우, 주문 금액에 관계없이 true를 반환한다.") {
             // given
-            val condition = CouponRedeemCondition(minOrderAmount = null)
+            val condition = CouponRedemptionCondition(minOrderAmount = null)
 
             // when
             val result = condition.isSatisfiedBy(orderAmount = 1000)
@@ -37,7 +37,7 @@ class CouponUsageConditionTest : DescribeSpec({
 
             it("주문 금액이 최소 주문 금액보다 크거나 같으면 true를 반환한다.") {
                 // given
-                val condition = CouponRedeemCondition(minOrderAmount = 1000)
+                val condition = CouponRedemptionCondition(minOrderAmount = 1000)
 
                 // when
                 val result = condition.isSatisfiedBy(orderAmount = 1000)
@@ -48,7 +48,7 @@ class CouponUsageConditionTest : DescribeSpec({
 
             it("주문 금액이 최소 주문 금액보다 작으면 false를 반환한다.") {
                 // given
-                val condition = CouponRedeemCondition(minOrderAmount = 1000)
+                val condition = CouponRedemptionCondition(minOrderAmount = 1000)
 
                 // when
                 val result = condition.isSatisfiedBy(orderAmount = 999)

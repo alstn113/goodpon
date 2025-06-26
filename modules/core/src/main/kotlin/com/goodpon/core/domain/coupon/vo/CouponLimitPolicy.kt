@@ -3,7 +3,7 @@ package com.goodpon.core.domain.coupon.vo
 data class CouponLimitPolicy(
     val limitType: CouponLimitType,
     val maxIssueLimit: Long? = null,
-    val maxUsageLimit: Long? = null,
+    val maxRedeemLimit: Long? = null,
 ) {
 
     init {
@@ -13,13 +13,13 @@ data class CouponLimitPolicy(
                     throw IllegalArgumentException("발급 제한이 설정된 쿠폰은 발급 제한 수량이 필요합니다.")
                 }
 
-                if (maxUsageLimit != null) {
+                if (maxRedeemLimit != null) {
                     throw IllegalArgumentException("발급 제한이 설정된 쿠폰은 사용 제한 수량을 설정할 수 없습니다.")
                 }
             }
 
             CouponLimitType.REDEEM_COUNT -> {
-                if (maxUsageLimit == null || maxUsageLimit <= 0) {
+                if (maxRedeemLimit == null || maxRedeemLimit <= 0) {
                     throw IllegalArgumentException("사용 제한이 설정된 쿠폰은 사용 제한 수량이 필요합니다.")
                 }
 
@@ -29,7 +29,7 @@ data class CouponLimitPolicy(
             }
 
             CouponLimitType.NONE -> {
-                if (maxIssueLimit != null || maxUsageLimit != null) {
+                if (maxIssueLimit != null || maxRedeemLimit != null) {
                     throw IllegalArgumentException("제한이 없는 쿠폰은 발급 제한과 사용 제한을 설정할 수 없습니다.")
                 }
             }
@@ -45,7 +45,7 @@ data class CouponLimitPolicy(
 
     fun canRedeem(redeemCount: Long): Boolean {
         return when (limitType) {
-            CouponLimitType.REDEEM_COUNT -> maxUsageLimit?.let { redeemCount < it } ?: true
+            CouponLimitType.REDEEM_COUNT -> maxRedeemLimit?.let { redeemCount < it } ?: true
             else -> true
         }
     }

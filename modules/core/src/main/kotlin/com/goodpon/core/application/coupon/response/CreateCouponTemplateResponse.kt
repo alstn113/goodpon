@@ -17,10 +17,10 @@ data class CreateCouponTemplateResponse(
     val issueStartAt: LocalDateTime,
     val issueEndAt: LocalDateTime?,
     val validityDays: Int?,
-    val redeemEndAt: LocalDateTime?,
+    val absoluteExpiresAt: LocalDateTime?,
     val limitType: CouponLimitType,
     val maxIssueLimit: Long?,
-    val maxUsageLimit: Long?,
+    val maxRedeemLimit: Long?,
 ) {
 
     companion object {
@@ -30,17 +30,17 @@ data class CreateCouponTemplateResponse(
                 name = couponTemplate.name,
                 description = couponTemplate.description,
                 merchantId = couponTemplate.merchantId,
-                minOrderAmount = couponTemplate.redeemCondition.minOrderAmount,
+                minOrderAmount = couponTemplate.redemptionCondition.minOrderAmount,
                 discountType = couponTemplate.discountPolicy.discountType,
                 discountValue = couponTemplate.discountPolicy.discountValue,
                 maxDiscountAmount = couponTemplate.discountPolicy.maxDiscountAmount,
                 issueStartAt = couponTemplate.period.issueStartAt,
                 issueEndAt = couponTemplate.period.issueEndAt,
                 validityDays = couponTemplate.period.validityDays,
-                redeemEndAt = couponTemplate.period.redeemEndAt,
+                absoluteExpiresAt = couponTemplate.period.absoluteExpiresAt,
                 limitType = couponTemplate.limitPolicy.limitType,
                 maxIssueLimit = couponTemplate.limitPolicy.maxIssueLimit,
-                maxUsageLimit = couponTemplate.limitPolicy.maxUsageLimit,
+                maxRedeemLimit = couponTemplate.limitPolicy.maxRedeemLimit,
             )
         }
     }

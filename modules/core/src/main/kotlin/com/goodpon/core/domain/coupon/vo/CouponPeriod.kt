@@ -7,11 +7,11 @@ data class CouponPeriod(
     val issueStartAt: LocalDateTime,
     val issueEndAt: LocalDateTime? = null,
     val validityDays: Int? = null,
-    val redeemEndAt: LocalDateTime? = null,
+    val absoluteExpiresAt: LocalDateTime? = null,
 ) {
 
     init {
-        validateDateRanges(issueStartAt, issueEndAt, redeemEndAt)
+        validateDateRanges(issueStartAt, issueEndAt, absoluteExpiresAt)
         validateValidityDays(validityDays)
     }
 
@@ -21,37 +21,32 @@ data class CouponPeriod(
         return started && notEnded
     }
 
-    fun calculateFinalUsageEndAt(issueDate: LocalDate): LocalDateTime? {
-        val validityEndAt = validityDays?.let {
+    fun calculateExpiresAt(issueDate: LocalDate): LocalDateTime? {
+        val calculatedValidityEndAt = validityDays?.let {
             issueDate.plusDays(it + 1L).atStartOfDay()
         }
 
-        return when {
-            validityEndAt != null && redeemEndAt != null -> minOf(validityEndAt, redeemEndAt)
-            validityEndAt != null -> validityEndAt
-            redeemEndAt != null -> redeemEndAt
-            else -> null
-        }
+        return listOfNotNull(calculatedValidityEndAt, absoluteExpiresAt).minOrNull()
     }
 
     private fun validateDateRanges(
         issueStartAt: LocalDateTime,
         issueEndAt: LocalDateTime?,
-        redeemEndAt: LocalDateTime?,
+        absoluteExpiresAt: LocalDateTime?,
     ) {
         if (issueEndAt != null && issueEndAt <= issueStartAt) {
             throw IllegalArgumentException("발급 종료 기간은 발급 시작 기간 이후여야 합니다.")
         }
 
-        if (redeemEndAt != null && redeemEndAt <= issueStartAt) {
+        if (absoluteExpiresAt != null && absoluteExpiresAt <= issueStartAt) {
             throw IllegalArgumentException("사용 종료 기간은 발급 시작 기간 이후여야 합니다.")
         }
 
-        if (issueEndAt != null && redeemEndAt != null && redeemEndAt < issueEndAt) {
+        if (issueEndAt != null && absoluteExpiresAt != null && absoluteExpiresAt < issueEndAt) {
             throw IllegalArgumentException("사용 종료 기간은 발급 종료 기간 이후이거나 같아야 합니다.")
         }
 
-        if (issueEndAt == null && redeemEndAt != null) {
+        if (issueEndAt == null && absoluteExpiresAt != null) {
             throw IllegalArgumentException("발급 종료 기간이 없으면 사용 종료 기간을 설정할 수 없습니다.")
         }
     }

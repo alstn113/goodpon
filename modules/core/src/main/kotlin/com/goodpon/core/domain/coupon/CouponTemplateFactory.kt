@@ -17,12 +17,12 @@ object CouponTemplateFactory {
         issueStartDate: LocalDate,
         issueEndDate: LocalDate?,
         validityDays: Int?,
-        redeemEndAt: LocalDate?,
+        expiryDate: LocalDate?,
         limitType: CouponLimitType,
         maxIssueLimit: Long? = null,
-        maxUsageLimit: Long? = null,
+        maxRedeemLimit: Long? = null,
     ): CouponTemplate {
-        val redeemCondition = CouponRedeemCondition(minOrderAmount = minOrderAmount)
+        val redemptionCondition = CouponRedemptionCondition(minOrderAmount = minOrderAmount)
         val discountPolicy = CouponDiscountPolicy(
             discountType = discountType,
             discountValue = discountValue,
@@ -32,12 +32,12 @@ object CouponTemplateFactory {
             issueStartDate = issueStartDate,
             issueEndDate = issueEndDate,
             validityDays = validityDays,
-            redeemEndAt = redeemEndAt
+            absoluteExpiryDate = expiryDate
         )
         val limitPolicy = CouponLimitPolicy(
             limitType = limitType,
             maxIssueLimit = maxIssueLimit,
-            maxUsageLimit = maxUsageLimit
+            maxRedeemLimit = maxRedeemLimit
         )
 
         return CouponTemplate(
@@ -45,7 +45,7 @@ object CouponTemplateFactory {
             merchantId = merchantId,
             name = name,
             description = description,
-            redeemCondition = redeemCondition,
+            redemptionCondition = redemptionCondition,
             discountPolicy = discountPolicy,
             period = period,
             limitPolicy = limitPolicy,
@@ -65,10 +65,10 @@ object CouponTemplateFactory {
         issueStartAt: LocalDateTime,
         issueEndAt: LocalDateTime?,
         validityDays: Int?,
-        redeemEndAt: LocalDateTime?,
+        absoluteExpiresAt: LocalDateTime?,
         limitType: CouponLimitType,
         maxIssueLimit: Long? = null,
-        maxUsageLimit: Long? = null,
+        maxRedeemLimit: Long? = null,
         status: CouponTemplateStatus,
     ): CouponTemplate {
         return CouponTemplate(
@@ -76,10 +76,10 @@ object CouponTemplateFactory {
             merchantId = merchantId,
             name = name,
             description = description,
-            redeemCondition = CouponRedeemCondition(minOrderAmount),
+            redemptionCondition = CouponRedemptionCondition(minOrderAmount),
             discountPolicy = CouponDiscountPolicy(discountType, discountValue, maxDiscountAmount),
-            period = CouponPeriod(issueStartAt, issueEndAt, validityDays, redeemEndAt),
-            limitPolicy = CouponLimitPolicy(limitType, maxIssueLimit, maxUsageLimit),
+            period = CouponPeriod(issueStartAt, issueEndAt, validityDays, absoluteExpiresAt),
+            limitPolicy = CouponLimitPolicy(limitType, maxIssueLimit, maxRedeemLimit),
             status = status,
         )
     }

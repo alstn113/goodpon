@@ -19,10 +19,10 @@ data class CreateCouponTemplateRequest(
     val issueStartDate: LocalDate,
     val issueEndDate: LocalDate?,
     val validityDays: Int?,
-    val redeemEndDate: LocalDate?,
+    val expiryDate: LocalDate?,
     val limitType: CouponLimitType,
     val maxIssueLimit: Long?,
-    val maxUsageLimit: Long?,
+    val maxRedeemLimit: Long?,
 ) {
 
     fun toCouponTemplate(): CouponTemplate {
@@ -37,10 +37,10 @@ data class CreateCouponTemplateRequest(
             issueStartDate = issueStartDate,
             issueEndDate = issueEndDate,
             validityDays = validityDays,
-            redeemEndAt = redeemEndDate,
+            expiryDate = expiryDate,
             limitType = limitType,
             maxIssueLimit = maxIssueLimit,
-            maxUsageLimit = maxUsageLimit,
+            maxRedeemLimit = maxRedeemLimit,
         )
     }
 }

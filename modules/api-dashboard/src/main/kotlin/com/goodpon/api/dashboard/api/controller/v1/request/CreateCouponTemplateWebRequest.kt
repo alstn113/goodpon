@@ -19,7 +19,7 @@ data class CreateCouponTemplateWebRequest(
     val redeemEndDate: LocalDate?,
     val limitType: CouponLimitType,
     val maxIssueLimit: Long?,
-    val maxUsageLimit: Long?,
+    val maxRedeemLimit: Long?,
 ) {
 
     fun toAppRequest(merchantId: Long, accountPrincipal: AccountPrincipal): CreateCouponTemplateRequest {
@@ -34,10 +34,10 @@ data class CreateCouponTemplateWebRequest(
             issueStartDate = issueStartDate,
             issueEndDate = issueEndDate,
             validityDays = validityDays,
-            redeemEndDate = redeemEndDate,
+            expiryDate = redeemEndDate,
             limitType = limitType,
             maxIssueLimit = maxIssueLimit,
-            maxUsageLimit = maxUsageLimit,
+            maxRedeemLimit = maxRedeemLimit,
             accountPrincipal = accountPrincipal
         )
     }

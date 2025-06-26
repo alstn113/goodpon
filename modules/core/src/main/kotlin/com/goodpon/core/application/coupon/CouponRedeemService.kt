@@ -23,15 +23,15 @@ class CouponRedeemService(
         couponTemplate.validateOwnership(request.merchantPrincipal.merchantId)
         userCoupon.validateOwnership(request.userId)
 
-        val couponUsageResult = couponRedeemer.redeemCoupon(
+        val couponRedemptionResult = couponRedeemer.redeemCoupon(
             couponTemplate = couponTemplate,
             userCoupon = userCoupon,
             redeemCount = stats.redeemCount,
             orderAmount = request.orderAmount,
             orderId = request.orderId,
         )
-        couponTemplateStatsUpdater.incrementUsageCount(stats)
+        couponTemplateStatsUpdater.incrementRedeemCount(stats)
 
-        return couponUsageResult
+        return couponRedemptionResult
     }
 }

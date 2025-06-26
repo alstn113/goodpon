@@ -24,7 +24,7 @@ class CouponIssuer(
         val userCoupon = UserCoupon.issue(
             userId = userId,
             couponTemplateId = couponTemplate.id,
-            expiresAt = couponTemplate.calculateFinalUsageEndAt(now.toLocalDate()),
+            expiresAt = couponTemplate.calculateExpiresAt(now.toLocalDate()),
             now = now
         )
         val savedUserCoupon = userCouponRepository.save(userCoupon)

@@ -19,7 +19,7 @@ class CouponRedeemer(
         orderId: String,
         now: LocalDateTime = LocalDateTime.now(),
     ): CouponRedemptionResult {
-        couponTemplate.validateUsage(redeemCount = redeemCount)
+        couponTemplate.validateRedeem(redeemCount = redeemCount)
             .onFailure { throw it }
 
         val discountAmount = couponTemplate.calculateDiscountAmount(orderAmount)

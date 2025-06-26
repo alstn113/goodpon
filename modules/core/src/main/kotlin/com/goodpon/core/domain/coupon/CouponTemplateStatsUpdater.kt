@@ -15,8 +15,8 @@ class CouponTemplateStatsUpdater(
     }
 
     @Transactional
-    fun incrementUsageCount(stats: CouponTemplateStats): CouponTemplateStats {
-        val updatedStats = stats.incrementUsageCount()
+    fun incrementRedeemCount(stats: CouponTemplateStats): CouponTemplateStats {
+        val updatedStats = stats.incrementRedeemCount()
         return couponTemplateStatsRepository.save(updatedStats)
     }
 }

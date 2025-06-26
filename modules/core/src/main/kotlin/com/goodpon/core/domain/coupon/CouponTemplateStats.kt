@@ -10,7 +10,7 @@ data class CouponTemplateStats(
         return this.copy(issueCount = issueCount + 1)
     }
 
-    fun incrementUsageCount(): CouponTemplateStats {
+    fun incrementRedeemCount(): CouponTemplateStats {
         return this.copy(redeemCount = redeemCount + 1)
     }
 }

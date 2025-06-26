@@ -1,6 +1,6 @@
 package com.goodpon.api.core.api.controller.v1
 
-import com.goodpon.api.core.api.controller.v1.request.CancelCouponUsageWebRequest
+import com.goodpon.api.core.api.controller.v1.request.CancelCouponRedemptionWebRequest
 import com.goodpon.api.core.api.controller.v1.request.IssueCouponWebRequest
 import com.goodpon.api.core.api.controller.v1.request.RedeemCouponWebRequest
 import com.goodpon.api.core.api.response.ApiResponse
@@ -47,9 +47,9 @@ class CouponController(
     }
 
     @PostMapping("/v1/coupons/{couponId}/cancel")
-    fun cancelCouponUsage(
+    fun cancelCouponRedemption(
         @PathVariable couponId: String,
-        @RequestBody request: CancelCouponUsageWebRequest,
+        @RequestBody request: CancelCouponRedemptionWebRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ) {
     }

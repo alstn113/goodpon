@@ -43,7 +43,7 @@ class CouponTemplateEntity(
     val validityDays: Int? = null,
 
     @Column
-    val redeemEndAt: LocalDateTime? = null,
+    val absoluteExpiresAt: LocalDateTime? = null,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -53,7 +53,7 @@ class CouponTemplateEntity(
     val maxIssueLimit: Long? = null,
 
     @Column
-    val maxUsageLimit: Long? = null,
+    val maxRedeemLimit: Long? = null,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -77,10 +77,10 @@ class CouponTemplateEntity(
             issueStartAt = issueStartAt,
             issueEndAt = issueEndAt,
             validityDays = validityDays,
-            redeemEndAt = redeemEndAt,
+            absoluteExpiresAt = absoluteExpiresAt,
             limitType = limitType,
             maxIssueLimit = maxIssueLimit,
-            maxUsageLimit = maxUsageLimit,
+            maxRedeemLimit = maxRedeemLimit,
             status = status,
         )
     }
@@ -96,17 +96,17 @@ class CouponTemplateEntity(
                 merchantId = domain.merchantId,
                 name = domain.name,
                 description = domain.description,
-                minOrderAmount = domain.redeemCondition.minOrderAmount,
+                minOrderAmount = domain.redemptionCondition.minOrderAmount,
                 discountType = domain.discountPolicy.discountType,
                 discountValue = domain.discountPolicy.discountValue,
                 maxDiscountAmount = domain.discountPolicy.maxDiscountAmount,
                 issueStartAt = domain.period.issueStartAt,
                 issueEndAt = domain.period.issueEndAt,
                 validityDays = domain.period.validityDays,
-                redeemEndAt = domain.period.redeemEndAt,
+                absoluteExpiresAt = domain.period.absoluteExpiresAt,
                 limitType = domain.limitPolicy.limitType,
                 maxIssueLimit = domain.limitPolicy.maxIssueLimit,
-                maxUsageLimit = domain.limitPolicy.maxUsageLimit,
+                maxRedeemLimit = domain.limitPolicy.maxRedeemLimit,
                 status = domain.status,
             )
         }

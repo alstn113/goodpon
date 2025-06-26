@@ -33,7 +33,7 @@ class CouponPeriodTest : DescribeSpec({
 
             // then
             period.issueEndAt shouldBe tomorrow.plusDays(1).atStartOfDay()
-            period.redeemEndAt shouldBe tomorrow.plusDays(1).atStartOfDay()
+            period.absoluteExpiresAt shouldBe tomorrow.plusDays(1).atStartOfDay()
         }
 
         it("발급 종료 일자는 발급 시작 일자 이후여야 한다") {

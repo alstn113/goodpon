@@ -25,6 +25,10 @@ data class UserCoupon private constructor(
         return copy(redeemedAt = now, status = CouponStatus.REDEEMED)
     }
 
+    fun isRedeemable(now: LocalDateTime): Boolean {
+        return status == CouponStatus.ISSUED && !isExpired(now)
+    }
+
     fun cancelRedemption(): UserCoupon {
         if (status != CouponStatus.REDEEMED) {
             throw IllegalStateException("쿠폰이 사용되지 않았거나 이미 취소되었습니다.")
@@ -39,11 +43,7 @@ data class UserCoupon private constructor(
         }
     }
 
-    fun isRedeemable(now: LocalDateTime): Boolean {
-        return status == CouponStatus.ISSUED && !isExpired(now)
-    }
-
-    fun isExpired(now: LocalDateTime): Boolean {
+    private fun isExpired(now: LocalDateTime): Boolean {
         if (expiresAt == null) {
             return false
         }
