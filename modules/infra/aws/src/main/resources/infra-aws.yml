@@ -1,8 +1,5 @@
-spring:
-  cloud:
-    aws:
-      credentials:
-        access-key: ${AWS_ACCESS_KEY}
-        secret-key: ${AWS_SECRET_KEY}
-      static:
-        region: ${AWS_REGION}
+aws:
+  ses:
+    region: ${AWS_SES_REGION}
+    access-key-id: ${AWS_SES_ACCESS_KEY_ID}
+    secret-access-key: ${AWS_SES_SECRET_ACCESS_KEY}

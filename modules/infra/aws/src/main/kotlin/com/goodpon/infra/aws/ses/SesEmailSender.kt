@@ -1,13 +1,13 @@
 package com.goodpon.infra.aws.ses
 
 import com.goodpon.core.domain.auth.EmailSender
-import org.springframework.mail.javamail.JavaMailSender
-import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
+import software.amazon.awssdk.services.sesv2.SesV2Client
+import software.amazon.awssdk.services.sesv2.model.*
 
 @Component
 class SesEmailSender(
-    private val javaMailSender: JavaMailSender,
+    private val sesV2Client: SesV2Client,
     private val templateRenderer: ThymeleafEmailTemplateRenderer,
 ) : EmailSender {
 
@@ -20,12 +20,33 @@ class SesEmailSender(
             )
         )
 
-        javaMailSender.send { mimeMessage ->
-            val helper = MimeMessageHelper(mimeMessage, false, "UTF-8")
-            helper.setFrom("no-reply@goodpon.site")
-            helper.setTo(email)
-            helper.setSubject("[Goodpon] 이메일 인증")
-            helper.setText(htmlContent, true)
-        }
+        val destination = Destination.builder()
+            .toAddresses(email)
+            .build()
+        val subject = Content.builder()
+            .charset("UTF-8")
+            .data("[Goodpon] 이메일 인증")
+            .build()
+        val bodyContent = Content.builder()
+            .charset("UTF-8")
+            .data(htmlContent)
+            .build()
+        val body = Body.builder()
+            .html(bodyContent)
+            .build()
+        val message = Message.builder()
+            .subject(subject)
+            .body(body)
+            .build()
+        val emailContent = EmailContent.builder()
+            .simple(message)
+            .build()
+        val request = SendEmailRequest.builder()
+            .fromEmailAddress("no-reply@goodpon.site")
+            .destination(destination)
+            .content(emailContent)
+            .build()
+
+        sesV2Client.sendEmail(request)
     }
 }
