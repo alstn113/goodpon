@@ -21,10 +21,10 @@ class CouponRedemptionCanceler(
         now: LocalDateTime,
     ): CouponCancelRedemptionResult {
         val lastRedeemHistory = getLastRedeemHistory(userCoupon)
-        
+
         val canceledCoupon = userCoupon.cancelRedemption()
         userCouponRepository.save(canceledCoupon)
-        
+
         val cancelHistory = CouponHistory.cancelRedemption(
             userCouponId = userCoupon.id,
             orderId = lastRedeemHistory.orderId!!,

@@ -1,7 +1,5 @@
 package com.goodpon.core.domain.coupon.template.vo
 
-import com.goodpon.core.domain.coupon.template.vo.CouponLimitPolicy
-import com.goodpon.core.domain.coupon.template.vo.CouponLimitPolicyType
 import com.goodpon.core.support.error.CoreException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec

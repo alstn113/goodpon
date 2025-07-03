@@ -34,6 +34,13 @@ enum class ErrorType(
     INVALID_COUPON_LIMIT_POLICY_REDEEM_CONFLICT(400, "사용 제한 정책이 설정된 쿠폰은 발급 제한 수량을 함께 설정할 수 없습니다.", ErrorLevel.WARN),
     INVALID_COUPON_LIMIT_POLICY_NONE_CONFLICT(400, "무제한 정책의 쿠폰은 발급 제한 및 사용 제한을 설정할 수 없습니다.", ErrorLevel.WARN),
 
+    // Coupon Period
+    COUPON_PERIOD_ISSUE_END_BEFORE_START(400, "발급 종료 시간은 발급 시작 시간 이후여야 합니다.", ErrorLevel.WARN),
+    COUPON_PERIOD_EXPIRE_BEFORE_START(400, "쿠폰 사용 절대 만료 시간은 발급 시작 시간 이후여야 합니다.", ErrorLevel.WARN),
+    COUPON_PERIOD_EXPIRE_BEFORE_ISSUE_END(400, "쿠폰 사용 절대 만료 시간은 발급 종료 시간 이후이거나 같아야 합니다.", ErrorLevel.WARN),
+    COUPON_PERIOD_EXPIRE_WITHOUT_ISSUE_END(400, "쿠폰 사용 절대 만료 시간은 발급 종료 시간이 설정된 경우에만 설정할 수 있습니다.", ErrorLevel.WARN),
+    COUPON_PERIOD_INVALID_VALIDITY_DAYS(400, "쿠폰 사용 유효 기간을 설정할 경우 0보다 커야 합니다.", ErrorLevel.WARN),
+
     // Merchant
     MERCHANT_NOT_FOUND(404, "존재하지 않는 가맹점입니다.", ErrorLevel.WARN),
     INCORRECT_BASIC_AUTH_FORMAT(401, "잘못된 요청입니다. ':'를 포함해 인코딩해주세요.", ErrorLevel.WARN),

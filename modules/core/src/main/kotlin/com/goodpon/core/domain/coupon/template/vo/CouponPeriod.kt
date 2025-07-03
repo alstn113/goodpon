@@ -1,5 +1,7 @@
 package com.goodpon.core.domain.coupon.template.vo
 
+import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.support.error.ErrorType
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -14,15 +16,15 @@ data class CouponPeriod(
         validateValidityDays(validityDays)
     }
 
-    fun isIssuable(now: LocalDateTime = LocalDateTime.now()): Boolean {
-        val started = issueStartAt <= now
-        val notEnded = issueEndAt == null || now < issueEndAt
+    fun isIssuable(issueAt: LocalDateTime): Boolean {
+        val started = issueStartAt <= issueAt
+        val notEnded = issueEndAt == null || issueAt < issueEndAt
         return started && notEnded
     }
 
     fun calculateExpiresAt(issueDate: LocalDate): LocalDateTime? {
         val calculatedValidityEndAt = validityDays?.let {
-            issueDate.plusDays(it + 1L).atStartOfDay()
+            issueDate.plusDays(it.toLong()).plusDays(1).atStartOfDay()
         }
 
         return listOfNotNull(calculatedValidityEndAt, absoluteExpiresAt).minOrNull()
@@ -34,25 +36,22 @@ data class CouponPeriod(
         absoluteExpiresAt: LocalDateTime?,
     ) {
         if (issueEndAt != null && issueEndAt <= issueStartAt) {
-            throw IllegalArgumentException("발급 종료 기간은 발급 시작 기간 이후여야 합니다.")
+            throw CoreException(ErrorType.COUPON_PERIOD_ISSUE_END_BEFORE_START)
         }
-
         if (absoluteExpiresAt != null && absoluteExpiresAt <= issueStartAt) {
-            throw IllegalArgumentException("사용 종료 기간은 발급 시작 기간 이후여야 합니다.")
+            throw CoreException(ErrorType.COUPON_PERIOD_EXPIRE_BEFORE_START)
         }
-
         if (issueEndAt != null && absoluteExpiresAt != null && absoluteExpiresAt < issueEndAt) {
-            throw IllegalArgumentException("사용 종료 기간은 발급 종료 기간 이후이거나 같아야 합니다.")
+            throw CoreException(ErrorType.COUPON_PERIOD_EXPIRE_BEFORE_ISSUE_END)
         }
-
-        if (issueEndAt == null && absoluteExpiresAt != null) {
-            throw IllegalArgumentException("발급 종료 기간이 없으면 사용 종료 기간을 설정할 수 없습니다.")
+        if (absoluteExpiresAt != null && issueEndAt == null) {
+            throw CoreException(ErrorType.COUPON_PERIOD_EXPIRE_WITHOUT_ISSUE_END)
         }
     }
 
     private fun validateValidityDays(validityDays: Int?) {
         if (validityDays != null && validityDays <= 0) {
-            throw IllegalArgumentException("유효 기간은 0보다 커야 합니다.")
+            throw CoreException(ErrorType.COUPON_PERIOD_INVALID_VALIDITY_DAYS)
         }
     }
 }
