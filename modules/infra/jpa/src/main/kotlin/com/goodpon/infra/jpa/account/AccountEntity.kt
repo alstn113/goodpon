@@ -46,9 +46,9 @@ class AccountEntity(
     companion object {
         fun fromDomain(account: Account): AccountEntity {
             return AccountEntity(
-                email = account.email,
-                password = account.password,
-                name = account.name,
+                email = account.email.value,
+                password = account.password.value,
+                name = account.name.value,
                 verified = account.verified,
                 verifiedAt = account.verifiedAt
             )

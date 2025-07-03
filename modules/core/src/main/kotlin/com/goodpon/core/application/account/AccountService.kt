@@ -20,8 +20,8 @@ class AccountService(
 
         return AccountInfo(
             id = account.id,
-            email = account.email,
-            name = account.name,
+            email = account.email.value,
+            name = account.name.value,
             verified = account.verified,
         )
     }
@@ -36,15 +36,15 @@ class AccountService(
 
         val event = VerificationEmailRequestedEvent(
             accountId = account.id,
-            email = account.email,
-            name = account.name
+            email = account.email.value,
+            name = account.name.value
         )
         eventPublisher.publishEvent(event)
 
         return AccountInfo(
             id = account.id,
-            email = account.email,
-            name = account.name,
+            email = account.email.value,
+            name = account.name.value,
             verified = account.verified,
         )
     }

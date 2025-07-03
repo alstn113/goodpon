@@ -23,7 +23,7 @@ class AuthService(
     @Transactional
     fun login(request: LoginRequest): LoginResponse {
         val account = accountReader.readByEmail(request.email)
-        if (!passwordEncoder.matches(request.password, account.password)) {
+        if (!passwordEncoder.matches(request.password, account.password.value)) {
             throw IllegalArgumentException("Invalid email or password")
         }
 
@@ -31,8 +31,8 @@ class AuthService(
 
         return LoginResponse(
             id = account.id,
-            email = account.email,
-            name = account.name,
+            email = account.email.value,
+            name = account.name.value,
             verified = account.verified,
             accessToken = accessToken,
         )
@@ -59,8 +59,8 @@ class AuthService(
 
         val event = VerificationEmailRequestedEvent(
             accountId = account.id,
-            email = account.email,
-            name = account.name
+            email = account.email.value,
+            name = account.name.value
         )
         eventPublisher.publishEvent(event)
     }

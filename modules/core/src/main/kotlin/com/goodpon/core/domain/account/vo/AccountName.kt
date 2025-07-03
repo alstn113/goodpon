@@ -1,12 +1,16 @@
 package com.goodpon.core.domain.account.vo
 
-data class AccountName(val value: String) {
+import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.support.error.ErrorType
+
+@JvmInline
+value class AccountName(val value: String) {
     init {
         if (value.isBlank()) {
-            throw IllegalArgumentException("Account name cannot be blank")
+            throw CoreException(ErrorType.ACCOUNT_NAME_NOT_BLANK)
         }
         if (value.length > MAX_LENGTH) {
-            throw IllegalArgumentException("Account name cannot exceed $MAX_LENGTH characters")
+            throw CoreException(ErrorType.INVALID_ACCOUNT_NAME_LENGTH)
         }
     }
 
