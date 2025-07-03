@@ -21,23 +21,19 @@ class CouponRedeemer(
         redeemCount: Long,
         orderAmount: Int,
         orderId: String,
-        now: LocalDateTime,
+        redeemAt: LocalDateTime,
     ): CouponRedemptionResult {
-        couponTemplate.validateRedeem(
-            currentRedeemedCount = redeemCount,
-            orderAmount = orderAmount,
-        )
-            .onFailure { throw it }
+        couponTemplate.validateRedeem(currentRedeemedCount = redeemCount, orderAmount = orderAmount)
 
         val discountAmount = couponTemplate.calculateDiscountAmount(orderAmount)
         val finalPrice = couponTemplate.calculateFinalPrice(orderAmount)
 
-        val redeemedCoupon = userCoupon.redeem(now = now)
+        val redeemedCoupon = userCoupon.redeem(redeemAt = redeemAt)
         userCouponRepository.save(redeemedCoupon)
         val history = CouponHistory.redeemed(
             userCouponId = redeemedCoupon.id,
             orderId = orderId,
-            now = now
+            recordedAt = redeemAt
         )
         couponHistoryRepository.save(history)
 
@@ -47,7 +43,7 @@ class CouponRedeemer(
             originalPrice = orderAmount,
             finalPrice = finalPrice,
             orderId = orderId,
-            redeemedAt = now
+            redeemedAt = redeemAt
         )
     }
 }

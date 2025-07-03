@@ -18,7 +18,7 @@ class CouponRedemptionCanceler(
     fun cancelRedemption(
         userCoupon: UserCoupon,
         reason: String,
-        now: LocalDateTime,
+        cancelAt: LocalDateTime,
     ): CouponCancelRedemptionResult {
         val lastRedeemHistory = getLastRedeemHistory(userCoupon)
 
@@ -28,18 +28,18 @@ class CouponRedemptionCanceler(
         val cancelHistory = CouponHistory.cancelRedemption(
             userCouponId = userCoupon.id,
             orderId = lastRedeemHistory.orderId!!,
-            now = now,
+            recordedAt = cancelAt,
             reason = reason
         )
         couponHistoryRepository.save(cancelHistory)
 
-        if (canceledCoupon.isExpired(now)) {
+        if (canceledCoupon.isExpired(cancelAt)) {
             val expiredCoupon = canceledCoupon.expire()
             userCouponRepository.save(expiredCoupon)
 
             val expiredHistory = CouponHistory.expired(
                 userCouponId = expiredCoupon.id,
-                now = now
+                recordedAt = cancelAt
             )
             couponHistoryRepository.save(expiredHistory)
         }
@@ -47,7 +47,7 @@ class CouponRedemptionCanceler(
         return CouponCancelRedemptionResult(
             userCouponId = canceledCoupon.id,
             status = canceledCoupon.status,
-            canceledAt = now,
+            canceledAt = cancelAt,
             cancelReason = reason,
         )
     }

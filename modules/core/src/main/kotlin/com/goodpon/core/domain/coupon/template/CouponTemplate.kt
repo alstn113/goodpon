@@ -1,5 +1,6 @@
 package com.goodpon.core.domain.coupon.template
 
+import com.goodpon.core.domain.coupon.template.exception.*
 import com.goodpon.core.domain.coupon.template.vo.*
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -15,40 +16,36 @@ data class CouponTemplate(
     val limitPolicy: CouponLimitPolicy,
     val status: CouponTemplateStatus,
 ) {
-    fun validateIssue(currentIssuedCount: Long, now: LocalDateTime = LocalDateTime.now()): Result<Unit> {
-        if (!period.isIssuable(now)) {
-            return Result.failure(IllegalStateException("쿠폰을 발급할 수 있는 기간이 아닙니다."))
+    fun validateIssue(currentIssuedCount: Long, issueAt: LocalDateTime) {
+        if (!period.isIssuable(issueAt)) {
+            throw CouponTemplateIssuancePeriodException()
         }
         if (status.isNotIssuable()) {
-            return Result.failure(IllegalStateException("쿠폰을 발급할 수 있는 상태가 아닙니다."))
+            throw CouponTemplateStatusNotIssuableException()
         }
         if (!limitPolicy.canIssue(currentIssuedCount)) {
-            return Result.failure(IllegalStateException("쿠폰 발급 한도를 초과했습니다."))
+            throw CouponTemplateIssuanceLimitExceededException()
         }
-        return Result.success(Unit)
     }
 
-    fun validateRedeem(currentRedeemedCount: Long, orderAmount: Int): Result<Unit> {
+    fun validateRedeem(currentRedeemedCount: Long, orderAmount: Int) {
         if (status.isNotRedeemable()) {
-            return Result.failure(IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다."))
+            throw CouponTemplateStatusNotRedeemableException()
         }
         if (!limitPolicy.canRedeem(currentRedeemedCount)) {
-            return Result.failure(IllegalStateException("쿠폰 사용 한도를 초과했습니다."))
+            throw CouponTemplateRedemptionLimitExceededException()
         }
         if (!redemptionCondition.isSatisfiedBy(orderAmount)) {
-            return Result.failure(IllegalArgumentException("쿠폰 사용 조건을 만족하지 않습니다."))
-        }
-        return Result.success(Unit)
-    }
-
-    fun validateOwnership(merchantId: Long) {
-        if (this.merchantId != merchantId) {
-            throw IllegalArgumentException("쿠폰 템플릿을 발급할 권한이 없습니다.")
+            throw CouponTemplateRedemptionConditionNotSatisfiedException()
         }
     }
 
-    fun calculateExpiresAt(now: LocalDate): LocalDateTime? {
-        return period.calculateExpiresAt(now)
+    fun isOwnedBy(merchantId: Long): Boolean {
+        return this.merchantId == merchantId
+    }
+
+    fun calculateExpiresAt(issueAt: LocalDate): LocalDateTime? {
+        return period.calculateExpiresAt(issueAt)
     }
 
     fun calculateDiscountAmount(orderAmount: Int): Int {
@@ -59,7 +56,17 @@ data class CouponTemplate(
         return orderAmount - calculateDiscountAmount(orderAmount)
     }
 
+    fun publish(): CouponTemplate {
+        if (status.isNotDraft()) {
+            throw CouponTemplatePublishNotAllowedException()
+        }
+        return this.copy(status = CouponTemplateStatus.ISSUABLE)
+    }
+
     fun expire(): CouponTemplate {
+        if (status.isNotIssuable()) {
+            throw CouponTemplateExpirationNotAllowedException()
+        }
         return this.copy(status = CouponTemplateStatus.EXPIRED)
     }
 }

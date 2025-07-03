@@ -21,13 +21,15 @@ class CouponCancelRedemptionService(
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         val couponTemplate = couponTemplateReader.readByIdForRead(userCoupon.couponTemplateId)
 
-        couponTemplate.validateOwnership(request.merchantPrincipal.merchantId)
+        if (!couponTemplate.isOwnedBy(request.merchantPrincipal.merchantId)) {
+            throw IllegalArgumentException("쿠폰 템플릿이 소유자와 일치하지 않습니다.")
+        }
 
         val now = LocalDateTime.now()
         val couponCancelRedemptionResult = couponRedemptionCanceler.cancelRedemption(
             userCoupon = userCoupon,
             reason = request.cancelReason,
-            now = now
+            cancelAt = now
         )
         couponTemplateStatsUpdater.decrementRedeemCount(stats)
 

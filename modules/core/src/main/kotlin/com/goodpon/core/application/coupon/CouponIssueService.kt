@@ -21,7 +21,9 @@ class CouponIssueService(
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(request.couponTemplateId)
         val couponTemplate = couponTemplateReader.readByIdForRead(request.couponTemplateId)
 
-        couponTemplate.validateOwnership(request.merchantPrincipal.merchantId)
+        if (!couponTemplate.isOwnedBy(request.merchantPrincipal.merchantId)) {
+            throw IllegalArgumentException("쿠폰 템플릿이 소유자와 일치하지 않습니다.")
+        }
         validateAlreadyIssued(userId = request.userId, couponTemplateId = request.couponTemplateId)
 
         val now = LocalDateTime.now()
@@ -29,7 +31,7 @@ class CouponIssueService(
             couponTemplate = couponTemplate,
             userId = request.userId,
             issueCount = stats.issueCount,
-            now = now
+            issueAt = now
         )
         couponTemplateStatsUpdater.incrementIssueCount(stats)
 

@@ -2,9 +2,9 @@ package com.goodpon.core.application.coupon
 
 import com.goodpon.core.application.coupon.request.CreateCouponTemplateRequest
 import com.goodpon.core.application.coupon.response.CreateCouponTemplateResponse
-import com.goodpon.core.domain.coupon.template.CouponTemplateRepository
 import com.goodpon.core.application.merchant.MerchantAccountReader
 import com.goodpon.core.application.merchant.MerchantReader
+import com.goodpon.core.domain.coupon.template.CouponTemplateRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

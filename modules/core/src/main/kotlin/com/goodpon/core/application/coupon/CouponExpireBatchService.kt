@@ -27,7 +27,7 @@ class CouponExpireBatchService(
 
         couponsToExpire.forEach { coupon ->
             coupon.expire()
-            val history = CouponHistory.expired(userCouponId = coupon.id, now = now)
+            val history = CouponHistory.expired(userCouponId = coupon.id, recordedAt = now)
             couponHistoryRepository.save(history)
         }
         userCouponRepository.saveAll(couponsToExpire)

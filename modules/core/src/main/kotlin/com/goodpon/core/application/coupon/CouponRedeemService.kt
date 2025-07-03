@@ -21,8 +21,12 @@ class CouponRedeemService(
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         val couponTemplate = couponTemplateReader.readByIdForRead(userCoupon.couponTemplateId)
 
-        couponTemplate.validateOwnership(request.merchantPrincipal.merchantId)
-        userCoupon.validateOwnership(request.userId)
+        if (!couponTemplate.isOwnedBy(request.merchantPrincipal.merchantId)) {
+            throw IllegalArgumentException("쿠폰 템플릿이 소유자와 일치하지 않습니다.")
+        }
+        if (!userCoupon.isOwnedBy(request.userId)) {
+            throw IllegalArgumentException("쿠폰이 사용자와 일치하지 않습니다.")
+        }
 
         val now = LocalDateTime.now()
         val couponRedemptionResult = couponRedeemer.redeemCoupon(
@@ -31,7 +35,7 @@ class CouponRedeemService(
             redeemCount = stats.redeemCount,
             orderAmount = request.orderAmount,
             orderId = request.orderId,
-            now = now
+            redeemAt = now
         )
         couponTemplateStatsUpdater.incrementRedeemCount(stats)
 

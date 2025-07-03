@@ -12,16 +12,16 @@ data class UserCoupon private constructor(
     val redeemedAt: LocalDateTime?,
     val expiresAt: LocalDateTime?,
 ) {
-    fun redeem(now: LocalDateTime = LocalDateTime.now()): UserCoupon {
+    fun redeem(redeemAt: LocalDateTime): UserCoupon {
         if (status != UserCouponStatus.ISSUED) {
             throw IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다. 현재 상태: $status")
         }
 
-        if (isExpired(now)) {
-            throw IllegalStateException("쿠폰 사용 기간이 만료되었습니다. 만료일: $expiresAt, 현재일: $now")
+        if (isExpired(redeemAt)) {
+            throw IllegalStateException("쿠폰 사용 기간이 만료되었습니다. 만료일: $expiresAt, 현재일: $redeemAt")
         }
 
-        return copy(redeemedAt = now, status = UserCouponStatus.REDEEMED)
+        return copy(redeemedAt = redeemAt, status = UserCouponStatus.REDEEMED)
     }
 
     fun cancelRedemption(): UserCoupon {
@@ -40,11 +40,10 @@ data class UserCoupon private constructor(
         return this.copy(status = UserCouponStatus.EXPIRED)
     }
 
-    fun validateOwnership(userId: String) {
-        if (this.userId != userId) {
-            throw IllegalStateException("쿠폰 사용자가 일치하지 않습니다. 쿠폰 사용자: $userId, 요청 사용자: ${this.userId}")
-        }
+    fun isOwnedBy(userId: String): Boolean {
+        return this.userId == userId
     }
+
 
     fun isExpired(now: LocalDateTime): Boolean {
         if (expiresAt == null) {
@@ -59,14 +58,14 @@ data class UserCoupon private constructor(
             userId: String,
             couponTemplateId: Long,
             expiresAt: LocalDateTime?,
-            now: LocalDateTime,
+            issueAt: LocalDateTime,
         ): UserCoupon {
             return UserCoupon(
                 id = UUID.randomUUID().toString().replace("-", ""),
                 couponTemplateId = couponTemplateId,
                 userId = userId,
                 status = UserCouponStatus.ISSUED,
-                issuedAt = now,
+                issuedAt = issueAt,
                 expiresAt = expiresAt,
                 redeemedAt = null,
             )

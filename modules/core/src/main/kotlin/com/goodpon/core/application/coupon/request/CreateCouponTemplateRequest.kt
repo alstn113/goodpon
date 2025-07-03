@@ -36,7 +36,7 @@ data class CreateCouponTemplateRequest(
             issueStartDate = issueStartDate,
             issueEndDate = issueEndDate,
             validityDays = validityDays,
-            expiryDate = expiryDate,
+            absoluteExpiryDate = expiryDate,
             limitType = limitType,
             maxIssueCount = maxIssueCount,
             maxRedeemCount = maxRedeemCount,

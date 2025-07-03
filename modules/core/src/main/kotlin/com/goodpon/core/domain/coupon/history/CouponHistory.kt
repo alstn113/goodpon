@@ -14,55 +14,55 @@ data class CouponHistory private constructor(
     companion object {
         fun issued(
             userCouponId: String,
-            now: LocalDateTime = LocalDateTime.now(),
+            recordedAt: LocalDateTime,
         ): CouponHistory = record(
             userCouponId = userCouponId,
             actionType = CouponActionType.ISSUE,
-            now = now
+            recordedAt = recordedAt
         )
 
         fun redeemed(
             userCouponId: String,
             orderId: String,
-            now: LocalDateTime = LocalDateTime.now(),
+            recordedAt: LocalDateTime,
         ): CouponHistory = record(
             userCouponId = userCouponId,
             actionType = CouponActionType.REDEEM,
             orderId = orderId,
-            now = now
+            recordedAt = recordedAt
         )
 
         fun cancelRedemption(
             userCouponId: String,
             orderId: String,
             reason: String,
-            now: LocalDateTime = LocalDateTime.now(),
+            recordedAt: LocalDateTime,
         ): CouponHistory = record(
             userCouponId = userCouponId,
             actionType = CouponActionType.CANCEL_REDEMPTION,
             orderId = orderId,
             reason = reason,
-            now = now
+            recordedAt = recordedAt
         )
 
         fun expired(
             userCouponId: String,
-            now: LocalDateTime = LocalDateTime.now(),
+            recordedAt: LocalDateTime,
         ): CouponHistory = record(
             userCouponId = userCouponId,
             actionType = CouponActionType.EXPIRE,
-            now = now
+            recordedAt = recordedAt
         )
 
         fun discarded(
             userCouponId: String,
-            now: LocalDateTime = LocalDateTime.now(),
+            recordedAt: LocalDateTime,
             reason: String,
         ): CouponHistory = record(
             userCouponId = userCouponId,
             actionType = CouponActionType.DISCARD,
             reason = reason,
-            now = now
+            recordedAt = recordedAt
         )
 
         private fun record(
@@ -70,7 +70,7 @@ data class CouponHistory private constructor(
             actionType: CouponActionType,
             orderId: String? = null,
             reason: String? = null,
-            now: LocalDateTime = LocalDateTime.now(),
+            recordedAt: LocalDateTime,
         ): CouponHistory {
             return CouponHistory(
                 id = UUID.randomUUID().toString().replace("-", ""),
@@ -78,7 +78,7 @@ data class CouponHistory private constructor(
                 actionType = actionType,
                 orderId = orderId,
                 reason = reason,
-                recordedAt = now
+                recordedAt = recordedAt
             )
         }
 

@@ -19,19 +19,18 @@ class CouponIssuer(
         couponTemplate: CouponTemplate,
         userId: String,
         issueCount: Long,
-        now: LocalDateTime,
+        issueAt: LocalDateTime,
     ): CouponIssueResult {
-        couponTemplate.validateIssue(currentIssuedCount = issueCount, now = now)
-            .onFailure { throw it }
+        couponTemplate.validateIssue(currentIssuedCount = issueCount, issueAt = issueAt)
 
         val userCoupon = UserCoupon.issue(
             userId = userId,
             couponTemplateId = couponTemplate.id,
-            expiresAt = couponTemplate.calculateExpiresAt(now.toLocalDate()),
-            now = now
+            expiresAt = couponTemplate.calculateExpiresAt(issueAt.toLocalDate()),
+            issueAt = issueAt
         )
         val savedUserCoupon = userCouponRepository.save(userCoupon)
-        val history = CouponHistory.issued(userCouponId = savedUserCoupon.id, now = now)
+        val history = CouponHistory.issued(userCouponId = savedUserCoupon.id, recordedAt = issueAt)
         couponHistoryRepository.save(history)
 
         return CouponIssueResult(

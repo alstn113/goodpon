@@ -1,9 +1,9 @@
 package com.goodpon.core.application.account
 
 import com.goodpon.core.application.account.response.AccountInfo
+import com.goodpon.core.application.auth.VerificationEmailRequestedEvent
 import com.goodpon.core.application.auth.request.SignUpRequest
 import com.goodpon.core.domain.account.service.AccountRegistrationService
-import com.goodpon.core.application.auth.VerificationEmailRequestedEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

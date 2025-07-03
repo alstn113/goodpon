@@ -7,6 +7,10 @@ enum class CouponTemplateStatus {
     DISCARDED,
     ;
 
+    fun isNotDraft(): Boolean {
+        return this != DRAFT
+    }
+
     fun isNotIssuable(): Boolean {
         return this != ISSUABLE
     }

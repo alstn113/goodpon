@@ -9,17 +9,18 @@ object CouponTemplateFactory {
         merchantId: Long,
         name: String,
         description: String,
-        minOrderAmount: Int? = null,
+        minOrderAmount: Int?,
         discountType: CouponDiscountType,
         discountValue: Int,
-        maxDiscountAmount: Int? = null,
+        maxDiscountAmount: Int?,
         issueStartDate: LocalDate,
         issueEndDate: LocalDate?,
         validityDays: Int?,
-        expiryDate: LocalDate?,
+        absoluteExpiryDate: LocalDate?,
         limitType: CouponLimitPolicyType,
-        maxIssueCount: Long? = null,
-        maxRedeemCount: Long? = null,
+        maxIssueCount: Long?,
+        maxRedeemCount: Long?,
+        status: CouponTemplateStatus = CouponTemplateStatus.DRAFT,
     ): CouponTemplate {
         val redemptionCondition = CouponRedemptionCondition(minOrderAmount = minOrderAmount)
         val discountPolicy = CouponDiscountPolicy(
@@ -31,7 +32,7 @@ object CouponTemplateFactory {
             issueStartDate = issueStartDate,
             issueEndDate = issueEndDate,
             validityDays = validityDays,
-            absoluteExpiryDate = expiryDate
+            absoluteExpiryDate = absoluteExpiryDate
         )
         val limitPolicy = CouponLimitPolicy(
             limitType = limitType,
@@ -48,7 +49,7 @@ object CouponTemplateFactory {
             discountPolicy = discountPolicy,
             period = period,
             limitPolicy = limitPolicy,
-            status = CouponTemplateStatus.DRAFT,
+            status = status,
         )
     }
 
@@ -57,17 +58,17 @@ object CouponTemplateFactory {
         merchantId: Long,
         name: String,
         description: String,
-        minOrderAmount: Int? = null,
+        minOrderAmount: Int?,
         discountType: CouponDiscountType,
         discountValue: Int,
-        maxDiscountAmount: Int? = null,
+        maxDiscountAmount: Int?,
         issueStartAt: LocalDateTime,
         issueEndAt: LocalDateTime?,
         validityDays: Int?,
         absoluteExpiresAt: LocalDateTime?,
         limitType: CouponLimitPolicyType,
-        maxIssueCount: Long? = null,
-        maxRedeemCount: Long? = null,
+        maxIssueCount: Long?,
+        maxRedeemCount: Long?,
         status: CouponTemplateStatus,
     ): CouponTemplate {
         return CouponTemplate(

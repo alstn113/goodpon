@@ -1,10 +1,10 @@
 package com.goodpon.core.application.merchant
 
+import com.goodpon.core.application.account.AccountReader
 import com.goodpon.core.application.merchant.request.CreateMerchantRequest
 import com.goodpon.core.application.merchant.response.CreateMerchantResponse
 import com.goodpon.core.application.merchant.response.MerchantAccountInfo
 import com.goodpon.core.application.merchant.response.MerchantInfo
-import com.goodpon.core.application.account.AccountReader
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

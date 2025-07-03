@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 class CouponPeriodTest : DescribeSpec({
 
     describe("CouponPeriod 생성") {
-        it("발급 종료 시간은 발급 시작 시간과 같거나 이전일 수 없다.") {
+        it("발급 종료 일시는 발급 시작 일시와 같거나 이전일 수 없다.") {
             val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
 
             forAll(
@@ -28,7 +28,7 @@ class CouponPeriodTest : DescribeSpec({
             }
         }
 
-        it("쿠폰 사용 절대 만료 시간은 발급 시작 시간과 같거나 이전일 수 없다.") {
+        it("쿠폰 사용 절대 만료 일시는 발급 시작 일시와 같거나 이전일 수 없다.") {
             val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
 
             forAll(
@@ -44,7 +44,7 @@ class CouponPeriodTest : DescribeSpec({
             }
         }
 
-        it("쿠폰 사용 절대 만료 시간은 발급 종료 시간 이전일 수 없다.") {
+        it("쿠폰 사용 절대 만료 일시는 발급 종료 일시 이전일 수 없다.") {
             val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
             val issueEndAt = LocalDate.of(2025, 7, 5).atStartOfDay()
 
@@ -59,7 +59,7 @@ class CouponPeriodTest : DescribeSpec({
             }
         }
 
-        it("쿠폰 사용 절대 만료 시간은 발급 종료 시간과 함께 설정되어야 한다.") {
+        it("쿠폰 사용 절대 만료 일시는 발급 종료 일시와 함께 설정되어야 한다.") {
             val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
             val absoluteExpiresAt = LocalDate.of(2025, 7, 10).atStartOfDay()
 
@@ -89,7 +89,7 @@ class CouponPeriodTest : DescribeSpec({
     }
 
     describe("isIssuable") {
-        it("발급 시간이 발급 시작 시간과 같거나 이후이면 발급할 수 있다.") {
+        it("발급 일시가 발급 시작 일시와 같거나 이후이면 발급할 수 있다.") {
             val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
             val couponPeriod = CouponPeriod(
                 issueStartAt = issueStartAt,
@@ -104,7 +104,7 @@ class CouponPeriodTest : DescribeSpec({
             }
         }
 
-        it("발급 시간이 발급 시작 시간 이전이면 발급할 수 없다.") {
+        it("발급 일시가 발급 시작 일시 이전이면 발급할 수 없다.") {
             val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
             val couponPeriod = CouponPeriod(
                 issueStartAt = issueStartAt,
@@ -115,7 +115,7 @@ class CouponPeriodTest : DescribeSpec({
             couponPeriod.isIssuable(issueAt) shouldBe false
         }
 
-        it("발급 시간이 발급 종료 시간과 같거나 이후이면 발급할 수 없다.") {
+        it("발급 일시가 발급 종료 일시와 같거나 이후이면 발급할 수 없다.") {
             val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
             val issueEndAt = LocalDate.of(2025, 7, 5).atStartOfDay()
             val couponPeriod = CouponPeriod(
@@ -134,7 +134,7 @@ class CouponPeriodTest : DescribeSpec({
 
     describe("calculateExpiresAt") {
         context("쿠폰 사용 유효 기간만 있는 경우") {
-            it("쿠폰 사용 만료 시간은 발급한 날에 유효 기간을 더한 날의 다음 날 자정(00:00)이다.") {
+            it("쿠폰 사용 만료 일시는 발급한 날에 유효 기간을 더한 날의 다음 날 자정(00:00)이다.") {
                 val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
                 val couponPeriod = CouponPeriod(
                     issueStartAt = issueStartAt,
@@ -146,8 +146,8 @@ class CouponPeriodTest : DescribeSpec({
             }
         }
 
-        context("쿠폰 사용 절대 만료 시간만 있는 경우") {
-            it("쿠폰 사용 만료 시간은 쿠폰 사용 절대 만료 시간이다.") {
+        context("쿠폰 사용 절대 만료 일시만 있는 경우") {
+            it("쿠폰 사용 만료 일시는 쿠폰 사용 절대 만료 일시가다.") {
                 val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
                 val issueEndAt = LocalDate.of(2025, 7, 5).atStartOfDay()
                 val absoluteExpiresAt = LocalDate.of(2025, 7, 10).atStartOfDay()
@@ -168,7 +168,7 @@ class CouponPeriodTest : DescribeSpec({
             val validityDays = 5
             val absoluteExpiresAt = LocalDate.of(2025, 7, 15).atStartOfDay()
 
-            it("쿠폰 사용 절대 만료 시간이 발급 날에 유효 기간을 더한 날의 다음 날 자정(00:00)보다 빠르면 쿠폰 사용 만료 시간은 쿠폰 사용 절대 만료 시간이다.") {
+            it("쿠폰 사용 절대 만료 일시가 발급 날에 유효 기간을 더한 날의 다음 날 자정(00:00)보다 빠르면 쿠폰 사용 만료 일시는 쿠폰 사용 절대 만료 일시가다.") {
                 val couponPeriod = CouponPeriod(
                     issueStartAt = issueStartAt,
                     issueEndAt = issueEndAt,
@@ -180,7 +180,7 @@ class CouponPeriodTest : DescribeSpec({
                 couponPeriod.calculateExpiresAt(issueAt) shouldBe absoluteExpiresAt
             }
 
-            it("쿠폰 사용 절대 만료 시간이 발급 날에 유효 기간을 더한 날의 다음 날 자정(00:00)보다 늦으면 쿠폰 사용 만료 시간은 발급 날에 유효 기간을 더한 날의 다음 날 자정(00:00)이다.") {
+            it("쿠폰 사용 절대 만료 일시가 발급 날에 유효 기간을 더한 날의 다음 날 자정(00:00)보다 늦으면 쿠폰 사용 만료 일시는 발급 날에 유효 기간을 더한 날의 다음 날 자정(00:00)이다.") {
                 val couponPeriod = CouponPeriod(
                     issueStartAt = issueStartAt,
                     issueEndAt = issueEndAt,
