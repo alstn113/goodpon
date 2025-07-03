@@ -53,7 +53,7 @@ data class CouponTemplate(
     }
 
     fun calculateFinalPrice(orderAmount: Int): Int {
-        return discountPolicy.calculateFinalPrice(orderAmount)
+        return orderAmount - calculateDiscountAmount(orderAmount)
     }
 
     fun expire(): CouponTemplate {

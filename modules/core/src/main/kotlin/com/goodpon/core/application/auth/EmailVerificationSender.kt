@@ -1,8 +1,11 @@
 package com.goodpon.core.application.auth
 
-import com.goodpon.core.domain.auth.*
+import com.goodpon.core.domain.auth.EmailSender
+import com.goodpon.core.domain.auth.EmailVerification
+import com.goodpon.core.domain.auth.EmailVerificationRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class EmailVerificationSender(
@@ -14,13 +17,17 @@ class EmailVerificationSender(
     private val log = LoggerFactory.getLogger(javaClass)
 
     fun send(accountId: Long, email: String, name: String) {
+        val now = LocalDateTime.now()
         val token = verificationTokenGenerator.generate()
+
         log.debug("이메일 인증 토큰 생성: {}", token)
-        val emailVerification = EmailVerification.create(
+
+        val emailVerification = EmailVerification(
             accountId = accountId,
             token = token,
             email = email,
-            name = name
+            name = name,
+            createdAt = now
         )
         emailVerificationRepository.save(emailVerification)
 

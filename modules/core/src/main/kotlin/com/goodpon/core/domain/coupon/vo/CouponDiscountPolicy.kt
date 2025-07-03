@@ -1,5 +1,8 @@
 package com.goodpon.core.domain.coupon.vo
 
+import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.support.error.ErrorType
+
 data class CouponDiscountPolicy(
     val discountType: CouponDiscountType,
     val discountValue: Int,
@@ -7,42 +10,34 @@ data class CouponDiscountPolicy(
 ) {
     init {
         when (discountType) {
-            CouponDiscountType.FIXED_AMOUNT -> {
-                if (discountValue <= 0) {
-                    throw IllegalArgumentException("고정 금액 할인은 0보다 커야 합니다.")
-                }
-
-                if (maxDiscountAmount != null) {
-                    throw IllegalArgumentException("고정 금액 할인은 최대 할인 금액을 설정할 수 없습니다.")
-                }
-            }
-
-            CouponDiscountType.PERCENTAGE -> {
-                if (discountValue in 1..100) {
-                    throw IllegalArgumentException("백분율 할인은 1에서 100 사이여야 합니다.")
-                }
-
-                if (maxDiscountAmount != null && maxDiscountAmount <= 0) {
-                    throw IllegalArgumentException("백분율 할인은 최대 할인 금액이 0보다 커야 합니다.")
-                }
-            }
+            CouponDiscountType.FIXED_AMOUNT -> validateFixedAmount()
+            CouponDiscountType.PERCENTAGE -> validatePercentage()
         }
     }
 
     fun calculateDiscountAmount(orderAmount: Int): Int {
-        val calculatedDiscount = discountType.calculate(
+        return discountType.calculate(
             orderAmount = orderAmount,
-            discountValue = discountValue
+            discountValue = discountValue,
+            maxDiscountAmount = maxDiscountAmount
         )
+    }
 
-        return when (discountType) {
-            CouponDiscountType.FIXED_AMOUNT -> calculatedDiscount
-            CouponDiscountType.PERCENTAGE -> minOf(calculatedDiscount, maxDiscountAmount!!)
+    private fun validateFixedAmount() {
+        if (discountValue <= 0) {
+            throw CoreException(ErrorType.INVALID_COUPON_POLICY_FIXED_AMOUNT_VALUE)
+        }
+        if (maxDiscountAmount != null) {
+            throw CoreException(ErrorType.INVALID_COUPON_POLICY_FIXED_AMOUNT_MAX_AMOUNT)
         }
     }
 
-    fun calculateFinalPrice(orderAmount: Int): Int {
-        val discountAmount = calculateDiscountAmount(orderAmount)
-        return orderAmount - discountAmount
+    private fun validatePercentage() {
+        if (discountValue !in 1..100) {
+            throw CoreException(ErrorType.INVALID_COUPON_POLICY_PERCENTAGE_VALUE)
+        }
+        if (maxDiscountAmount == null || maxDiscountAmount <= 0) {
+            throw CoreException(ErrorType.INVALID_COUPON_POLICY_PERCENTAGE_MAX_AMOUNT)
+        }
     }
 }

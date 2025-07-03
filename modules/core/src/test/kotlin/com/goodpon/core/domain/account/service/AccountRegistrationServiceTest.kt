@@ -9,7 +9,6 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 
 class AccountRegistrationServiceTest : DescribeSpec({
     val accountRepository = mockk<AccountRepository>()
