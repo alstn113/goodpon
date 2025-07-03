@@ -30,7 +30,7 @@ data class CouponTemplate(
     }
 
     fun validateRedeem(redeemCount: Long): Result<Unit> {
-        if (status.isNotUsable()) {
+        if (status.isNotRedeemable()) {
             return Result.failure(IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다."))
         }
         if (!limitPolicy.canRedeem(redeemCount)) {

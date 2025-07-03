@@ -41,7 +41,7 @@ class UserCouponEntity(
 ) : AuditableEntity() {
 
     fun toDomain(): UserCoupon {
-        return UserCoupon.reconstitute(
+        return UserCoupon.reconstruct(
             id = id,
             couponTemplateId = couponTemplateId,
             userId = userId,

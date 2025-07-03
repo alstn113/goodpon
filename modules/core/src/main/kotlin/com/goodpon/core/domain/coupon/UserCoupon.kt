@@ -73,7 +73,7 @@ data class UserCoupon private constructor(
             )
         }
 
-        fun reconstitute(
+        fun reconstruct(
             id: String,
             couponTemplateId: Long,
             userId: String,

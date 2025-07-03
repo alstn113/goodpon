@@ -12,7 +12,7 @@ enum class CouponTemplateStatus {
         return this != ISSUABLE
     }
 
-    fun isNotUsable(): Boolean {
+    fun isNotRedeemable(): Boolean {
         return this == DRAFT || this == DISCARDED
     }
 }

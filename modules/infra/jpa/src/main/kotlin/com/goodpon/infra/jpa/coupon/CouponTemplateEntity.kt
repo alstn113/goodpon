@@ -65,7 +65,7 @@ class CouponTemplateEntity(
     val id: Long = 0
 
     fun toDomain(): CouponTemplate {
-        return CouponTemplateFactory.reconstitute(
+        return CouponTemplateFactory.reconstruct(
             id = id,
             merchantId = merchantId,
             name = name,

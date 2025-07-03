@@ -26,7 +26,7 @@ class CouponHistoryEntity(
 ) : AuditableEntity() {
 
     fun toDomain(): CouponHistory {
-        return CouponHistory.reconstitute(
+        return CouponHistory.reconstruct(
             id = id,
             userCouponId = userCouponId,
             actionType = actionType,

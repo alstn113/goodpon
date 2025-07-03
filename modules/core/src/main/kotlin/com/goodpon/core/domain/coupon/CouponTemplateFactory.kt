@@ -53,7 +53,7 @@ object CouponTemplateFactory {
         )
     }
 
-    fun reconstitute(
+    fun reconstruct(
         id: Long,
         merchantId: Long,
         name: String,

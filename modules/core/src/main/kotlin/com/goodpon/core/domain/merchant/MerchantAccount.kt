@@ -17,7 +17,7 @@ data class MerchantAccount private constructor(
             )
         }
 
-        fun reconstitute(
+        fun reconstruct(
             id: Long,
             merchantId: Long,
             accountId: Long,

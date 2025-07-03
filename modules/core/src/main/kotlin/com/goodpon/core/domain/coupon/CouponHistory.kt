@@ -84,7 +84,7 @@ data class CouponHistory private constructor(
             )
         }
 
-        fun reconstitute(
+        fun reconstruct(
             id: String,
             userCouponId: String,
             actionType: CouponActionType,
