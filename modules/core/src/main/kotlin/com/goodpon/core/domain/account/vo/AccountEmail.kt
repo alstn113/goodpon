@@ -1,13 +1,12 @@
 package com.goodpon.core.domain.account.vo
 
-import com.goodpon.core.support.error.CoreException
-import com.goodpon.core.support.error.ErrorType
+import com.goodpon.core.domain.account.exception.AccountInvalidEmailFormatException
 
 @JvmInline
 value class AccountEmail(val value: String) {
     init {
         if (!EMAIL_REGEX.matches(value)) {
-            throw CoreException(ErrorType.INVALID_ACCOUNT_EMAIL_FORMAT)
+            throw AccountInvalidEmailFormatException()
         }
     }
 

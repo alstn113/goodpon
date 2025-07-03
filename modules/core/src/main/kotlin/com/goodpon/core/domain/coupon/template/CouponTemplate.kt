@@ -28,12 +28,15 @@ data class CouponTemplate(
         return Result.success(Unit)
     }
 
-    fun validateRedeem(currentRedeemedCount: Long): Result<Unit> {
+    fun validateRedeem(currentRedeemedCount: Long, orderAmount: Int): Result<Unit> {
         if (status.isNotRedeemable()) {
             return Result.failure(IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다."))
         }
         if (!limitPolicy.canRedeem(currentRedeemedCount)) {
             return Result.failure(IllegalStateException("쿠폰 사용 한도를 초과했습니다."))
+        }
+        if (!redemptionCondition.isSatisfiedBy(orderAmount)) {
+            return Result.failure(IllegalArgumentException("쿠폰 사용 조건을 만족하지 않습니다."))
         }
         return Result.success(Unit)
     }

@@ -1,13 +1,12 @@
 package com.goodpon.core.domain.account.vo
 
-import com.goodpon.core.support.error.CoreException
-import com.goodpon.core.support.error.ErrorType
+import com.goodpon.core.domain.account.exception.AccountInvalidPasswordLengthException
 
 @JvmInline
 value class AccountPassword(val value: String) {
     init {
         if (value.length !in PASSWORD_MIN_LENGTH..PASSWORD_MAX_LENGTH) {
-            throw CoreException(ErrorType.INVALID_ACCOUNT_PASSWORD_LENGTH)
+            throw AccountInvalidPasswordLengthException()
         }
     }
 

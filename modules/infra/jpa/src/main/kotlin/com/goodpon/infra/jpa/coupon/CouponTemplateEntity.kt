@@ -21,7 +21,7 @@ class CouponTemplateEntity(
     val description: String,
 
     @Column
-    val minOrderAmount: Long? = null,
+    val minOrderAmount: Int? = null,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

@@ -1,6 +1,6 @@
 package com.goodpon.core.domain.account.vo
 
-import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.domain.account.exception.AccountInvalidEmailFormatException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
@@ -24,9 +24,7 @@ class AccountEmailTest : DescribeSpec({
             row("@goodpon.site"), // 로컬파트 없음
             row("address@goodpon.s"), // TLD 1자
         ) { email ->
-            val exception = shouldThrow<CoreException> { AccountEmail(email) }
-            exception.errorType.message shouldBe "올바르지 않은 계정 이메일 형식입니다."
-            exception.errorType.statusCode shouldBe 400
+            shouldThrow<AccountInvalidEmailFormatException> { AccountEmail(email) }
         }
     }
 })

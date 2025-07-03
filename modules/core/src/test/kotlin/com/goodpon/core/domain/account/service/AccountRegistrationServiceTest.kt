@@ -3,7 +3,7 @@ package com.goodpon.core.domain.account.service
 import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.AccountRepository
 import com.goodpon.core.domain.account.PasswordEncoder
-import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.domain.account.exception.AccountEmailExistsException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -36,11 +36,9 @@ class AccountRegistrationServiceTest : DescribeSpec({
         it("이미 존재하는 계정 이메일일 경우 계정을 등록할 수 없다.") {
             every { accountRepository.existsByEmail(email) } returns true
 
-            val exception = shouldThrow<CoreException> {
+            shouldThrow<AccountEmailExistsException> {
                 accountRegistrationService.register(email, password, name)
             }
-            exception.errorType.message shouldBe "이미 존재하는 계정 이메일입니다."
-            exception.errorType.statusCode shouldBe 400
         }
     }
 })

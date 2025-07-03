@@ -36,7 +36,7 @@ object AuthHeaderUtil {
         return try {
             String(Base64.getDecoder().decode(token))
         } catch (e: IllegalArgumentException) {
-            throw CoreException(ErrorType.INCORRECT_BASIC_AUTH_FORMAT)
+            throw CoreException(ErrorType.INVALID_BASIC_AUTH_FORMAT)
         }
     }
 }

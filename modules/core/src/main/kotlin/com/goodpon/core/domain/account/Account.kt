@@ -1,10 +1,9 @@
 package com.goodpon.core.domain.account
 
+import com.goodpon.core.domain.account.exception.AccountAlreadyVerifiedException
 import com.goodpon.core.domain.account.vo.AccountEmail
 import com.goodpon.core.domain.account.vo.AccountName
 import com.goodpon.core.domain.account.vo.AccountPassword
-import com.goodpon.core.support.error.CoreException
-import com.goodpon.core.support.error.ErrorType
 import java.time.LocalDateTime
 
 data class Account private constructor(
@@ -17,7 +16,7 @@ data class Account private constructor(
 ) {
     fun verify(verifiedAt: LocalDateTime): Account {
         if (verified) {
-            throw CoreException(ErrorType.ACCOUNT_ALREADY_VERIFIED)
+            throw AccountAlreadyVerifiedException()
         }
 
         return this.copy(

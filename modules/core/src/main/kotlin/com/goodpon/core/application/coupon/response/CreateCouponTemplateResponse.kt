@@ -10,7 +10,7 @@ data class CreateCouponTemplateResponse(
     val name: String,
     val description: String,
     val merchantId: Long,
-    val minOrderAmount: Long?,
+    val minOrderAmount: Int?,
     val discountType: CouponDiscountType,
     val discountValue: Int,
     val maxDiscountAmount: Int?,

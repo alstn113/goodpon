@@ -1,6 +1,6 @@
 package com.goodpon.core.domain.coupon.template.vo
 
-import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.domain.coupon.template.exception.*
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
@@ -16,15 +16,13 @@ class CouponLimitPolicyTest : DescribeSpec({
                     row(0L),
                     row(-1L)
                 ) { maxIssueCount ->
-                    val exception = shouldThrow<CoreException> {
+                    shouldThrow<CouponLimitPolicyInvalidIssueValueException> {
                         CouponLimitPolicy(
                             limitType = CouponLimitPolicyType.ISSUE_COUNT,
                             maxIssueCount = maxIssueCount,
                             maxRedeemCount = null
                         )
                     }
-                    exception.errorType.message shouldBe "발급 제한 정책이 설정된 쿠폰은 발급 제한 수량이 필요합니다."
-                    exception.errorType.statusCode shouldBe 400
                 }
             }
 
@@ -32,15 +30,13 @@ class CouponLimitPolicyTest : DescribeSpec({
                 val maxIssueCount = 10L
                 val maxRedeemCount = 5L
 
-                val exception = shouldThrow<CoreException> {
+                shouldThrow<CouponLimitPolicyIssueRedeemConflictException> {
                     CouponLimitPolicy(
                         limitType = CouponLimitPolicyType.ISSUE_COUNT,
                         maxIssueCount = maxIssueCount,
                         maxRedeemCount = maxRedeemCount
                     )
                 }
-                exception.errorType.message shouldBe "발급 제한 정책이 설정된 쿠폰은 사용 제한 수량을 함께 설정할 수 없습니다."
-                exception.errorType.statusCode shouldBe 400
             }
         }
 
@@ -51,15 +47,13 @@ class CouponLimitPolicyTest : DescribeSpec({
                     row(0L),
                     row(-1L)
                 ) { maxRedeemCount ->
-                    val exception = shouldThrow<CoreException> {
+                    shouldThrow<CouponLimitPolicyInvalidRedeemValueException> {
                         CouponLimitPolicy(
                             limitType = CouponLimitPolicyType.REDEEM_COUNT,
                             maxIssueCount = null,
                             maxRedeemCount = maxRedeemCount
                         )
                     }
-                    exception.errorType.message shouldBe "사용 제한 정책이 설정된 쿠폰은 사용 제한 수량이 필요합니다."
-                    exception.errorType.statusCode shouldBe 400
                 }
             }
 
@@ -67,15 +61,13 @@ class CouponLimitPolicyTest : DescribeSpec({
                 val maxIssueCount = 10L
                 val maxRedeemCount = 5L
 
-                val exception = shouldThrow<CoreException> {
+                shouldThrow<CouponLimitPolicyRedeemIssueConflictException> {
                     CouponLimitPolicy(
                         limitType = CouponLimitPolicyType.REDEEM_COUNT,
                         maxIssueCount = maxIssueCount,
                         maxRedeemCount = maxRedeemCount
                     )
                 }
-                exception.errorType.message shouldBe "사용 제한 정책이 설정된 쿠폰은 발급 제한 수량을 함께 설정할 수 없습니다."
-                exception.errorType.statusCode shouldBe 400
             }
         }
 
@@ -84,15 +76,13 @@ class CouponLimitPolicyTest : DescribeSpec({
                 val maxIssueCountNotNull = 10L
                 val maxRedeemCountNotNull = 5L
 
-                val exception = shouldThrow<CoreException> {
+                shouldThrow<CouponLimitPolicyNoneConflictException> {
                     CouponLimitPolicy(
                         limitType = CouponLimitPolicyType.NONE,
                         maxIssueCount = maxIssueCountNotNull,
                         maxRedeemCount = maxRedeemCountNotNull
                     )
                 }
-                exception.errorType.message shouldBe "무제한 정책의 쿠폰은 발급 제한 및 사용 제한을 설정할 수 없습니다."
-                exception.errorType.statusCode shouldBe 400
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.goodpon.core.domain.coupon.template.vo
 
-import com.goodpon.core.support.error.CoreException
-import com.goodpon.core.support.error.ErrorType
+import com.goodpon.core.domain.coupon.template.exception.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -36,22 +35,22 @@ data class CouponPeriod(
         absoluteExpiresAt: LocalDateTime?,
     ) {
         if (issueEndAt != null && issueEndAt <= issueStartAt) {
-            throw CoreException(ErrorType.COUPON_PERIOD_ISSUE_END_BEFORE_START)
+            throw CouponPeriodInvalidIssueEndBeforeStartException()
         }
         if (absoluteExpiresAt != null && absoluteExpiresAt <= issueStartAt) {
-            throw CoreException(ErrorType.COUPON_PERIOD_EXPIRE_BEFORE_START)
+            throw CouponPeriodInvalidExpireBeforeStartException()
         }
         if (issueEndAt != null && absoluteExpiresAt != null && absoluteExpiresAt < issueEndAt) {
-            throw CoreException(ErrorType.COUPON_PERIOD_EXPIRE_BEFORE_ISSUE_END)
+            throw CouponPeriodInvalidExpireBeforeIssueEndException()
         }
         if (absoluteExpiresAt != null && issueEndAt == null) {
-            throw CoreException(ErrorType.COUPON_PERIOD_EXPIRE_WITHOUT_ISSUE_END)
+            throw CouponPeriodInvalidExpireWithoutIssueEndException()
         }
     }
 
     private fun validateValidityDays(validityDays: Int?) {
         if (validityDays != null && validityDays <= 0) {
-            throw CoreException(ErrorType.COUPON_PERIOD_INVALID_VALIDITY_DAYS)
+            throw CouponPeriodInvalidValidityDaysException()
         }
     }
 }

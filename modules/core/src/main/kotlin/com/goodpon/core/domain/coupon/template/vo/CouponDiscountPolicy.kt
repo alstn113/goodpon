@@ -1,7 +1,9 @@
 package com.goodpon.core.domain.coupon.template.vo
 
-import com.goodpon.core.support.error.CoreException
-import com.goodpon.core.support.error.ErrorType
+import com.goodpon.core.domain.coupon.template.exception.CouponDiscountPolicyInvalidFixedMaxException
+import com.goodpon.core.domain.coupon.template.exception.CouponDiscountPolicyInvalidFixedValueException
+import com.goodpon.core.domain.coupon.template.exception.CouponDiscountPolicyInvalidPercentMaxException
+import com.goodpon.core.domain.coupon.template.exception.CouponDiscountPolicyInvalidPercentValueException
 
 data class CouponDiscountPolicy(
     val discountType: CouponDiscountType,
@@ -25,19 +27,19 @@ data class CouponDiscountPolicy(
 
     private fun validateFixedAmount() {
         if (discountValue <= 0) {
-            throw CoreException(ErrorType.INVALID_COUPON_POLICY_FIXED_AMOUNT_VALUE)
+            throw CouponDiscountPolicyInvalidFixedValueException()
         }
         if (maxDiscountAmount != null) {
-            throw CoreException(ErrorType.INVALID_COUPON_POLICY_FIXED_AMOUNT_MAX_AMOUNT)
+            throw CouponDiscountPolicyInvalidFixedMaxException()
         }
     }
 
     private fun validatePercentage() {
         if (discountValue !in 1..100) {
-            throw CoreException(ErrorType.INVALID_COUPON_POLICY_PERCENTAGE_VALUE)
+            throw CouponDiscountPolicyInvalidPercentValueException()
         }
         if (maxDiscountAmount == null || maxDiscountAmount <= 0) {
-            throw CoreException(ErrorType.INVALID_COUPON_POLICY_PERCENTAGE_MAX_AMOUNT)
+            throw CouponDiscountPolicyInvalidPercentMaxException()
         }
     }
 }

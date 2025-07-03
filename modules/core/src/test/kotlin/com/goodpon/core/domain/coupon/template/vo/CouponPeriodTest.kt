@@ -1,6 +1,6 @@
 package com.goodpon.core.domain.coupon.template.vo
 
-import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.domain.coupon.template.exception.*
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
@@ -19,14 +19,12 @@ class CouponPeriodTest : DescribeSpec({
                 row(LocalDate.of(2025, 7, 3).atStartOfDay()),
                 row(LocalDate.of(2025, 7, 2).atStartOfDay()),
             ) { issueEndAt: LocalDateTime ->
-                val exception = shouldThrow<CoreException> {
+                shouldThrow<CouponPeriodInvalidIssueEndBeforeStartException> {
                     CouponPeriod(
                         issueStartAt = issueStartAt,
                         issueEndAt = issueEndAt
                     )
                 }
-                exception.errorType.message shouldBe "발급 종료 시간은 발급 시작 시간 이후여야 합니다."
-                exception.errorType.statusCode shouldBe 400
             }
         }
 
@@ -37,14 +35,12 @@ class CouponPeriodTest : DescribeSpec({
                 row(LocalDate.of(2025, 7, 3).atStartOfDay()),
                 row(LocalDate.of(2025, 7, 2).atStartOfDay()),
             ) { absoluteExpiresAt: LocalDateTime ->
-                val exception = shouldThrow<CoreException> {
+                shouldThrow<CouponPeriodInvalidExpireBeforeStartException> {
                     CouponPeriod(
                         issueStartAt = issueStartAt,
                         absoluteExpiresAt = absoluteExpiresAt
                     )
                 }
-                exception.errorType.message shouldBe "쿠폰 사용 절대 만료 시간은 발급 시작 시간 이후여야 합니다."
-                exception.errorType.statusCode shouldBe 400
             }
         }
 
@@ -54,30 +50,25 @@ class CouponPeriodTest : DescribeSpec({
 
             val absoluteExpiresAt = LocalDate.of(2025, 7, 4).atStartOfDay()
 
-            val exception = shouldThrow<CoreException> {
+            shouldThrow<CouponPeriodInvalidExpireBeforeIssueEndException> {
                 CouponPeriod(
                     issueStartAt = issueStartAt,
                     issueEndAt = issueEndAt,
                     absoluteExpiresAt = absoluteExpiresAt
                 )
             }
-            exception.errorType.message shouldBe "쿠폰 사용 절대 만료 시간은 발급 종료 시간 이후이거나 같아야 합니다."
-            exception.errorType.statusCode shouldBe 400
         }
 
         it("쿠폰 사용 절대 만료 시간은 발급 종료 시간과 함께 설정되어야 한다.") {
             val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
             val absoluteExpiresAt = LocalDate.of(2025, 7, 10).atStartOfDay()
 
-            val exception = shouldThrow<CoreException> {
+            shouldThrow<CouponPeriodInvalidExpireWithoutIssueEndException> {
                 CouponPeriod(
                     issueStartAt = issueStartAt,
                     absoluteExpiresAt = absoluteExpiresAt
                 )
             }
-
-            exception.errorType.message shouldBe "쿠폰 사용 절대 만료 시간은 발급 종료 시간이 설정된 경우에만 설정할 수 있습니다."
-            exception.errorType.statusCode shouldBe 400
         }
 
         it("쿠폰 사용 유효 기간을 설정할 경우 0보다 커야 한다.") {
@@ -87,14 +78,12 @@ class CouponPeriodTest : DescribeSpec({
                 row(0),
                 row(-1)
             ) { validityDays: Int ->
-                val exception = shouldThrow<CoreException> {
+                shouldThrow<CouponPeriodInvalidValidityDaysException> {
                     CouponPeriod(
                         issueStartAt = issueStartAt,
                         validityDays = validityDays
                     )
                 }
-                exception.errorType.message shouldBe "쿠폰 사용 유효 기간을 설정할 경우 0보다 커야 합니다."
-                exception.errorType.statusCode shouldBe 400
             }
         }
     }

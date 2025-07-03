@@ -1,6 +1,6 @@
 package com.goodpon.core.domain.account.vo
 
-import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.domain.account.exception.AccountInvalidPasswordLengthException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
@@ -23,9 +23,7 @@ class AccountPasswordTest : DescribeSpec({
             row("a".repeat(7)),
             row("a".repeat(101)),
         ) { password ->
-            val exception = shouldThrow<CoreException> { AccountPassword(password) }
-            exception.errorType.message shouldBe "계정 비밀번호는 8자 이상 100자 이하여야 합니다."
-            exception.errorType.statusCode shouldBe 400
+            shouldThrow<AccountInvalidPasswordLengthException> { AccountPassword(password) }
         }
     }
 })

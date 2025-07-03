@@ -68,12 +68,7 @@ class JwtAuthenticationFilter(
     private fun fetchAccountInfo(accountId: Long): AccountInfo {
         try {
             return accountService.getAccountInfo(accountId)
-        } catch (e: CoreException) {
-            when (e.errorType) {
-                ErrorType.ACCOUNT_NOT_FOUND -> throw BadCredentialsException(ErrorType.ACCOUNT_NOT_FOUND.message, e)
-                ErrorType.ACCOUNT_PENDING -> throw BadCredentialsException(ErrorType.ACCOUNT_PENDING.message, e)
-                else -> throw BadCredentialsException("계정을 조회하는 중 오류가 발생했습니다.", e)
-            }
+            //TODO: 구체적이게 변환
         } catch (e: Exception) {
             throw BadCredentialsException("계정을 조회하는 중 오류가 발생했습니다.", e)
         }

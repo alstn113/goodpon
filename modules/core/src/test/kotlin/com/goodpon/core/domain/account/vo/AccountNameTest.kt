@@ -1,6 +1,7 @@
 package com.goodpon.core.domain.account.vo
 
-import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.domain.account.exception.AccountInvalidNameLengthException
+import com.goodpon.core.domain.account.exception.AccountNameBlankException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
@@ -21,9 +22,8 @@ class AccountNameTest : DescribeSpec({
 
     describe("계정 이름은 50자를 넘을 수 없다.") {
         val name = "a".repeat(51)
-        val exception = shouldThrow<CoreException> { AccountName(name) }
-        exception.errorType.message shouldBe "계정 이름은 50자 이하여야 합니다."
-        exception.errorType.statusCode shouldBe 400
+
+        shouldThrow<AccountInvalidNameLengthException> { AccountName(name) }
     }
 
     describe("계정 이름은 공백으로만 이루어질 수 없다.") {
@@ -31,9 +31,7 @@ class AccountNameTest : DescribeSpec({
             row(""),
             row(" "),
         ) { name ->
-            val exception = shouldThrow<CoreException> { AccountName(name) }
-            exception.errorType.message shouldBe "계정 이름은 공백으로만 이루어질 수 없습니다."
-            exception.errorType.statusCode shouldBe 400
+            shouldThrow<AccountNameBlankException> { AccountName(name) }
         }
     }
 })

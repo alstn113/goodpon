@@ -1,7 +1,6 @@
 package com.goodpon.core.domain.coupon.template.vo
 
-import com.goodpon.core.support.error.CoreException
-import com.goodpon.core.support.error.ErrorType
+import com.goodpon.core.domain.coupon.template.exception.*
 
 data class CouponLimitPolicy(
     val limitType: CouponLimitPolicyType,
@@ -32,25 +31,25 @@ data class CouponLimitPolicy(
 
     private fun validateIssueCountLimit(maxIssueCount: Long?) {
         if (maxIssueCount == null || maxIssueCount <= 0) {
-            throw CoreException(ErrorType.INVALID_COUPON_LIMIT_POLICY_ISSUE_VALUE)
+            throw CouponLimitPolicyInvalidIssueValueException()
         }
         if (maxRedeemCount != null) {
-            throw CoreException(ErrorType.INVALID_COUPON_LIMIT_POLICY_ISSUE_CONFLICT)
+            throw CouponLimitPolicyIssueRedeemConflictException()
         }
     }
 
     private fun validateRedeemCountLimit(maxRedeemCount: Long?) {
         if (maxRedeemCount == null || maxRedeemCount <= 0) {
-            throw CoreException(ErrorType.INVALID_COUPON_LIMIT_POLICY_REDEEM_VALUE)
+            throw CouponLimitPolicyInvalidRedeemValueException()
         }
         if (maxIssueCount != null) {
-            throw CoreException(ErrorType.INVALID_COUPON_LIMIT_POLICY_REDEEM_CONFLICT)
+            throw CouponLimitPolicyRedeemIssueConflictException()
         }
     }
 
     private fun validateNoneLimit() {
         if (maxIssueCount != null || maxRedeemCount != null) {
-            throw CoreException(ErrorType.INVALID_COUPON_LIMIT_POLICY_NONE_CONFLICT)
+            throw CouponLimitPolicyNoneConflictException()
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.goodpon.core.domain.account
 
-import com.goodpon.core.support.error.CoreException
+import com.goodpon.core.domain.account.exception.AccountAlreadyVerifiedException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -39,11 +39,9 @@ class AccountTest : DescribeSpec({
             val now = LocalDateTime.now()
             val verifiedAccount = account.verify(now)
 
-            val exception = shouldThrow<CoreException> {
+            shouldThrow<AccountAlreadyVerifiedException> {
                 verifiedAccount.verify(now)
             }
-            exception.errorType.message shouldBe "이미 인증된 계정입니다."
-            exception.errorType.statusCode shouldBe 400
         }
     }
 })
