@@ -1,7 +1,7 @@
 package com.goodpon.core.application.coupon
 
-import com.goodpon.core.domain.coupon.UserCoupon
-import com.goodpon.core.domain.coupon.UserCouponRepository
+import com.goodpon.core.domain.coupon.user.UserCoupon
+import com.goodpon.core.domain.coupon.user.UserCouponRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 

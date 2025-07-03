@@ -1,10 +1,10 @@
 package com.goodpon.core.application.coupon.request
 
 import com.goodpon.core.application.auth.AccountPrincipal
-import com.goodpon.core.domain.coupon.CouponTemplate
-import com.goodpon.core.domain.coupon.CouponTemplateFactory
-import com.goodpon.core.domain.coupon.vo.CouponDiscountType
-import com.goodpon.core.domain.coupon.vo.CouponLimitType
+import com.goodpon.core.domain.coupon.template.CouponTemplate
+import com.goodpon.core.domain.coupon.template.CouponTemplateFactory
+import com.goodpon.core.domain.coupon.template.vo.CouponDiscountType
+import com.goodpon.core.domain.coupon.template.vo.CouponLimitPolicyType
 import java.time.LocalDate
 
 data class CreateCouponTemplateRequest(
@@ -20,9 +20,9 @@ data class CreateCouponTemplateRequest(
     val issueEndDate: LocalDate?,
     val validityDays: Int?,
     val expiryDate: LocalDate?,
-    val limitType: CouponLimitType,
-    val maxIssueLimit: Long?,
-    val maxRedeemLimit: Long?,
+    val limitType: CouponLimitPolicyType,
+    val maxIssueCount: Long?,
+    val maxRedeemCount: Long?,
 ) {
     fun toCouponTemplate(): CouponTemplate {
         return CouponTemplateFactory.create(
@@ -38,8 +38,8 @@ data class CreateCouponTemplateRequest(
             validityDays = validityDays,
             expiryDate = expiryDate,
             limitType = limitType,
-            maxIssueLimit = maxIssueLimit,
-            maxRedeemLimit = maxRedeemLimit,
+            maxIssueCount = maxIssueCount,
+            maxRedeemCount = maxRedeemCount,
         )
     }
 }

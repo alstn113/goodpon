@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.coupon
+package com.goodpon.core.domain.coupon.stats
 
 data class CouponTemplateStats(
     val couponTemplateId: Long,

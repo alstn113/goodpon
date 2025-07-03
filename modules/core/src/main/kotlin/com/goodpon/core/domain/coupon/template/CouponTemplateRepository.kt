@@ -1,6 +1,6 @@
-package com.goodpon.core.domain.coupon
+package com.goodpon.core.domain.coupon.template
 
-import com.goodpon.core.domain.coupon.vo.CouponTemplateStatus
+import com.goodpon.core.domain.coupon.template.vo.CouponTemplateStatus
 import java.time.LocalDateTime
 
 interface CouponTemplateRepository {

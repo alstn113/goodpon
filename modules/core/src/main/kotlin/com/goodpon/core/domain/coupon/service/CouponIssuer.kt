@@ -1,6 +1,10 @@
 package com.goodpon.core.domain.coupon.service
 
-import com.goodpon.core.domain.coupon.*
+import com.goodpon.core.domain.coupon.history.CouponHistory
+import com.goodpon.core.domain.coupon.history.CouponHistoryRepository
+import com.goodpon.core.domain.coupon.template.CouponTemplate
+import com.goodpon.core.domain.coupon.user.UserCoupon
+import com.goodpon.core.domain.coupon.user.UserCouponRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -17,7 +21,7 @@ class CouponIssuer(
         issueCount: Long,
         now: LocalDateTime,
     ): CouponIssueResult {
-        couponTemplate.validateIssue(issueCount = issueCount, now = now)
+        couponTemplate.validateIssue(currentIssuedCount = issueCount, now = now)
             .onFailure { throw it }
 
         val userCoupon = UserCoupon.issue(

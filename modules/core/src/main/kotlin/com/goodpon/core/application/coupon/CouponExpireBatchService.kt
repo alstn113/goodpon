@@ -1,7 +1,11 @@
 package com.goodpon.core.application.coupon
 
-import com.goodpon.core.domain.coupon.*
-import com.goodpon.core.domain.coupon.vo.CouponTemplateStatus
+import com.goodpon.core.domain.coupon.history.CouponHistory
+import com.goodpon.core.domain.coupon.history.CouponHistoryRepository
+import com.goodpon.core.domain.coupon.template.CouponTemplateRepository
+import com.goodpon.core.domain.coupon.template.vo.CouponTemplateStatus
+import com.goodpon.core.domain.coupon.user.UserCouponRepository
+import com.goodpon.core.domain.coupon.user.UserCouponStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -17,7 +21,7 @@ class CouponExpireBatchService(
         val expireLimit = now.toLocalDate().atStartOfDay()
 
         val couponsToExpire = userCouponRepository.findByStatusAndExpiresAtLessThanEqual(
-            status = CouponStatus.ISSUED,
+            status = UserCouponStatus.ISSUED,
             expiresAt = expireLimit
         )
 

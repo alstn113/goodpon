@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.coupon
+package com.goodpon.core.domain.coupon.user
 
 import java.time.LocalDateTime
 import java.util.*
@@ -7,13 +7,13 @@ data class UserCoupon private constructor(
     val id: String,
     val couponTemplateId: Long,
     val userId: String,
-    val status: CouponStatus,
+    val status: UserCouponStatus,
     val issuedAt: LocalDateTime,
     val redeemedAt: LocalDateTime?,
     val expiresAt: LocalDateTime?,
 ) {
     fun redeem(now: LocalDateTime = LocalDateTime.now()): UserCoupon {
-        if (status != CouponStatus.ISSUED) {
+        if (status != UserCouponStatus.ISSUED) {
             throw IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다. 현재 상태: $status")
         }
 
@@ -21,23 +21,23 @@ data class UserCoupon private constructor(
             throw IllegalStateException("쿠폰 사용 기간이 만료되었습니다. 만료일: $expiresAt, 현재일: $now")
         }
 
-        return copy(redeemedAt = now, status = CouponStatus.REDEEMED)
+        return copy(redeemedAt = now, status = UserCouponStatus.REDEEMED)
     }
 
     fun cancelRedemption(): UserCoupon {
-        if (status != CouponStatus.REDEEMED) {
+        if (status != UserCouponStatus.REDEEMED) {
             throw IllegalStateException("쿠폰이 사용되지 않았거나 이미 취소되었습니다.")
         }
 
-        return copy(redeemedAt = null, status = CouponStatus.ISSUED)
+        return copy(redeemedAt = null, status = UserCouponStatus.ISSUED)
     }
 
     fun expire(): UserCoupon {
-        if (status != CouponStatus.ISSUED) {
+        if (status != UserCouponStatus.ISSUED) {
             throw IllegalStateException("쿠폰이 만료될 수 있는 상태가 아닙니다. 현재 상태: $status")
         }
 
-        return this.copy(status = CouponStatus.EXPIRED)
+        return this.copy(status = UserCouponStatus.EXPIRED)
     }
 
     fun validateOwnership(userId: String) {
@@ -65,7 +65,7 @@ data class UserCoupon private constructor(
                 id = UUID.randomUUID().toString().replace("-", ""),
                 couponTemplateId = couponTemplateId,
                 userId = userId,
-                status = CouponStatus.ISSUED,
+                status = UserCouponStatus.ISSUED,
                 issuedAt = now,
                 expiresAt = expiresAt,
                 redeemedAt = null,
@@ -76,7 +76,7 @@ data class UserCoupon private constructor(
             id: String,
             couponTemplateId: Long,
             userId: String,
-            status: CouponStatus,
+            status: UserCouponStatus,
             issuedAt: LocalDateTime,
             expiresAt: LocalDateTime?,
             redeemedAt: LocalDateTime?,

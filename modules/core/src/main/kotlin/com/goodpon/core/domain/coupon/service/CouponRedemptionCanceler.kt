@@ -1,6 +1,10 @@
 package com.goodpon.core.domain.coupon.service
 
-import com.goodpon.core.domain.coupon.*
+import com.goodpon.core.domain.coupon.history.CouponActionType
+import com.goodpon.core.domain.coupon.history.CouponHistory
+import com.goodpon.core.domain.coupon.history.CouponHistoryRepository
+import com.goodpon.core.domain.coupon.user.UserCoupon
+import com.goodpon.core.domain.coupon.user.UserCouponRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime

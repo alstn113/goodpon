@@ -1,6 +1,6 @@
-package com.goodpon.core.domain.coupon
+package com.goodpon.core.domain.coupon.template
 
-import com.goodpon.core.domain.coupon.vo.*
+import com.goodpon.core.domain.coupon.template.vo.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -15,24 +15,24 @@ data class CouponTemplate(
     val limitPolicy: CouponLimitPolicy,
     val status: CouponTemplateStatus,
 ) {
-    fun validateIssue(issueCount: Long, now: LocalDateTime = LocalDateTime.now()): Result<Unit> {
+    fun validateIssue(currentIssuedCount: Long, now: LocalDateTime = LocalDateTime.now()): Result<Unit> {
         if (!period.isIssuable(now)) {
             return Result.failure(IllegalStateException("쿠폰을 발급할 수 있는 기간이 아닙니다."))
         }
         if (status.isNotIssuable()) {
             return Result.failure(IllegalStateException("쿠폰을 발급할 수 있는 상태가 아닙니다."))
         }
-        if (!limitPolicy.canIssue(issueCount)) {
+        if (!limitPolicy.canIssue(currentIssuedCount)) {
             return Result.failure(IllegalStateException("쿠폰 발급 한도를 초과했습니다."))
         }
         return Result.success(Unit)
     }
 
-    fun validateRedeem(redeemCount: Long): Result<Unit> {
+    fun validateRedeem(currentRedeemedCount: Long): Result<Unit> {
         if (status.isNotRedeemable()) {
             return Result.failure(IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다."))
         }
-        if (!limitPolicy.canRedeem(redeemCount)) {
+        if (!limitPolicy.canRedeem(currentRedeemedCount)) {
             return Result.failure(IllegalStateException("쿠폰 사용 한도를 초과했습니다."))
         }
         return Result.success(Unit)

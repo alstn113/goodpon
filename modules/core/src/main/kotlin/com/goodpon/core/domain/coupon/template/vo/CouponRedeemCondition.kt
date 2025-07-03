@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.coupon.vo
+package com.goodpon.core.domain.coupon.template.vo
 
 data class CouponRedemptionCondition(
     val minOrderAmount: Long? = null,

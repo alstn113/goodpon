@@ -1,10 +1,10 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.CouponTemplate
-import com.goodpon.core.domain.coupon.CouponTemplateFactory
-import com.goodpon.core.domain.coupon.vo.CouponDiscountType
-import com.goodpon.core.domain.coupon.vo.CouponLimitType
-import com.goodpon.core.domain.coupon.vo.CouponTemplateStatus
+import com.goodpon.core.domain.coupon.template.CouponTemplate
+import com.goodpon.core.domain.coupon.template.CouponTemplateFactory
+import com.goodpon.core.domain.coupon.template.vo.CouponDiscountType
+import com.goodpon.core.domain.coupon.template.vo.CouponLimitPolicyType
+import com.goodpon.core.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -47,13 +47,13 @@ class CouponTemplateEntity(
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    val limitType: CouponLimitType,
+    val limitType: CouponLimitPolicyType,
 
     @Column
-    val maxIssueLimit: Long? = null,
+    val maxIssueCount: Long? = null,
 
     @Column
-    val maxRedeemLimit: Long? = null,
+    val maxRedeemCount: Long? = null,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -78,8 +78,8 @@ class CouponTemplateEntity(
             validityDays = validityDays,
             absoluteExpiresAt = absoluteExpiresAt,
             limitType = limitType,
-            maxIssueLimit = maxIssueLimit,
-            maxRedeemLimit = maxRedeemLimit,
+            maxIssueCount = maxIssueCount,
+            maxRedeemCount = maxRedeemCount,
             status = status,
         )
     }
@@ -103,8 +103,8 @@ class CouponTemplateEntity(
                 validityDays = domain.period.validityDays,
                 absoluteExpiresAt = domain.period.absoluteExpiresAt,
                 limitType = domain.limitPolicy.limitType,
-                maxIssueLimit = domain.limitPolicy.maxIssueLimit,
-                maxRedeemLimit = domain.limitPolicy.maxRedeemLimit,
+                maxIssueCount = domain.limitPolicy.maxIssueCount,
+                maxRedeemCount = domain.limitPolicy.maxRedeemCount,
                 status = domain.status,
             )
         }

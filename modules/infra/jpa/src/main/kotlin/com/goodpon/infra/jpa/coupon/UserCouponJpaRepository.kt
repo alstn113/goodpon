@@ -1,6 +1,6 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.CouponStatus
+import com.goodpon.core.domain.coupon.user.UserCouponStatus
 import jakarta.persistence.LockModeType
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Lock
@@ -15,5 +15,5 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
 
     fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean
 
-    fun findByStatusAndExpiresAtLessThanEqual(status: CouponStatus, expiresAt: LocalDateTime): List<UserCouponEntity>
+    fun findByStatusAndExpiresAtLessThanEqual(status: UserCouponStatus, expiresAt: LocalDateTime): List<UserCouponEntity>
 }

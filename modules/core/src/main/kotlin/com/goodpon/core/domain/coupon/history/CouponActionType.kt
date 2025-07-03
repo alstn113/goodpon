@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.coupon
+package com.goodpon.core.domain.coupon.history
 
 enum class CouponActionType {
     ISSUE,

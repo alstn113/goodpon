@@ -1,6 +1,6 @@
 package com.goodpon.core.domain.legacy
 
-import com.goodpon.core.domain.coupon.vo.CouponPeriod
+import com.goodpon.core.domain.coupon.template.vo.CouponPeriod
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe

@@ -1,8 +1,8 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.CouponStatus
-import com.goodpon.core.domain.coupon.UserCoupon
-import com.goodpon.core.domain.coupon.UserCouponRepository
+import com.goodpon.core.domain.coupon.user.UserCouponStatus
+import com.goodpon.core.domain.coupon.user.UserCoupon
+import com.goodpon.core.domain.coupon.user.UserCouponRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
@@ -40,7 +40,7 @@ class UserCouponCoreRepository(
     }
 
     override fun findByStatusAndExpiresAtLessThanEqual(
-        status: CouponStatus,
+        status: UserCouponStatus,
         expiresAt: LocalDateTime,
     ): List<UserCoupon> {
         return userCouponJpaRepository.findByStatusAndExpiresAtLessThanEqual(status, expiresAt)

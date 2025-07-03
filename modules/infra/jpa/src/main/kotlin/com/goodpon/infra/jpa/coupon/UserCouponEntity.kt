@@ -1,7 +1,7 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.CouponStatus
-import com.goodpon.core.domain.coupon.UserCoupon
+import com.goodpon.core.domain.coupon.user.UserCouponStatus
+import com.goodpon.core.domain.coupon.user.UserCoupon
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -28,7 +28,7 @@ class UserCouponEntity(
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    var status: CouponStatus,
+    var status: UserCouponStatus,
 
     @Column(nullable = false)
     var issuedAt: LocalDateTime,

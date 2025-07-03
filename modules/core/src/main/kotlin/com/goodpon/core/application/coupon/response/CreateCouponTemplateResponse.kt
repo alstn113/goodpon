@@ -1,8 +1,8 @@
 package com.goodpon.core.application.coupon.response
 
-import com.goodpon.core.domain.coupon.CouponTemplate
-import com.goodpon.core.domain.coupon.vo.CouponDiscountType
-import com.goodpon.core.domain.coupon.vo.CouponLimitType
+import com.goodpon.core.domain.coupon.template.CouponTemplate
+import com.goodpon.core.domain.coupon.template.vo.CouponDiscountType
+import com.goodpon.core.domain.coupon.template.vo.CouponLimitPolicyType
 import java.time.LocalDateTime
 
 data class CreateCouponTemplateResponse(
@@ -18,9 +18,9 @@ data class CreateCouponTemplateResponse(
     val issueEndAt: LocalDateTime?,
     val validityDays: Int?,
     val absoluteExpiresAt: LocalDateTime?,
-    val limitType: CouponLimitType,
-    val maxIssueLimit: Long?,
-    val maxRedeemLimit: Long?,
+    val limitType: CouponLimitPolicyType,
+    val maxIssueCount: Long?,
+    val maxRedeemCount: Long?,
 ) {
     companion object {
         fun from(couponTemplate: CouponTemplate): CreateCouponTemplateResponse {
@@ -38,8 +38,8 @@ data class CreateCouponTemplateResponse(
                 validityDays = couponTemplate.period.validityDays,
                 absoluteExpiresAt = couponTemplate.period.absoluteExpiresAt,
                 limitType = couponTemplate.limitPolicy.limitType,
-                maxIssueLimit = couponTemplate.limitPolicy.maxIssueLimit,
-                maxRedeemLimit = couponTemplate.limitPolicy.maxRedeemLimit,
+                maxIssueCount = couponTemplate.limitPolicy.maxIssueCount,
+                maxRedeemCount = couponTemplate.limitPolicy.maxRedeemCount,
             )
         }
     }

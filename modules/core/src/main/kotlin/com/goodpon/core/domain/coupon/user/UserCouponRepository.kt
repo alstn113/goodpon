@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.coupon
+package com.goodpon.core.domain.coupon.user
 
 import java.time.LocalDateTime
 
@@ -8,7 +8,7 @@ interface UserCouponRepository {
     fun findByIdForUpdate(id: String): UserCoupon?
     fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean
     fun findByStatusAndExpiresAtLessThanEqual(
-        status: CouponStatus,
+        status: UserCouponStatus,
         expiresAt: LocalDateTime,
     ): List<UserCoupon>
 }

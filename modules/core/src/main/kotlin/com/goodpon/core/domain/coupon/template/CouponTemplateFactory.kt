@@ -1,6 +1,6 @@
-package com.goodpon.core.domain.coupon
+package com.goodpon.core.domain.coupon.template
 
-import com.goodpon.core.domain.coupon.vo.*
+import com.goodpon.core.domain.coupon.template.vo.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -17,9 +17,9 @@ object CouponTemplateFactory {
         issueEndDate: LocalDate?,
         validityDays: Int?,
         expiryDate: LocalDate?,
-        limitType: CouponLimitType,
-        maxIssueLimit: Long? = null,
-        maxRedeemLimit: Long? = null,
+        limitType: CouponLimitPolicyType,
+        maxIssueCount: Long? = null,
+        maxRedeemCount: Long? = null,
     ): CouponTemplate {
         val redemptionCondition = CouponRedemptionCondition(minOrderAmount = minOrderAmount)
         val discountPolicy = CouponDiscountPolicy(
@@ -35,8 +35,8 @@ object CouponTemplateFactory {
         )
         val limitPolicy = CouponLimitPolicy(
             limitType = limitType,
-            maxIssueLimit = maxIssueLimit,
-            maxRedeemLimit = maxRedeemLimit
+            maxIssueCount = maxIssueCount,
+            maxRedeemCount = maxRedeemCount
         )
 
         return CouponTemplate(
@@ -65,9 +65,9 @@ object CouponTemplateFactory {
         issueEndAt: LocalDateTime?,
         validityDays: Int?,
         absoluteExpiresAt: LocalDateTime?,
-        limitType: CouponLimitType,
-        maxIssueLimit: Long? = null,
-        maxRedeemLimit: Long? = null,
+        limitType: CouponLimitPolicyType,
+        maxIssueCount: Long? = null,
+        maxRedeemCount: Long? = null,
         status: CouponTemplateStatus,
     ): CouponTemplate {
         return CouponTemplate(
@@ -78,7 +78,7 @@ object CouponTemplateFactory {
             redemptionCondition = CouponRedemptionCondition(minOrderAmount),
             discountPolicy = CouponDiscountPolicy(discountType, discountValue, maxDiscountAmount),
             period = CouponPeriod(issueStartAt, issueEndAt, validityDays, absoluteExpiresAt),
-            limitPolicy = CouponLimitPolicy(limitType, maxIssueLimit, maxRedeemLimit),
+            limitPolicy = CouponLimitPolicy(limitType, maxIssueCount, maxRedeemCount),
             status = status,
         )
     }

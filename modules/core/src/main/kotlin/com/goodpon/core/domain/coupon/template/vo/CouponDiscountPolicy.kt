@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.coupon.vo
+package com.goodpon.core.domain.coupon.template.vo
 
 import com.goodpon.core.support.error.CoreException
 import com.goodpon.core.support.error.ErrorType
