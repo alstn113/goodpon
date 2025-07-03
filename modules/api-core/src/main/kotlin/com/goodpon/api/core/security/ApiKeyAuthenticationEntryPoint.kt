@@ -16,7 +16,6 @@ class ApiKeyAuthenticationEntryPoint(
     private val objectMapper: ObjectMapper,
     private val traceIdProvider: TraceIdProvider,
 ) : AuthenticationEntryPoint {
-
     override fun commence(
         request: HttpServletRequest,
         response: HttpServletResponse,

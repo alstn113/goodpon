@@ -2,9 +2,8 @@ package com.goodpon.core.application.account
 
 import com.goodpon.core.application.account.response.AccountInfo
 import com.goodpon.core.application.auth.request.SignUpRequest
-import com.goodpon.core.domain.account.AccountReader
-import com.goodpon.core.domain.account.AccountRegistrationService
-import com.goodpon.core.domain.auth.VerificationEmailRequestedEvent
+import com.goodpon.core.domain.account.service.AccountRegistrationService
+import com.goodpon.core.application.auth.VerificationEmailRequestedEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +14,6 @@ class AccountService(
     private val eventPublisher: ApplicationEventPublisher,
     private val accountReader: AccountReader,
 ) {
-
     @Transactional(readOnly = true)
     fun getAccountInfo(accountId: Long): AccountInfo {
         val account = accountReader.readById(accountId)

@@ -23,13 +23,12 @@ class AccountEntity(
     @Column
     var verifiedAt: LocalDateTime?,
 ) : AuditableEntity() {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
     fun toDomain(): Account {
-        return Account(
+        return Account.reconstruct(
             id = id,
             email = email,
             password = password,

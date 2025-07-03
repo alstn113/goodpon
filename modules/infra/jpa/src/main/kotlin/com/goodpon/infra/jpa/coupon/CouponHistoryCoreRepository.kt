@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository
 class CouponHistoryCoreRepository(
     private val couponHistoryJpaRepository: CouponHistoryJpaRepository,
 ) : CouponHistoryRepository {
-
     override fun save(couponHistory: CouponHistory): CouponHistory {
         val entity = couponHistoryJpaRepository.findByIdOrNull(couponHistory.id)
         if (entity == null) {

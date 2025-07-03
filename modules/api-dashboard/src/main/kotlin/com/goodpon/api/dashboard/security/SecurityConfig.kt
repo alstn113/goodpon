@@ -25,7 +25,6 @@ class SecurityConfig(
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val accessDeniedHandler: JwtAccessDeniedHandler,
 ) {
-
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         val jwtAuthenticationFilter = JwtAuthenticationFilter(
@@ -35,7 +34,7 @@ class SecurityConfig(
         )
 
         val accountVerifierFilter = AccountVerifiedFilter(
-            allowListPaths = listOf(
+            allowListPatterns = listOf(
                 "/v1/auth/login",
                 "/v1/auth/verify",
                 "/v1/auth/verify/resend",

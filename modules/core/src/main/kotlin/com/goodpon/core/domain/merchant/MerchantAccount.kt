@@ -6,9 +6,7 @@ data class MerchantAccount private constructor(
     val accountId: Long,
     val role: MerchantAccountRole,
 ) {
-
     companion object {
-
         fun createOwner(merchantId: Long, accountId: Long): MerchantAccount {
             return MerchantAccount(
                 merchantId = merchantId,

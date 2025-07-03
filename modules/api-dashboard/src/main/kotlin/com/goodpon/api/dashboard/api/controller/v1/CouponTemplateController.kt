@@ -4,7 +4,7 @@ import com.goodpon.api.dashboard.api.controller.v1.request.CreateCouponTemplateW
 import com.goodpon.api.dashboard.api.response.ApiResponse
 import com.goodpon.core.application.coupon.CouponTemplateService
 import com.goodpon.core.application.coupon.response.CreateCouponTemplateResponse
-import com.goodpon.core.domain.auth.AccountPrincipal
+import com.goodpon.core.application.auth.AccountPrincipal
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*
 class CouponTemplateController(
     private val couponTemplateService: CouponTemplateService,
 ) {
-
     @PostMapping("/v1/merchant/{merchantId}/coupon-templates")
     fun createCouponTemplate(
         @PathVariable merchantId: Long,

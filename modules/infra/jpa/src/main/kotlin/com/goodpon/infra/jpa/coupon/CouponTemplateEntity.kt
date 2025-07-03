@@ -59,7 +59,6 @@ class CouponTemplateEntity(
     @Enumerated(EnumType.STRING)
     var status: CouponTemplateStatus,
 ) : AuditableEntity() {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
@@ -90,7 +89,6 @@ class CouponTemplateEntity(
     }
 
     companion object {
-
         fun fromDomain(domain: CouponTemplate): CouponTemplateEntity {
             return CouponTemplateEntity(
                 merchantId = domain.merchantId,

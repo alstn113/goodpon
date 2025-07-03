@@ -7,9 +7,9 @@ import com.goodpon.api.core.api.response.ApiResponse
 import com.goodpon.core.application.coupon.CouponCancelRedemptionService
 import com.goodpon.core.application.coupon.CouponIssueService
 import com.goodpon.core.application.coupon.CouponRedeemService
-import com.goodpon.core.domain.auth.MerchantPrincipal
-import com.goodpon.core.domain.coupon.CouponIssueResult
-import com.goodpon.core.domain.coupon.CouponRedemptionResult
+import com.goodpon.core.application.auth.MerchantPrincipal
+import com.goodpon.core.domain.coupon.service.CouponIssueResult
+import com.goodpon.core.domain.coupon.service.CouponRedemptionResult
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,7 +23,6 @@ class CouponController(
     private val couponRedeemService: CouponRedeemService,
     private val couponCancelRedemptionService: CouponCancelRedemptionService,
 ) {
-
     @PostMapping("/v1/coupons/issue")
     fun issueCoupon(
         @RequestBody request: IssueCouponWebRequest,

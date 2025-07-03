@@ -9,9 +9,7 @@ data class EmailVerification private constructor(
     val name: String,
     val createdAt: LocalDateTime = LocalDateTime.now(),
 ) {
-
     companion object {
-
         fun create(accountId: Long, token: String, email: String, name: String): EmailVerification {
             return EmailVerification(
                 accountId = accountId,

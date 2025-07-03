@@ -9,7 +9,6 @@ import java.time.LocalDateTime
 class CouponExpireScheduler(
     private val couponExpireBatchService: CouponExpireBatchService,
 ) {
-
     @Scheduled(cron = "0 0 0 * * *")
     fun runExpireBatch() {
         couponExpireBatchService.expireCouponsAndTemplates(LocalDateTime.now())

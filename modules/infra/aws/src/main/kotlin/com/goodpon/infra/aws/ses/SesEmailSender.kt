@@ -10,7 +10,6 @@ class SesEmailSender(
     private val sesV2Client: SesV2Client,
     private val templateRenderer: ThymeleafEmailTemplateRenderer,
 ) : EmailSender {
-
     override fun sendVerificationEmail(name: String, email: String, verificationLink: String) {
         val htmlContent = templateRenderer.render(
             "email-verification",

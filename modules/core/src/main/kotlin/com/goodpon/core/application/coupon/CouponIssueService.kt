@@ -1,7 +1,8 @@
 package com.goodpon.core.application.coupon
 
 import com.goodpon.core.application.coupon.request.IssueCouponRequest
-import com.goodpon.core.domain.coupon.*
+import com.goodpon.core.domain.coupon.service.CouponIssueResult
+import com.goodpon.core.domain.coupon.service.CouponIssuer
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -15,7 +16,6 @@ class CouponIssueService(
     private val couponTemplateStatsUpdater: CouponTemplateStatsUpdater,
     private val couponIssuer: CouponIssuer,
 ) {
-
     @Transactional
     fun issueCoupon(request: IssueCouponRequest): CouponIssueResult {
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(request.couponTemplateId)

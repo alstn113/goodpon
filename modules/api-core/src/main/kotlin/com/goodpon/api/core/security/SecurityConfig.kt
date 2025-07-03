@@ -22,7 +22,6 @@ class SecurityConfig(
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val accessDeniedHandler: AccessDeniedHandler,
 ) {
-
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         val apiKeyAuthenticationFilter = ApiKeyAuthenticationFilter(

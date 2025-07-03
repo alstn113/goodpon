@@ -3,7 +3,6 @@ package com.goodpon.core.domain.coupon
 import java.time.LocalDateTime
 
 interface UserCouponRepository {
-
     fun save(userCoupon: UserCoupon): UserCoupon
     fun saveAll(userCoupons: List<UserCoupon>): List<UserCoupon>
     fun findByIdForUpdate(id: String): UserCoupon?

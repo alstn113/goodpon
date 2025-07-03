@@ -12,7 +12,6 @@ data class UserCoupon private constructor(
     val redeemedAt: LocalDateTime?,
     val expiresAt: LocalDateTime?,
 ) {
-
     fun redeem(now: LocalDateTime = LocalDateTime.now()): UserCoupon {
         if (status != CouponStatus.ISSUED) {
             throw IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다. 현재 상태: $status")

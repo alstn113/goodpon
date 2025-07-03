@@ -1,7 +1,6 @@
 package com.goodpon.core.domain.coupon.vo
 
 enum class CouponTemplateStatus {
-
     DRAFT,
     ISSUABLE,
     EXPIRED,

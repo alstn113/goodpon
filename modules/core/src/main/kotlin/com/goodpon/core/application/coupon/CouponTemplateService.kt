@@ -3,8 +3,8 @@ package com.goodpon.core.application.coupon
 import com.goodpon.core.application.coupon.request.CreateCouponTemplateRequest
 import com.goodpon.core.application.coupon.response.CreateCouponTemplateResponse
 import com.goodpon.core.domain.coupon.CouponTemplateRepository
-import com.goodpon.core.domain.merchant.MerchantAccountReader
-import com.goodpon.core.domain.merchant.MerchantReader
+import com.goodpon.core.application.merchant.MerchantAccountReader
+import com.goodpon.core.application.merchant.MerchantReader
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,7 +14,6 @@ class CouponTemplateService(
     private val merchantReader: MerchantReader,
     private val merchantAccountReader: MerchantAccountReader,
 ) {
-
     @Transactional
     fun createCouponTemplate(request: CreateCouponTemplateRequest): CreateCouponTemplateResponse {
         merchantReader.readById(request.merchantId)

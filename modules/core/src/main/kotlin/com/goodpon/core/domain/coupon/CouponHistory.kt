@@ -11,9 +11,7 @@ data class CouponHistory private constructor(
     val reason: String? = null,
     val recordedAt: LocalDateTime,
 ) {
-
     companion object {
-
         fun issued(
             userCouponId: String,
             now: LocalDateTime = LocalDateTime.now(),

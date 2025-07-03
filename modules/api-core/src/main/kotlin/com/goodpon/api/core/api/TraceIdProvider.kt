@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component
 class TraceIdProvider(
     private val tracer: Tracer,
 ) {
-
     fun getTraceId(): String {
         return tracer.currentSpan()?.context()?.traceId() ?: "N/A"
     }

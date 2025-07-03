@@ -1,6 +1,6 @@
 package com.goodpon.infra.security.token
 
-import com.goodpon.core.domain.auth.MerchantPrincipal
+import com.goodpon.core.application.auth.MerchantPrincipal
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
@@ -8,7 +8,6 @@ data class ApiKeyAuthenticationToken private constructor(
     private val merchantPrincipal: MerchantPrincipal,
     private val authorities: Collection<GrantedAuthority> = emptyList(),
 ) : AbstractAuthenticationToken(authorities) {
-
     init {
         isAuthenticated = true
     }

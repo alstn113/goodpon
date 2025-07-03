@@ -1,6 +1,6 @@
 package com.goodpon.core.application.coupon.request
 
-import com.goodpon.core.domain.auth.MerchantPrincipal
+import com.goodpon.core.application.auth.MerchantPrincipal
 
 data class CancelCouponRedemptionRequest(
     val couponId: String,

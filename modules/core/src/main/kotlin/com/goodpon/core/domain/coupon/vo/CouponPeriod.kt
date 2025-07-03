@@ -9,7 +9,6 @@ data class CouponPeriod(
     val validityDays: Int? = null,
     val absoluteExpiresAt: LocalDateTime? = null,
 ) {
-
     init {
         validateDateRanges(issueStartAt, issueEndAt, absoluteExpiresAt)
         validateValidityDays(validityDays)

@@ -3,7 +3,6 @@ package com.goodpon.core.domain.coupon.vo
 import java.time.LocalDate
 
 object CouponPeriodFactory {
-
     fun create(
         issueStartDate: LocalDate,
         issueEndDate: LocalDate? = null,

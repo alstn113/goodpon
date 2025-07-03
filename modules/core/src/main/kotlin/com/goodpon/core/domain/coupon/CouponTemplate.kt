@@ -15,7 +15,6 @@ data class CouponTemplate(
     val limitPolicy: CouponLimitPolicy,
     val status: CouponTemplateStatus,
 ) {
-
     fun validateIssue(issueCount: Long, now: LocalDateTime = LocalDateTime.now()): Result<Unit> {
         if (!period.isIssuable(now)) {
             return Result.failure(IllegalStateException("쿠폰을 발급할 수 있는 기간이 아닙니다."))

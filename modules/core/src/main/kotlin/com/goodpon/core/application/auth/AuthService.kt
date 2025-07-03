@@ -1,16 +1,15 @@
 package com.goodpon.core.application.auth
 
+import com.goodpon.core.application.account.AccountReader
+import com.goodpon.core.application.account.AccountUpdater
 import com.goodpon.core.application.auth.request.LoginRequest
 import com.goodpon.core.application.auth.response.LoginResponse
-import com.goodpon.core.domain.account.AccountReader
-import com.goodpon.core.domain.account.AccountUpdater
 import com.goodpon.core.domain.account.PasswordEncoder
 import com.goodpon.core.domain.auth.EmailVerificationRepository
-import com.goodpon.core.domain.auth.TokenProvider
-import com.goodpon.core.domain.auth.VerificationEmailRequestedEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 class AuthService(
@@ -21,7 +20,6 @@ class AuthService(
     private val accountUpdater: AccountUpdater,
     private val eventPublisher: ApplicationEventPublisher,
 ) {
-
     @Transactional
     fun login(request: LoginRequest): LoginResponse {
         val account = accountReader.readByEmail(request.email)
@@ -41,10 +39,14 @@ class AuthService(
     }
 
     fun verifyEmail(token: String) {
+        val now = LocalDateTime.now()
         val verification = emailVerificationRepository.findByToken(token)
             ?: throw IllegalArgumentException("Invalid or expired verification token")
 
-        accountUpdater.verifyEmail(verification.accountId)
+        accountUpdater.verifyEmail(
+            accountId = verification.accountId,
+            verifiedAt = now
+        )
         emailVerificationRepository.delete(token = token, accountId = verification.accountId)
     }
 

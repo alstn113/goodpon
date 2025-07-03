@@ -5,7 +5,6 @@ data class CouponLimitPolicy(
     val maxIssueLimit: Long? = null,
     val maxRedeemLimit: Long? = null,
 ) {
-
     init {
         when (limitType) {
             CouponLimitType.ISSUE_COUNT -> {

@@ -9,7 +9,6 @@ data class ApiResponse<T> private constructor(
     val data: T? = null,
     val error: ErrorMessage? = null,
 ) {
-
     companion object {
         fun success(): ApiResponse<Unit> {
             return ApiResponse(ResultType.SUCCESS, null, null)

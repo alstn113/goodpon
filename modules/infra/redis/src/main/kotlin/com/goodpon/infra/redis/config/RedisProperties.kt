@@ -10,7 +10,6 @@ data class RedisProperties(
     @field:NotNull val port: Int,
     @field:NotNull val ssl: SSL,
 ) {
-
     data class SSL(
         @field:NotNull val enabled: Boolean,
     )

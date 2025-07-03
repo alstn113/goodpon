@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class BCryptPasswordEncoder : PasswordEncoder {
-
     override fun encode(rawPassword: String): String {
         return BCrypt.hashpw(rawPassword, BCrypt.gensalt())
     }

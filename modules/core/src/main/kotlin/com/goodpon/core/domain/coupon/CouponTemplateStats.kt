@@ -5,7 +5,6 @@ data class CouponTemplateStats(
     val issueCount: Long,
     val redeemCount: Long,
 ) {
-
     fun incrementIssueCount(): CouponTemplateStats {
         return this.copy(issueCount = issueCount + 1)
     }

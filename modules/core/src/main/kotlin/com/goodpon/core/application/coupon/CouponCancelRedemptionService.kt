@@ -1,7 +1,8 @@
 package com.goodpon.core.application.coupon
 
 import com.goodpon.core.application.coupon.request.CancelCouponRedemptionRequest
-import com.goodpon.core.domain.coupon.*
+import com.goodpon.core.domain.coupon.service.CouponCancelRedemptionResult
+import com.goodpon.core.domain.coupon.service.CouponRedemptionCanceler
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -14,7 +15,6 @@ class CouponCancelRedemptionService(
     private val couponTemplateStatsUpdater: CouponTemplateStatsUpdater,
     private val couponRedemptionCanceler: CouponRedemptionCanceler,
 ) {
-
     @Transactional
     fun cancelCouponRedemption(request: CancelCouponRedemptionRequest): CouponCancelRedemptionResult {
         val userCoupon = userCouponReader.readByIdForUpdate(request.couponId)

@@ -1,6 +1,6 @@
 package com.goodpon.infra.security.jwt
 
-import com.goodpon.core.domain.auth.TokenProvider
+import com.goodpon.core.application.auth.TokenProvider
 import com.goodpon.infra.security.exception.BlankTokenException
 import com.goodpon.infra.security.exception.InvalidTokenException
 import com.goodpon.infra.security.exception.TokenExpiredException
@@ -16,7 +16,6 @@ import java.util.*
 class JwtTokenProvider(
     private val properties: JwtTokenProperties,
 ) : TokenProvider {
-
     private val accessTokenSecretKey = Keys.hmacShaKeyFor(properties.accessTokenSecretKey.toByteArray())
     private val accessTokenExpirationTime = properties.accessTokenExpirationTime
 

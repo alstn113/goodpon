@@ -1,7 +1,7 @@
 package com.goodpon.api.dashboard.api.controller.v1.request
 
 import com.goodpon.core.application.coupon.request.CreateCouponTemplateRequest
-import com.goodpon.core.domain.auth.AccountPrincipal
+import com.goodpon.core.application.auth.AccountPrincipal
 import com.goodpon.core.domain.coupon.vo.CouponDiscountType
 import com.goodpon.core.domain.coupon.vo.CouponLimitType
 import java.time.LocalDate
@@ -21,7 +21,6 @@ data class CreateCouponTemplateWebRequest(
     val maxIssueLimit: Long?,
     val maxRedeemLimit: Long?,
 ) {
-
     fun toAppRequest(merchantId: Long, accountPrincipal: AccountPrincipal): CreateCouponTemplateRequest {
         return CreateCouponTemplateRequest(
             name = name,

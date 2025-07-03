@@ -11,7 +11,6 @@ import java.time.LocalDateTime
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class AuditableEntity {
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.MIN

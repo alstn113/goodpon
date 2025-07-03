@@ -1,7 +1,6 @@
 package com.goodpon.core.domain.coupon.vo
 
 enum class CouponLimitType {
-
     NONE,
     ISSUE_COUNT,
     REDEEM_COUNT,

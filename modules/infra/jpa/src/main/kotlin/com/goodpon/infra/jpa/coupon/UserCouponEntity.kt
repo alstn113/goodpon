@@ -39,7 +39,6 @@ class UserCouponEntity(
     @Column(nullable = true)
     var redeemedAt: LocalDateTime?,
 ) : AuditableEntity() {
-
     fun toDomain(): UserCoupon {
         return UserCoupon.reconstruct(
             id = id,

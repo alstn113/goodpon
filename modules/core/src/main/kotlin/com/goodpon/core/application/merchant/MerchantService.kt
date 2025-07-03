@@ -4,9 +4,7 @@ import com.goodpon.core.application.merchant.request.CreateMerchantRequest
 import com.goodpon.core.application.merchant.response.CreateMerchantResponse
 import com.goodpon.core.application.merchant.response.MerchantAccountInfo
 import com.goodpon.core.application.merchant.response.MerchantInfo
-import com.goodpon.core.domain.account.AccountReader
-import com.goodpon.core.domain.merchant.MerchantAppender
-import com.goodpon.core.domain.merchant.MerchantReader
+import com.goodpon.core.application.account.AccountReader
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,7 +14,6 @@ class MerchantService(
     private val accountReader: AccountReader,
     private val merchantAppender: MerchantAppender,
 ) {
-
     @Transactional(readOnly = true)
     fun getMerchantInfoBySecretKey(secretKey: String): MerchantInfo {
         val merchant = merchantReader.readBySecretKey(secretKey)
