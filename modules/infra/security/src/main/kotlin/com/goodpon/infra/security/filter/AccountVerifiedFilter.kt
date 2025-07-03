@@ -7,14 +7,18 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 
 class AccountVerifiedFilter(
-    private val allowListPaths: List<String> = emptyList(),
+    private val allowListPatterns: List<String> = emptyList(),
 ) : OncePerRequestFilter() {
 
+    private val pathMatcher = AntPathMatcher()
+
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
-        return allowListPaths.any { request.requestURI.startsWith(it) }
+        val requestUri = request.requestURI
+        return allowListPatterns.any { pattern -> pathMatcher.match(pattern, requestUri) }
     }
 
     override fun doFilterInternal(
@@ -27,8 +31,8 @@ class AccountVerifiedFilter(
             throw BadCredentialsException("유효하지 않은 인증입니다.")
         }
 
-        val isVerified = !authentication.principal.verified
-        if (isVerified) {
+        val isNotVerified = !authentication.principal.verified
+        if (isNotVerified) {
             throw AccessDeniedException("계정이 인증되지 않았습니다.")
         }
 
