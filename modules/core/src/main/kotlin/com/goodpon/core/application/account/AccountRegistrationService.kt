@@ -1,9 +1,9 @@
-package com.goodpon.core.domain.account.service
+package com.goodpon.core.application.account
 
 import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.AccountRepository
 import com.goodpon.core.domain.account.PasswordEncoder
-import com.goodpon.core.domain.account.exception.AccountEmailExistsException
+import com.goodpon.core.application.account.exception.AccountEmailExistsException
 import org.springframework.stereotype.Component
 
 @Component
