@@ -33,7 +33,7 @@ class CouponRedemptionCanceler(
         )
         couponHistoryRepository.save(cancelHistory)
 
-        if (canceledCoupon.isExpired(cancelAt)) {
+        if (canceledCoupon.hasExpired(cancelAt)) {
             val expiredCoupon = canceledCoupon.expire()
             userCouponRepository.save(expiredCoupon)
 

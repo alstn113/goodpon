@@ -1,5 +1,9 @@
 package com.goodpon.core.domain.coupon.user
 
+import com.goodpon.core.domain.coupon.user.exception.UserCouponCancelNotAllowedException
+import com.goodpon.core.domain.coupon.user.exception.UserCouponExpireNotAllowedException
+import com.goodpon.core.domain.coupon.user.exception.UserCouponExpiredException
+import com.goodpon.core.domain.coupon.user.exception.UserCouponRedeemNotAllowedException
 import java.time.LocalDateTime
 import java.util.*
 
@@ -14,19 +18,26 @@ data class UserCoupon private constructor(
 ) {
     fun redeem(redeemAt: LocalDateTime): UserCoupon {
         if (status != UserCouponStatus.ISSUED) {
-            throw IllegalStateException("쿠폰을 사용할 수 있는 상태가 아닙니다. 현재 상태: $status")
+            throw UserCouponRedeemNotAllowedException()
         }
 
-        if (isExpired(redeemAt)) {
-            throw IllegalStateException("쿠폰 사용 기간이 만료되었습니다. 만료일: $expiresAt, 현재일: $redeemAt")
+        if (hasExpired(redeemAt)) {
+            throw UserCouponExpiredException()
         }
 
         return copy(redeemedAt = redeemAt, status = UserCouponStatus.REDEEMED)
     }
 
+    fun hasExpired(now: LocalDateTime): Boolean {
+        if (expiresAt == null) {
+            return false
+        }
+        return expiresAt <= now
+    }
+
     fun cancelRedemption(): UserCoupon {
         if (status != UserCouponStatus.REDEEMED) {
-            throw IllegalStateException("쿠폰이 사용되지 않았거나 이미 취소되었습니다.")
+            throw UserCouponCancelNotAllowedException()
         }
 
         return copy(redeemedAt = null, status = UserCouponStatus.ISSUED)
@@ -34,7 +45,7 @@ data class UserCoupon private constructor(
 
     fun expire(): UserCoupon {
         if (status != UserCouponStatus.ISSUED) {
-            throw IllegalStateException("쿠폰이 만료될 수 있는 상태가 아닙니다. 현재 상태: $status")
+            throw UserCouponExpireNotAllowedException()
         }
 
         return this.copy(status = UserCouponStatus.EXPIRED)
@@ -42,14 +53,6 @@ data class UserCoupon private constructor(
 
     fun isOwnedBy(userId: String): Boolean {
         return this.userId == userId
-    }
-
-
-    fun isExpired(now: LocalDateTime): Boolean {
-        if (expiresAt == null) {
-            return false
-        }
-        return expiresAt <= now
     }
 
     companion object {
