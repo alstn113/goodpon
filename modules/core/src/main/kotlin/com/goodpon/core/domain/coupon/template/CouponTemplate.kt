@@ -44,8 +44,8 @@ data class CouponTemplate(
         return this.merchantId == merchantId
     }
 
-    fun calculateExpiresAt(issueAt: LocalDate): LocalDateTime? {
-        return period.calculateExpiresAt(issueAt)
+    fun calculateExpiresAt(issueDate: LocalDate): LocalDateTime? {
+        return period.calculateExpiresAt(issueDate)
     }
 
     fun calculateDiscountAmount(orderAmount: Int): Int {

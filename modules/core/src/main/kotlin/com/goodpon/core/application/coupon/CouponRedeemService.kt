@@ -1,8 +1,6 @@
 package com.goodpon.core.application.coupon
 
 import com.goodpon.core.application.coupon.request.RedeemCouponRequest
-import com.goodpon.core.domain.coupon.service.CouponRedeemer
-import com.goodpon.core.domain.coupon.service.CouponRedemptionResult
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime

@@ -5,7 +5,6 @@ import com.goodpon.core.domain.coupon.user.exception.UserCouponExpireNotAllowedE
 import com.goodpon.core.domain.coupon.user.exception.UserCouponExpiredException
 import com.goodpon.core.domain.coupon.user.exception.UserCouponRedeemNotAllowedException
 import java.time.LocalDateTime
-import java.util.*
 
 data class UserCoupon private constructor(
     val id: String,
@@ -56,15 +55,15 @@ data class UserCoupon private constructor(
     }
 
     companion object {
-
         fun issue(
+            id: String,
             userId: String,
             couponTemplateId: Long,
             expiresAt: LocalDateTime?,
             issueAt: LocalDateTime,
         ): UserCoupon {
             return UserCoupon(
-                id = UUID.randomUUID().toString().replace("-", ""),
+                id = id,
                 couponTemplateId = couponTemplateId,
                 userId = userId,
                 status = UserCouponStatus.ISSUED,

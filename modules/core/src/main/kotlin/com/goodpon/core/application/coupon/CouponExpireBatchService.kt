@@ -1,7 +1,5 @@
 package com.goodpon.core.application.coupon
 
-import com.goodpon.core.domain.coupon.history.CouponHistory
-import com.goodpon.core.domain.coupon.history.CouponHistoryRepository
 import com.goodpon.core.domain.coupon.template.CouponTemplateRepository
 import com.goodpon.core.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.core.domain.coupon.user.UserCouponRepository
@@ -13,7 +11,7 @@ import java.time.LocalDateTime
 @Service
 class CouponExpireBatchService(
     private val userCouponRepository: UserCouponRepository,
-    private val couponHistoryRepository: CouponHistoryRepository,
+    private val couponHistoryRecorder: CouponHistoryRecorder,
     private val couponTemplateRepository: CouponTemplateRepository,
 ) {
     @Transactional
@@ -27,8 +25,7 @@ class CouponExpireBatchService(
 
         couponsToExpire.forEach { coupon ->
             coupon.expire()
-            val history = CouponHistory.expired(userCouponId = coupon.id, recordedAt = now)
-            couponHistoryRepository.save(history)
+            couponHistoryRecorder.recordExpired(userCouponId = coupon.id, recordedAt = now)
         }
         userCouponRepository.saveAll(couponsToExpire)
 

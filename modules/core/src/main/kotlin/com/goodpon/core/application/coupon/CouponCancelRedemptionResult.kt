@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.coupon.service
+package com.goodpon.core.application.coupon
 
 import com.goodpon.core.domain.coupon.user.UserCouponStatus
 import java.time.LocalDateTime

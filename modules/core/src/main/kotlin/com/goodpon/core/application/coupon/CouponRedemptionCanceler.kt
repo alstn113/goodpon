@@ -1,10 +1,9 @@
-package com.goodpon.core.domain.coupon.service
+package com.goodpon.core.application.coupon
 
 import com.goodpon.core.domain.coupon.history.CouponActionType
 import com.goodpon.core.domain.coupon.history.CouponHistory
 import com.goodpon.core.domain.coupon.history.CouponHistoryRepository
 import com.goodpon.core.domain.coupon.user.UserCoupon
-import com.goodpon.core.domain.coupon.user.UserCouponRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -12,7 +11,8 @@ import java.time.LocalDateTime
 @Component
 class CouponRedemptionCanceler(
     val couponHistoryRepository: CouponHistoryRepository,
-    val userCouponRepository: UserCouponRepository,
+    val userCouponUpdater: UserCouponUpdater,
+    val couponHistoryRecorder: CouponHistoryRecorder,
 ) {
     @Transactional
     fun cancelRedemption(
@@ -22,26 +22,20 @@ class CouponRedemptionCanceler(
     ): CouponCancelRedemptionResult {
         val lastRedeemHistory = getLastRedeemHistory(userCoupon)
 
-        val canceledCoupon = userCoupon.cancelRedemption()
-        userCouponRepository.save(canceledCoupon)
-
-        val cancelHistory = CouponHistory.cancelRedemption(
-            userCouponId = userCoupon.id,
+        val canceledCoupon = userCouponUpdater.update(userCoupon.cancelRedemption())
+        couponHistoryRecorder.recordCancelRedemption(
+            userCouponId = canceledCoupon.id,
             orderId = lastRedeemHistory.orderId!!,
-            recordedAt = cancelAt,
-            reason = reason
+            reason = reason,
+            recordedAt = cancelAt
         )
-        couponHistoryRepository.save(cancelHistory)
 
         if (canceledCoupon.hasExpired(cancelAt)) {
-            val expiredCoupon = canceledCoupon.expire()
-            userCouponRepository.save(expiredCoupon)
-
-            val expiredHistory = CouponHistory.expired(
+            val expiredCoupon = userCouponUpdater.update(canceledCoupon.expire())
+            couponHistoryRecorder.recordExpired(
                 userCouponId = expiredCoupon.id,
                 recordedAt = cancelAt
             )
-            couponHistoryRepository.save(expiredHistory)
         }
 
         return CouponCancelRedemptionResult(

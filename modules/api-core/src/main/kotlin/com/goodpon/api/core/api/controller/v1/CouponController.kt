@@ -8,8 +8,8 @@ import com.goodpon.core.application.coupon.CouponCancelRedemptionService
 import com.goodpon.core.application.coupon.CouponIssueService
 import com.goodpon.core.application.coupon.CouponRedeemService
 import com.goodpon.core.application.auth.MerchantPrincipal
-import com.goodpon.core.domain.coupon.service.CouponIssueResult
-import com.goodpon.core.domain.coupon.service.CouponRedemptionResult
+import com.goodpon.core.application.coupon.CouponIssueResult
+import com.goodpon.core.application.coupon.CouponRedemptionResult
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PathVariable

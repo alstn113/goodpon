@@ -1,18 +1,15 @@
-package com.goodpon.core.domain.coupon.service
+package com.goodpon.core.application.coupon
 
-import com.goodpon.core.domain.coupon.history.CouponHistory
-import com.goodpon.core.domain.coupon.history.CouponHistoryRepository
 import com.goodpon.core.domain.coupon.template.CouponTemplate
 import com.goodpon.core.domain.coupon.user.UserCoupon
-import com.goodpon.core.domain.coupon.user.UserCouponRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Component
 class CouponRedeemer(
-    private val userCouponRepository: UserCouponRepository,
-    private val couponHistoryRepository: CouponHistoryRepository,
+    private val couponHistoryRecorder: CouponHistoryRecorder,
+    private val userCouponUpdater: UserCouponUpdater,
 ) {
     @Transactional
     fun redeemCoupon(
@@ -28,14 +25,12 @@ class CouponRedeemer(
         val discountAmount = couponTemplate.calculateDiscountAmount(orderAmount)
         val finalPrice = couponTemplate.calculateFinalPrice(orderAmount)
 
-        val redeemedCoupon = userCoupon.redeem(redeemAt = redeemAt)
-        userCouponRepository.save(redeemedCoupon)
-        val history = CouponHistory.redeemed(
+        val redeemedCoupon = userCouponUpdater.update(userCoupon.redeem(redeemAt = redeemAt))
+        couponHistoryRecorder.recordRedeemed(
             userCouponId = redeemedCoupon.id,
             orderId = orderId,
             recordedAt = redeemAt
         )
-        couponHistoryRepository.save(history)
 
         return CouponRedemptionResult(
             couponId = userCoupon.id,
