@@ -1,4 +1,4 @@
-package com.goodpon.core.application.coupon
+package com.goodpon.core.application.coupon.accessor
 
 import com.goodpon.core.domain.UniqueIdGenerator
 import com.goodpon.core.domain.coupon.user.UserCoupon
@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Component
-class UserCouponAppender(
+class UserCouponStore(
     private val userCouponRepository: UserCouponRepository,
     private val uniqueIdGenerator: UniqueIdGenerator,
 ) {
     @Transactional
-    fun append(
+    fun issueUserCoupon(
         userId: String,
         couponTemplateId: Long,
         issueAt: LocalDateTime,
@@ -26,6 +26,11 @@ class UserCouponAppender(
             expiresAt = expiresAt,
             issueAt = issueAt
         )
+        return userCouponRepository.save(userCoupon)
+    }
+
+    @Transactional
+    fun update(userCoupon: UserCoupon): UserCoupon {
         return userCouponRepository.save(userCoupon)
     }
 }

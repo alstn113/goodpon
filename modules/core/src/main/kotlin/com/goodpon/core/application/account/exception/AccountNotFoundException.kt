@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.account.exception
+package com.goodpon.core.application.account.exception
 
 import com.goodpon.core.support.error.BaseException
 

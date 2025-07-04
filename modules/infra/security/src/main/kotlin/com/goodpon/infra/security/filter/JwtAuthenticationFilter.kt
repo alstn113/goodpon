@@ -2,8 +2,6 @@ package com.goodpon.infra.security.filter
 
 import com.goodpon.core.application.account.AccountService
 import com.goodpon.core.application.account.response.AccountInfo
-import com.goodpon.core.support.error.CoreException
-import com.goodpon.core.support.error.ErrorType
 import com.goodpon.infra.security.jwt.JwtAuthenticationToken
 import com.goodpon.infra.security.jwt.JwtTokenProvider
 import com.goodpon.infra.security.exception.BlankTokenException

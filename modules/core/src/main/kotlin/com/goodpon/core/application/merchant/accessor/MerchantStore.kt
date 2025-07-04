@@ -1,4 +1,4 @@
-package com.goodpon.core.application.merchant
+package com.goodpon.core.application.merchant.accessor
 
 import com.goodpon.core.domain.UniqueIdGenerator
 import com.goodpon.core.domain.account.Account
@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-class MerchantAppender(
+class MerchantStore(
     private val merchantRepository: MerchantRepository,
     private val merchantAccountRepository: MerchantAccountRepository,
     private val uniqueIdGenerator: UniqueIdGenerator,
 ) {
     @Transactional
-    fun append(merchantName: String, account: Account): Pair<Merchant, MerchantAccount> {
+    fun createMerchant(merchantName: String, account: Account): Pair<Merchant, MerchantAccount> {
         val merchant = Merchant(name = merchantName, secretKey = uniqueIdGenerator.generate())
         val savedMerchant = merchantRepository.save(merchant)
 

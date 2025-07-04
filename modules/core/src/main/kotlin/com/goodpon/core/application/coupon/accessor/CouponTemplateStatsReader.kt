@@ -1,5 +1,6 @@
-package com.goodpon.core.application.coupon
+package com.goodpon.core.application.coupon.accessor
 
+import com.goodpon.core.application.coupon.exception.CouponTemplateStatsNotFoundException
 import com.goodpon.core.domain.coupon.stats.CouponTemplateStats
 import com.goodpon.core.domain.coupon.stats.CouponTemplateStatsRepository
 import org.springframework.stereotype.Component
@@ -12,6 +13,6 @@ class CouponTemplateStatsReader(
     @Transactional(readOnly = true)
     fun readByCouponTemplateIdForUpdate(couponTemplateId: Long): CouponTemplateStats {
         return couponTemplateStatsRepository.findByCouponTemplateIdForUpdate(couponTemplateId)
-            ?: throw IllegalArgumentException("쿠폰 템플릿 통계가 존재하지 않습니다.")
+            ?: throw CouponTemplateStatsNotFoundException()
     }
 }

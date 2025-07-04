@@ -1,4 +1,4 @@
-package com.goodpon.core.application.coupon
+package com.goodpon.core.application.coupon.accessor
 
 import com.goodpon.core.domain.coupon.stats.CouponTemplateStats
 import com.goodpon.core.domain.coupon.stats.CouponTemplateStatsRepository
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-class CouponTemplateStatsUpdater(
+class CouponTemplateStatsStore(
     private val couponTemplateStatsRepository: CouponTemplateStatsRepository,
 ) {
     @Transactional

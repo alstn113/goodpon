@@ -1,8 +1,8 @@
-package com.goodpon.core.application.coupon
+package com.goodpon.core.application.coupon.response
 
 import java.time.LocalDateTime
 
-data class CouponIssueResult(
+data class CouponIssueResultResponse(
     val userCouponId: String,
     val userId: String,
     val couponTemplateId: Long,

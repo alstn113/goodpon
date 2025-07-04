@@ -1,5 +1,7 @@
 package com.goodpon.core.application.coupon
 
+import com.goodpon.core.application.coupon.accessor.UserCouponStore
+import com.goodpon.core.application.coupon.response.CouponCancelRedemptionResultResponse
 import com.goodpon.core.domain.coupon.history.CouponActionType
 import com.goodpon.core.domain.coupon.history.CouponHistory
 import com.goodpon.core.domain.coupon.history.CouponHistoryRepository
@@ -11,7 +13,7 @@ import java.time.LocalDateTime
 @Component
 class CouponRedemptionCanceler(
     val couponHistoryRepository: CouponHistoryRepository,
-    val userCouponUpdater: UserCouponUpdater,
+    val userCouponStore: UserCouponStore,
     val couponHistoryRecorder: CouponHistoryRecorder,
 ) {
     @Transactional
@@ -19,10 +21,10 @@ class CouponRedemptionCanceler(
         userCoupon: UserCoupon,
         reason: String,
         cancelAt: LocalDateTime,
-    ): CouponCancelRedemptionResult {
+    ): CouponCancelRedemptionResultResponse {
         val lastRedeemHistory = getLastRedeemHistory(userCoupon)
 
-        val canceledCoupon = userCouponUpdater.update(userCoupon.cancelRedemption())
+        val canceledCoupon = userCouponStore.update(userCoupon.cancelRedemption())
         couponHistoryRecorder.recordCancelRedemption(
             userCouponId = canceledCoupon.id,
             orderId = lastRedeemHistory.orderId!!,
@@ -31,14 +33,14 @@ class CouponRedemptionCanceler(
         )
 
         if (canceledCoupon.hasExpired(cancelAt)) {
-            val expiredCoupon = userCouponUpdater.update(canceledCoupon.expire())
+            val expiredCoupon = userCouponStore.update(canceledCoupon.expire())
             couponHistoryRecorder.recordExpired(
                 userCouponId = expiredCoupon.id,
                 recordedAt = cancelAt
             )
         }
 
-        return CouponCancelRedemptionResult(
+        return CouponCancelRedemptionResultResponse(
             userCouponId = canceledCoupon.id,
             status = canceledCoupon.status,
             canceledAt = cancelAt,

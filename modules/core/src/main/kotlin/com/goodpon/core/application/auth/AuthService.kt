@@ -1,10 +1,13 @@
 package com.goodpon.core.application.auth
 
-import com.goodpon.core.application.account.AccountReader
-import com.goodpon.core.application.account.AccountUpdater
+import com.goodpon.core.application.account.AccountVerificationService
+import com.goodpon.core.application.account.accessor.AccountReader
+import com.goodpon.core.application.auth.exception.EmailVerificationNotFoundException
+import com.goodpon.core.application.auth.exception.PasswordMismatchException
 import com.goodpon.core.application.auth.request.LoginRequest
 import com.goodpon.core.application.auth.response.LoginResponse
 import com.goodpon.core.domain.account.PasswordEncoder
+import com.goodpon.core.domain.account.exception.AccountAlreadyVerifiedException
 import com.goodpon.core.domain.auth.EmailVerificationRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
@@ -17,14 +20,15 @@ class AuthService(
     private val passwordEncoder: PasswordEncoder,
     private val tokenProvider: TokenProvider,
     private val emailVerificationRepository: EmailVerificationRepository,
-    private val accountUpdater: AccountUpdater,
+    private val accountVerificationService: AccountVerificationService,
     private val eventPublisher: ApplicationEventPublisher,
 ) {
     @Transactional
     fun login(request: LoginRequest): LoginResponse {
         val account = accountReader.readByEmail(request.email)
+
         if (!passwordEncoder.matches(request.password, account.password.value)) {
-            throw IllegalArgumentException("Invalid email or password")
+            throw PasswordMismatchException()
         }
 
         val accessToken = tokenProvider.generateAccessToken(accountId = account.id)
@@ -38,15 +42,13 @@ class AuthService(
         )
     }
 
+    @Transactional
     fun verifyEmail(token: String) {
         val now = LocalDateTime.now()
         val verification = emailVerificationRepository.findByToken(token)
-            ?: throw IllegalArgumentException("Invalid or expired verification token")
+            ?: throw EmailVerificationNotFoundException()
 
-        accountUpdater.verifyEmail(
-            accountId = verification.accountId,
-            verifiedAt = now
-        )
+        accountVerificationService.verifyEmail(accountId = verification.accountId, verifiedAt = now)
         emailVerificationRepository.delete(token = token, accountId = verification.accountId)
     }
 
@@ -54,7 +56,7 @@ class AuthService(
     fun resendVerificationEmail(email: String) {
         val account = accountReader.readByEmail(email)
         if (account.verified) {
-            throw IllegalStateException("Account is already verified")
+            throw AccountAlreadyVerifiedException()
         }
 
         val event = VerificationEmailRequestedEvent(

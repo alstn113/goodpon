@@ -1,5 +1,6 @@
-package com.goodpon.core.application.account
+package com.goodpon.core.application.account.accessor
 
+import com.goodpon.core.application.account.exception.AccountNotFoundException
 import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.AccountRepository
 import org.springframework.stereotype.Component
@@ -12,12 +13,17 @@ class AccountReader(
     @Transactional(readOnly = true)
     fun readById(id: Long): Account {
         return accountRepository.findById(id)
-            ?: throw IllegalArgumentException("Account with id $id not found")
+            ?: throw AccountNotFoundException()
     }
 
     @Transactional(readOnly = true)
     fun readByEmail(email: String): Account {
         return accountRepository.findByEmail(email)
-            ?: throw IllegalArgumentException("Account with email $email not found")
+            ?: throw AccountNotFoundException()
+    }
+
+    @Transactional(readOnly = true)
+    fun existsByEmail(email: String): Boolean {
+        return accountRepository.existsByEmail(email)
     }
 }

@@ -1,5 +1,7 @@
 package com.goodpon.core.application.coupon
 
+import com.goodpon.core.application.coupon.accessor.UserCouponStore
+import com.goodpon.core.application.coupon.response.CouponRedemptionResultResponse
 import com.goodpon.core.domain.coupon.template.CouponTemplate
 import com.goodpon.core.domain.coupon.user.UserCoupon
 import org.springframework.stereotype.Component
@@ -9,7 +11,7 @@ import java.time.LocalDateTime
 @Component
 class CouponRedeemer(
     private val couponHistoryRecorder: CouponHistoryRecorder,
-    private val userCouponUpdater: UserCouponUpdater,
+    private val userCouponStore: UserCouponStore,
 ) {
     @Transactional
     fun redeemCoupon(
@@ -19,20 +21,20 @@ class CouponRedeemer(
         orderAmount: Int,
         orderId: String,
         redeemAt: LocalDateTime,
-    ): CouponRedemptionResult {
+    ): CouponRedemptionResultResponse {
         couponTemplate.validateRedeem(currentRedeemedCount = redeemCount, orderAmount = orderAmount)
 
         val discountAmount = couponTemplate.calculateDiscountAmount(orderAmount)
         val finalPrice = couponTemplate.calculateFinalPrice(orderAmount)
 
-        val redeemedCoupon = userCouponUpdater.update(userCoupon.redeem(redeemAt = redeemAt))
+        val redeemedCoupon = userCouponStore.update(userCoupon.redeem(redeemAt = redeemAt))
         couponHistoryRecorder.recordRedeemed(
             userCouponId = redeemedCoupon.id,
             orderId = orderId,
             recordedAt = redeemAt
         )
 
-        return CouponRedemptionResult(
+        return CouponRedemptionResultResponse(
             couponId = userCoupon.id,
             discountAmount = discountAmount,
             originalPrice = orderAmount,

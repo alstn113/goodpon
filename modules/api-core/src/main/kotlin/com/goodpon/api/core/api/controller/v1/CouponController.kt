@@ -8,8 +8,8 @@ import com.goodpon.core.application.coupon.CouponCancelRedemptionService
 import com.goodpon.core.application.coupon.CouponIssueService
 import com.goodpon.core.application.coupon.CouponRedeemService
 import com.goodpon.core.application.auth.MerchantPrincipal
-import com.goodpon.core.application.coupon.CouponIssueResult
-import com.goodpon.core.application.coupon.CouponRedemptionResult
+import com.goodpon.core.application.coupon.response.CouponIssueResultResponse
+import com.goodpon.core.application.coupon.response.CouponRedemptionResultResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PathVariable
@@ -27,7 +27,7 @@ class CouponController(
     fun issueCoupon(
         @RequestBody request: IssueCouponWebRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-    ): ResponseEntity<ApiResponse<CouponIssueResult>> {
+    ): ResponseEntity<ApiResponse<CouponIssueResultResponse>> {
 
         val appRequest = request.toAppRequest(merchantPrincipal)
         val result = couponIssueService.issueCoupon(appRequest)
@@ -40,7 +40,7 @@ class CouponController(
         @PathVariable couponId: String,
         @RequestBody request: RedeemCouponWebRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-    ): ResponseEntity<ApiResponse<CouponRedemptionResult>> {
+    ): ResponseEntity<ApiResponse<CouponRedemptionResultResponse>> {
         val appRequest = request.toAppRequest(merchantPrincipal, couponId)
         val result = couponRedeemService.redeemCoupon(appRequest)
 

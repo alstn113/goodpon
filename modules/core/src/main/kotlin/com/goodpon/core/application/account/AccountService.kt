@@ -1,5 +1,6 @@
 package com.goodpon.core.application.account
 
+import com.goodpon.core.application.account.accessor.AccountReader
 import com.goodpon.core.application.account.response.AccountInfo
 import com.goodpon.core.application.auth.VerificationEmailRequestedEvent
 import com.goodpon.core.application.auth.request.SignUpRequest

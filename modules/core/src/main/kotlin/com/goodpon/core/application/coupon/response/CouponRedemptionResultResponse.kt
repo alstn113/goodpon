@@ -1,8 +1,8 @@
-package com.goodpon.core.application.coupon
+package com.goodpon.core.application.coupon.response
 
 import java.time.LocalDateTime
 
-data class CouponRedemptionResult(
+data class CouponRedemptionResultResponse(
     val couponId: String,
     val discountAmount: Int,
     val originalPrice: Int,

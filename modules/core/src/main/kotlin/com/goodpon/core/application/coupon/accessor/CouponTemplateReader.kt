@@ -1,5 +1,6 @@
-package com.goodpon.core.application.coupon
+package com.goodpon.core.application.coupon.accessor
 
+import com.goodpon.core.application.coupon.exception.CouponTemplateNotFoundException
 import com.goodpon.core.domain.coupon.template.CouponTemplate
 import com.goodpon.core.domain.coupon.template.CouponTemplateRepository
 import org.springframework.stereotype.Component
@@ -12,6 +13,6 @@ class CouponTemplateReader(
     @Transactional(readOnly = true)
     fun readByIdForRead(couponTemplateId: Long): CouponTemplate {
         return couponTemplateRepository.findByIdForRead(couponTemplateId)
-            ?: throw IllegalArgumentException("CouponTemplate with id $couponTemplateId not found")
+            ?: throw CouponTemplateNotFoundException()
     }
 }
