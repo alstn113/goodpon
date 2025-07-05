@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.coupon.template.service
+package com.goodpon.core.domain.coupon.service
 
 import com.goodpon.core.domain.coupon.user.UserCoupon
 

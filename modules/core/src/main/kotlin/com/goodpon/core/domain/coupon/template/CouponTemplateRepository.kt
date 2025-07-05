@@ -11,8 +11,6 @@ interface CouponTemplateRepository {
 
     fun findById(id: Long): CouponTemplate?
 
-    fun findByIdForRead(id: Long): CouponTemplate?
-
     fun findByStatusAndAbsoluteExpiresAtLessThanEqual(
         status: CouponTemplateStatus,
         absoluteExpiresAt: LocalDateTime,

@@ -27,7 +27,7 @@ class CouponCancelRedemptionService(
 
         val userCoupon = userCouponReader.readByIdForUpdate(request.couponId)
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
-        val couponTemplate = couponTemplateReader.readByIdForRead(userCoupon.couponTemplateId)
+        val couponTemplate = couponTemplateReader.readById(userCoupon.couponTemplateId)
 
         validateCouponTemplateOwnership(couponTemplate, request.merchantPrincipal.merchantId)
 

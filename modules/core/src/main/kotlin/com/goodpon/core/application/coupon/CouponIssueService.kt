@@ -6,7 +6,7 @@ import com.goodpon.core.application.coupon.exception.UserCouponAlreadyIssuedExce
 import com.goodpon.core.application.coupon.request.IssueCouponRequest
 import com.goodpon.core.application.coupon.response.CouponIssueResultResponse
 import com.goodpon.core.domain.coupon.template.CouponTemplate
-import com.goodpon.core.domain.coupon.template.service.CouponIssuer
+import com.goodpon.core.domain.coupon.service.CouponIssuer
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -27,7 +27,7 @@ class CouponIssueService(
         val now = LocalDateTime.now()
 
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(request.couponTemplateId)
-        val couponTemplate = couponTemplateReader.readByIdForRead(request.couponTemplateId)
+        val couponTemplate = couponTemplateReader.readById(request.couponTemplateId)
 
         validateCouponTemplateOwnership(couponTemplate, request.merchantPrincipal.merchantId)
         validateAlreadyIssued(request.userId, request.couponTemplateId)

@@ -12,8 +12,8 @@ class CouponTemplateReader(
 ) {
 
     @Transactional(readOnly = true)
-    fun readByIdForRead(couponTemplateId: Long): CouponTemplate {
-        return couponTemplateRepository.findByIdForRead(couponTemplateId)
+    fun readById(couponTemplateId: Long): CouponTemplate {
+        return couponTemplateRepository.findById(couponTemplateId)
             ?: throw CouponTemplateNotFoundException()
     }
 }

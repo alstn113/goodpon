@@ -4,10 +4,11 @@ import com.goodpon.api.core.api.controller.v1.request.CancelCouponRedemptionWebR
 import com.goodpon.api.core.api.controller.v1.request.IssueCouponWebRequest
 import com.goodpon.api.core.api.controller.v1.request.RedeemCouponWebRequest
 import com.goodpon.api.core.api.response.ApiResponse
+import com.goodpon.core.application.auth.MerchantPrincipal
 import com.goodpon.core.application.coupon.CouponCancelRedemptionService
 import com.goodpon.core.application.coupon.CouponIssueService
 import com.goodpon.core.application.coupon.CouponRedeemService
-import com.goodpon.core.application.auth.MerchantPrincipal
+import com.goodpon.core.application.coupon.response.CouponCancelRedemptionResultResponse
 import com.goodpon.core.application.coupon.response.CouponIssueResultResponse
 import com.goodpon.core.application.coupon.response.CouponRedemptionResultResponse
 import org.springframework.http.ResponseEntity
@@ -29,11 +30,10 @@ class CouponController(
         @RequestBody request: IssueCouponWebRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<CouponIssueResultResponse>> {
-
         val appRequest = request.toAppRequest(merchantPrincipal)
-        val result = couponIssueService.issueCoupon(appRequest)
+        val response = couponIssueService.issueCoupon(appRequest)
 
-        return ResponseEntity.ok(ApiResponse.of("coupon", result))
+        return ResponseEntity.ok(ApiResponse.of("coupon", response))
     }
 
     @PostMapping("/v1/coupons/{couponId}/redeem")
@@ -43,9 +43,9 @@ class CouponController(
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<CouponRedemptionResultResponse>> {
         val appRequest = request.toAppRequest(merchantPrincipal, couponId)
-        val result = couponRedeemService.redeemCoupon(appRequest)
+        val response = couponRedeemService.redeemCoupon(appRequest)
 
-        return ResponseEntity.ok(ApiResponse.of("coupon", result))
+        return ResponseEntity.ok(ApiResponse.of("coupon", response))
     }
 
     @PostMapping("/v1/coupons/{couponId}/cancel")
@@ -53,8 +53,10 @@ class CouponController(
         @PathVariable couponId: String,
         @RequestBody request: CancelCouponRedemptionWebRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-    ) {
+    ): ResponseEntity<ApiResponse<CouponCancelRedemptionResultResponse>> {
         val appRequest = request.toAppRequest(merchantPrincipal, couponId)
-        val result = couponCancelRedemptionService.cancelCouponRedemption(appRequest)
+        val response = couponCancelRedemptionService.cancelCouponRedemption(appRequest)
+
+        return ResponseEntity.ok(ApiResponse.of("coupon", response))
     }
 }
