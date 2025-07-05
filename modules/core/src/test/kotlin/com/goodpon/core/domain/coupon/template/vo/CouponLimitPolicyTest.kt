@@ -8,6 +8,7 @@ import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 
 class CouponLimitPolicyTest : DescribeSpec({
+
     describe("쿠폰 제한 정책 생성") {
         context("발급 제한 정책") {
             it("발급 제한 수량이 없거나 0 이하일 수 없다.") {

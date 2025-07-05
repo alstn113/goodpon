@@ -24,6 +24,7 @@ class CouponHistoryEntity(
     @Column(nullable = false)
     val recordedAt: LocalDateTime,
 ) : AuditableEntity() {
+
     fun toDomain(): CouponHistory {
         return CouponHistory.reconstruct(
             id = id,

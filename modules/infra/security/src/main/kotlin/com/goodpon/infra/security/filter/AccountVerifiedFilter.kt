@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 class AccountVerifiedFilter(
     private val allowListPatterns: List<String> = emptyList(),
 ) : OncePerRequestFilter() {
+
     private val pathMatcher = AntPathMatcher()
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {

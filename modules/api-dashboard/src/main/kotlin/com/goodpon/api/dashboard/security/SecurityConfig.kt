@@ -25,6 +25,7 @@ class SecurityConfig(
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val accessDeniedHandler: JwtAccessDeniedHandler,
 ) {
+
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         val jwtAuthenticationFilter = JwtAuthenticationFilter(

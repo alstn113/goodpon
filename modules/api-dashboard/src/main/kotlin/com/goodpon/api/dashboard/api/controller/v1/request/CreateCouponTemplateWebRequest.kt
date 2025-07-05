@@ -21,6 +21,7 @@ data class CreateCouponTemplateWebRequest(
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
 ) {
+
     fun toAppRequest(merchantId: Long, accountPrincipal: AccountPrincipal): CreateCouponTemplateRequest {
         return CreateCouponTemplateRequest(
             name = name,

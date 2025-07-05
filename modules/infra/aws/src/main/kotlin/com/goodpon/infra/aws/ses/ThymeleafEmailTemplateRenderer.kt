@@ -8,6 +8,7 @@ import org.thymeleaf.context.Context
 class ThymeleafEmailTemplateRenderer(
     private val templateEngine: TemplateEngine,
 ) {
+
     fun render(templateName: String, variables: Map<String, Any>): String {
         val context = Context().apply { setVariables(variables) }
         return templateEngine.process(templateName, context)

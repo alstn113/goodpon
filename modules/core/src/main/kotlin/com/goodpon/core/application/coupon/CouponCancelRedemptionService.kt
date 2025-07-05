@@ -18,6 +18,7 @@ class CouponCancelRedemptionService(
     private val couponTemplateStatsStore: CouponTemplateStatsStore,
     private val couponRedemptionCanceler: CouponRedemptionCanceler,
 ) {
+
     @Transactional
     fun cancelCouponRedemption(request: CancelCouponRedemptionRequest): CouponCancelRedemptionResultResponse {
         val userCoupon = userCouponReader.readByIdForUpdate(request.couponId)

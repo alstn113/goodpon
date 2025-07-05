@@ -16,6 +16,7 @@ data class CouponTemplate(
     val limitPolicy: CouponLimitPolicy,
     val status: CouponTemplateStatus,
 ) {
+
     fun validateIssue(currentIssuedCount: Long, issueAt: LocalDateTime) {
         if (!period.isIssuable(issueAt)) {
             throw CouponTemplateIssuancePeriodException()

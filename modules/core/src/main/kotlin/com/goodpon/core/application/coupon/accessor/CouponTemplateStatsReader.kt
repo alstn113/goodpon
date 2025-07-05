@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 class CouponTemplateStatsReader(
     private val couponTemplateStatsRepository: CouponTemplateStatsRepository,
 ) {
+
     @Transactional(readOnly = true)
     fun readByCouponTemplateIdForUpdate(couponTemplateId: Long): CouponTemplateStats {
         return couponTemplateStatsRepository.findByCouponTemplateIdForUpdate(couponTemplateId)

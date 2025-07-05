@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 class UserCouponReader(
     private val userCouponRepository: UserCouponRepository,
 ) {
+
     @Transactional(readOnly = true)
     fun readByIdForUpdate(id: String): UserCoupon {
         return userCouponRepository.findByIdForUpdate(id)

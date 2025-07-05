@@ -12,6 +12,7 @@ import io.mockk.verify
 import java.time.LocalDateTime
 
 class AccountVerificationServiceTest : DescribeSpec({
+
     val accountReader = mockk<AccountReader>()
     val accountStore = mockk<AccountStore>()
     val accountVerificationService = AccountVerificationService(accountReader, accountStore)

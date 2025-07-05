@@ -7,6 +7,7 @@ import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
 import java.lang.reflect.Method
 
 class AsyncExceptionHandler : AsyncUncaughtExceptionHandler {
+
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun handleUncaughtException(e: Throwable, method: Method, vararg params: Any?) {

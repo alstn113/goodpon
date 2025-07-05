@@ -13,6 +13,7 @@ class CouponRedeemer(
     private val couponHistoryRecorder: CouponHistoryRecorder,
     private val userCouponStore: UserCouponStore,
 ) {
+
     @Transactional
     fun redeemCoupon(
         couponTemplate: CouponTemplate,

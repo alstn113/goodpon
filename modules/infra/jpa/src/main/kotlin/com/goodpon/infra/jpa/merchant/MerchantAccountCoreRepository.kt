@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository
 class MerchantAccountCoreRepository(
     private val merchantAccountJpaRepository: MerchantAccountJpaRepository,
 ) : MerchantAccountRepository {
+
     override fun save(merchantAccount: MerchantAccount): MerchantAccount {
         if (merchantAccount.id == 0L) {
             val entity = MerchantAccountEntity.fromDomain(merchantAccount)

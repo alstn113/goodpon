@@ -4,6 +4,7 @@ import com.goodpon.core.domain.account.exception.AccountInvalidPasswordLengthExc
 
 @JvmInline
 value class AccountPassword(val value: String) {
+
     init {
         if (value.length !in PASSWORD_MIN_LENGTH..PASSWORD_MAX_LENGTH) {
             throw AccountInvalidPasswordLengthException()

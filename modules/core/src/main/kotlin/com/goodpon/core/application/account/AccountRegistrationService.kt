@@ -14,6 +14,7 @@ class AccountRegistrationService(
     private val accountStore: AccountStore,
     private val passwordEncoder: PasswordEncoder,
 ) {
+
     @Transactional
     fun register(email: String, password: String, name: String): Account {
         validateUniqueEmail(email)

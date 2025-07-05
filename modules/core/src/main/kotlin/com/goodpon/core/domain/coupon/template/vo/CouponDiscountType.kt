@@ -1,6 +1,7 @@
 package com.goodpon.core.domain.coupon.template.vo
 
 enum class CouponDiscountType {
+
     FIXED_AMOUNT {
         override fun calculate(orderAmount: Int, discountValue: Int, maxDiscountAmount: Int?): Int {
             return minOf(discountValue, orderAmount)

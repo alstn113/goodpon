@@ -12,6 +12,7 @@ import io.kotest.matchers.shouldBe
 import java.time.LocalDateTime
 
 class UserCouponTest : DescribeSpec({
+
     describe("redeem") {
         it("쿠폰이 발급된 상태가 아니면 사용할 수 없다.") {
             val issueAt = LocalDateTime.now()

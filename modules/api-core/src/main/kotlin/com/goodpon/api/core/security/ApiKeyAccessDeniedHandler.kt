@@ -16,6 +16,7 @@ class ApiKeyAccessDeniedHandler(
     private val objectMapper: ObjectMapper,
     private val tracerIdProvider: TraceIdProvider,
 ) : AccessDeniedHandler {
+
     override fun handle(
         request: HttpServletRequest,
         response: HttpServletResponse,

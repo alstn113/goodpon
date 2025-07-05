@@ -7,6 +7,7 @@ data class IssueCouponWebRequest(
     val couponTemplateId: Long,
     val userId: String,
 ) {
+
     fun toAppRequest(merchantPrincipal: MerchantPrincipal): IssueCouponRequest {
         return IssueCouponRequest(
             merchantPrincipal = merchantPrincipal,

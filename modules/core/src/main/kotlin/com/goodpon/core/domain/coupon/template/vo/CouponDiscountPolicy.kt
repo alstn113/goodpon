@@ -10,6 +10,7 @@ data class CouponDiscountPolicy(
     val discountValue: Int,
     val maxDiscountAmount: Int? = null,
 ) {
+
     init {
         when (discountType) {
             CouponDiscountType.FIXED_AMOUNT -> validateFixedAmount()

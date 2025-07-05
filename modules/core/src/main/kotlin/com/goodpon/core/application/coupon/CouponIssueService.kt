@@ -18,6 +18,7 @@ class CouponIssueService(
     private val userCouponReader: UserCouponReader,
     private val couponIssuer: CouponIssuer,
 ) {
+
     @Transactional
     fun issueCoupon(request: IssueCouponRequest): CouponIssueResultResponse {
         val now = LocalDateTime.now()

@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest
 import java.util.*
 
 object AuthHeaderUtil {
+
     private const val AUTHORIZATION_HEADER = "Authorization"
     private const val BEARER_PREFIX = "Bearer "
     private const val BASIC_PREFIX = "Basic "

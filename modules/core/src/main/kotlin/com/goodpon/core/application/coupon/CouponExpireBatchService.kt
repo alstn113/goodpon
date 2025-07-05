@@ -14,6 +14,7 @@ class CouponExpireBatchService(
     private val couponHistoryRecorder: CouponHistoryRecorder,
     private val couponTemplateRepository: CouponTemplateRepository,
 ) {
+
     @Transactional
     fun expireCouponsAndTemplates(now: LocalDateTime) {
         val expireLimit = now.toLocalDate().atStartOfDay()

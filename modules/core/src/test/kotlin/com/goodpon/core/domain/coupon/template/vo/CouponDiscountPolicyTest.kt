@@ -10,6 +10,7 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 
 class CouponDiscountPolicyTest : DescribeSpec({
+
     describe("고정 금액 할인") {
         it("할인 값이 0 이하일 수 없다.") {
             shouldThrow<CouponDiscountPolicyInvalidFixedValueException> {

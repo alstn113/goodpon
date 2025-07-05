@@ -14,6 +14,7 @@ class AccountService(
     private val eventPublisher: ApplicationEventPublisher,
     private val accountReader: AccountReader,
 ) {
+
     @Transactional(readOnly = true)
     fun getAccountInfo(accountId: Long): AccountInfo {
         val account = accountReader.readById(accountId)

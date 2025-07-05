@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 class CouponTemplateStatsStore(
     private val couponTemplateStatsRepository: CouponTemplateStatsRepository,
 ) {
+
     @Transactional
     fun incrementIssueCount(stats: CouponTemplateStats): CouponTemplateStats {
         val updatedStats = stats.incrementIssueCount()

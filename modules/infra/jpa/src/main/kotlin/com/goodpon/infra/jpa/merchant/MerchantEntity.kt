@@ -13,6 +13,7 @@ class MerchantEntity(
     @Column(nullable = false, unique = true)
     val secretKey: String,
 ) : AuditableEntity() {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0

@@ -12,6 +12,7 @@ class AccountVerificationService(
     private val accountReader: AccountReader,
     private val accountStore: AccountStore,
 ) {
+
     @Transactional
     fun verifyEmail(accountId: Long, verifiedAt: LocalDateTime): Account {
         val account = accountReader.readById(accountId)

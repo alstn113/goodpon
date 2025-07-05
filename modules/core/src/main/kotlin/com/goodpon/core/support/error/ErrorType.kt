@@ -5,6 +5,7 @@ enum class ErrorType(
     val message: String,
     val errorLevel: ErrorLevel,
 ) {
+
     // Common
     INVALID_REQUEST(400, "잘못된 요청입니다.", ErrorLevel.WARN),
     UNAUTHORIZED(401, "인증되지 사용자입니다.", ErrorLevel.WARN),

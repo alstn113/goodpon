@@ -5,6 +5,7 @@ import com.goodpon.core.domain.coupon.template.exception.CouponRedemptionConditi
 data class CouponRedemptionCondition(
     val minOrderAmount: Int? = null,
 ) {
+
     init {
         validateMinOrderAmount(minOrderAmount)
     }

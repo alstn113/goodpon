@@ -14,6 +14,7 @@ class CouponTemplateService(
     private val merchantReader: MerchantReader,
     private val merchantAccountReader: MerchantAccountReader,
 ) {
+
     @Transactional
     fun createCouponTemplate(request: CreateCouponTemplateRequest): CreateCouponTemplateResponse {
         merchantReader.readById(request.merchantId)

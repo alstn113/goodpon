@@ -23,6 +23,7 @@ class CouponController(
     private val couponRedeemService: CouponRedeemService,
     private val couponCancelRedemptionService: CouponCancelRedemptionService,
 ) {
+
     @PostMapping("/v1/coupons/issue")
     fun issueCoupon(
         @RequestBody request: IssueCouponWebRequest,

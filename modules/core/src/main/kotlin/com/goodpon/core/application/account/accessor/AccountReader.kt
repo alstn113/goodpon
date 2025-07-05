@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 class AccountReader(
     private val accountRepository: AccountRepository,
 ) {
+
     @Transactional(readOnly = true)
     fun readById(id: Long): Account {
         return accountRepository.findById(id)

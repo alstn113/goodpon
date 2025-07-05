@@ -13,6 +13,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class CouponTemplateTest : DescribeSpec({
+
     val issueAt = LocalDateTime.of(2025, 7, 5, 12, 30)
 
     describe("validateIssue") {

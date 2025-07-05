@@ -6,6 +6,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class CouponPeriodFactoryTest : DescribeSpec({
+
     describe("create") {
         it("발급 시작 일시는 발급 시작일 자정(00:00)으로 한다.") {
             val issueStartDate = LocalDate.of(2025, 7, 3)

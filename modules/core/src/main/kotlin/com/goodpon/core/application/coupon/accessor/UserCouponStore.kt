@@ -12,6 +12,7 @@ class UserCouponStore(
     private val userCouponRepository: UserCouponRepository,
     private val uniqueIdGenerator: UniqueIdGenerator,
 ) {
+
     @Transactional
     fun issueUserCoupon(
         userId: String,

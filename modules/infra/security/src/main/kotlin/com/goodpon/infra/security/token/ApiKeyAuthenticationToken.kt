@@ -8,6 +8,7 @@ data class ApiKeyAuthenticationToken private constructor(
     private val merchantPrincipal: MerchantPrincipal,
     private val authorities: Collection<GrantedAuthority> = emptyList(),
 ) : AbstractAuthenticationToken(authorities) {
+
     init {
         isAuthenticated = true
     }

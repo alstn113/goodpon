@@ -14,6 +14,7 @@ class EmailVerificationSender(
     private val verificationTokenGenerator: VerificationTokenGenerator,
     private val verificationLinkBuilder: VerificationLinkBuilder,
 ) {
+
     private val log = LoggerFactory.getLogger(javaClass)
 
     fun send(accountId: Long, email: String, name: String) {

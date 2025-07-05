@@ -14,6 +14,7 @@ import io.mockk.verify
 import org.springframework.context.ApplicationEventPublisher
 
 class AccountServiceTest : DescribeSpec({
+
     val accountRegistrationService = mockk<AccountRegistrationService>()
     val eventPublisher = mockk<ApplicationEventPublisher>(relaxed = true)
     val accountReader = mockk<AccountReader>()

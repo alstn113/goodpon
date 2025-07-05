@@ -16,6 +16,7 @@ import java.util.*
 class JwtTokenProvider(
     private val properties: JwtTokenProperties,
 ) : TokenProvider {
+
     private val accessTokenSecretKey = Keys.hmacShaKeyFor(properties.accessTokenSecretKey.toByteArray())
     private val accessTokenExpirationTime = properties.accessTokenExpirationTime
 

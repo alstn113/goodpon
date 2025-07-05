@@ -14,6 +14,7 @@ class CouponIssuer(
     private val userCouponStore: UserCouponStore,
     private val eventPublisher: ApplicationEventPublisher,
 ) {
+
     @Transactional
     fun issueCoupon(
         couponTemplate: CouponTemplate,

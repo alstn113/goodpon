@@ -16,6 +16,7 @@ class MerchantService(
     private val accountReader: AccountReader,
     private val merchantStore: MerchantStore,
 ) {
+
     @Transactional(readOnly = true)
     fun getMerchantInfoBySecretKey(secretKey: String): MerchantInfo {
         val merchant = merchantReader.readBySecretKey(secretKey)

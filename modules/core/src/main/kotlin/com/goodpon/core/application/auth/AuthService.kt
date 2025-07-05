@@ -25,6 +25,7 @@ class AuthService(
     private val emailVerificationReader: EmailVerificationReader,
     private val eventPublisher: ApplicationEventPublisher,
 ) {
+
     @Transactional
     fun login(request: LoginRequest): LoginResponse {
         val account = accountReader.readByEmail(request.email)

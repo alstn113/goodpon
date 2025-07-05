@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 class AccountStore(
     private val accountRepository: AccountRepository,
 ) {
+
     @Transactional
     fun createAccount(account: Account): Account {
         return accountRepository.save(account)

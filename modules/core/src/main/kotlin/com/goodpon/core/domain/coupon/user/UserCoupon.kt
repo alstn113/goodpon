@@ -15,6 +15,7 @@ data class UserCoupon private constructor(
     val redeemedAt: LocalDateTime?,
     val expiresAt: LocalDateTime?,
 ) {
+
     fun redeem(redeemAt: LocalDateTime): UserCoupon {
         if (status != UserCouponStatus.ISSUED) {
             throw UserCouponRedeemNotAllowedException()

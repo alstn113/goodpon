@@ -18,6 +18,7 @@ class CouponTemplateStatsEntity(
     @Column(name = "redeem_count", nullable = false)
     var redeemCount: Long,
 ) : AuditableEntity() {
+
     fun toDomain(): CouponTemplateStats {
         return CouponTemplateStats(
             couponTemplateId = this.couponTemplateId,

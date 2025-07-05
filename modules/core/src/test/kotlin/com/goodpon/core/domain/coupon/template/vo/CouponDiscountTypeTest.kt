@@ -4,6 +4,7 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 
 class CouponDiscountTypeTest : DescribeSpec({
+
     it("고정 금액 할인 타입은 할인 금액을 반환한다.") {
         val orderAmount = 5000
         val discountValue = 1000

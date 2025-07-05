@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component
 class JwtAuthenticationEntryPoint(
     private val objectMapper: ObjectMapper,
 ) : AuthenticationEntryPoint {
+
     override fun commence(
         request: HttpServletRequest,
         response: HttpServletResponse,

@@ -5,6 +5,7 @@ import java.util.*
 
 @Component
 class VerificationTokenGenerator {
+
     fun generate(): String {
         return UUID.randomUUID().toString().replace("-", "")
     }

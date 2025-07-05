@@ -21,6 +21,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 class RedisConfig(
     private val properties: RedisProperties,
 ) {
+
     @Bean
     fun redisTemplate(): RedisTemplate<String, Any> {
         return RedisTemplate<String, Any>().apply {

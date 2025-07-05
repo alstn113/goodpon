@@ -22,6 +22,7 @@ data class CreateCouponTemplateResponse(
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
 ) {
+
     companion object {
         fun from(couponTemplate: CouponTemplate): CreateCouponTemplateResponse {
             return CreateCouponTemplateResponse(

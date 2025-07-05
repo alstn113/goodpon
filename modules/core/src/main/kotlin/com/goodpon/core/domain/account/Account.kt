@@ -14,6 +14,7 @@ data class Account private constructor(
     val verified: Boolean = false,
     val verifiedAt: LocalDateTime? = null,
 ) {
+
     fun verify(verifiedAt: LocalDateTime): Account {
         if (verified) {
             throw AccountAlreadyVerifiedException()

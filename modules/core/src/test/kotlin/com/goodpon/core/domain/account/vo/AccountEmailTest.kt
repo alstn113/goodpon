@@ -8,6 +8,7 @@ import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 
 class AccountEmailTest : DescribeSpec({
+
     describe("계정 이메일은 이메일 형식이어야 한다.") {
         forAll(
             row("test@goodpon.site"),

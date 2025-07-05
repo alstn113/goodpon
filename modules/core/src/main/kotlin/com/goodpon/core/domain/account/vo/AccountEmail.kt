@@ -4,6 +4,7 @@ import com.goodpon.core.domain.account.exception.AccountInvalidEmailFormatExcept
 
 @JvmInline
 value class AccountEmail(val value: String) {
+
     init {
         if (!EMAIL_REGEX.matches(value)) {
             throw AccountInvalidEmailFormatException()

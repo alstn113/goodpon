@@ -8,6 +8,7 @@ data class JwtAuthenticationToken private constructor(
     private val accountPrincipal: AccountPrincipal,
     private val authorities: Collection<GrantedAuthority> = emptyList(),
 ) : AbstractAuthenticationToken(authorities) {
+
     init {
         isAuthenticated = true
     }

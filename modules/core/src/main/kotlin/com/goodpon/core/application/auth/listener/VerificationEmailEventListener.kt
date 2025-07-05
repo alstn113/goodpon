@@ -11,6 +11,7 @@ import org.springframework.transaction.event.TransactionalEventListener
 class VerificationEmailEventListener(
     private val emailVerificationSender: EmailVerificationSender,
 ) {
+
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     fun handleAccountCreatedEvent(event: AccountCreatedEvent) {

@@ -59,6 +59,7 @@ class CouponTemplateEntity(
     @Enumerated(EnumType.STRING)
     var status: CouponTemplateStatus,
 ) : AuditableEntity() {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0

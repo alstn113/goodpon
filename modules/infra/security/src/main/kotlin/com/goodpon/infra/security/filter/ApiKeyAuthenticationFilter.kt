@@ -19,6 +19,7 @@ class ApiKeyAuthenticationFilter(
     private val merchantService: MerchantService,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
 ) : OncePerRequestFilter() {
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

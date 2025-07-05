@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 class CouponTemplateController(
     private val couponTemplateService: CouponTemplateService,
 ) {
+
     @PostMapping("/v1/merchant/{merchantId}/coupon-templates")
     fun createCouponTemplate(
         @PathVariable merchantId: Long,

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 class AccountController(
     private val accountService: AccountService,
 ) {
+
     @PostMapping("/v1/account/sign-up")
     fun signUp(
         @RequestBody request: SignUpRequest,

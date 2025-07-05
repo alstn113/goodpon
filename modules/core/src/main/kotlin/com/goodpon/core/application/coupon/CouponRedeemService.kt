@@ -18,6 +18,7 @@ class CouponRedeemService(
     private val couponTemplateStatsStore: CouponTemplateStatsStore,
     private val couponRedeemer: CouponRedeemer,
 ) {
+
     @Transactional
     fun redeemCoupon(request: RedeemCouponRequest): CouponRedemptionResultResponse {
         val userCoupon = userCouponReader.readByIdForUpdate(request.couponId)

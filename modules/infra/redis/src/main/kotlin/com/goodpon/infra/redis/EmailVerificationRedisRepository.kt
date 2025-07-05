@@ -12,6 +12,7 @@ class EmailVerificationRedisRepository(
     private val redisTemplate: RedisTemplate<String, String>,
     private val objectMapper: ObjectMapper,
 ) : EmailVerificationRepository {
+
     override fun save(verification: EmailVerification, ttlMinutes: Long) {
         val tokenKey = buildTokenKey(verification.token)
         val accountIdKey = buildAccountIdKey(verification.accountId)

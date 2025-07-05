@@ -8,6 +8,7 @@ import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 
 class AccountPasswordTest : DescribeSpec({
+
     describe("계정 비밀번호는 8자 이상 100자 이하 문자열이어야 한다.") {
         forAll(
             row("a".repeat(8)),

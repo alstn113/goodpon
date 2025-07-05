@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 class TraceIdResponseAdvice(
     private val tracerIdProvider: TraceIdProvider,
 ) : ResponseBodyAdvice<Any> {
+
     override fun supports(
         returnType: MethodParameter,
         converterType: Class<out HttpMessageConverter<*>>,

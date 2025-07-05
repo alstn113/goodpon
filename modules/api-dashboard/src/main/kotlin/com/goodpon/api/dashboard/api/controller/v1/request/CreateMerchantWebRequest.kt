@@ -6,6 +6,7 @@ import com.goodpon.core.application.auth.AccountPrincipal
 data class CreateMerchantWebRequest(
     val name: String,
 ) {
+
     fun toAppRequest(accountPrincipal: AccountPrincipal): CreateMerchantRequest {
         return CreateMerchantRequest(
             accountPrincipal = accountPrincipal,

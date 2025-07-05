@@ -18,6 +18,7 @@ class MerchantAccountEntity(
     @Enumerated(EnumType.STRING)
     val role: MerchantAccountRole,
 ) : AuditableEntity() {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0

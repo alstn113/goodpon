@@ -5,6 +5,7 @@ import com.goodpon.core.domain.account.exception.AccountNameBlankException
 
 @JvmInline
 value class AccountName(val value: String) {
+
     init {
         if (value.isBlank()) {
             throw AccountNameBlankException()

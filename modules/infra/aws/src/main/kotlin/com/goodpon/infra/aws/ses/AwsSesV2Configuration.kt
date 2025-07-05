@@ -12,6 +12,7 @@ import software.amazon.awssdk.services.sesv2.SesV2Client
 class AwsSesV2Configuration(
     private val properties: AwsSesV2Properties,
 ) {
+
     @Bean
     fun awsSesClient(): SesV2Client {
         val credentials = AwsBasicCredentials.builder()

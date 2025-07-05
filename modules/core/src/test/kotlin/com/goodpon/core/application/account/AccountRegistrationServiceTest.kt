@@ -12,6 +12,7 @@ import io.mockk.every
 import io.mockk.mockk
 
 class AccountRegistrationServiceTest : DescribeSpec({
+
     val accountReader = mockk<AccountReader>()
     val accountStore = mockk<AccountStore>()
     val passwordEncoder = mockk<PasswordEncoder>()

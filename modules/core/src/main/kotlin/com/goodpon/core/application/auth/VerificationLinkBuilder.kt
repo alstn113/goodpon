@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component
 class VerificationLinkBuilder(
     @Value("\${client-host}") private val baseUrl: String,
 ) {
+
     fun build(token: String): String {
         return "$baseUrl/verify?token=$token"
     }

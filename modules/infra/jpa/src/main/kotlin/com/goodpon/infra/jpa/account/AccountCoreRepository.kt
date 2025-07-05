@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository
 class AccountCoreRepository(
     private val accountJpaRepository: AccountJpaRepository,
 ) : AccountRepository {
+
     override fun save(account: Account): Account {
         if (account.id == 0L) {
             val entity = AccountEntity.fromDomain(account)

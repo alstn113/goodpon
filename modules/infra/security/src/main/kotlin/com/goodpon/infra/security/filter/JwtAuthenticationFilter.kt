@@ -23,6 +23,7 @@ class JwtAuthenticationFilter(
     private val accountService: AccountService,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
 ) : OncePerRequestFilter() {
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

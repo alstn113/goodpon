@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 class MerchantController(
     private val merchantService: MerchantService,
 ) {
+
     @PostMapping("/v1/merchants")
     fun createMerchant(
         @RequestBody request: CreateMerchantWebRequest,

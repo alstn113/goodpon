@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 class UserCouponCoreRepository(
     private val userCouponJpaRepository: UserCouponJpaRepository,
 ) : UserCouponRepository {
+
     override fun save(userCoupon: UserCoupon): UserCoupon {
         val entity = userCouponJpaRepository.findByIdOrNull(userCoupon.id)
         if (entity == null) {

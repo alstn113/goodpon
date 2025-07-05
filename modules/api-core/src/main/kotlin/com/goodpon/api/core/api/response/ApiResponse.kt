@@ -6,6 +6,7 @@ data class ApiResponse<T> private constructor(
     val entityType: String,
     val entityBody: T,
 ) {
+
     companion object {
         fun <T> of(entityType: String, entityBody: T): ApiResponse<T> {
             return ApiResponse(

@@ -8,6 +8,7 @@ data class RedeemCouponWebRequest(
     val orderAmount: Int,
     val orderId: String,
 ) {
+
     fun toAppRequest(merchantPrincipal: MerchantPrincipal, couponId: String): RedeemCouponRequest {
         return RedeemCouponRequest(
             merchantPrincipal = merchantPrincipal,

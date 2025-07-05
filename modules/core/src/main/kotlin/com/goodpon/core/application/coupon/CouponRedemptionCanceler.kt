@@ -16,6 +16,7 @@ class CouponRedemptionCanceler(
     val userCouponStore: UserCouponStore,
     val couponHistoryRecorder: CouponHistoryRecorder,
 ) {
+
     @Transactional
     fun cancelRedemption(
         userCoupon: UserCoupon,
