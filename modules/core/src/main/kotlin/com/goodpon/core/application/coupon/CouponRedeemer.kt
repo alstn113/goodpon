@@ -1,5 +1,6 @@
 package com.goodpon.core.application.coupon
 
+import com.goodpon.core.application.coupon.accessor.CouponHistoryStore
 import com.goodpon.core.application.coupon.accessor.UserCouponStore
 import com.goodpon.core.application.coupon.response.CouponRedemptionResultResponse
 import com.goodpon.core.domain.coupon.template.CouponTemplate
@@ -10,7 +11,7 @@ import java.time.LocalDateTime
 
 @Component
 class CouponRedeemer(
-    private val couponHistoryRecorder: CouponHistoryRecorder,
+    private val couponHistoryStore: CouponHistoryStore,
     private val userCouponStore: UserCouponStore,
 ) {
 
@@ -29,7 +30,7 @@ class CouponRedeemer(
         val finalPrice = couponTemplate.calculateFinalPrice(orderAmount)
 
         val redeemedCoupon = userCouponStore.update(userCoupon.redeem(redeemAt = redeemAt))
-        couponHistoryRecorder.recordRedeemed(
+        couponHistoryStore.recordRedeemed(
             userCouponId = redeemedCoupon.id,
             orderId = orderId,
             recordedAt = redeemAt

@@ -19,7 +19,7 @@ class MerchantEntity(
     val id: Long = 0
 
     fun toDomain(): Merchant {
-        return Merchant(
+        return Merchant.reconstruct(
             id = id,
             name = name,
             secretKey = secretKey,

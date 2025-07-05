@@ -5,6 +5,7 @@ import com.goodpon.core.domain.coupon.user.exception.UserCouponExpireNotAllowedE
 import com.goodpon.core.domain.coupon.user.exception.UserCouponExpiredException
 import com.goodpon.core.domain.coupon.user.exception.UserCouponRedeemNotAllowedException
 import java.time.LocalDateTime
+import java.util.*
 
 data class UserCoupon private constructor(
     val id: String,
@@ -57,14 +58,13 @@ data class UserCoupon private constructor(
 
     companion object {
         fun issue(
-            id: String,
             userId: String,
             couponTemplateId: Long,
             expiresAt: LocalDateTime?,
             issueAt: LocalDateTime,
         ): UserCoupon {
             return UserCoupon(
-                id = id,
+                id = generateId(),
                 couponTemplateId = couponTemplateId,
                 userId = userId,
                 status = UserCouponStatus.ISSUED,
@@ -92,6 +92,10 @@ data class UserCoupon private constructor(
                 expiresAt = expiresAt,
                 redeemedAt = redeemedAt
             )
+        }
+
+        private fun generateId(): String {
+            return UUID.randomUUID().toString().replace("-", "")
         }
     }
 }

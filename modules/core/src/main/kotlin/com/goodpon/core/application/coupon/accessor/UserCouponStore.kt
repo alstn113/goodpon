@@ -1,6 +1,5 @@
 package com.goodpon.core.application.coupon.accessor
 
-import com.goodpon.core.domain.UniqueIdGenerator
 import com.goodpon.core.domain.coupon.user.UserCoupon
 import com.goodpon.core.domain.coupon.user.UserCouponRepository
 import org.springframework.stereotype.Component
@@ -10,7 +9,6 @@ import java.time.LocalDateTime
 @Component
 class UserCouponStore(
     private val userCouponRepository: UserCouponRepository,
-    private val uniqueIdGenerator: UniqueIdGenerator,
 ) {
 
     @Transactional
@@ -21,7 +19,6 @@ class UserCouponStore(
         expiresAt: LocalDateTime?,
     ): UserCoupon {
         val userCoupon = UserCoupon.issue(
-            id = uniqueIdGenerator.generate(),
             userId = userId,
             couponTemplateId = couponTemplateId,
             expiresAt = expiresAt,

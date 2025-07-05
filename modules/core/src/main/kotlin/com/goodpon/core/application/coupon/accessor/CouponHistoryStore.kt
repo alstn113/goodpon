@@ -1,6 +1,5 @@
-package com.goodpon.core.application.coupon
+package com.goodpon.core.application.coupon.accessor
 
-import com.goodpon.core.domain.UniqueIdGenerator
 import com.goodpon.core.domain.coupon.history.CouponHistory
 import com.goodpon.core.domain.coupon.history.CouponHistoryRepository
 import org.springframework.stereotype.Component
@@ -8,9 +7,8 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Component
-class CouponHistoryRecorder(
+class CouponHistoryStore(
     private val couponHistoryRepository: CouponHistoryRepository,
-    private val uniqueIdGenerator: UniqueIdGenerator,
 ) {
 
     @Transactional
@@ -19,7 +17,6 @@ class CouponHistoryRecorder(
         recordedAt: LocalDateTime,
     ): CouponHistory {
         val history = CouponHistory.issued(
-            id = uniqueIdGenerator.generate(),
             userCouponId = userCouponId,
             recordedAt = recordedAt
         )
@@ -33,7 +30,6 @@ class CouponHistoryRecorder(
         recordedAt: LocalDateTime,
     ): CouponHistory {
         val history = CouponHistory.redeemed(
-            id = uniqueIdGenerator.generate(),
             userCouponId = userCouponId,
             orderId = orderId,
             recordedAt = recordedAt
@@ -49,7 +45,6 @@ class CouponHistoryRecorder(
         recordedAt: LocalDateTime,
     ): CouponHistory {
         val history = CouponHistory.cancelRedemption(
-            id = uniqueIdGenerator.generate(),
             userCouponId = userCouponId,
             orderId = orderId,
             reason = reason,
@@ -64,7 +59,6 @@ class CouponHistoryRecorder(
         recordedAt: LocalDateTime,
     ): CouponHistory {
         val history = CouponHistory.expired(
-            id = uniqueIdGenerator.generate(),
             userCouponId = userCouponId,
             recordedAt = recordedAt
         )
@@ -78,7 +72,6 @@ class CouponHistoryRecorder(
         reason: String,
     ): CouponHistory {
         val history = CouponHistory.discarded(
-            id = uniqueIdGenerator.generate(),
             userCouponId = userCouponId,
             recordedAt = recordedAt,
             reason = reason

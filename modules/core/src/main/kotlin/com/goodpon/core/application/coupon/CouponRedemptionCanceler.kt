@@ -1,10 +1,9 @@
 package com.goodpon.core.application.coupon
 
+import com.goodpon.core.application.coupon.accessor.CouponHistoryReader
+import com.goodpon.core.application.coupon.accessor.CouponHistoryStore
 import com.goodpon.core.application.coupon.accessor.UserCouponStore
 import com.goodpon.core.application.coupon.response.CouponCancelRedemptionResultResponse
-import com.goodpon.core.domain.coupon.history.CouponActionType
-import com.goodpon.core.domain.coupon.history.CouponHistory
-import com.goodpon.core.domain.coupon.history.CouponHistoryRepository
 import com.goodpon.core.domain.coupon.user.UserCoupon
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -12,9 +11,9 @@ import java.time.LocalDateTime
 
 @Component
 class CouponRedemptionCanceler(
-    val couponHistoryRepository: CouponHistoryRepository,
+    val couponHistoryReader: CouponHistoryReader,
     val userCouponStore: UserCouponStore,
-    val couponHistoryRecorder: CouponHistoryRecorder,
+    val couponHistoryStore: CouponHistoryStore,
 ) {
 
     @Transactional
@@ -23,10 +22,10 @@ class CouponRedemptionCanceler(
         reason: String,
         cancelAt: LocalDateTime,
     ): CouponCancelRedemptionResultResponse {
-        val lastRedeemHistory = getLastRedeemHistory(userCoupon)
+        val lastRedeemHistory = couponHistoryReader.readLastRedeemHistory(userCoupon.id)
 
         val canceledCoupon = userCouponStore.update(userCoupon.cancelRedemption())
-        couponHistoryRecorder.recordCancelRedemption(
+        couponHistoryStore.recordCancelRedemption(
             userCouponId = canceledCoupon.id,
             orderId = lastRedeemHistory.orderId!!,
             reason = reason,
@@ -35,7 +34,7 @@ class CouponRedemptionCanceler(
 
         if (canceledCoupon.hasExpired(cancelAt)) {
             val expiredCoupon = userCouponStore.update(canceledCoupon.expire())
-            couponHistoryRecorder.recordExpired(
+            couponHistoryStore.recordExpired(
                 userCouponId = expiredCoupon.id,
                 recordedAt = cancelAt
             )
@@ -47,17 +46,5 @@ class CouponRedemptionCanceler(
             canceledAt = cancelAt,
             cancelReason = reason,
         )
-    }
-
-    private fun getLastRedeemHistory(userCoupon: UserCoupon): CouponHistory {
-        val histories = couponHistoryRepository.findByUserCouponIdOrderByRecordedAtDesc(userCoupon.id)
-        if (histories.isEmpty()) {
-            throw IllegalArgumentException("쿠폰 사용 이력이 존재하지 않습니다.")
-        }
-        val lastHistory = histories.first()
-        if (lastHistory.actionType != CouponActionType.REDEEM) {
-            throw IllegalArgumentException("마지막 이력이 사용(REDEEM) 상태가 아닙니다.")
-        }
-        return lastHistory
     }
 }

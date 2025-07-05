@@ -4,8 +4,10 @@ import com.goodpon.core.application.coupon.accessor.CouponTemplateReader
 import com.goodpon.core.application.coupon.accessor.CouponTemplateStatsReader
 import com.goodpon.core.application.coupon.accessor.CouponTemplateStatsStore
 import com.goodpon.core.application.coupon.accessor.UserCouponReader
+import com.goodpon.core.application.coupon.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.core.application.coupon.request.CancelCouponRedemptionRequest
 import com.goodpon.core.application.coupon.response.CouponCancelRedemptionResultResponse
+import com.goodpon.core.domain.coupon.template.CouponTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -21,15 +23,14 @@ class CouponCancelRedemptionService(
 
     @Transactional
     fun cancelCouponRedemption(request: CancelCouponRedemptionRequest): CouponCancelRedemptionResultResponse {
+        val now = LocalDateTime.now()
+
         val userCoupon = userCouponReader.readByIdForUpdate(request.couponId)
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         val couponTemplate = couponTemplateReader.readByIdForRead(userCoupon.couponTemplateId)
 
-        if (!couponTemplate.isOwnedBy(request.merchantPrincipal.merchantId)) {
-            throw IllegalArgumentException("쿠폰 템플릿이 소유자와 일치하지 않습니다.")
-        }
+        validateCouponTemplateOwnership(couponTemplate, request.merchantPrincipal.merchantId)
 
-        val now = LocalDateTime.now()
         val couponCancelRedemptionResult = couponRedemptionCanceler.cancelRedemption(
             userCoupon = userCoupon,
             reason = request.cancelReason,
@@ -38,5 +39,11 @@ class CouponCancelRedemptionService(
         couponTemplateStatsStore.decrementRedeemCount(stats)
 
         return couponCancelRedemptionResult
+    }
+
+    private fun validateCouponTemplateOwnership(couponTemplate: CouponTemplate, merchantId: Long) {
+        if (!couponTemplate.isOwnedBy(merchantId)) {
+            throw CouponTemplateNotOwnedByMerchantException()
+        }
     }
 }

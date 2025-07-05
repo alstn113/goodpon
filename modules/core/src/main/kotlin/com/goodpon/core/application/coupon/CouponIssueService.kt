@@ -3,6 +3,8 @@ package com.goodpon.core.application.coupon
 import com.goodpon.core.application.coupon.accessor.CouponTemplateReader
 import com.goodpon.core.application.coupon.accessor.CouponTemplateStatsReader
 import com.goodpon.core.application.coupon.accessor.UserCouponReader
+import com.goodpon.core.application.coupon.exception.CouponTemplateNotOwnedByMerchantException
+import com.goodpon.core.application.coupon.exception.UserCouponAlreadyIssuedException
 import com.goodpon.core.application.coupon.request.IssueCouponRequest
 import com.goodpon.core.application.coupon.response.CouponIssueResultResponse
 import com.goodpon.core.domain.coupon.template.CouponTemplate
@@ -39,13 +41,13 @@ class CouponIssueService(
 
     private fun validateCouponTemplateOwnership(couponTemplate: CouponTemplate, merchantId: Long) {
         if (!couponTemplate.isOwnedBy(merchantId)) {
-            throw IllegalArgumentException("쿠폰 템플릿이 소유자와 일치하지 않습니다.")
+            throw CouponTemplateNotOwnedByMerchantException()
         }
     }
 
     private fun validateAlreadyIssued(userId: String, couponTemplateId: Long) {
         if (userCouponReader.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)) {
-            throw IllegalArgumentException("이미 발급된 쿠폰이 존재합니다.")
+            throw UserCouponAlreadyIssuedException()
         }
     }
 }

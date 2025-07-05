@@ -1,6 +1,7 @@
 package com.goodpon.core.domain.coupon.history
 
 import java.time.LocalDateTime
+import java.util.*
 
 data class CouponHistory private constructor(
     val id: String,
@@ -13,23 +14,19 @@ data class CouponHistory private constructor(
 
     companion object {
         fun issued(
-            id: String,
             userCouponId: String,
             recordedAt: LocalDateTime,
         ): CouponHistory = record(
-            id = id,
             userCouponId = userCouponId,
             actionType = CouponActionType.ISSUE,
             recordedAt = recordedAt
         )
 
         fun redeemed(
-            id: String,
             userCouponId: String,
             orderId: String,
             recordedAt: LocalDateTime,
         ): CouponHistory = record(
-            id = id,
             userCouponId = userCouponId,
             actionType = CouponActionType.REDEEM,
             orderId = orderId,
@@ -37,13 +34,11 @@ data class CouponHistory private constructor(
         )
 
         fun cancelRedemption(
-            id: String,
             userCouponId: String,
             orderId: String,
             reason: String,
             recordedAt: LocalDateTime,
         ): CouponHistory = record(
-            id = id,
             userCouponId = userCouponId,
             actionType = CouponActionType.CANCEL_REDEMPTION,
             orderId = orderId,
@@ -52,23 +47,19 @@ data class CouponHistory private constructor(
         )
 
         fun expired(
-            id: String,
             userCouponId: String,
             recordedAt: LocalDateTime,
         ): CouponHistory = record(
-            id = id,
             userCouponId = userCouponId,
             actionType = CouponActionType.EXPIRE,
             recordedAt = recordedAt
         )
 
         fun discarded(
-            id: String,
             userCouponId: String,
             recordedAt: LocalDateTime,
             reason: String,
         ): CouponHistory = record(
-            id = id,
             userCouponId = userCouponId,
             actionType = CouponActionType.DISCARD,
             reason = reason,
@@ -76,7 +67,6 @@ data class CouponHistory private constructor(
         )
 
         private fun record(
-            id: String,
             userCouponId: String,
             actionType: CouponActionType,
             orderId: String? = null,
@@ -84,7 +74,7 @@ data class CouponHistory private constructor(
             recordedAt: LocalDateTime,
         ): CouponHistory {
             return CouponHistory(
-                id = id,
+                id = generateId(),
                 userCouponId = userCouponId,
                 actionType = actionType,
                 orderId = orderId,
@@ -107,6 +97,10 @@ data class CouponHistory private constructor(
                 orderId = orderId,
                 recordedAt = recordedAt
             )
+        }
+
+        private fun generateId(): String {
+            return UUID.randomUUID().toString().replace("-", "")
         }
     }
 }
