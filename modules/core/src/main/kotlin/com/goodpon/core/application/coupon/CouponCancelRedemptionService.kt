@@ -31,14 +31,19 @@ class CouponCancelRedemptionService(
 
         validateCouponTemplateOwnership(couponTemplate, request.merchantPrincipal.merchantId)
 
-        val couponCancelRedemptionResult = couponRedemptionCanceler.cancelRedemption(
+        val result = couponRedemptionCanceler.cancelRedemption(
             userCoupon = userCoupon,
             reason = request.cancelReason,
             cancelAt = now
         )
         couponTemplateStatsStore.decrementRedeemCount(stats)
 
-        return couponCancelRedemptionResult
+        return CouponCancelRedemptionResultResponse(
+            userCouponId = result.id,
+            status = result.status,
+            canceledAt = now,
+            cancelReason = request.cancelReason
+        )
     }
 
     private fun validateCouponTemplateOwnership(couponTemplate: CouponTemplate, merchantId: Long) {

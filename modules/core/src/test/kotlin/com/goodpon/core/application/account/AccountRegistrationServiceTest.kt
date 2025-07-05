@@ -29,7 +29,7 @@ class AccountRegistrationServiceTest : DescribeSpec({
 
             every { accountReader.existsByEmail(email) } returns false
             every { passwordEncoder.encode(password) } returns hashedPassword
-            every { accountStore.createAccount(any()) } returns account
+            every { accountStore.create(any()) } returns account
 
             val result = accountRegistrationService.register(email, password, name)
 

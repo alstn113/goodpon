@@ -11,7 +11,7 @@ class AccountStore(
 ) {
 
     @Transactional
-    fun createAccount(account: Account): Account {
+    fun create(account: Account): Account {
         return accountRepository.save(account)
     }
 

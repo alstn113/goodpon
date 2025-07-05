@@ -142,19 +142,6 @@ class CouponTemplateTest : DescribeSpec({
         }
     }
 
-    describe("calculateFinalPrice") {
-        it("할인된 최종 가격을 계산할 수 있다.") {
-            val template = createCouponTemplate(
-                discountType = CouponDiscountType.FIXED_AMOUNT,
-                discountValue = 1000
-            )
-
-            val finalPrice = template.calculateFinalPrice(5000)
-
-            finalPrice shouldBe 4000
-        }
-    }
-
     describe("publish") {
         it("쿠폰 템플릿을 발행할 수 있다.") {
             val template = createCouponTemplate(status = CouponTemplateStatus.DRAFT)

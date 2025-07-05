@@ -22,7 +22,7 @@ class AccountRegistrationService(
         val hashedPassword = passwordEncoder.encode(password)
         val account = Account.create(email, hashedPassword, name)
 
-        return accountStore.createAccount(account)
+        return accountStore.create(account)
     }
 
     private fun validateUniqueEmail(email: String) {

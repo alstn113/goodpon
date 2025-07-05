@@ -1,14 +1,12 @@
 package com.goodpon.core.application.coupon
 
-import com.goodpon.core.application.coupon.accessor.CouponTemplateReader
-import com.goodpon.core.application.coupon.accessor.CouponTemplateStatsReader
-import com.goodpon.core.application.coupon.accessor.CouponTemplateStatsStore
-import com.goodpon.core.application.coupon.accessor.UserCouponReader
+import com.goodpon.core.application.coupon.accessor.*
 import com.goodpon.core.application.coupon.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.core.application.coupon.exception.UserCouponNotOwnedByUserException
 import com.goodpon.core.application.coupon.request.RedeemCouponRequest
 import com.goodpon.core.application.coupon.response.CouponRedemptionResultResponse
 import com.goodpon.core.domain.coupon.template.CouponTemplate
+import com.goodpon.core.domain.coupon.template.service.CouponRedeemer
 import com.goodpon.core.domain.coupon.user.UserCoupon
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,7 +18,8 @@ class CouponRedeemService(
     private val couponTemplateStatsReader: CouponTemplateStatsReader,
     private val userCouponReader: UserCouponReader,
     private val couponTemplateStatsStore: CouponTemplateStatsStore,
-    private val couponRedeemer: CouponRedeemer,
+    private val userCouponStore: UserCouponStore,
+    private val couponHistoryStore: CouponHistoryStore,
 ) {
 
     @Transactional
@@ -34,17 +33,30 @@ class CouponRedeemService(
         validateCouponTemplateOwnership(couponTemplate, request.merchantPrincipal.merchantId)
         validateUserCouponOwnership(userCoupon, request.userId)
 
-        val couponRedemptionResult = couponRedeemer.redeemCoupon(
+        val result = CouponRedeemer.redeem(
             couponTemplate = couponTemplate,
             userCoupon = userCoupon,
-            redeemCount = stats.redeemCount,
+            currentRedeemCount = stats.redeemCount,
             orderAmount = request.orderAmount,
-            orderId = request.orderId,
             redeemAt = now
+        )
+        val redeemedCoupon = userCouponStore.update(result.redeemedCoupon)
+
+        couponHistoryStore.recordRedeemed(
+            userCouponId = redeemedCoupon.id,
+            recordedAt = now,
+            orderId = request.orderId,
         )
         couponTemplateStatsStore.incrementRedeemCount(stats)
 
-        return couponRedemptionResult
+        return CouponRedemptionResultResponse(
+            couponId = redeemedCoupon.id,
+            discountAmount = result.discountAmount,
+            originalPrice = result.originalPrice,
+            finalPrice = result.finalPrice,
+            orderId = request.orderId,
+            redeemedAt = now
+        )
     }
 
     private fun validateCouponTemplateOwnership(couponTemplate: CouponTemplate, merchantId: Long) {

@@ -4,7 +4,6 @@ import com.goodpon.core.domain.coupon.user.UserCoupon
 import com.goodpon.core.domain.coupon.user.UserCouponRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 
 @Component
 class UserCouponStore(
@@ -12,18 +11,7 @@ class UserCouponStore(
 ) {
 
     @Transactional
-    fun issueUserCoupon(
-        userId: String,
-        couponTemplateId: Long,
-        issueAt: LocalDateTime,
-        expiresAt: LocalDateTime?,
-    ): UserCoupon {
-        val userCoupon = UserCoupon.issue(
-            userId = userId,
-            couponTemplateId = couponTemplateId,
-            expiresAt = expiresAt,
-            issueAt = issueAt
-        )
+    fun createUserCoupon(userCoupon: UserCoupon): UserCoupon {
         return userCouponRepository.save(userCoupon)
     }
 

@@ -53,10 +53,6 @@ data class CouponTemplate(
         return discountPolicy.calculateDiscountAmount(orderAmount)
     }
 
-    fun calculateFinalPrice(orderAmount: Int): Int {
-        return orderAmount - calculateDiscountAmount(orderAmount)
-    }
-
     fun publish(): CouponTemplate {
         if (status.isNotDraft()) {
             throw CouponTemplatePublishNotAllowedException()
