@@ -38,11 +38,6 @@ class CouponTemplateCoreRepository(
             ?.toDomain()
     }
 
-    override fun findByIdForRead(id: Long): CouponTemplate? {
-        return couponTemplateJpaRepository.findByIdForRead(id)
-            ?.toDomain()
-    }
-
     override fun findByStatusAndAbsoluteExpiresAtLessThanEqual(
         status: CouponTemplateStatus,
         absoluteExpiresAt: LocalDateTime,

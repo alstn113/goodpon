@@ -1,4 +1,4 @@
-package com.goodpon.core.domain.account
+package com.goodpon.core.application.auth
 
 interface PasswordEncoder {
 

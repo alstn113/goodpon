@@ -1,6 +1,5 @@
 package com.goodpon.core.application.coupon.request
 
-import com.goodpon.core.application.auth.AccountPrincipal
 import com.goodpon.core.domain.coupon.template.CouponTemplate
 import com.goodpon.core.domain.coupon.template.CouponTemplateFactory
 import com.goodpon.core.domain.coupon.template.vo.CouponDiscountType
@@ -8,7 +7,7 @@ import com.goodpon.core.domain.coupon.template.vo.CouponLimitPolicyType
 import java.time.LocalDate
 
 data class CreateCouponTemplateRequest(
-    val accountPrincipal: AccountPrincipal,
+    val accountId: Long,
     val name: String,
     val description: String,
     val merchantId: Long,

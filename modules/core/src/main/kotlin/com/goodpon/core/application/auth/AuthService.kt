@@ -8,7 +8,6 @@ import com.goodpon.core.application.auth.event.ResendVerificationEmailEvent
 import com.goodpon.core.application.auth.exception.PasswordMismatchException
 import com.goodpon.core.application.auth.request.LoginRequest
 import com.goodpon.core.application.auth.response.LoginResponse
-import com.goodpon.core.domain.account.PasswordEncoder
 import com.goodpon.core.domain.account.exception.AccountAlreadyVerifiedException
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service

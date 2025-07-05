@@ -1,8 +1,8 @@
 package com.goodpon.core.application.auth.accessor
 
-import com.goodpon.core.domain.auth.exception.EmailVerificationNotFoundException
 import com.goodpon.core.domain.auth.EmailVerification
 import com.goodpon.core.domain.auth.EmailVerificationRepository
+import com.goodpon.core.domain.auth.exception.EmailVerificationNotFoundException
 import org.springframework.stereotype.Component
 
 @Component

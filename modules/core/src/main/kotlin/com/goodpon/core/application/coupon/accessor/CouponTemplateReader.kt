@@ -1,8 +1,8 @@
 package com.goodpon.core.application.coupon.accessor
 
-import com.goodpon.core.domain.coupon.template.exception.CouponTemplateNotFoundException
 import com.goodpon.core.domain.coupon.template.CouponTemplate
 import com.goodpon.core.domain.coupon.template.CouponTemplateRepository
+import com.goodpon.core.domain.coupon.template.exception.CouponTemplateNotFoundException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 

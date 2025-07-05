@@ -7,7 +7,6 @@ spring:
       - infra-jpa.yml
       - infra-redis.yml
       - infra-aws.yml
-      - infra-security.yml
       - logging.yml
   web.resources.add-mappings: false
 

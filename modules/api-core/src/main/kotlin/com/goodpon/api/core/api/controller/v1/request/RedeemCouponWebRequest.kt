@@ -1,7 +1,6 @@
 package com.goodpon.api.core.api.controller.v1.request
 
 import com.goodpon.core.application.coupon.request.RedeemCouponRequest
-import com.goodpon.core.application.auth.MerchantPrincipal
 
 data class RedeemCouponWebRequest(
     val userId: String,
@@ -9,9 +8,9 @@ data class RedeemCouponWebRequest(
     val orderId: String,
 ) {
 
-    fun toAppRequest(merchantPrincipal: MerchantPrincipal, couponId: String): RedeemCouponRequest {
+    fun toAppRequest(merchantId: Long, couponId: String): RedeemCouponRequest {
         return RedeemCouponRequest(
-            merchantPrincipal = merchantPrincipal,
+            merchantId = merchantId,
             couponId = couponId,
             userId = userId,
             orderAmount = orderAmount,

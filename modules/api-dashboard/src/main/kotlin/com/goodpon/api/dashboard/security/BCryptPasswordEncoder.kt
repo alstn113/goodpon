@@ -1,6 +1,6 @@
 package com.goodpon.api.dashboard.security
 
-import com.goodpon.core.domain.account.PasswordEncoder
+import com.goodpon.core.application.auth.PasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Component
 

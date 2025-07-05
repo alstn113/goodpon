@@ -30,7 +30,7 @@ class MerchantService(
 
     @Transactional
     fun createMerchant(request: CreateMerchantRequest): CreateMerchantResponse {
-        val account = accountReader.readById(request.accountPrincipal.id)
+        val account = accountReader.readById(request.accountId)
         val (merchant, merchantAccount) = merchantStore.createMerchant(merchantName = request.name, account = account)
 
         val merchantOwnerInfo = MerchantAccountInfo(

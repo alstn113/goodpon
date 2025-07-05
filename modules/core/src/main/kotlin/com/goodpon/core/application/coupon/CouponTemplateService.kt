@@ -18,7 +18,7 @@ class CouponTemplateService(
     @Transactional
     fun createCouponTemplate(request: CreateCouponTemplateRequest): CreateCouponTemplateResponse {
         merchantReader.readById(request.merchantId)
-        merchantAccountReader.readByMerchantIdAndAccountId(request.merchantId, request.accountPrincipal.id)
+        merchantAccountReader.readByMerchantIdAndAccountId(request.merchantId, request.accountId)
 
         val couponTemplate = request.toCouponTemplate()
         val savedCouponTemplate = couponTemplateStore.create(couponTemplate)

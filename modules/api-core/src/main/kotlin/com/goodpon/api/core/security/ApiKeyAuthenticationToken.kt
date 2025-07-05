@@ -1,6 +1,5 @@
 package com.goodpon.api.core.security
 
-import com.goodpon.core.application.auth.MerchantPrincipal
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
@@ -17,7 +16,7 @@ data class ApiKeyAuthenticationToken private constructor(
 
     override fun getCredentials(): Any? = null
 
-    override fun getName(): String = merchantPrincipal.merchantId.toString()
+    override fun getName(): String = merchantPrincipal.id.toString()
 
     companion object {
         fun of(

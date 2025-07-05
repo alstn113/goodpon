@@ -4,7 +4,7 @@ import com.goodpon.core.application.account.accessor.AccountReader
 import com.goodpon.core.application.account.accessor.AccountStore
 import com.goodpon.core.application.account.exception.AccountEmailExistsException
 import com.goodpon.core.domain.account.Account
-import com.goodpon.core.domain.account.PasswordEncoder
+import com.goodpon.core.application.auth.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

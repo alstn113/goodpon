@@ -5,8 +5,8 @@ import com.goodpon.core.application.coupon.exception.CouponTemplateNotOwnedByMer
 import com.goodpon.core.application.coupon.exception.UserCouponNotOwnedByUserException
 import com.goodpon.core.application.coupon.request.RedeemCouponRequest
 import com.goodpon.core.application.coupon.response.CouponRedemptionResultResponse
-import com.goodpon.core.domain.coupon.template.CouponTemplate
 import com.goodpon.core.domain.coupon.service.CouponRedeemer
+import com.goodpon.core.domain.coupon.template.CouponTemplate
 import com.goodpon.core.domain.coupon.user.UserCoupon
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -30,7 +30,7 @@ class CouponRedeemService(
         val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         val couponTemplate = couponTemplateReader.readById(userCoupon.couponTemplateId)
 
-        validateCouponTemplateOwnership(couponTemplate, request.merchantPrincipal.merchantId)
+        validateCouponTemplateOwnership(couponTemplate, request.merchantId)
         validateUserCouponOwnership(userCoupon, request.userId)
 
         val result = CouponRedeemer.redeem(

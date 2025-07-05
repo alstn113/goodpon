@@ -1,8 +1,6 @@
 package com.goodpon.core.application.merchant.request
 
-import com.goodpon.core.application.auth.AccountPrincipal
-
 data class CreateMerchantRequest(
-    val accountPrincipal: AccountPrincipal,
+    val accountId: Long,
     val name: String,
 )

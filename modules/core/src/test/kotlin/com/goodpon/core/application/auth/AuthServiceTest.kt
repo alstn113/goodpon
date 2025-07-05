@@ -9,7 +9,6 @@ import com.goodpon.core.application.auth.exception.PasswordMismatchException
 import com.goodpon.core.application.auth.request.LoginRequest
 import com.goodpon.core.application.auth.response.LoginResponse
 import com.goodpon.core.domain.account.Account
-import com.goodpon.core.domain.account.PasswordEncoder
 import com.goodpon.core.domain.account.exception.AccountAlreadyVerifiedException
 import com.goodpon.core.domain.auth.EmailVerification
 import io.kotest.assertions.throwables.shouldThrow

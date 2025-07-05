@@ -4,7 +4,7 @@ import com.goodpon.api.core.api.controller.v1.request.CancelCouponRedemptionWebR
 import com.goodpon.api.core.api.controller.v1.request.IssueCouponWebRequest
 import com.goodpon.api.core.api.controller.v1.request.RedeemCouponWebRequest
 import com.goodpon.api.core.api.response.ApiResponse
-import com.goodpon.core.application.auth.MerchantPrincipal
+import com.goodpon.api.core.security.MerchantPrincipal
 import com.goodpon.core.application.coupon.CouponCancelRedemptionService
 import com.goodpon.core.application.coupon.CouponIssueService
 import com.goodpon.core.application.coupon.CouponRedeemService
@@ -30,7 +30,7 @@ class CouponController(
         @RequestBody request: IssueCouponWebRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<CouponIssueResultResponse>> {
-        val appRequest = request.toAppRequest(merchantPrincipal)
+        val appRequest = request.toAppRequest(merchantPrincipal.id)
         val response = couponIssueService.issueCoupon(appRequest)
 
         return ResponseEntity.ok(ApiResponse.of("coupon", response))
@@ -42,7 +42,7 @@ class CouponController(
         @RequestBody request: RedeemCouponWebRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<CouponRedemptionResultResponse>> {
-        val appRequest = request.toAppRequest(merchantPrincipal, couponId)
+        val appRequest = request.toAppRequest(merchantPrincipal.id, couponId)
         val response = couponRedeemService.redeemCoupon(appRequest)
 
         return ResponseEntity.ok(ApiResponse.of("coupon", response))
@@ -54,7 +54,7 @@ class CouponController(
         @RequestBody request: CancelCouponRedemptionWebRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<CouponCancelRedemptionResultResponse>> {
-        val appRequest = request.toAppRequest(merchantPrincipal, couponId)
+        val appRequest = request.toAppRequest(merchantPrincipal.id, couponId)
         val response = couponCancelRedemptionService.cancelCouponRedemption(appRequest)
 
         return ResponseEntity.ok(ApiResponse.of("coupon", response))
