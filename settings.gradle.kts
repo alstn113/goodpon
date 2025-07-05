@@ -1,10 +1,11 @@
-rootProject.name = "goodpon"
-
 include(
-    "modules:api-dashboard",
-    "modules:api-core",
+    "modules:api:partner-openapi",
+    "modules:api:dashboard-api",
 
-    "modules:core",
+    "modules:application:partner-application",
+    "modules:application:dashboard-application",
+
+    "modules:domain",
 
     "modules:infra:jpa",
     "modules:infra:redis",

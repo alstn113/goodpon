@@ -1,8 +1,8 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.user.UserCouponStatus
-import com.goodpon.core.domain.coupon.user.UserCoupon
-import com.goodpon.core.domain.coupon.user.UserCouponRepository
+import com.goodpon.domain.domain.coupon.user.UserCouponStatus
+import com.goodpon.domain.coupon.user.UserCoupon
+import com.goodpon.domain.domain.coupon.user.UserCouponRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
@@ -12,7 +12,7 @@ class UserCouponCoreRepository(
     private val userCouponJpaRepository: UserCouponJpaRepository,
 ) : UserCouponRepository {
 
-    override fun save(userCoupon: UserCoupon): UserCoupon {
+    override fun save(userCoupon: com.goodpon.domain.coupon.user.UserCoupon): com.goodpon.domain.coupon.user.UserCoupon {
         val entity = userCouponJpaRepository.findByIdOrNull(userCoupon.id)
         if (entity == null) {
             val newEntity = UserCouponEntity.fromDomain(userCoupon)
@@ -25,13 +25,13 @@ class UserCouponCoreRepository(
         return savedEntity.toDomain()
     }
 
-    override fun saveAll(userCoupons: List<UserCoupon>): List<UserCoupon> {
+    override fun saveAll(userCoupons: List<com.goodpon.domain.coupon.user.UserCoupon>): List<com.goodpon.domain.coupon.user.UserCoupon> {
         val entities = userCoupons.map { UserCouponEntity.fromDomain(it) }
         val savedEntities = userCouponJpaRepository.saveAll(entities)
         return savedEntities.map { it.toDomain() }
     }
 
-    override fun findByIdForUpdate(id: String): UserCoupon? {
+    override fun findByIdForUpdate(id: String): com.goodpon.domain.coupon.user.UserCoupon? {
         return userCouponJpaRepository.findByIdForUpdate(id)
             ?.toDomain()
     }
@@ -43,7 +43,7 @@ class UserCouponCoreRepository(
     override fun findByStatusAndExpiresAtLessThanEqual(
         status: UserCouponStatus,
         expiresAt: LocalDateTime,
-    ): List<UserCoupon> {
+    ): List<com.goodpon.domain.coupon.user.UserCoupon> {
         return userCouponJpaRepository.findByStatusAndExpiresAtLessThanEqual(status, expiresAt)
             .map { it.toDomain() }
     }

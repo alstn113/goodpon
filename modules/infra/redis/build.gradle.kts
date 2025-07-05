@@ -1,7 +1,7 @@
 val testcontainersVersion by extra("1.21.1")
 
 dependencies {
-    implementation(project(":modules:core"))
+    implementation(project(":modules:domain"))
     implementation("jakarta.validation:jakarta.validation-api")
 
     // redis

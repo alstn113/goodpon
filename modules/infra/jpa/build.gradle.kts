@@ -1,7 +1,7 @@
 val testcontainersVersion by extra("1.21.3")
 
 dependencies {
-    compileOnly(project(":modules:core"))
+    compileOnly(project(":modules:domain"))
 
     // db
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

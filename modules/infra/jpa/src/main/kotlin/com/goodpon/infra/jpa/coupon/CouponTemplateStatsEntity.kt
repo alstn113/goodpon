@@ -1,6 +1,6 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.stats.CouponTemplateStats
+import com.goodpon.domain.domain.coupon.stats.CouponTemplateStats
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

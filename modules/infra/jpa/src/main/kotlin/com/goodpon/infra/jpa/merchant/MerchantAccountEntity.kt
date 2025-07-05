@@ -1,7 +1,7 @@
 package com.goodpon.infra.jpa.merchant
 
-import com.goodpon.core.domain.merchant.MerchantAccount
-import com.goodpon.core.domain.merchant.MerchantAccountRole
+import com.goodpon.domain.merchant.MerchantAccount
+import com.goodpon.domain.domain.merchant.MerchantAccountRole
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 
@@ -23,8 +23,8 @@ class MerchantAccountEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    fun toDomain(): MerchantAccount {
-        return MerchantAccount.reconstruct(
+    fun toDomain(): com.goodpon.domain.merchant.MerchantAccount {
+        return com.goodpon.domain.merchant.MerchantAccount.reconstruct(
             id = id,
             merchantId = merchantId,
             accountId = accountId,
@@ -32,11 +32,11 @@ class MerchantAccountEntity(
         )
     }
 
-    fun update(merchantAccount: MerchantAccount) {
+    fun update(merchantAccount: com.goodpon.domain.merchant.MerchantAccount) {
     }
 
     companion object {
-        fun fromDomain(merchantAccount: MerchantAccount): MerchantAccountEntity {
+        fun fromDomain(merchantAccount: com.goodpon.domain.merchant.MerchantAccount): MerchantAccountEntity {
             return MerchantAccountEntity(
                 merchantId = merchantAccount.merchantId,
                 accountId = merchantAccount.accountId,

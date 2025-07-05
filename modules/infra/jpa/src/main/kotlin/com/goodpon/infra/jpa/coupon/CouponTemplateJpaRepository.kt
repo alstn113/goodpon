@@ -1,6 +1,6 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.template.vo.CouponTemplateStatus
+import com.goodpon.domain.domain.coupon.template.vo.CouponTemplateStatus
 import jakarta.persistence.LockModeType
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Lock

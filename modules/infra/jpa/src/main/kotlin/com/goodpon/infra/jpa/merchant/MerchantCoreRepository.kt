@@ -1,8 +1,8 @@
 package com.goodpon.infra.jpa.merchant
 
-import com.goodpon.core.domain.merchant.Merchant
-import com.goodpon.core.domain.merchant.MerchantRepository
-import com.goodpon.core.domain.merchant.exception.MerchantNotFoundException
+import com.goodpon.domain.domain.merchant.Merchant
+import com.goodpon.domain.domain.merchant.MerchantRepository
+import com.goodpon.domain.domain.merchant.exception.MerchantNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 

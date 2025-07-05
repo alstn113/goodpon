@@ -1,10 +1,10 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.template.CouponTemplate
-import com.goodpon.core.domain.coupon.template.CouponTemplateFactory
-import com.goodpon.core.domain.coupon.template.vo.CouponDiscountType
-import com.goodpon.core.domain.coupon.template.vo.CouponLimitPolicyType
-import com.goodpon.core.domain.coupon.template.vo.CouponTemplateStatus
+import com.goodpon.domain.coupon.template.CouponTemplate
+import com.goodpon.domain.domain.coupon.template.CouponTemplateFactory
+import com.goodpon.domain.domain.coupon.template.vo.CouponDiscountType
+import com.goodpon.domain.domain.coupon.template.vo.CouponLimitPolicyType
+import com.goodpon.domain.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -64,7 +64,7 @@ class CouponTemplateEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    fun toDomain(): CouponTemplate {
+    fun toDomain(): com.goodpon.domain.coupon.template.CouponTemplate {
         return CouponTemplateFactory.reconstruct(
             id = id,
             merchantId = merchantId,
@@ -85,12 +85,12 @@ class CouponTemplateEntity(
         )
     }
 
-    fun update(couponTemplate: CouponTemplate) {
+    fun update(couponTemplate: com.goodpon.domain.coupon.template.CouponTemplate) {
         this.status = couponTemplate.status
     }
 
     companion object {
-        fun fromDomain(domain: CouponTemplate): CouponTemplateEntity {
+        fun fromDomain(domain: com.goodpon.domain.coupon.template.CouponTemplate): CouponTemplateEntity {
             return CouponTemplateEntity(
                 merchantId = domain.merchantId,
                 name = domain.name,

@@ -1,6 +1,6 @@
 package com.goodpon.infra.jpa.merchant
 
-import com.goodpon.core.domain.merchant.Merchant
+import com.goodpon.domain.domain.merchant.Merchant
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 

@@ -1,7 +1,7 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.core.domain.coupon.history.CouponActionType
-import com.goodpon.core.domain.coupon.history.CouponHistory
+import com.goodpon.domain.domain.coupon.history.CouponActionType
+import com.goodpon.domain.domain.coupon.history.CouponHistory
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
