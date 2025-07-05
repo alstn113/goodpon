@@ -2,7 +2,7 @@ package com.goodpon.core.application.account
 
 import com.goodpon.core.application.account.accessor.AccountReader
 import com.goodpon.core.application.account.response.AccountInfo
-import com.goodpon.core.application.auth.VerificationEmailRequestedEvent
+import com.goodpon.core.application.auth.event.AccountCreatedEvent
 import com.goodpon.core.application.auth.request.SignUpRequest
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
@@ -34,7 +34,7 @@ class AccountService(
             password = request.password,
         )
 
-        val event = VerificationEmailRequestedEvent(
+        val event = AccountCreatedEvent(
             accountId = account.id,
             email = account.email.value,
             name = account.name.value
