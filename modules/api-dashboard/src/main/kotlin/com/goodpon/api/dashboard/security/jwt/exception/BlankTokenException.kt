@@ -1,4 +1,4 @@
-package com.goodpon.infra.security.exception
+package com.goodpon.api.dashboard.security.exception
 
 class BlankTokenException(
     cause: Throwable? = null,

@@ -1,13 +1,12 @@
-package com.goodpon.infra.security.filter
+package com.goodpon.api.dashboard.security.filter
 
+import com.goodpon.api.dashboard.security.AuthHeaderUtil
+import com.goodpon.api.dashboard.security.exception.BlankTokenException
+import com.goodpon.api.dashboard.security.jwt.exception.InvalidTokenException
+import com.goodpon.api.dashboard.security.jwt.exception.TokenExpiredException
 import com.goodpon.core.application.account.AccountService
 import com.goodpon.core.application.account.response.AccountInfo
-import com.goodpon.infra.security.jwt.JwtAuthenticationToken
-import com.goodpon.infra.security.jwt.JwtTokenProvider
-import com.goodpon.infra.security.exception.BlankTokenException
-import com.goodpon.infra.security.exception.InvalidTokenException
-import com.goodpon.infra.security.exception.TokenExpiredException
-import com.goodpon.infra.security.util.AuthHeaderUtil
+import com.goodpon.core.application.auth.TokenProvider
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -18,8 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.web.filter.OncePerRequestFilter
 
-class JwtAuthenticationFilter(
-    private val jwtTokenProvider: JwtTokenProvider,
+class TokenAuthenticationFilter(
+    private val tokenProvider: TokenProvider,
     private val accountService: AccountService,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
 ) : OncePerRequestFilter() {
@@ -44,7 +43,7 @@ class JwtAuthenticationFilter(
         val accountId = extractAccountId(token)
         val accountInfo = fetchAccountInfo(accountId)
 
-        val authentication = JwtAuthenticationToken.of(
+        val authentication = AuthenticationToken.of(
             id = accountInfo.id,
             email = accountInfo.email,
             verified = accountInfo.verified,
@@ -54,7 +53,7 @@ class JwtAuthenticationFilter(
 
     private fun extractAccountId(token: String): Long {
         try {
-            return jwtTokenProvider.getAccountId(token)
+            return tokenProvider.getAccountId(token)
         } catch (e: BlankTokenException) {
             throw BadCredentialsException("토큰이 비어있습니다.", e)
         } catch (e: TokenExpiredException) {

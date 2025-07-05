@@ -6,25 +6,25 @@ import com.goodpon.core.support.error.ErrorType
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType
-import org.springframework.security.access.AccessDeniedException
-import org.springframework.security.web.access.AccessDeniedHandler
+import org.springframework.security.core.AuthenticationException
+import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
 
 @Component
-class JwtAccessDeniedHandler(
+class TokenAuthenticationEntryPoint(
     private val objectMapper: ObjectMapper,
-) : AccessDeniedHandler {
+) : AuthenticationEntryPoint {
 
-    override fun handle(
+    override fun commence(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        accessDeniedException: AccessDeniedException,
+        authException: AuthenticationException,
     ) {
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.characterEncoding = "UTF-8"
-        response.status = HttpServletResponse.SC_FORBIDDEN
+        response.status = HttpServletResponse.SC_UNAUTHORIZED
 
-        val errorResponse = ApiResponse.error<Unit>(ErrorType.FORBIDDEN_REQUEST)
+        val errorResponse = ApiResponse.error<Unit>(ErrorType.UNAUTHORIZED)
         val body = objectMapper.writeValueAsString(errorResponse)
 
         response.writer.write(body)

@@ -1,4 +1,4 @@
-package com.goodpon.infra.security.encoder
+package com.goodpon.api.dashboard.security
 
 import com.goodpon.core.domain.account.PasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCrypt

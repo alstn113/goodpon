@@ -1,11 +1,9 @@
-package com.goodpon.infra.security.filter
+package com.goodpon.api.core.security
 
 import com.goodpon.core.application.merchant.MerchantService
 import com.goodpon.core.application.merchant.response.MerchantInfo
 import com.goodpon.core.support.error.CoreException
 import com.goodpon.core.support.error.ErrorType
-import com.goodpon.infra.security.token.ApiKeyAuthenticationToken
-import com.goodpon.infra.security.util.AuthHeaderUtil
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -26,7 +24,7 @@ class ApiKeyAuthenticationFilter(
         filterChain: FilterChain,
     ) {
         try {
-            val apiKey = AuthHeaderUtil.extractBasicAuthUsername(request)
+            val apiKey = AuthHeaderUtil.extractBearerToken(request)
             apiKey?.let { handleApiKey(it) }
 
             filterChain.doFilter(request, response)

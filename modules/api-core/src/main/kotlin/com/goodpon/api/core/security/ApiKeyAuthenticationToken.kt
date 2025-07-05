@@ -1,4 +1,4 @@
-package com.goodpon.infra.security.token
+package com.goodpon.api.core.security
 
 import com.goodpon.core.application.auth.MerchantPrincipal
 import org.springframework.security.authentication.AbstractAuthenticationToken

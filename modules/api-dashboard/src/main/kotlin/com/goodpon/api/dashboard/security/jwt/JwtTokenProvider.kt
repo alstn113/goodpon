@@ -1,9 +1,9 @@
-package com.goodpon.infra.security.jwt
+package com.goodpon.api.dashboard.security.jwt
 
+import com.goodpon.api.dashboard.security.exception.BlankTokenException
+import com.goodpon.api.dashboard.security.jwt.exception.InvalidTokenException
+import com.goodpon.api.dashboard.security.jwt.exception.TokenExpiredException
 import com.goodpon.core.application.auth.TokenProvider
-import com.goodpon.infra.security.exception.BlankTokenException
-import com.goodpon.infra.security.exception.InvalidTokenException
-import com.goodpon.infra.security.exception.TokenExpiredException
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.context.properties.EnableConfigurationProperties

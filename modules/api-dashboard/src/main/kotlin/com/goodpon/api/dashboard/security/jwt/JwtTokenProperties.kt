@@ -1,4 +1,4 @@
-package com.goodpon.infra.security.jwt
+package com.goodpon.api.dashboard.security.jwt
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

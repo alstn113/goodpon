@@ -1,9 +1,9 @@
 package com.goodpon.api.dashboard.security
 
+import com.goodpon.api.dashboard.security.filter.AccountVerifiedFilter
+import com.goodpon.api.dashboard.security.filter.TokenAuthenticationFilter
 import com.goodpon.core.application.account.AccountService
-import com.goodpon.infra.security.filter.AccountVerifiedFilter
-import com.goodpon.infra.security.filter.JwtAuthenticationFilter
-import com.goodpon.infra.security.jwt.JwtTokenProvider
+import com.goodpon.core.application.auth.TokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -20,16 +20,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val jwtTokenProvider: JwtTokenProvider,
+    private val tokenProvider: TokenProvider,
     private val accountService: AccountService,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
-    private val accessDeniedHandler: JwtAccessDeniedHandler,
+    private val accessDeniedHandler: TokenAccessDeniedHandler,
 ) {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        val jwtAuthenticationFilter = JwtAuthenticationFilter(
-            jwtTokenProvider = jwtTokenProvider,
+        val tokenAuthenticationFilter = TokenAuthenticationFilter(
+            tokenProvider = tokenProvider,
             accountService = accountService,
             authenticationEntryPoint = authenticationEntryPoint,
         )
@@ -65,8 +65,8 @@ class SecurityConfig(
                 it.authenticationEntryPoint(authenticationEntryPoint)
                 it.accessDeniedHandler(accessDeniedHandler)
             }
-            .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .addFilterBefore(accountVerifierFilter, JwtAuthenticationFilter::class.java)
+            .addFilterAfter(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(accountVerifierFilter, tokenAuthenticationFilter::class.java)
 
         return http.build()
     }

@@ -1,10 +1,10 @@
-package com.goodpon.infra.security.jwt
+package com.goodpon.api.dashboard.security.filter
 
 import com.goodpon.core.application.auth.AccountPrincipal
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
-data class JwtAuthenticationToken private constructor(
+data class AuthenticationToken private constructor(
     private val accountPrincipal: AccountPrincipal,
     private val authorities: Collection<GrantedAuthority> = emptyList(),
 ) : AbstractAuthenticationToken(authorities) {
@@ -25,8 +25,8 @@ data class JwtAuthenticationToken private constructor(
             email: String,
             verified: Boolean,
             authorities: Collection<GrantedAuthority> = emptyList(),
-        ): JwtAuthenticationToken {
-            return JwtAuthenticationToken(
+        ): AuthenticationToken {
+            return AuthenticationToken(
                 accountPrincipal = AccountPrincipal(id, email, verified),
                 authorities = authorities,
             )

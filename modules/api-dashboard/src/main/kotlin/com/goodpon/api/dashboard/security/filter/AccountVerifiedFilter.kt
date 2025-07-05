@@ -1,6 +1,5 @@
-package com.goodpon.infra.security.filter
+package com.goodpon.api.dashboard.security.filter
 
-import com.goodpon.infra.security.jwt.JwtAuthenticationToken
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -27,7 +26,7 @@ class AccountVerifiedFilter(
         filterChain: FilterChain,
     ) {
         val authentication = SecurityContextHolder.getContext().authentication
-        if (authentication !is JwtAuthenticationToken) {
+        if (authentication !is AuthenticationToken) {
             throw BadCredentialsException("유효하지 않은 인증입니다.")
         }
 
