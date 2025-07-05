@@ -1,5 +1,6 @@
 package com.goodpon.infra.jpa.coupon
 
+import com.goodpon.core.domain.coupon.template.exception.CouponTemplateNotFoundException
 import com.goodpon.core.domain.coupon.template.CouponTemplate
 import com.goodpon.core.domain.coupon.template.CouponTemplateRepository
 import com.goodpon.core.domain.coupon.template.vo.CouponTemplateStatus
@@ -19,7 +20,7 @@ class CouponTemplateCoreRepository(
         }
 
         val entity = couponTemplateJpaRepository.findByIdOrNull(couponTemplate.id)
-            ?: throw IllegalArgumentException("CouponTemplate with id ${couponTemplate.id} not found")
+            ?: throw CouponTemplateNotFoundException()
         entity.update(couponTemplate)
         val savedEntity = couponTemplateJpaRepository.save(entity)
         return savedEntity.toDomain()

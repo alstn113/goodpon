@@ -1,4 +1,4 @@
-package com.goodpon.core.application.merchant.exception
+package com.goodpon.core.domain.merchant.exception
 
 import com.goodpon.core.support.error.BaseException
 

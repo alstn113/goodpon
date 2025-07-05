@@ -5,14 +5,16 @@ import com.goodpon.core.application.account.accessor.AccountStore
 import com.goodpon.core.application.account.exception.AccountEmailExistsException
 import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.PasswordEncoder
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
-@Component
+@Service
 class AccountRegistrationService(
     private val accountReader: AccountReader,
     private val accountStore: AccountStore,
     private val passwordEncoder: PasswordEncoder,
 ) {
+    @Transactional
     fun register(email: String, password: String, name: String): Account {
         validateUniqueEmail(email)
 

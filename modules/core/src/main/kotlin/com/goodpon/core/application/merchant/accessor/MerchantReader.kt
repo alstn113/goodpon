@@ -1,6 +1,6 @@
 package com.goodpon.core.application.merchant.accessor
 
-import com.goodpon.core.application.merchant.exception.MerchantNotFoundException
+import com.goodpon.core.domain.merchant.exception.MerchantNotFoundException
 import com.goodpon.core.domain.merchant.Merchant
 import com.goodpon.core.domain.merchant.MerchantRepository
 import org.springframework.stereotype.Component

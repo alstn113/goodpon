@@ -2,13 +2,13 @@ package com.goodpon.core.application.auth
 
 import com.goodpon.core.application.account.AccountVerificationService
 import com.goodpon.core.application.account.accessor.AccountReader
-import com.goodpon.core.application.auth.exception.EmailVerificationNotFoundException
+import com.goodpon.core.application.auth.accessor.EmailVerificationReader
+import com.goodpon.core.application.auth.accessor.EmailVerificationStore
 import com.goodpon.core.application.auth.exception.PasswordMismatchException
 import com.goodpon.core.application.auth.request.LoginRequest
 import com.goodpon.core.application.auth.response.LoginResponse
 import com.goodpon.core.domain.account.PasswordEncoder
 import com.goodpon.core.domain.account.exception.AccountAlreadyVerifiedException
-import com.goodpon.core.domain.auth.EmailVerificationRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,8 +19,9 @@ class AuthService(
     private val accountReader: AccountReader,
     private val passwordEncoder: PasswordEncoder,
     private val tokenProvider: TokenProvider,
-    private val emailVerificationRepository: EmailVerificationRepository,
     private val accountVerificationService: AccountVerificationService,
+    private val emailVerificationStore: EmailVerificationStore,
+    private val emailVerificationReader: EmailVerificationReader,
     private val eventPublisher: ApplicationEventPublisher,
 ) {
     @Transactional
@@ -45,11 +46,10 @@ class AuthService(
     @Transactional
     fun verifyEmail(token: String) {
         val now = LocalDateTime.now()
-        val verification = emailVerificationRepository.findByToken(token)
-            ?: throw EmailVerificationNotFoundException()
+        val verification = emailVerificationReader.readByToken(token)
 
         accountVerificationService.verifyEmail(accountId = verification.accountId, verifiedAt = now)
-        emailVerificationRepository.delete(token = token, accountId = verification.accountId)
+        emailVerificationStore.delete(token = token, accountId = verification.accountId)
     }
 
     @Transactional(readOnly = true)

@@ -2,6 +2,7 @@ package com.goodpon.infra.jpa.merchant
 
 import com.goodpon.core.domain.merchant.Merchant
 import com.goodpon.core.domain.merchant.MerchantRepository
+import com.goodpon.core.domain.merchant.exception.MerchantNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
@@ -17,7 +18,7 @@ class MerchantCoreRepository(
         }
 
         val entity = merchantJpaRepository.findByIdOrNull(merchant.id)
-            ?: throw IllegalArgumentException("Merchant with id ${merchant.id} not found")
+            ?: throw MerchantNotFoundException()
         entity.update(merchant)
         val savedEntity = merchantJpaRepository.save(entity)
         return savedEntity.toDomain()

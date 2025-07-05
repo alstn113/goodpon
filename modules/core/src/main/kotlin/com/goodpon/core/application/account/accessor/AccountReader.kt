@@ -1,6 +1,6 @@
 package com.goodpon.core.application.account.accessor
 
-import com.goodpon.core.application.account.exception.AccountNotFoundException
+import com.goodpon.core.domain.account.exception.AccountNotFoundException
 import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.AccountRepository
 import org.springframework.stereotype.Component

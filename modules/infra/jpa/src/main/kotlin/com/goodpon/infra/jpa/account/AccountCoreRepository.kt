@@ -2,6 +2,7 @@ package com.goodpon.infra.jpa.account
 
 import com.goodpon.core.domain.account.Account
 import com.goodpon.core.domain.account.AccountRepository
+import com.goodpon.core.domain.account.exception.AccountNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
@@ -17,7 +18,7 @@ class AccountCoreRepository(
         }
 
         val entity = accountJpaRepository.findByIdOrNull(account.id)
-            ?: throw IllegalArgumentException("Account with id ${account.id} not found")
+            ?: throw AccountNotFoundException()
         entity.update(account)
         val savedEntity = accountJpaRepository.save(entity)
         return savedEntity.toDomain()
