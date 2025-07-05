@@ -8,7 +8,7 @@ import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 
 class CouponRedemptionConditionTest : DescribeSpec({
-    
+
     describe("CouponRedemptionCondition 생성") {
         it("최소 주문 금액이 있을 경우, 0보다 커야 한다.") {
             forAll(

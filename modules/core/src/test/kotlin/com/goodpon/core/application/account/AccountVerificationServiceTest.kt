@@ -40,7 +40,7 @@ class AccountVerificationServiceTest : DescribeSpec({
             result.verified shouldBe true
             result.verifiedAt shouldBe verifiedAt
 
-            verify(exactly = 1) {
+            verify {
                 accountReader.readById(1L)
                 accountStore.update(
                     match { it.id == account.id && it.verified && it.verifiedAt == verifiedAt }

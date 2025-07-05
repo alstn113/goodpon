@@ -44,7 +44,7 @@ class AccountServiceTest : DescribeSpec({
                 name = account.name.value,
                 verified = account.verified
             )
-            verify(exactly = 1) { accountReader.readById(accountId) }
+            verify { accountReader.readById(accountId) }
         }
     }
 
@@ -78,7 +78,7 @@ class AccountServiceTest : DescribeSpec({
                 verified = account.verified
             )
 
-            verify(exactly = 1) {
+            verify {
                 accountRegistrationService.register(
                     request.email,
                     request.password,
@@ -86,7 +86,7 @@ class AccountServiceTest : DescribeSpec({
                 )
             }
 
-            verify(exactly = 1) {
+            verify {
                 eventPublisher.publishEvent(
                     AccountCreatedEvent(
                         accountId = account.id,

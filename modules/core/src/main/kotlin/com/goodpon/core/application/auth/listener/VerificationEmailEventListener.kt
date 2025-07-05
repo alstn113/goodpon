@@ -2,6 +2,7 @@ package com.goodpon.core.application.auth.listener
 
 import com.goodpon.core.application.auth.EmailVerificationSender
 import com.goodpon.core.application.auth.event.AccountCreatedEvent
+import com.goodpon.core.application.auth.event.ResendVerificationEmailEvent
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 import org.springframework.transaction.event.TransactionPhase
@@ -15,6 +16,16 @@ class VerificationEmailEventListener(
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     fun handleAccountCreatedEvent(event: AccountCreatedEvent) {
+        emailVerificationSender.send(
+            event.accountId,
+            event.email,
+            event.name
+        )
+    }
+
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    fun handleResendVerificationEmailEvent(event: ResendVerificationEmailEvent) {
         emailVerificationSender.send(
             event.accountId,
             event.email,

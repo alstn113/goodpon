@@ -4,7 +4,7 @@ import com.goodpon.core.application.account.AccountVerificationService
 import com.goodpon.core.application.account.accessor.AccountReader
 import com.goodpon.core.application.auth.accessor.EmailVerificationReader
 import com.goodpon.core.application.auth.accessor.EmailVerificationStore
-import com.goodpon.core.application.auth.event.AccountCreatedEvent
+import com.goodpon.core.application.auth.event.ResendVerificationEmailEvent
 import com.goodpon.core.application.auth.exception.PasswordMismatchException
 import com.goodpon.core.application.auth.request.LoginRequest
 import com.goodpon.core.application.auth.response.LoginResponse
@@ -61,7 +61,7 @@ class AuthService(
             throw AccountAlreadyVerifiedException()
         }
 
-        val event = AccountCreatedEvent(
+        val event = ResendVerificationEmailEvent(
             accountId = account.id,
             email = account.email.value,
             name = account.name.value
