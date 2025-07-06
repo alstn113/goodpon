@@ -1,5 +1,6 @@
 package com.goodpon.domain.coupon.template.vo
 
+import com.goodpon.domain.coupon.template.exception.CouponRedemptionConditionInvalidMinOrderAmountException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
@@ -14,7 +15,7 @@ class CouponRedemptionConditionTest : DescribeSpec({
                 row(0),
                 row(-1)
             ) { minOrderAmount: Int ->
-                shouldThrow<com.goodpon.domain.coupon.template.exception.CouponRedemptionConditionInvalidMinOrderAmountException> {
+                shouldThrow<CouponRedemptionConditionInvalidMinOrderAmountException> {
                     CouponRedemptionCondition(minOrderAmount)
                 }
             }

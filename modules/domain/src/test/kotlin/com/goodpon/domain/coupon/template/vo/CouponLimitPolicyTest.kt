@@ -1,9 +1,6 @@
 package com.goodpon.domain.coupon.template.vo
 
-import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyInvalidIssueValueException
-import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyInvalidRedeemValueException
-import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyNoneConflictException
-import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyRedeemIssueConflictException
+import com.goodpon.domain.coupon.template.exception.*
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
@@ -21,7 +18,7 @@ class CouponLimitPolicyTest : DescribeSpec({
                     row(-1L)
                 ) { maxIssueCount ->
                     shouldThrow<CouponLimitPolicyInvalidIssueValueException> {
-                        com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+                        CouponLimitPolicy(
                             limitType = CouponLimitPolicyType.ISSUE_COUNT,
                             maxIssueCount = maxIssueCount,
                             maxRedeemCount = null
@@ -34,8 +31,8 @@ class CouponLimitPolicyTest : DescribeSpec({
                 val maxIssueCount = 10L
                 val maxRedeemCount = 5L
 
-                shouldThrow<com.goodpon.domain.coupon.template.exception.CouponLimitPolicyIssueRedeemConflictException> {
-                    com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+                shouldThrow<CouponLimitPolicyIssueRedeemConflictException> {
+                    CouponLimitPolicy(
                         limitType = CouponLimitPolicyType.ISSUE_COUNT,
                         maxIssueCount = maxIssueCount,
                         maxRedeemCount = maxRedeemCount
@@ -52,7 +49,7 @@ class CouponLimitPolicyTest : DescribeSpec({
                     row(-1L)
                 ) { maxRedeemCount ->
                     shouldThrow<CouponLimitPolicyInvalidRedeemValueException> {
-                        com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+                        CouponLimitPolicy(
                             limitType = CouponLimitPolicyType.REDEEM_COUNT,
                             maxIssueCount = null,
                             maxRedeemCount = maxRedeemCount
@@ -66,7 +63,7 @@ class CouponLimitPolicyTest : DescribeSpec({
                 val maxRedeemCount = 5L
 
                 shouldThrow<CouponLimitPolicyRedeemIssueConflictException> {
-                    com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+                    CouponLimitPolicy(
                         limitType = CouponLimitPolicyType.REDEEM_COUNT,
                         maxIssueCount = maxIssueCount,
                         maxRedeemCount = maxRedeemCount
@@ -81,7 +78,7 @@ class CouponLimitPolicyTest : DescribeSpec({
                 val maxRedeemCountNotNull = 5L
 
                 shouldThrow<CouponLimitPolicyNoneConflictException> {
-                    com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+                    CouponLimitPolicy(
                         limitType = CouponLimitPolicyType.NONE,
                         maxIssueCount = maxIssueCountNotNull,
                         maxRedeemCount = maxRedeemCountNotNull
@@ -101,7 +98,7 @@ class CouponLimitPolicyTest : DescribeSpec({
                     row(9L, true),
                     row(10L, false),
                 ) { currentIssuedCount, expectedResult ->
-                    val policy = com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+                    val policy = CouponLimitPolicy(
                         limitType = CouponLimitPolicyType.ISSUE_COUNT,
                         maxIssueCount = maxIssueCount
                     )
@@ -115,7 +112,7 @@ class CouponLimitPolicyTest : DescribeSpec({
 
         context("사용 제한 정책이 설정된 쿠폰") {
             it("사용 제한 정책에서는 발급 가능 여부를 확인하지 않는다") {
-                val policy = com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+                val policy = CouponLimitPolicy(
                     limitType = CouponLimitPolicyType.REDEEM_COUNT,
                     maxRedeemCount = 5L
                 )
@@ -126,7 +123,7 @@ class CouponLimitPolicyTest : DescribeSpec({
         context("무제한 정책이 설정된 쿠폰") {
             it("무제한 정책에서는 발급 가능 여부를 확인하지 않는다") {
                 val policy =
-                    com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(limitType = CouponLimitPolicyType.NONE)
+                    CouponLimitPolicy(limitType = CouponLimitPolicyType.NONE)
                 policy.canIssue(currentIssuedCount = 100L) shouldBe true
             }
         }
@@ -135,7 +132,7 @@ class CouponLimitPolicyTest : DescribeSpec({
     describe("canRedeem") {
         context("발급 제한 정책이 설정된 쿠폰") {
             it("발급 제한 정책에서는 사용 가능 여부를 확인하지 않는다") {
-                val policy = com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+                val policy = CouponLimitPolicy(
                     limitType = CouponLimitPolicyType.ISSUE_COUNT,
                     maxIssueCount = 10L
                 )
@@ -152,7 +149,7 @@ class CouponLimitPolicyTest : DescribeSpec({
                     row(9L, true),
                     row(10L, false),
                 ) { currentRedeemedCount, expectedResult ->
-                    val policy = com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+                    val policy = CouponLimitPolicy(
                         limitType = CouponLimitPolicyType.REDEEM_COUNT,
                         maxRedeemCount = maxRedeemCount
                     )
@@ -167,7 +164,7 @@ class CouponLimitPolicyTest : DescribeSpec({
         context("무제한 정책이 설정된 쿠폰") {
             it("무제한 정책에서는 사용 가능 여부를 확인하지 않는다") {
                 val policy =
-                    com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(limitType = CouponLimitPolicyType.NONE)
+                    CouponLimitPolicy(limitType = CouponLimitPolicyType.NONE)
                 policy.canRedeem(currentRedeemedCount = 100L) shouldBe true
             }
         }

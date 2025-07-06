@@ -17,7 +17,7 @@ class UserCouponTest : DescribeSpec({
             val expiresAt = LocalDateTime.now().plusDays(1)
             val redeemAt = LocalDateTime.now().plusHours(1)
 
-            val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+            val userCoupon = UserCoupon.issue(
                 userId = "test-user",
                 couponTemplateId = 1L,
                 issueAt = issueAt,
@@ -37,7 +37,7 @@ class UserCouponTest : DescribeSpec({
                 row(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2)),
             ) { expiresAt: LocalDateTime, redeemAt: LocalDateTime ->
 
-                val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+                val userCoupon = UserCoupon.issue(
                     userId = "test-user",
                     couponTemplateId = 1L,
                     issueAt = issueAt,
@@ -55,7 +55,7 @@ class UserCouponTest : DescribeSpec({
             val expiresAt = LocalDateTime.now().plusDays(1)
             val redeemAt = LocalDateTime.now().plusHours(1)
 
-            val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+            val userCoupon = UserCoupon.issue(
                 userId = "test-user",
                 couponTemplateId = 1L,
                 issueAt = issueAt,
@@ -74,7 +74,7 @@ class UserCouponTest : DescribeSpec({
             val issueAt = LocalDateTime.now()
             val expiresAt = LocalDateTime.now().plusDays(1)
 
-            val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+            val userCoupon = UserCoupon.issue(
                 userId = "test-user",
                 couponTemplateId = 1L,
                 issueAt = issueAt,
@@ -88,7 +88,7 @@ class UserCouponTest : DescribeSpec({
 
     describe("isOwnedBy") {
         it("쿠폰이 특정 사용자에게 속하는지 확인한다.") {
-            val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+            val userCoupon = UserCoupon.issue(
                 userId = "test-user",
                 couponTemplateId = 1L,
                 issueAt = LocalDateTime.now(),
@@ -105,7 +105,7 @@ class UserCouponTest : DescribeSpec({
             val issueAt = LocalDateTime.now()
             val expiresAt = LocalDateTime.now().plusDays(1)
 
-            val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+            val userCoupon = UserCoupon.issue(
                 userId = "test-user",
                 couponTemplateId = 1L,
                 issueAt = issueAt,
@@ -122,7 +122,7 @@ class UserCouponTest : DescribeSpec({
             val expiresAt = LocalDateTime.now().plusDays(1)
             val redeemAt = LocalDateTime.now().plusHours(1)
 
-            val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+            val userCoupon = UserCoupon.issue(
                 userId = "test-user",
                 couponTemplateId = 1L,
                 issueAt = issueAt,
@@ -142,7 +142,7 @@ class UserCouponTest : DescribeSpec({
             val expiresAt = LocalDateTime.now().plusDays(1)
             val redeemAt = LocalDateTime.now().plusHours(1)
 
-            val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+            val userCoupon = UserCoupon.issue(
                 userId = "test-user",
                 couponTemplateId = 1L,
                 issueAt = issueAt,
@@ -159,7 +159,7 @@ class UserCouponTest : DescribeSpec({
             val issueAt = LocalDateTime.now()
             val expiresAt = LocalDateTime.now().plusDays(1)
 
-            val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+            val userCoupon = UserCoupon.issue(
                 userId = "test-user",
                 couponTemplateId = 1L,
                 issueAt = issueAt,
@@ -177,7 +177,7 @@ class UserCouponTest : DescribeSpec({
             val issueAt = LocalDateTime.now()
             val expiresAt = LocalDateTime.now().plusDays(1)
 
-            val userCoupon = com.goodpon.domain.coupon.user.UserCoupon.issue(
+            val userCoupon = UserCoupon.issue(
                 userId = "test-user",
                 couponTemplateId = 1L,
                 issueAt = issueAt,

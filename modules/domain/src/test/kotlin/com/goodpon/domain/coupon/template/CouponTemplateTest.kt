@@ -207,7 +207,7 @@ fun createCouponTemplate(
     maxIssueCount: Long? = 10L,
     maxRedeemCount: Long? = null,
     status: CouponTemplateStatus = CouponTemplateStatus.ISSUABLE,
-): com.goodpon.domain.coupon.template.CouponTemplate {
+): CouponTemplate {
     return CouponTemplateFactory.create(
         name = "테스트 쿠폰 템플릿",
         description = "테스트 쿠폰 템플릿 설명",

@@ -1,9 +1,6 @@
 package com.goodpon.domain.coupon.template.vo
 
-import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidExpireBeforeIssueEndException
-import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidExpireBeforeStartException
-import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidIssueEndBeforeStartException
-import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidValidityDaysException
+import com.goodpon.domain.coupon.template.exception.*
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
@@ -66,7 +63,7 @@ class CouponPeriodTest : DescribeSpec({
             val issueStartAt = LocalDate.of(2025, 7, 3).atStartOfDay()
             val absoluteExpiresAt = LocalDate.of(2025, 7, 10).atStartOfDay()
 
-            shouldThrow<com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidExpireWithoutIssueEndException> {
+            shouldThrow<CouponPeriodInvalidExpireWithoutIssueEndException> {
                 CouponPeriod(
                     issueStartAt = issueStartAt,
                     absoluteExpiresAt = absoluteExpiresAt

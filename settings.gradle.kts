@@ -1,3 +1,5 @@
+rootProject.name = "goodpon"
+
 include(
     "modules:api:partner-openapi",
     "modules:api:dashboard-api",
