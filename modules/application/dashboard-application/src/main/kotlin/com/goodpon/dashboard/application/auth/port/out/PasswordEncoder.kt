@@ -1,4 +1,4 @@
-package com.goodpon.dashboard.application.auth.service
+package com.goodpon.dashboard.application.auth.port.out
 
 interface PasswordEncoder {
 

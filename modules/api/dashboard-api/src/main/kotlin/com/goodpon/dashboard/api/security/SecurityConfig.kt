@@ -2,7 +2,7 @@ package com.goodpon.dashboard.api.security
 
 import com.goodpon.dashboard.api.security.filter.TokenAuthenticationFilter
 import com.goodpon.dashboard.application.account.service.AccountService
-import com.goodpon.dashboard.application.auth.service.TokenProvider
+import com.goodpon.dashboard.application.auth.port.out.TokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

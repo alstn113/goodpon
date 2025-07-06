@@ -7,8 +7,8 @@ import com.goodpon.dashboard.application.auth.service.accessor.EmailVerification
 import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
 import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
 import com.goodpon.dashboard.application.auth.service.AuthService
-import com.goodpon.dashboard.application.auth.service.PasswordEncoder
-import com.goodpon.dashboard.application.auth.service.TokenProvider
+import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
+import com.goodpon.dashboard.application.auth.port.out.TokenProvider
 import com.goodpon.dashboard.application.auth.service.request.LoginRequest
 import com.goodpon.dashboard.application.auth.service.response.LoginResponse
 import com.goodpon.domain.account.Account

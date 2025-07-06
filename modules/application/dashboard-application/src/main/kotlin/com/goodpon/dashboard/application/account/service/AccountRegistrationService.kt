@@ -3,7 +3,7 @@ package com.goodpon.dashboard.application.account.service
 import com.goodpon.dashboard.application.account.service.accessor.AccountReader
 import com.goodpon.dashboard.application.account.service.accessor.AccountStore
 import com.goodpon.dashboard.application.account.service.exception.AccountEmailExistsException
-import com.goodpon.dashboard.application.auth.service.PasswordEncoder
+import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
 import com.goodpon.domain.account.Account
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

@@ -6,7 +6,7 @@ import com.goodpon.dashboard.api.security.jwt.exception.InvalidTokenException
 import com.goodpon.dashboard.api.security.jwt.exception.TokenExpiredException
 import com.goodpon.dashboard.application.account.service.AccountService
 import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
-import com.goodpon.dashboard.application.auth.service.TokenProvider
+import com.goodpon.dashboard.application.auth.port.out.TokenProvider
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

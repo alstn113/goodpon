@@ -1,16 +1,16 @@
 package com.goodpon.infra.aws.ses
 
-import com.goodpon.dashboard.application.auth.port.out.SendVerificationEmailPort
+import com.goodpon.dashboard.application.auth.port.out.VerificationEmailSender
 import com.goodpon.dashboard.application.auth.port.out.dto.SendVerificationEmailRequest
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.services.sesv2.SesV2Client
 import software.amazon.awssdk.services.sesv2.model.*
 
 @Component
-class SesVerificationEmailAdapter(
+class SesVerificationEmailSender(
     private val sesV2Client: SesV2Client,
     private val templateRenderer: ThymeleafEmailTemplateRenderer,
-) : SendVerificationEmailPort {
+) : VerificationEmailSender {
 
     override fun send(request: SendVerificationEmailRequest) {
         val htmlContent = templateRenderer.render(

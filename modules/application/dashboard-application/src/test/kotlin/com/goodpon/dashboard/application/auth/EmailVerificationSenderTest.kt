@@ -3,7 +3,7 @@ package com.goodpon.dashboard.application.auth
 import com.goodpon.dashboard.application.auth.service.SendVerificationEmailService
 import com.goodpon.dashboard.application.auth.service.VerificationLinkBuilder
 import com.goodpon.dashboard.application.auth.service.VerificationTokenGenerator
-import com.goodpon.dashboard.application.auth.port.out.SendVerificationEmailPort
+import com.goodpon.dashboard.application.auth.port.out.VerificationEmailSender
 import com.goodpon.dashboard.application.auth.port.out.EmailVerificationRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.clearAllMocks
@@ -13,12 +13,12 @@ import io.mockk.verify
 
 class EmailVerificationSenderTest : DescribeSpec({
 
-    val sendVerificationEmailPort = mockk<SendVerificationEmailPort>(relaxed = true)
+    val verificationEmailSender = mockk<VerificationEmailSender>(relaxed = true)
     val emailVerificationRepository = mockk<EmailVerificationRepository>()
     val verificationTokenGenerator: VerificationTokenGenerator = mockk()
     val verificationLinkBuilder: VerificationLinkBuilder = mockk()
     val sendVerificationEmailService = SendVerificationEmailService(
-        sendVerificationEmailPort,
+        verificationEmailSender,
         emailVerificationRepository,
         verificationTokenGenerator,
         verificationLinkBuilder
@@ -46,7 +46,7 @@ class EmailVerificationSenderTest : DescribeSpec({
             verify { verificationTokenGenerator.generate() }
             verify { verificationLinkBuilder.build(token) }
             verify { emailVerificationRepository.save(any()) }
-            verify { sendVerificationEmailPort.send(name, email, verificationLink) }
+            verify { verificationEmailSender.send(name, email, verificationLink) }
         }
     }
 })

@@ -7,6 +7,8 @@ import com.goodpon.dashboard.application.auth.port.`in`.ResendVerificationEmailU
 import com.goodpon.dashboard.application.auth.port.`in`.VerifyEmailUseCase
 import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginCommand
 import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
+import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
+import com.goodpon.dashboard.application.auth.port.out.TokenProvider
 import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationReader
 import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationStore
 import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
