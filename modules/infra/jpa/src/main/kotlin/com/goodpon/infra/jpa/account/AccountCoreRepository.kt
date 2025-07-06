@@ -1,7 +1,7 @@
 package com.goodpon.infra.jpa.account
 
+import com.goodpon.dashboard.application.account.port.out.AccountRepository
 import com.goodpon.domain.account.Account
-import com.goodpon.domain.account.AccountRepository
 import com.goodpon.domain.account.exception.AccountNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository

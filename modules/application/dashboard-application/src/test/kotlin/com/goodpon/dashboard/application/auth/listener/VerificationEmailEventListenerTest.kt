@@ -1,8 +1,9 @@
 package com.goodpon.dashboard.application.auth.listener
 
-import com.goodpon.dashboard.application.auth.EmailVerificationSender
-import com.goodpon.dashboard.application.auth.event.AccountCreatedEvent
-import com.goodpon.dashboard.application.auth.event.ResendVerificationEmailEvent
+import com.goodpon.dashboard.application.auth.service.EmailVerificationSender
+import com.goodpon.dashboard.application.auth.service.event.AccountCreatedEvent
+import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
+import com.goodpon.dashboard.application.auth.service.listener.VerificationEmailEventListener
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.mockk
 import io.mockk.verify

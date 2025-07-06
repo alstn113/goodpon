@@ -15,5 +15,8 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
 
     fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean
 
-    fun findByStatusAndExpiresAtLessThanEqual(status: UserCouponStatus, expiresAt: LocalDateTime): List<UserCouponEntity>
+    fun findByStatusAndExpiresAtLessThanEqual(
+        status: UserCouponStatus,
+        expiresAt: LocalDateTime,
+    ): List<UserCouponEntity>
 }

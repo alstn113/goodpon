@@ -1,8 +1,8 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.domain.coupon.user.UserCouponRepository
+import com.goodpon.domain.coupon.user.UserCouponStatus
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
@@ -12,7 +12,7 @@ class UserCouponCoreRepository(
     private val userCouponJpaRepository: UserCouponJpaRepository,
 ) : UserCouponRepository {
 
-    override fun save(userCoupon: com.goodpon.domain.coupon.user.UserCoupon): com.goodpon.domain.coupon.user.UserCoupon {
+    override fun save(userCoupon: UserCoupon): UserCoupon {
         val entity = userCouponJpaRepository.findByIdOrNull(userCoupon.id)
         if (entity == null) {
             val newEntity = UserCouponEntity.fromDomain(userCoupon)
@@ -25,13 +25,13 @@ class UserCouponCoreRepository(
         return savedEntity.toDomain()
     }
 
-    override fun saveAll(userCoupons: List<com.goodpon.domain.coupon.user.UserCoupon>): List<com.goodpon.domain.coupon.user.UserCoupon> {
+    override fun saveAll(userCoupons: List<UserCoupon>): List<UserCoupon> {
         val entities = userCoupons.map { UserCouponEntity.fromDomain(it) }
         val savedEntities = userCouponJpaRepository.saveAll(entities)
         return savedEntities.map { it.toDomain() }
     }
 
-    override fun findByIdForUpdate(id: String): com.goodpon.domain.coupon.user.UserCoupon? {
+    override fun findByIdForUpdate(id: String): UserCoupon? {
         return userCouponJpaRepository.findByIdForUpdate(id)
             ?.toDomain()
     }
@@ -43,7 +43,7 @@ class UserCouponCoreRepository(
     override fun findByStatusAndExpiresAtLessThanEqual(
         status: UserCouponStatus,
         expiresAt: LocalDateTime,
-    ): List<com.goodpon.domain.coupon.user.UserCoupon> {
+    ): List<UserCoupon> {
         return userCouponJpaRepository.findByStatusAndExpiresAtLessThanEqual(status, expiresAt)
             .map { it.toDomain() }
     }

@@ -1,11 +1,11 @@
 package com.goodpon.partner.openapi.controller.v1
 
-import com.goodpon.partner.application.coupon.CouponCancelRedemptionService
-import com.goodpon.partner.application.coupon.CouponIssueService
-import com.goodpon.partner.application.coupon.CouponRedeemService
-import com.goodpon.partner.application.coupon.response.CouponCancelRedemptionResultResponse
-import com.goodpon.partner.application.coupon.response.CouponIssueResultResponse
-import com.goodpon.partner.application.coupon.response.CouponRedemptionResultResponse
+import com.goodpon.partner.application.coupon.service.CouponCancelRedemptionService
+import com.goodpon.partner.application.coupon.service.CouponIssueService
+import com.goodpon.partner.application.coupon.service.CouponRedeemService
+import com.goodpon.partner.application.coupon.service.response.CouponCancelRedemptionResultResponse
+import com.goodpon.partner.application.coupon.service.response.CouponIssueResultResponse
+import com.goodpon.partner.application.coupon.service.response.CouponRedemptionResultResponse
 import com.goodpon.partner.openapi.controller.v1.request.CancelCouponRedemptionWebRequest
 import com.goodpon.partner.openapi.controller.v1.request.IssueCouponWebRequest
 import com.goodpon.partner.openapi.controller.v1.request.RedeemCouponWebRequest

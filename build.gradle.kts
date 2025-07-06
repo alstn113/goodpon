@@ -40,8 +40,8 @@ subprojects {
     }
 
     dependencies {
-        // log
         implementation("org.slf4j:slf4j-api")
+        implementation("jakarta.validation:jakarta.validation-api")
 
         // kotlin
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

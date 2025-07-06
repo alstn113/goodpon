@@ -1,6 +1,6 @@
 package com.goodpon.partner.openapi.controller.v1.request
 
-import com.goodpon.partner.application.coupon.request.RedeemCouponRequest
+import com.goodpon.partner.application.coupon.service.request.RedeemCouponRequest
 
 data class RedeemCouponWebRequest(
     val userId: String,

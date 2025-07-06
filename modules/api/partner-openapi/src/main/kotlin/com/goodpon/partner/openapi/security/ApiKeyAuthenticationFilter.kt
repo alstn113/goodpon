@@ -2,8 +2,8 @@ package com.goodpon.partner.openapi.security
 
 import com.goodpon.domain.support.error.CoreException
 import com.goodpon.domain.support.error.ErrorType
-import com.goodpon.partner.application.merchant.MerchantService
-import com.goodpon.partner.application.merchant.response.MerchantInfo
+import com.goodpon.partner.application.merchant.service.MerchantService
+import com.goodpon.partner.application.merchant.service.response.MerchantInfo
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

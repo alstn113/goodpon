@@ -1,5 +1,6 @@
 package com.goodpon.dashboard.application.auth.accessor
 
+import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationReader
 import com.goodpon.domain.auth.EmailVerificationRepository
 import com.goodpon.domain.auth.exception.EmailVerificationNotFoundException
 import io.kotest.assertions.throwables.shouldThrow

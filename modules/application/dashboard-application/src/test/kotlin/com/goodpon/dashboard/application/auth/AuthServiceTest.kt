@@ -1,13 +1,16 @@
 package com.goodpon.dashboard.application.auth
 
-import com.goodpon.dashboard.application.account.AccountVerificationService
-import com.goodpon.dashboard.application.account.accessor.AccountReader
-import com.goodpon.dashboard.application.auth.accessor.EmailVerificationReader
-import com.goodpon.dashboard.application.auth.accessor.EmailVerificationStore
-import com.goodpon.dashboard.application.auth.event.ResendVerificationEmailEvent
-import com.goodpon.dashboard.application.auth.exception.PasswordMismatchException
-import com.goodpon.dashboard.application.auth.request.LoginRequest
-import com.goodpon.dashboard.application.auth.response.LoginResponse
+import com.goodpon.dashboard.application.account.service.AccountVerificationService
+import com.goodpon.dashboard.application.account.service.accessor.AccountReader
+import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationReader
+import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationStore
+import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
+import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
+import com.goodpon.dashboard.application.auth.service.AuthService
+import com.goodpon.dashboard.application.auth.service.PasswordEncoder
+import com.goodpon.dashboard.application.auth.service.TokenProvider
+import com.goodpon.dashboard.application.auth.service.request.LoginRequest
+import com.goodpon.dashboard.application.auth.service.response.LoginResponse
 import com.goodpon.domain.account.Account
 import com.goodpon.domain.account.exception.AccountAlreadyVerifiedException
 import com.goodpon.domain.auth.EmailVerification

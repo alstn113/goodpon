@@ -1,6 +1,5 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.CouponTemplateFactory
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType

@@ -1,5 +1,8 @@
 package com.goodpon.dashboard.application.auth
 
+import com.goodpon.dashboard.application.auth.service.EmailVerificationSender
+import com.goodpon.dashboard.application.auth.service.VerificationLinkBuilder
+import com.goodpon.dashboard.application.auth.service.VerificationTokenGenerator
 import com.goodpon.domain.auth.EmailSender
 import com.goodpon.domain.auth.EmailVerificationRepository
 import io.kotest.core.spec.style.DescribeSpec

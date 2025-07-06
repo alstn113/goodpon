@@ -1,9 +1,10 @@
 package com.goodpon.dashboard.application.account
 
-import com.goodpon.dashboard.application.account.accessor.AccountReader
-import com.goodpon.dashboard.application.account.accessor.AccountStore
-import com.goodpon.dashboard.application.account.exception.AccountEmailExistsException
-import com.goodpon.dashboard.application.auth.PasswordEncoder
+import com.goodpon.dashboard.application.account.service.accessor.AccountReader
+import com.goodpon.dashboard.application.account.service.accessor.AccountStore
+import com.goodpon.dashboard.application.account.service.exception.AccountEmailExistsException
+import com.goodpon.dashboard.application.account.service.AccountRegistrationService
+import com.goodpon.dashboard.application.auth.service.PasswordEncoder
 import com.goodpon.domain.account.Account
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
