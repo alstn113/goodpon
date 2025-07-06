@@ -1,7 +1,8 @@
 package com.goodpon.partner.application.coupon.accessor
 
-import com.goodpon.partner.application.coupon.exception.UserCouponNotFoundException
+import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.domain.coupon.user.UserCouponRepository
+import com.goodpon.partner.application.coupon.exception.UserCouponNotFoundException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -11,7 +12,7 @@ class UserCouponReader(
 ) {
 
     @Transactional(readOnly = true)
-    fun readByIdForUpdate(id: String): com.goodpon.domain.coupon.user.UserCoupon {
+    fun readByIdForUpdate(id: String): UserCoupon {
         return userCouponRepository.findByIdForUpdate(id)
             ?: throw UserCouponNotFoundException()
     }

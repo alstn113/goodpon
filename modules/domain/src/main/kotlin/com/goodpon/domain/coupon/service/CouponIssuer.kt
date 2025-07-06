@@ -1,20 +1,22 @@
 package com.goodpon.domain.coupon.service
 
+import com.goodpon.domain.coupon.template.CouponTemplate
+import com.goodpon.domain.coupon.user.UserCoupon
 import java.time.LocalDateTime
 
 object CouponIssuer {
 
     fun issue(
-        couponTemplate: com.goodpon.domain.coupon.template.CouponTemplate,
+        couponTemplate: CouponTemplate,
         currentIssueCount: Long,
         userId: String,
         issueAt: LocalDateTime,
-    ): com.goodpon.domain.coupon.user.UserCoupon {
+    ): UserCoupon {
         couponTemplate.validateIssue(currentIssuedCount = currentIssueCount, issueAt = issueAt)
 
         val expiresAt = couponTemplate.calculateExpiresAt(issueAt.toLocalDate())
 
-        return com.goodpon.domain.coupon.user.UserCoupon.issue(
+        return UserCoupon.issue(
             userId = userId,
             couponTemplateId = couponTemplate.id,
             expiresAt = expiresAt,

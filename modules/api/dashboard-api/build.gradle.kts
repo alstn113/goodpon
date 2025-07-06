@@ -10,6 +10,7 @@ val jjwtVersion by extra("0.12.6")
 
 dependencies {
     implementation(project(":modules:domain"))
+    implementation(project(":modules:application:dashboard-application"))
     implementation(project(":modules:infra:jpa"))
     implementation(project(":modules:infra:aws"))
     implementation(project(":modules:infra:redis"))

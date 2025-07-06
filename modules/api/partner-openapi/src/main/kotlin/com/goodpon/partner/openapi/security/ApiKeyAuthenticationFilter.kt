@@ -1,9 +1,9 @@
 package com.goodpon.partner.openapi.security
 
-import com.goodpon.domain.application.merchant.MerchantService
-import com.goodpon.domain.application.merchant.response.MerchantInfo
 import com.goodpon.domain.support.error.CoreException
 import com.goodpon.domain.support.error.ErrorType
+import com.goodpon.partner.application.merchant.MerchantService
+import com.goodpon.partner.application.merchant.response.MerchantInfo
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -37,7 +37,7 @@ class ApiKeyAuthenticationFilter(
     private fun handleApiKey(apiKey: String) {
         val merchantInfo = fetchMerchantInfo(apiKey)
 
-        val authentication = com.goodpon.partner.openapi.security.ApiKeyAuthenticationToken.of(merchantInfo.id)
+        val authentication = ApiKeyAuthenticationToken.of(merchantInfo.id)
         SecurityContextHolder.getContext().authentication = authentication
     }
 

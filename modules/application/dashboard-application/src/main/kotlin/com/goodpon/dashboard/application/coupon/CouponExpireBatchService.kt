@@ -1,6 +1,7 @@
 package com.goodpon.dashboard.application.coupon
 
 import com.goodpon.dashboard.application.coupon.accessor.CouponHistoryStore
+import com.goodpon.domain.coupon.template.CouponTemplateRepository
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.domain.coupon.user.UserCouponRepository
 import com.goodpon.domain.coupon.user.UserCouponStatus
@@ -12,7 +13,7 @@ import java.time.LocalDateTime
 class CouponExpireBatchService(
     private val userCouponRepository: UserCouponRepository,
     private val couponHistoryStore: CouponHistoryStore,
-    private val couponTemplateRepository: com.goodpon.domain.coupon.template.CouponTemplateRepository,
+    private val couponTemplateRepository: CouponTemplateRepository,
 ) {
 
     @Transactional

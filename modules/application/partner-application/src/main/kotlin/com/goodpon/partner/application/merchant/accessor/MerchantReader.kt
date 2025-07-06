@@ -12,12 +12,6 @@ class MerchantReader(
 ) {
 
     @Transactional(readOnly = true)
-    fun readById(merchantId: Long): Merchant {
-        return merchantRepository.findById(merchantId)
-            ?: throw MerchantNotFoundException()
-    }
-
-    @Transactional(readOnly = true)
     fun readBySecretKey(secretKey: String): Merchant {
         return merchantRepository.findBySecretKey(secretKey)
             ?: throw MerchantNotFoundException()

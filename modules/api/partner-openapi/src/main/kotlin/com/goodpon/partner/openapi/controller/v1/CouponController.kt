@@ -1,22 +1,23 @@
 package com.goodpon.partner.openapi.controller.v1
 
-import com.goodpon.api.core.api.controller.v1.request.CancelCouponRedemptionWebRequest
-import com.goodpon.api.core.api.controller.v1.request.RedeemCouponWebRequest
-import com.goodpon.api.core.api.response.ApiResponse
-import com.goodpon.api.core.security.MerchantPrincipal
-import com.goodpon.domain.application.coupon.CouponCancelRedemptionService
-import com.goodpon.domain.application.coupon.CouponIssueService
-import com.goodpon.domain.application.coupon.CouponRedeemService
-import com.goodpon.domain.application.coupon.response.CouponCancelRedemptionResultResponse
-import com.goodpon.domain.application.coupon.response.CouponIssueResultResponse
-import com.goodpon.domain.application.coupon.response.CouponRedemptionResultResponse
+import com.goodpon.partner.application.coupon.CouponCancelRedemptionService
+import com.goodpon.partner.application.coupon.CouponIssueService
+import com.goodpon.partner.application.coupon.CouponRedeemService
+import com.goodpon.partner.application.coupon.response.CouponCancelRedemptionResultResponse
+import com.goodpon.partner.application.coupon.response.CouponIssueResultResponse
+import com.goodpon.partner.application.coupon.response.CouponRedemptionResultResponse
+import com.goodpon.partner.openapi.controller.v1.request.CancelCouponRedemptionWebRequest
 import com.goodpon.partner.openapi.controller.v1.request.IssueCouponWebRequest
+import com.goodpon.partner.openapi.controller.v1.request.RedeemCouponWebRequest
+import com.goodpon.partner.openapi.response.ApiResponse
+import com.goodpon.partner.openapi.security.MerchantPrincipal
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+
 
 @RestController
 class CouponController(

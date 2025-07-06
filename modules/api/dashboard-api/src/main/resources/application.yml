@@ -1,4 +1,4 @@
-spring.application.name: "goodpon-dashboard-api"
+spring.application.name: "dashboard-api"
 spring.profiles.active: local
 
 spring:

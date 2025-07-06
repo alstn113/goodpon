@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.api.scheduler
 
-import com.goodpon.domain.application.coupon.CouponExpireBatchService
+import com.goodpon.dashboard.application.coupon.CouponExpireBatchService
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime

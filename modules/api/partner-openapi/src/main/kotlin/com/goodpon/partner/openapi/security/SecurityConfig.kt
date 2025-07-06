@@ -1,6 +1,6 @@
 package com.goodpon.partner.openapi.security
 
-import com.goodpon.domain.application.merchant.MerchantService
+import com.goodpon.partner.application.merchant.MerchantService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

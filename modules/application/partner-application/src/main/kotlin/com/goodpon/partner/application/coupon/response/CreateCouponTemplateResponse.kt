@@ -1,5 +1,6 @@
 package com.goodpon.partner.application.coupon.response
 
+import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import java.time.LocalDateTime
@@ -23,7 +24,7 @@ data class CreateCouponTemplateResponse(
 ) {
 
     companion object {
-        fun from(couponTemplate: com.goodpon.domain.coupon.template.CouponTemplate): CreateCouponTemplateResponse {
+        fun from(couponTemplate: CouponTemplate): CreateCouponTemplateResponse {
             return CreateCouponTemplateResponse(
                 id = couponTemplate.id,
                 name = couponTemplate.name,

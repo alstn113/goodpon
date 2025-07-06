@@ -1,10 +1,10 @@
 package com.goodpon.dashboard.api.controller.v1
 
-import com.goodpon.api.dashboard.api.controller.v1.request.CreateMerchantWebRequest
-import com.goodpon.api.dashboard.api.response.ApiResponse
-import com.goodpon.api.dashboard.security.AccountPrincipal
-import com.goodpon.domain.application.merchant.MerchantService
-import com.goodpon.domain.application.merchant.response.CreateMerchantResponse
+import com.goodpon.dashboard.api.controller.v1.request.CreateMerchantWebRequest
+import com.goodpon.dashboard.api.response.ApiResponse
+import com.goodpon.dashboard.api.security.AccountPrincipal
+import com.goodpon.dashboard.application.merchant.MerchantService
+import com.goodpon.dashboard.application.merchant.response.CreateMerchantResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*

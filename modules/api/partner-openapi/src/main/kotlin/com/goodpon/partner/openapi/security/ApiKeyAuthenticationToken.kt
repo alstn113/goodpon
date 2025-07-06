@@ -4,7 +4,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
 data class ApiKeyAuthenticationToken private constructor(
-    private val merchantPrincipal: com.goodpon.partner.openapi.security.MerchantPrincipal,
+    private val merchantPrincipal: MerchantPrincipal,
     private val authorities: Collection<GrantedAuthority> = emptyList(),
 ) : AbstractAuthenticationToken(authorities) {
 
@@ -12,7 +12,7 @@ data class ApiKeyAuthenticationToken private constructor(
         isAuthenticated = true
     }
 
-    override fun getPrincipal(): com.goodpon.partner.openapi.security.MerchantPrincipal = merchantPrincipal
+    override fun getPrincipal(): MerchantPrincipal = merchantPrincipal
 
     override fun getCredentials(): Any? = null
 
@@ -22,9 +22,9 @@ data class ApiKeyAuthenticationToken private constructor(
         fun of(
             merchantId: Long,
             authorities: Collection<GrantedAuthority> = emptyList(),
-        ): com.goodpon.partner.openapi.security.ApiKeyAuthenticationToken {
-            return com.goodpon.partner.openapi.security.ApiKeyAuthenticationToken(
-                merchantPrincipal = com.goodpon.partner.openapi.security.MerchantPrincipal(merchantId),
+        ): ApiKeyAuthenticationToken {
+            return ApiKeyAuthenticationToken(
+                merchantPrincipal = MerchantPrincipal(merchantId),
                 authorities = authorities,
             )
         }

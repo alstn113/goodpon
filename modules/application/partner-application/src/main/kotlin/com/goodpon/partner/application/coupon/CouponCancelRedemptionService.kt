@@ -1,5 +1,6 @@
 package com.goodpon.partner.application.coupon
 
+import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.partner.application.coupon.accessor.CouponTemplateReader
 import com.goodpon.partner.application.coupon.accessor.CouponTemplateStatsReader
 import com.goodpon.partner.application.coupon.accessor.CouponTemplateStatsStore
@@ -46,7 +47,7 @@ class CouponCancelRedemptionService(
     }
 
     private fun validateCouponTemplateOwnership(
-        couponTemplate: com.goodpon.domain.coupon.template.CouponTemplate,
+        couponTemplate: CouponTemplate,
         merchantId: Long,
     ) {
         if (!couponTemplate.isOwnedBy(merchantId)) {

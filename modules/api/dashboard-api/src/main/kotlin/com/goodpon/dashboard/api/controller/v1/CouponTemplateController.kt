@@ -1,13 +1,14 @@
 package com.goodpon.dashboard.api.controller.v1
 
-import com.goodpon.api.dashboard.api.controller.v1.request.CreateCouponTemplateWebRequest
-import com.goodpon.api.dashboard.api.response.ApiResponse
-import com.goodpon.api.dashboard.security.AccountPrincipal
-import com.goodpon.domain.application.coupon.CouponTemplateService
-import com.goodpon.domain.application.coupon.response.CreateCouponTemplateResponse
+import com.goodpon.dashboard.api.controller.v1.request.CreateCouponTemplateWebRequest
+import com.goodpon.dashboard.api.response.ApiResponse
+import com.goodpon.dashboard.api.security.AccountPrincipal
+import com.goodpon.dashboard.application.coupon.CouponTemplateService
+import com.goodpon.dashboard.application.coupon.response.CreateCouponTemplateResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+
 
 @RestController
 class CouponTemplateController(

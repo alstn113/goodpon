@@ -1,5 +1,6 @@
 package com.goodpon.partner.application.coupon.request
 
+import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.CouponTemplateFactory
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
@@ -22,7 +23,7 @@ data class CreateCouponTemplateRequest(
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
 ) {
-    fun toCouponTemplate(): com.goodpon.domain.coupon.template.CouponTemplate {
+    fun toCouponTemplate(): CouponTemplate {
         return CouponTemplateFactory.create(
             name = name,
             description = description,

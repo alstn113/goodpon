@@ -1,9 +1,8 @@
 package com.goodpon.dashboard.api.security
 
-import com.goodpon.dashboard.api.security.filter.AccountVerifiedFilter
-import com.goodpon.api.dashboard.security.filter.TokenAuthenticationFilter
-import com.goodpon.domain.application.account.AccountService
-import com.goodpon.domain.application.auth.TokenProvider
+import com.goodpon.dashboard.api.security.filter.TokenAuthenticationFilter
+import com.goodpon.dashboard.application.account.AccountService
+import com.goodpon.dashboard.application.auth.TokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -16,14 +15,13 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
-
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
     private val tokenProvider: TokenProvider,
     private val accountService: AccountService,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
-    private val accessDeniedHandler: com.goodpon.dashboard.api.security.TokenAccessDeniedHandler,
+    private val accessDeniedHandler: TokenAccessDeniedHandler,
 ) {
 
     @Bean

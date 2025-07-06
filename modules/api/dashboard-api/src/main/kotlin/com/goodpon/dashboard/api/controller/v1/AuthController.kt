@@ -1,11 +1,11 @@
 package com.goodpon.dashboard.api.controller.v1
 
-import com.goodpon.api.dashboard.api.response.ApiResponse
-import com.goodpon.domain.application.auth.AuthService
-import com.goodpon.domain.application.auth.request.LoginRequest
-import com.goodpon.domain.application.auth.request.ResendVerificationEmailRequest
-import com.goodpon.domain.application.auth.request.VerifyEmailRequest
-import com.goodpon.domain.application.auth.response.LoginResponse
+import com.goodpon.dashboard.api.response.ApiResponse
+import com.goodpon.dashboard.application.auth.AuthService
+import com.goodpon.dashboard.application.auth.request.LoginRequest
+import com.goodpon.dashboard.application.auth.request.ResendVerificationEmailRequest
+import com.goodpon.dashboard.application.auth.request.VerifyEmailRequest
+import com.goodpon.dashboard.application.auth.response.LoginResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

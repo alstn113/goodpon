@@ -1,6 +1,6 @@
 package com.goodpon.partner.openapi.controller.v1.request
 
-import com.goodpon.domain.application.coupon.request.IssueCouponRequest
+import com.goodpon.partner.application.coupon.request.IssueCouponRequest
 
 data class IssueCouponWebRequest(
     val couponTemplateId: Long,

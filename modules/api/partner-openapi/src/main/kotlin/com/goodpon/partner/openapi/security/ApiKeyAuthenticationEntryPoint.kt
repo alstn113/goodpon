@@ -1,9 +1,9 @@
 package com.goodpon.partner.openapi.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.goodpon.api.core.api.TraceIdProvider
 import com.goodpon.domain.support.error.ErrorType
 import com.goodpon.partner.openapi.response.ApiErrorResponse
+import com.goodpon.partner.openapi.response.TraceIdProvider
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType

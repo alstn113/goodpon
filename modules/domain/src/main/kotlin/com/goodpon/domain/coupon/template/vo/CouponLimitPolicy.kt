@@ -13,14 +13,8 @@ data class CouponLimitPolicy(
 
     init {
         when (limitType) {
-            CouponLimitPolicyType.ISSUE_COUNT -> validateIssueCountLimit(
-                maxIssueCount
-            )
-
-            CouponLimitPolicyType.REDEEM_COUNT -> validateRedeemCountLimit(
-                maxRedeemCount
-            )
-
+            CouponLimitPolicyType.ISSUE_COUNT -> validateIssueCountLimit(maxIssueCount)
+            CouponLimitPolicyType.REDEEM_COUNT -> validateRedeemCountLimit(maxRedeemCount)
             CouponLimitPolicyType.NONE -> validateNoneLimit()
         }
     }

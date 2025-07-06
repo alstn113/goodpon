@@ -8,6 +8,7 @@ tasks.getByName("jar") {
 
 dependencies {
     implementation(project(":modules:domain"))
+    implementation(project(":modules:application:partner-application"))
     implementation(project(":modules:infra:jpa"))
     implementation(project(":modules:infra:redis"))
     implementation(project(":modules:support:logging"))

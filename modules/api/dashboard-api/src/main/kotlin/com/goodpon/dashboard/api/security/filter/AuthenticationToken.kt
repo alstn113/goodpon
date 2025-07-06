@@ -1,8 +1,9 @@
 package com.goodpon.dashboard.api.security.filter
 
-import com.goodpon.api.dashboard.security.AccountPrincipal
+import com.goodpon.dashboard.api.security.AccountPrincipal
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
+
 
 data class AuthenticationToken private constructor(
     private val accountPrincipal: AccountPrincipal,

@@ -1,5 +1,6 @@
 package com.goodpon.dashboard.application.merchant.accessor
 
+import com.goodpon.domain.merchant.MerchantAccount
 import com.goodpon.domain.merchant.MerchantAccountRepository
 import com.goodpon.domain.merchant.exception.MerchantNotFoundException
 import org.springframework.stereotype.Component
@@ -11,7 +12,7 @@ class MerchantAccountReader(
 ) {
 
     @Transactional(readOnly = true)
-    fun readByMerchantIdAndAccountId(merchantId: Long, accountId: Long): com.goodpon.domain.merchant.MerchantAccount {
+    fun readByMerchantIdAndAccountId(merchantId: Long, accountId: Long): MerchantAccount {
         return merchantAccountRepository.findByMerchantIdAndAccountId(merchantId, accountId)
             ?: throw MerchantNotFoundException()
     }

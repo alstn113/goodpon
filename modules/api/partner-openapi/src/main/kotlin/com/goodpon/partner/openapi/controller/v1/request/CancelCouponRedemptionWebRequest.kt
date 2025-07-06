@@ -1,6 +1,7 @@
 package com.goodpon.partner.openapi.controller.v1.request
 
-import com.goodpon.domain.application.coupon.request.CancelCouponRedemptionRequest
+import com.goodpon.partner.application.coupon.request.CancelCouponRedemptionRequest
+
 
 data class CancelCouponRedemptionWebRequest(
     val cancelReason: String,

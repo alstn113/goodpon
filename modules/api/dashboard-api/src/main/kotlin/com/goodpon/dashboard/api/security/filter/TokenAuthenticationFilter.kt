@@ -1,12 +1,12 @@
 package com.goodpon.dashboard.api.security.filter
 
-import com.goodpon.api.dashboard.security.AuthHeaderUtil
-import com.goodpon.api.dashboard.security.exception.BlankTokenException
-import com.goodpon.api.dashboard.security.jwt.exception.InvalidTokenException
-import com.goodpon.api.dashboard.security.jwt.exception.TokenExpiredException
-import com.goodpon.domain.application.account.AccountService
-import com.goodpon.domain.application.account.response.AccountInfo
-import com.goodpon.domain.application.auth.TokenProvider
+import com.goodpon.dashboard.api.security.AuthHeaderUtil
+import com.goodpon.dashboard.api.security.jwt.exception.BlankTokenException
+import com.goodpon.dashboard.api.security.jwt.exception.InvalidTokenException
+import com.goodpon.dashboard.api.security.jwt.exception.TokenExpiredException
+import com.goodpon.dashboard.application.account.AccountService
+import com.goodpon.dashboard.application.account.response.AccountInfo
+import com.goodpon.dashboard.application.auth.TokenProvider
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

@@ -1,11 +1,13 @@
 package com.goodpon.partner.application.coupon
 
+import com.goodpon.domain.coupon.service.CouponRedeemer
+import com.goodpon.domain.coupon.template.CouponTemplate
+import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.partner.application.coupon.accessor.*
 import com.goodpon.partner.application.coupon.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.partner.application.coupon.exception.UserCouponNotOwnedByUserException
 import com.goodpon.partner.application.coupon.request.RedeemCouponRequest
 import com.goodpon.partner.application.coupon.response.CouponRedemptionResultResponse
-import com.goodpon.domain.coupon.service.CouponRedeemer
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -58,7 +60,7 @@ class CouponRedeemService(
     }
 
     private fun validateCouponTemplateOwnership(
-        couponTemplate: com.goodpon.domain.coupon.template.CouponTemplate,
+        couponTemplate: CouponTemplate,
         merchantId: Long,
     ) {
         if (!couponTemplate.isOwnedBy(merchantId)) {
@@ -66,7 +68,7 @@ class CouponRedeemService(
         }
     }
 
-    private fun validateUserCouponOwnership(userCoupon: com.goodpon.domain.coupon.user.UserCoupon, userId: String) {
+    private fun validateUserCouponOwnership(userCoupon: UserCoupon, userId: String) {
         if (!userCoupon.isOwnedBy(userId)) {
             throw UserCouponNotOwnedByUserException()
         }

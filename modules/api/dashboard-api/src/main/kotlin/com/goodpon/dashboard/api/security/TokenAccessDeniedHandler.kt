@@ -1,7 +1,7 @@
 package com.goodpon.dashboard.api.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.goodpon.api.dashboard.api.response.ApiResponse
+import com.goodpon.dashboard.api.response.ApiResponse
 import com.goodpon.domain.support.error.ErrorType
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

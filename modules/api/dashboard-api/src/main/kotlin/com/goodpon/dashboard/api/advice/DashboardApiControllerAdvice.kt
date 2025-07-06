@@ -1,6 +1,5 @@
 package com.goodpon.dashboard.api.advice
 
-import com.goodpon.api.dashboard.api.response.ApiResponse
 import com.goodpon.dashboard.api.response.ApiResponse
 import com.goodpon.domain.support.error.CoreException
 import com.goodpon.domain.support.error.ErrorLevel
