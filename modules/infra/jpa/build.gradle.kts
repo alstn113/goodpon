@@ -1,5 +1,3 @@
-val testcontainersVersion by extra("1.21.3")
-
 dependencies {
     implementation(project(":modules:domain"))
     implementation(project(":modules:application:partner-application"))
@@ -11,8 +9,8 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
 
     // testcontainers
-    testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
-    testImplementation("org.testcontainers:mysql:$testcontainersVersion")
+    testImplementation(libs.testcontainers)
+    testImplementation(libs.testcontainers.mysql)
 }
 
 allOpen {

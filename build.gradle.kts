@@ -1,10 +1,11 @@
-plugins {
-    kotlin("jvm") version "1.9.25"
-    kotlin("plugin.spring") version "1.9.25" apply false
-    kotlin("plugin.jpa") version "1.9.25" apply false
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-    id("org.springframework.boot") version "3.5.0" apply false
-    id("io.spring.dependency-management") version "1.1.7"
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.spring) apply false
+    alias(libs.plugins.kotlin.jpa) apply false
+    alias(libs.plugins.spring.boot) apply false
+    alias(libs.plugins.spring.dependency.management)
 }
 
 java {
@@ -22,10 +23,6 @@ allprojects {
     }
 }
 
-val kotestVersion by extra("5.9.1")
-val mockkVersion by extra("1.13.17")
-val springMockkVersion by extra("4.0.2")
-
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
@@ -33,27 +30,18 @@ subprojects {
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
 
-    dependencyManagement {
-        imports {
-            mavenBom("org.springframework.cloud:spring-cloud-dependencies:2024.0.1")
-        }
-    }
-
     dependencies {
         implementation("org.slf4j:slf4j-api")
         implementation("jakarta.validation:jakarta.validation-api")
 
-        // kotlin
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-        // kotest & mockk
-        testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-        testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
-        testImplementation("io.mockk:mockk:$mockkVersion")
-        testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
+        testImplementation(rootProject.libs.kotest.runner.junit5)
+        testImplementation(rootProject.libs.kotest.assertions.core)
+        testImplementation(rootProject.libs.mockk)
+        testImplementation(rootProject.libs.springmockk)
 
-        // test
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     }
@@ -66,7 +54,7 @@ subprojects {
         enabled = true
     }
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    tasks.withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_21.toString()
             freeCompilerArgs = listOf("-Xjsr305=strict")
