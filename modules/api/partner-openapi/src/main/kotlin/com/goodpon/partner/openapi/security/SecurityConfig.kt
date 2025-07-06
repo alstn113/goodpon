@@ -1,6 +1,7 @@
 package com.goodpon.partner.openapi.security
 
 import com.goodpon.partner.application.merchant.service.MerchantService
+import com.goodpon.partner.openapi.security.filter.ApiKeyAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

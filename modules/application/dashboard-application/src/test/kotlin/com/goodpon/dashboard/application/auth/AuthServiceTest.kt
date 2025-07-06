@@ -2,15 +2,15 @@ package com.goodpon.dashboard.application.auth
 
 import com.goodpon.dashboard.application.account.service.AccountVerificationService
 import com.goodpon.dashboard.application.account.service.accessor.AccountReader
+import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginCommand
+import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
+import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
+import com.goodpon.dashboard.application.auth.port.out.TokenProvider
+import com.goodpon.dashboard.application.auth.service.ResendVerificationEmailService
 import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationReader
 import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationStore
 import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
 import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
-import com.goodpon.dashboard.application.auth.service.AuthService
-import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
-import com.goodpon.dashboard.application.auth.port.out.TokenProvider
-import com.goodpon.dashboard.application.auth.service.request.LoginRequest
-import com.goodpon.dashboard.application.auth.service.response.LoginResponse
 import com.goodpon.domain.account.Account
 import com.goodpon.domain.account.exception.AccountAlreadyVerifiedException
 import com.goodpon.domain.auth.EmailVerification
@@ -33,7 +33,7 @@ class AuthServiceTest : DescribeSpec({
     val emailVerificationStore = mockk<EmailVerificationStore>()
     val emailVerificationReader = mockk<EmailVerificationReader>()
     val eventPublisher = mockk<ApplicationEventPublisher>(relaxed = true)
-    val authService = AuthService(
+    val resendVerificationEmailService = ResendVerificationEmailService(
         accountReader = accountReader,
         passwordEncoder = passwordEncoder,
         tokenProvider = tokenProvider,
@@ -54,10 +54,10 @@ class AuthServiceTest : DescribeSpec({
     }
 
     describe("login") {
-        val request = LoginRequest("email@goodpon.site", "hashedPassword")
+        val command = LoginCommand("email@goodpon.site", "hashedPassword")
 
         beforeTest {
-            every { accountReader.readByEmail(request.email) } returns account
+            every { accountReader.readByEmail(command.email) } returns account
         }
 
         context("비밀번호가 일치하지 않을 경우") {
@@ -67,7 +67,7 @@ class AuthServiceTest : DescribeSpec({
 
             it("예외를 발생시킨다.") {
                 shouldThrow<PasswordMismatchException> {
-                    authService.login(request)
+                    resendVerificationEmailService.login(command)
                 }
             }
         }
@@ -81,9 +81,9 @@ class AuthServiceTest : DescribeSpec({
                 val token = "access-token"
                 every { tokenProvider.generateAccessToken(account.id) } returns token
 
-                val actual = authService.login(request)
+                val actual = resendVerificationEmailService.login(command)
 
-                val expected = LoginResponse(
+                val expected = LoginResult(
                     id = account.id,
                     email = account.email.value,
                     name = account.name.value,
@@ -111,7 +111,7 @@ class AuthServiceTest : DescribeSpec({
             every { accountVerificationService.verifyEmail(account.id, any()) } returns mockk<Account>()
             every { emailVerificationStore.delete(token, account.id) } returns Unit
 
-            authService.verifyEmail(token)
+            resendVerificationEmailService.verifyEmail(token)
 
             verify { emailVerificationReader.readByToken(token) }
             verify { accountVerificationService.verifyEmail(accountId = account.id, verifiedAt = any()) }
@@ -128,7 +128,7 @@ class AuthServiceTest : DescribeSpec({
 
             it("예외를 발생시킨다.") {
                 shouldThrow<AccountAlreadyVerifiedException> {
-                    authService.resendVerificationEmail(verifiedAccount.email.value)
+                    resendVerificationEmailService.resendVerificationEmail(verifiedAccount.email.value)
                 }
             }
         }
@@ -138,7 +138,7 @@ class AuthServiceTest : DescribeSpec({
             }
 
             it("이메일 인증 재전송 이벤트를 발행한다.") {
-                authService.resendVerificationEmail(account.email.value)
+                resendVerificationEmailService.resendVerificationEmail(account.email.value)
 
                 verify {
                     eventPublisher.publishEvent(

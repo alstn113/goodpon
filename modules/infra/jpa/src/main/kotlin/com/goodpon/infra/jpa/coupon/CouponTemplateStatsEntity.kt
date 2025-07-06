@@ -19,17 +19,17 @@ class CouponTemplateStatsEntity(
     var redeemCount: Long,
 ) : AuditableEntity() {
 
+    fun update(couponTemplateStats: CouponTemplateStats) {
+        this.issueCount = couponTemplateStats.issueCount
+        this.redeemCount = couponTemplateStats.redeemCount
+    }
+
     fun toDomain(): CouponTemplateStats {
         return CouponTemplateStats(
             couponTemplateId = this.couponTemplateId,
             issueCount = this.issueCount,
             redeemCount = this.redeemCount
         )
-    }
-
-    fun update(couponTemplateStats: CouponTemplateStats) {
-        this.issueCount = couponTemplateStats.issueCount
-        this.redeemCount = couponTemplateStats.redeemCount
     }
 
     companion object {

@@ -4,7 +4,7 @@ import com.goodpon.dashboard.api.security.AuthHeaderUtil
 import com.goodpon.dashboard.api.security.jwt.exception.BlankTokenException
 import com.goodpon.dashboard.api.security.jwt.exception.InvalidTokenException
 import com.goodpon.dashboard.api.security.jwt.exception.TokenExpiredException
-import com.goodpon.dashboard.application.account.service.AccountService
+import com.goodpon.dashboard.application.account.port.`in`.GetAccountInfoUseCase
 import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
 import com.goodpon.dashboard.application.auth.port.out.TokenProvider
 import jakarta.servlet.FilterChain
@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 class TokenAuthenticationFilter(
     private val tokenProvider: TokenProvider,
-    private val accountService: AccountService,
+    private val getAccountInfoUseCase: GetAccountInfoUseCase,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
 ) : OncePerRequestFilter() {
 
@@ -65,7 +65,7 @@ class TokenAuthenticationFilter(
 
     private fun fetchAccountInfo(accountId: Long): AccountInfo {
         try {
-            return accountService.getAccountInfo(accountId)
+            return getAccountInfoUseCase.getAccountInfo(accountId)
             //TODO: 구체적이게 변환
         } catch (e: Exception) {
             throw BadCredentialsException("계정을 조회하는 중 오류가 발생했습니다.", e)

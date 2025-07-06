@@ -1,15 +1,16 @@
 package com.goodpon.infra.jpa.merchant
 
 import com.goodpon.domain.merchant.Merchant
-import com.goodpon.domain.merchant.MerchantRepository
 import com.goodpon.domain.merchant.exception.MerchantNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
+import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository as Dashboard_MerchantRepository
+import com.goodpon.partner.application.merchant.port.out.MerchantRepository as Partner_MerchantRepository
 
 @Repository
 class MerchantCoreRepository(
     private val merchantJpaRepository: MerchantJpaRepository,
-) : MerchantRepository {
+) : Dashboard_MerchantRepository, Partner_MerchantRepository {
 
     override fun save(merchant: Merchant): Merchant {
         if (merchant.id == 0L) {

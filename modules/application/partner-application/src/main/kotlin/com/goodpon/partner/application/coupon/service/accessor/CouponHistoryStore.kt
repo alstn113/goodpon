@@ -64,18 +64,4 @@ class CouponHistoryStore(
         )
         return couponHistoryRepository.save(history)
     }
-
-    @Transactional
-    fun recordDiscarded(
-        userCouponId: String,
-        recordedAt: LocalDateTime,
-        reason: String,
-    ): CouponHistory {
-        val history = CouponHistory.discarded(
-            userCouponId = userCouponId,
-            recordedAt = recordedAt,
-            reason = reason
-        )
-        return couponHistoryRepository.save(history)
-    }
 }

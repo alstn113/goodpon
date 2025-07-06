@@ -1,14 +1,14 @@
 package com.goodpon.partner.openapi.controller.v1
 
-import com.goodpon.partner.application.coupon.service.CouponCancelRedemptionService
-import com.goodpon.partner.application.coupon.service.CouponIssueService
-import com.goodpon.partner.application.coupon.service.CouponRedeemService
-import com.goodpon.partner.application.coupon.service.response.CouponCancelRedemptionResultResponse
-import com.goodpon.partner.application.coupon.service.response.CouponIssueResultResponse
-import com.goodpon.partner.application.coupon.service.response.CouponRedemptionResultResponse
-import com.goodpon.partner.openapi.controller.v1.request.CancelCouponRedemptionWebRequest
-import com.goodpon.partner.openapi.controller.v1.request.IssueCouponWebRequest
-import com.goodpon.partner.openapi.controller.v1.request.RedeemCouponWebRequest
+import com.goodpon.partner.application.coupon.port.`in`.CancelCouponRedemptionUseCase
+import com.goodpon.partner.application.coupon.port.`in`.IssueCouponUseCase
+import com.goodpon.partner.application.coupon.port.`in`.RedeemCouponUseCase
+import com.goodpon.partner.application.coupon.port.`in`.dto.CancelCouponRedemptionResult
+import com.goodpon.partner.application.coupon.port.`in`.dto.IssueCouponResult
+import com.goodpon.partner.application.coupon.port.`in`.dto.RedeemCouponResult
+import com.goodpon.partner.openapi.controller.v1.request.CancelCouponRedemptionRequest
+import com.goodpon.partner.openapi.controller.v1.request.IssueCouponRequest
+import com.goodpon.partner.openapi.controller.v1.request.RedeemCouponRequest
 import com.goodpon.partner.openapi.response.ApiResponse
 import com.goodpon.partner.openapi.security.MerchantPrincipal
 import org.springframework.http.ResponseEntity
@@ -21,43 +21,43 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class CouponController(
-    private val couponIssueService: CouponIssueService,
-    private val couponRedeemService: CouponRedeemService,
-    private val couponCancelRedemptionService: CouponCancelRedemptionService,
+    private val issueCouponUseCase: IssueCouponUseCase,
+    private val redeemCouponUseCase: RedeemCouponUseCase,
+    private val cancelCouponRedemptionUseCase: CancelCouponRedemptionUseCase,
 ) {
 
     @PostMapping("/v1/coupons/issue")
     fun issueCoupon(
-        @RequestBody request: IssueCouponWebRequest,
+        @RequestBody request: IssueCouponRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-    ): ResponseEntity<ApiResponse<CouponIssueResultResponse>> {
-        val appRequest = request.toAppRequest(merchantPrincipal.id)
-        val response = couponIssueService.issueCoupon(appRequest)
+    ): ResponseEntity<ApiResponse<IssueCouponResult>> {
+        val command = request.toCommand(merchantPrincipal.id)
+        val result = issueCouponUseCase.issueCoupon(command)
 
-        return ResponseEntity.ok(ApiResponse.of("coupon", response))
+        return ResponseEntity.ok(ApiResponse.of("coupon", result))
     }
 
     @PostMapping("/v1/coupons/{couponId}/redeem")
     fun redeemCoupon(
         @PathVariable couponId: String,
-        @RequestBody request: RedeemCouponWebRequest,
+        @RequestBody request: RedeemCouponRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-    ): ResponseEntity<ApiResponse<CouponRedemptionResultResponse>> {
-        val appRequest = request.toAppRequest(merchantPrincipal.id, couponId)
-        val response = couponRedeemService.redeemCoupon(appRequest)
+    ): ResponseEntity<ApiResponse<RedeemCouponResult>> {
+        val command = request.toCommand(merchantPrincipal.id, couponId)
+        val result = redeemCouponUseCase.redeemCoupon(command)
 
-        return ResponseEntity.ok(ApiResponse.of("coupon", response))
+        return ResponseEntity.ok(ApiResponse.of("coupon", result))
     }
 
     @PostMapping("/v1/coupons/{couponId}/cancel")
     fun cancelCouponRedemption(
         @PathVariable couponId: String,
-        @RequestBody request: CancelCouponRedemptionWebRequest,
+        @RequestBody request: CancelCouponRedemptionRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-    ): ResponseEntity<ApiResponse<CouponCancelRedemptionResultResponse>> {
-        val appRequest = request.toAppRequest(merchantPrincipal.id, couponId)
-        val response = couponCancelRedemptionService.cancelCouponRedemption(appRequest)
+    ): ResponseEntity<ApiResponse<CancelCouponRedemptionResult>> {
+        val command = request.toCommand(merchantPrincipal.id, couponId)
+        val result = cancelCouponRedemptionUseCase.cancelCouponRedemption(command)
 
-        return ResponseEntity.ok(ApiResponse.of("coupon", response))
+        return ResponseEntity.ok(ApiResponse.of("coupon", result))
     }
 }

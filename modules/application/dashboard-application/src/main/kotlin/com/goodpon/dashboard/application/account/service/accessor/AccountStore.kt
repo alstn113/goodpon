@@ -1,5 +1,6 @@
 package com.goodpon.dashboard.application.account.service.accessor
 
+import com.goodpon.dashboard.application.account.port.out.AccountRepository
 import com.goodpon.domain.account.Account
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional

@@ -28,6 +28,11 @@ class AccountEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
+    fun update(account: Account) {
+        this.verified = account.verified
+        this.verifiedAt = account.verifiedAt
+    }
+
     fun toDomain(): Account {
         return Account.reconstruct(
             id = id,
@@ -37,11 +42,6 @@ class AccountEntity(
             verified = verified,
             verifiedAt = verifiedAt
         )
-    }
-
-    fun update(account: Account) {
-        this.verified = account.verified
-        this.verifiedAt = account.verifiedAt
     }
 
     companion object {

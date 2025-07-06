@@ -40,6 +40,13 @@ class UserCouponEntity(
     var redeemedAt: LocalDateTime?,
 ) : AuditableEntity() {
 
+    fun update(userCoupon: UserCoupon) {
+        this.status = userCoupon.status
+        this.issuedAt = userCoupon.issuedAt
+        this.expiresAt = userCoupon.expiresAt
+        this.redeemedAt = userCoupon.redeemedAt
+    }
+
     fun toDomain(): UserCoupon {
         return UserCoupon.reconstruct(
             id = id,
@@ -50,13 +57,6 @@ class UserCouponEntity(
             expiresAt = expiresAt,
             redeemedAt = redeemedAt,
         )
-    }
-
-    fun update(userCoupon: UserCoupon) {
-        this.status = userCoupon.status
-        this.issuedAt = userCoupon.issuedAt
-        this.expiresAt = userCoupon.expiresAt
-        this.redeemedAt = userCoupon.redeemedAt
     }
 
     companion object {

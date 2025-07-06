@@ -2,8 +2,6 @@ package com.goodpon.domain.coupon.user
 
 import com.goodpon.domain.coupon.user.exception.UserCouponCancelNotAllowedException
 import com.goodpon.domain.coupon.user.exception.UserCouponExpireNotAllowedException
-import com.goodpon.domain.coupon.user.exception.UserCouponExpiredException
-import com.goodpon.domain.coupon.user.exception.UserCouponRedeemNotAllowedException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll

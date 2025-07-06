@@ -3,7 +3,6 @@ package com.goodpon.domain.coupon.template.vo
 import com.goodpon.domain.coupon.template.exception.CouponDiscountPolicyInvalidFixedMaxException
 import com.goodpon.domain.coupon.template.exception.CouponDiscountPolicyInvalidFixedValueException
 import com.goodpon.domain.coupon.template.exception.CouponDiscountPolicyInvalidPercentMaxException
-import com.goodpon.domain.coupon.template.exception.CouponDiscountPolicyInvalidPercentValueException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll

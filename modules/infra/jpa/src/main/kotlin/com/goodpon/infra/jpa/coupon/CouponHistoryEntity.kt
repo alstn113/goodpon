@@ -25,6 +25,8 @@ class CouponHistoryEntity(
     val recordedAt: LocalDateTime,
 ) : AuditableEntity() {
 
+    fun update(couponHistory: CouponHistory) {}
+
     fun toDomain(): CouponHistory {
         return CouponHistory.reconstruct(
             id = id,
@@ -33,9 +35,6 @@ class CouponHistoryEntity(
             orderId = orderId,
             recordedAt = recordedAt
         )
-    }
-
-    fun update(couponHistory: CouponHistory) {
     }
 
     companion object {

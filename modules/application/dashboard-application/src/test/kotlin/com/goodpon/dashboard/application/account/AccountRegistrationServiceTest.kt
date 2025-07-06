@@ -1,9 +1,9 @@
 package com.goodpon.dashboard.application.account
 
+import com.goodpon.dashboard.application.account.service.AccountRegistrationService
 import com.goodpon.dashboard.application.account.service.accessor.AccountReader
 import com.goodpon.dashboard.application.account.service.accessor.AccountStore
 import com.goodpon.dashboard.application.account.service.exception.AccountEmailExistsException
-import com.goodpon.dashboard.application.account.service.AccountRegistrationService
 import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
 import com.goodpon.domain.account.Account
 import io.kotest.assertions.throwables.shouldThrow

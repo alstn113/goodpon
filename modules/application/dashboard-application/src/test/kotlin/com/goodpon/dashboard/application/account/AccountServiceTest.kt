@@ -1,9 +1,11 @@
 package com.goodpon.dashboard.application.account
 
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
 import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
+import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpCommand
+import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpResult
 import com.goodpon.dashboard.application.account.service.AccountRegistrationService
-import com.goodpon.dashboard.application.account.service.AccountService
+import com.goodpon.dashboard.application.account.service.SignUpService
+import com.goodpon.dashboard.application.account.service.accessor.AccountReader
 import com.goodpon.dashboard.application.auth.service.event.AccountCreatedEvent
 import com.goodpon.domain.account.Account
 import io.kotest.core.spec.style.DescribeSpec
@@ -20,7 +22,7 @@ class AccountServiceTest : DescribeSpec({
     val accountRegistrationService = mockk<AccountRegistrationService>()
     val eventPublisher = mockk<ApplicationEventPublisher>(relaxed = true)
     val accountReader = mockk<AccountReader>()
-    val accountService = AccountService(
+    val accountService = SignUpService(
         accountRegistrationService = accountRegistrationService,
         eventPublisher = eventPublisher,
         accountReader = accountReader
@@ -52,28 +54,28 @@ class AccountServiceTest : DescribeSpec({
 
     describe("signUp") {
         it("회원가입 시 계정을 생성하고 이벤트를 발행하며 AccountInfo를 반환한다") {
-            val request = SignUpRequest(
+            val command = SignUpCommand(
                 email = "email@goodpon.site",
                 password = "password",
                 name = "name"
             )
             val account = Account.create(
-                email = request.email,
-                password = request.password,
-                name = request.name
+                email = command.email,
+                password = command.password,
+                name = command.name
             ).copy(id = 1L, verified = false)
 
             every {
                 accountRegistrationService.register(
-                    request.email,
-                    request.password,
-                    request.name
+                    command.email,
+                    command.password,
+                    command.name
                 )
             } returns account
 
-            val result = accountService.signUp(request)
+            val result = accountService.signUp(command)
 
-            result shouldBe AccountInfo(
+            result shouldBe SignUpResult(
                 id = account.id,
                 email = account.email.value,
                 name = account.name.value,
@@ -82,9 +84,9 @@ class AccountServiceTest : DescribeSpec({
 
             verify {
                 accountRegistrationService.register(
-                    request.email,
-                    request.password,
-                    request.name
+                    command.email,
+                    command.password,
+                    command.name
                 )
             }
 

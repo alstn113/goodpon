@@ -1,15 +1,15 @@
 package com.goodpon.partner.openapi.controller.v1.request
 
-import com.goodpon.partner.application.coupon.service.request.RedeemCouponRequest
+import com.goodpon.partner.application.coupon.port.`in`.dto.RedeemCouponCommand
 
-data class RedeemCouponWebRequest(
+data class RedeemCouponRequest(
     val userId: String,
     val orderAmount: Int,
     val orderId: String,
 ) {
 
-    fun toAppRequest(merchantId: Long, couponId: String): RedeemCouponRequest {
-        return RedeemCouponRequest(
+    fun toCommand(merchantId: Long, couponId: String): RedeemCouponCommand {
+        return RedeemCouponCommand(
             merchantId = merchantId,
             couponId = couponId,
             userId = userId,

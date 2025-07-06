@@ -1,5 +1,6 @@
 package com.goodpon.infra.jpa.coupon
 
+import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.CouponTemplateFactory
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
@@ -63,7 +64,11 @@ class CouponTemplateEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
-    fun toDomain(): com.goodpon.domain.coupon.template.CouponTemplate {
+    fun update(couponTemplate: CouponTemplate) {
+        this.status = couponTemplate.status
+    }
+
+    fun toDomain(): CouponTemplate {
         return CouponTemplateFactory.reconstruct(
             id = id,
             merchantId = merchantId,
@@ -84,12 +89,8 @@ class CouponTemplateEntity(
         )
     }
 
-    fun update(couponTemplate: com.goodpon.domain.coupon.template.CouponTemplate) {
-        this.status = couponTemplate.status
-    }
-
     companion object {
-        fun fromDomain(domain: com.goodpon.domain.coupon.template.CouponTemplate): CouponTemplateEntity {
+        fun fromDomain(domain: CouponTemplate): CouponTemplateEntity {
             return CouponTemplateEntity(
                 merchantId = domain.merchantId,
                 name = domain.name,

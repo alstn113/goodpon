@@ -9,7 +9,7 @@ import com.goodpon.partner.application.coupon.port.out.CouponHistoryRepository a
 @Repository
 class CouponHistoryCoreRepository(
     private val couponHistoryJpaRepository: CouponHistoryJpaRepository,
-) : Partner_CouponHistoryRepository, Dashboard_CouponHistoryRepository {
+) : Dashboard_CouponHistoryRepository, Partner_CouponHistoryRepository {
 
     override fun save(couponHistory: CouponHistory): CouponHistory {
         val entity = couponHistoryJpaRepository.findByIdOrNull(couponHistory.id)

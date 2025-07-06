@@ -18,15 +18,14 @@ class MerchantEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0
 
+    fun update(merchant: Merchant) {}
+
     fun toDomain(): Merchant {
         return Merchant.reconstruct(
             id = id,
             name = name,
             secretKey = secretKey,
         )
-    }
-
-    fun update(merchant: Merchant) {
     }
 
     companion object {

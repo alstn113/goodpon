@@ -1,6 +1,7 @@
 package com.goodpon.infra.jpa.merchant
 
-import com.goodpon.domain.merchant.MerchantAccountRepository
+import com.goodpon.dashboard.application.merchant.port.out.MerchantAccountRepository
+import com.goodpon.domain.merchant.MerchantAccount
 import com.goodpon.domain.merchant.exception.MerchantAccountNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
@@ -10,7 +11,7 @@ class MerchantAccountCoreRepository(
     private val merchantAccountJpaRepository: MerchantAccountJpaRepository,
 ) : MerchantAccountRepository {
 
-    override fun save(merchantAccount: com.goodpon.domain.merchant.MerchantAccount): com.goodpon.domain.merchant.MerchantAccount {
+    override fun save(merchantAccount: MerchantAccount): MerchantAccount {
         if (merchantAccount.id == 0L) {
             val entity = MerchantAccountEntity.fromDomain(merchantAccount)
             val savedEntity = merchantAccountJpaRepository.save(entity)
@@ -24,10 +25,7 @@ class MerchantAccountCoreRepository(
         return savedEntity.toDomain()
     }
 
-    override fun findByMerchantIdAndAccountId(
-        merchantId: Long,
-        accountId: Long,
-    ): com.goodpon.domain.merchant.MerchantAccount? {
+    override fun findByMerchantIdAndAccountId(merchantId: Long, accountId: Long): MerchantAccount? {
         return merchantAccountJpaRepository.findByMerchantIdAndAccountId(merchantId, accountId)
             ?.toDomain()
     }
