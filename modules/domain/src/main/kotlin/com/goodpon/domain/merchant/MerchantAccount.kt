@@ -4,15 +4,15 @@ data class MerchantAccount private constructor(
     val id: Long = 0,
     val merchantId: Long,
     val accountId: Long,
-    val role: com.goodpon.domain.merchant.MerchantAccountRole,
+    val role: MerchantAccountRole,
 ) {
 
     companion object {
-        fun createOwner(merchantId: Long, accountId: Long): com.goodpon.domain.merchant.MerchantAccount {
-            return com.goodpon.domain.merchant.MerchantAccount(
+        fun createOwner(merchantId: Long, accountId: Long): MerchantAccount {
+            return MerchantAccount(
                 merchantId = merchantId,
                 accountId = accountId,
-                role = com.goodpon.domain.merchant.MerchantAccountRole.OWNER
+                role = MerchantAccountRole.OWNER
             )
         }
 
@@ -20,9 +20,9 @@ data class MerchantAccount private constructor(
             id: Long,
             merchantId: Long,
             accountId: Long,
-            role: com.goodpon.domain.merchant.MerchantAccountRole,
-        ): com.goodpon.domain.merchant.MerchantAccount {
-            return com.goodpon.domain.merchant.MerchantAccount(
+            role: MerchantAccountRole,
+        ): MerchantAccount {
+            return MerchantAccount(
                 id = id,
                 merchantId = merchantId,
                 accountId = accountId,

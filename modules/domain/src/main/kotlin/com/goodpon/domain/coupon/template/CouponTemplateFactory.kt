@@ -1,6 +1,6 @@
 package com.goodpon.domain.coupon.template
 
-import com.goodpon.domain.domain.coupon.template.vo.*
+import com.goodpon.domain.coupon.template.vo.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -22,7 +22,7 @@ object CouponTemplateFactory {
         maxIssueCount: Long?,
         maxRedeemCount: Long?,
         status: CouponTemplateStatus = CouponTemplateStatus.DRAFT,
-    ): com.goodpon.domain.coupon.template.CouponTemplate {
+    ): CouponTemplate {
         val redemptionCondition = CouponRedemptionCondition(minOrderAmount = minOrderAmount)
         val discountPolicy = CouponDiscountPolicy(
             discountType = discountType,
@@ -35,13 +35,13 @@ object CouponTemplateFactory {
             validityDays = validityDays,
             absoluteExpiryDate = absoluteExpiryDate
         )
-        val limitPolicy = com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+        val limitPolicy = CouponLimitPolicy(
             limitType = limitType,
             maxIssueCount = maxIssueCount,
             maxRedeemCount = maxRedeemCount
         )
 
-        return com.goodpon.domain.coupon.template.CouponTemplate(
+        return CouponTemplate(
             id = 0,
             merchantId = merchantId,
             name = name,
@@ -71,8 +71,8 @@ object CouponTemplateFactory {
         maxIssueCount: Long?,
         maxRedeemCount: Long?,
         status: CouponTemplateStatus,
-    ): com.goodpon.domain.coupon.template.CouponTemplate {
-        return com.goodpon.domain.coupon.template.CouponTemplate(
+    ): CouponTemplate {
+        return CouponTemplate(
             id = id,
             merchantId = merchantId,
             name = name,
@@ -80,7 +80,7 @@ object CouponTemplateFactory {
             redemptionCondition = CouponRedemptionCondition(minOrderAmount),
             discountPolicy = CouponDiscountPolicy(discountType, discountValue, maxDiscountAmount),
             period = CouponPeriod(issueStartAt, issueEndAt, validityDays, absoluteExpiresAt),
-            limitPolicy = com.goodpon.domain.coupon.template.vo.CouponLimitPolicy(
+            limitPolicy = CouponLimitPolicy(
                 limitType,
                 maxIssueCount,
                 maxRedeemCount

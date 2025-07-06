@@ -1,7 +1,7 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.domain.domain.coupon.history.CouponHistory
-import com.goodpon.domain.domain.coupon.history.CouponHistoryRepository
+import com.goodpon.domain.coupon.history.CouponHistory
+import com.goodpon.domain.coupon.history.CouponHistoryRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 

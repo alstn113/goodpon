@@ -1,6 +1,6 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.domain.domain.coupon.user.UserCouponStatus
+import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*

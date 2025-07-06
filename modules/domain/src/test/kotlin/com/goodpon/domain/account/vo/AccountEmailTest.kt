@@ -1,6 +1,6 @@
 package com.goodpon.domain.account.vo
 
-import com.goodpon.domain.domain.account.exception.AccountInvalidEmailFormatException
+import com.goodpon.domain.account.exception.AccountInvalidEmailFormatException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll

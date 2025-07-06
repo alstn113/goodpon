@@ -7,8 +7,8 @@ import java.time.LocalDateTime
 object CouponRedeemer {
 
     fun redeem(
-        couponTemplate: com.goodpon.domain.coupon.template.CouponTemplate,
-        userCoupon: com.goodpon.domain.coupon.user.UserCoupon,
+        couponTemplate: CouponTemplate,
+        userCoupon: UserCoupon,
         currentRedeemCount: Long,
         orderAmount: Int,
         redeemAt: LocalDateTime,

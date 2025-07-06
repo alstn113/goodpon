@@ -1,8 +1,8 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.domain.domain.coupon.user.UserCouponStatus
+import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.domain.coupon.user.UserCoupon
-import com.goodpon.domain.domain.coupon.user.UserCouponRepository
+import com.goodpon.domain.coupon.user.UserCouponRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime

@@ -1,7 +1,7 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.domain.domain.coupon.stats.CouponTemplateStats
-import com.goodpon.domain.domain.coupon.stats.CouponTemplateStatsRepository
+import com.goodpon.domain.coupon.stats.CouponTemplateStats
+import com.goodpon.domain.coupon.stats.CouponTemplateStatsRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 

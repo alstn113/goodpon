@@ -1,31 +1,40 @@
 package com.goodpon.domain.coupon.template.vo
 
-import com.goodpon.domain.domain.coupon.template.exception.*
+import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyInvalidIssueValueException
+import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyInvalidRedeemValueException
+import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyNoneConflictException
+import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyRedeemIssueConflictException
 
 data class CouponLimitPolicy(
-    val limitType: com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType,
+    val limitType: CouponLimitPolicyType,
     val maxIssueCount: Long? = null,
     val maxRedeemCount: Long? = null,
 ) {
 
     init {
         when (limitType) {
-            com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType.ISSUE_COUNT -> validateIssueCountLimit(maxIssueCount)
-            com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType.REDEEM_COUNT -> validateRedeemCountLimit(maxRedeemCount)
-            com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType.NONE -> validateNoneLimit()
+            CouponLimitPolicyType.ISSUE_COUNT -> validateIssueCountLimit(
+                maxIssueCount
+            )
+
+            CouponLimitPolicyType.REDEEM_COUNT -> validateRedeemCountLimit(
+                maxRedeemCount
+            )
+
+            CouponLimitPolicyType.NONE -> validateNoneLimit()
         }
     }
 
     fun canIssue(currentIssuedCount: Long): Boolean {
         return when (limitType) {
-            com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType.ISSUE_COUNT -> currentIssuedCount < maxIssueCount!!
+            CouponLimitPolicyType.ISSUE_COUNT -> currentIssuedCount < maxIssueCount!!
             else -> true
         }
     }
 
     fun canRedeem(currentRedeemedCount: Long): Boolean {
         return when (limitType) {
-            com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType.REDEEM_COUNT -> currentRedeemedCount < maxRedeemCount!!
+            CouponLimitPolicyType.REDEEM_COUNT -> currentRedeemedCount < maxRedeemCount!!
             else -> true
         }
     }

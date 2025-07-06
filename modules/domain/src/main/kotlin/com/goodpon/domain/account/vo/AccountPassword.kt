@@ -1,6 +1,6 @@
 package com.goodpon.domain.account.vo
 
-import com.goodpon.domain.domain.account.exception.AccountInvalidPasswordLengthException
+import com.goodpon.domain.account.exception.AccountInvalidPasswordLengthException
 
 @JvmInline
 value class AccountPassword(val value: String) {

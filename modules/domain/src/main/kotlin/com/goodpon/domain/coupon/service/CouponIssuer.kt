@@ -1,7 +1,5 @@
 package com.goodpon.domain.coupon.service
 
-import com.goodpon.domain.coupon.template.CouponTemplate
-import com.goodpon.domain.coupon.user.UserCoupon
 import java.time.LocalDateTime
 
 object CouponIssuer {

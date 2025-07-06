@@ -1,6 +1,6 @@
 package com.goodpon.infra.jpa.account
 
-import com.goodpon.domain.domain.account.Account
+import com.goodpon.domain.account.Account
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime

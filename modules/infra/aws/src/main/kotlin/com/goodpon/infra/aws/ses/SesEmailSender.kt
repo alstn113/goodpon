@@ -1,6 +1,6 @@
 package com.goodpon.infra.aws.ses
 
-import com.goodpon.domain.domain.auth.EmailSender
+import com.goodpon.domain.auth.EmailSender
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.services.sesv2.SesV2Client
 import software.amazon.awssdk.services.sesv2.model.*

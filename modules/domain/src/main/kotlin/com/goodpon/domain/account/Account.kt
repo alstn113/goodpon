@@ -1,9 +1,9 @@
 package com.goodpon.domain.account
 
-import com.goodpon.domain.domain.account.exception.AccountAlreadyVerifiedException
-import com.goodpon.domain.domain.account.vo.AccountEmail
-import com.goodpon.domain.domain.account.vo.AccountName
-import com.goodpon.domain.domain.account.vo.AccountPassword
+import com.goodpon.domain.account.exception.AccountAlreadyVerifiedException
+import com.goodpon.domain.account.vo.AccountEmail
+import com.goodpon.domain.account.vo.AccountName
+import com.goodpon.domain.account.vo.AccountPassword
 import java.time.LocalDateTime
 
 data class Account private constructor(

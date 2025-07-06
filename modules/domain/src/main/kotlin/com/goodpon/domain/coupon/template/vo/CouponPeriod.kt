@@ -1,6 +1,9 @@
 package com.goodpon.domain.coupon.template.vo
 
-import com.goodpon.domain.domain.coupon.template.exception.*
+import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidExpireBeforeIssueEndException
+import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidExpireBeforeStartException
+import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidIssueEndBeforeStartException
+import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidValidityDaysException
 import java.time.LocalDate
 import java.time.LocalDateTime
 

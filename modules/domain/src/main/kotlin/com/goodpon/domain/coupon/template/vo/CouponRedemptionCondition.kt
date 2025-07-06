@@ -1,7 +1,5 @@
 package com.goodpon.domain.coupon.template.vo
 
-import com.goodpon.domain.coupon.template.exception.CouponRedemptionConditionInvalidMinOrderAmountException
-
 data class CouponRedemptionCondition(
     val minOrderAmount: Int? = null,
 ) {

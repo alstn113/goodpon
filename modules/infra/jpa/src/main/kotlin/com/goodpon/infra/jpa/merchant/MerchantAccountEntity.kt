@@ -1,7 +1,7 @@
 package com.goodpon.infra.jpa.merchant
 
 import com.goodpon.domain.merchant.MerchantAccount
-import com.goodpon.domain.domain.merchant.MerchantAccountRole
+import com.goodpon.domain.merchant.MerchantAccountRole
 import com.goodpon.infra.jpa.AuditableEntity
 import jakarta.persistence.*
 

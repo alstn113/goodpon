@@ -1,8 +1,8 @@
 package com.goodpon.dashboard.api.controller.v1.request
 
 import com.goodpon.domain.application.coupon.request.CreateCouponTemplateRequest
-import com.goodpon.domain.domain.coupon.template.vo.CouponDiscountType
-import com.goodpon.domain.domain.coupon.template.vo.CouponLimitPolicyType
+import com.goodpon.domain.coupon.template.vo.CouponDiscountType
+import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import java.time.LocalDate
 
 data class CreateCouponTemplateWebRequest(

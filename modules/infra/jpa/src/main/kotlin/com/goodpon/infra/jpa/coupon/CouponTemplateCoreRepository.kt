@@ -1,9 +1,9 @@
 package com.goodpon.infra.jpa.coupon
 
-import com.goodpon.domain.domain.coupon.template.exception.CouponTemplateNotFoundException
+import com.goodpon.domain.coupon.template.exception.CouponTemplateNotFoundException
 import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.CouponTemplateRepository
-import com.goodpon.domain.domain.coupon.template.vo.CouponTemplateStatus
+import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime

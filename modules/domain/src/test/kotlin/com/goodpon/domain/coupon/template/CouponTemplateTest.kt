@@ -1,9 +1,9 @@
 package com.goodpon.domain.coupon.template
 
-import com.goodpon.domain.domain.coupon.template.exception.*
-import com.goodpon.domain.domain.coupon.template.vo.CouponDiscountType
-import com.goodpon.domain.domain.coupon.template.vo.CouponLimitPolicyType
-import com.goodpon.domain.domain.coupon.template.vo.CouponTemplateStatus
+import com.goodpon.domain.coupon.template.exception.*
+import com.goodpon.domain.coupon.template.vo.CouponDiscountType
+import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
+import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll

@@ -1,7 +1,10 @@
 package com.goodpon.domain.coupon.template
 
-import com.goodpon.domain.domain.coupon.template.exception.*
-import com.goodpon.domain.domain.coupon.template.vo.*
+import com.goodpon.domain.coupon.template.exception.*
+import com.goodpon.domain.coupon.template.vo.CouponDiscountPolicy
+import com.goodpon.domain.coupon.template.vo.CouponPeriod
+import com.goodpon.domain.coupon.template.vo.CouponRedemptionCondition
+import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -53,14 +56,14 @@ data class CouponTemplate(
         return discountPolicy.calculateDiscountAmount(orderAmount)
     }
 
-    fun publish(): com.goodpon.domain.coupon.template.CouponTemplate {
+    fun publish(): CouponTemplate {
         if (status.isNotDraft()) {
             throw CouponTemplatePublishNotAllowedException()
         }
         return this.copy(status = CouponTemplateStatus.ISSUABLE)
     }
 
-    fun expire(): com.goodpon.domain.coupon.template.CouponTemplate {
+    fun expire(): CouponTemplate {
         if (status.isNotIssuable()) {
             throw CouponTemplateExpirationNotAllowedException()
         }

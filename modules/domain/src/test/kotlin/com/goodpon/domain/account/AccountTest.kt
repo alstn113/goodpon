@@ -1,6 +1,6 @@
 package com.goodpon.domain.account
 
-import com.goodpon.domain.domain.account.exception.AccountAlreadyVerifiedException
+import com.goodpon.domain.account.exception.AccountAlreadyVerifiedException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
