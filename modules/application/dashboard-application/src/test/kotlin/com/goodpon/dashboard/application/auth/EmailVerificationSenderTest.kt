@@ -1,10 +1,10 @@
 package com.goodpon.dashboard.application.auth
 
-import com.goodpon.dashboard.application.auth.service.EmailVerificationSender
+import com.goodpon.dashboard.application.auth.service.SendVerificationEmailService
 import com.goodpon.dashboard.application.auth.service.VerificationLinkBuilder
 import com.goodpon.dashboard.application.auth.service.VerificationTokenGenerator
-import com.goodpon.domain.auth.EmailSender
-import com.goodpon.domain.auth.EmailVerificationRepository
+import com.goodpon.dashboard.application.auth.port.out.SendVerificationEmailPort
+import com.goodpon.dashboard.application.auth.port.out.EmailVerificationRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -13,12 +13,12 @@ import io.mockk.verify
 
 class EmailVerificationSenderTest : DescribeSpec({
 
-    val emailSender = mockk<EmailSender>(relaxed = true)
+    val sendVerificationEmailPort = mockk<SendVerificationEmailPort>(relaxed = true)
     val emailVerificationRepository = mockk<EmailVerificationRepository>()
     val verificationTokenGenerator: VerificationTokenGenerator = mockk()
     val verificationLinkBuilder: VerificationLinkBuilder = mockk()
-    val emailVerificationSender = EmailVerificationSender(
-        emailSender,
+    val sendVerificationEmailService = SendVerificationEmailService(
+        sendVerificationEmailPort,
         emailVerificationRepository,
         verificationTokenGenerator,
         verificationLinkBuilder
@@ -41,12 +41,12 @@ class EmailVerificationSenderTest : DescribeSpec({
             every { verificationLinkBuilder.build(token) } returns verificationLink
             every { emailVerificationRepository.save(any()) } returns Unit
 
-            emailVerificationSender.send(accountId, email, name)
+            sendVerificationEmailService.send(accountId, email, name)
 
             verify { verificationTokenGenerator.generate() }
             verify { verificationLinkBuilder.build(token) }
             verify { emailVerificationRepository.save(any()) }
-            verify { emailSender.sendVerificationEmail(name, email, verificationLink) }
+            verify { sendVerificationEmailPort.send(name, email, verificationLink) }
         }
     }
 })

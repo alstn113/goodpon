@@ -1,14 +1,17 @@
 package com.goodpon.dashboard.application.auth.service
 
-import com.goodpon.domain.account.exception.AccountAlreadyVerifiedException
 import com.goodpon.dashboard.application.account.service.AccountVerificationService
 import com.goodpon.dashboard.application.account.service.accessor.AccountReader
+import com.goodpon.dashboard.application.auth.port.`in`.LoginUseCase
+import com.goodpon.dashboard.application.auth.port.`in`.ResendVerificationEmailUseCase
+import com.goodpon.dashboard.application.auth.port.`in`.VerifyEmailUseCase
+import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginCommand
+import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
 import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationReader
 import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationStore
 import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
 import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
-import com.goodpon.dashboard.application.auth.service.request.LoginRequest
-import com.goodpon.dashboard.application.auth.service.response.LoginResponse
+import com.goodpon.domain.account.exception.AccountAlreadyVerifiedException
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -23,19 +26,19 @@ class AuthService(
     private val emailVerificationStore: EmailVerificationStore,
     private val emailVerificationReader: EmailVerificationReader,
     private val eventPublisher: ApplicationEventPublisher,
-) {
+) : LoginUseCase, VerifyEmailUseCase, ResendVerificationEmailUseCase {
 
     @Transactional
-    fun login(request: LoginRequest): LoginResponse {
-        val account = accountReader.readByEmail(request.email)
+    override fun login(command: LoginCommand): LoginResult {
+        val account = accountReader.readByEmail(command.email)
 
-        if (!passwordEncoder.matches(request.password, account.password.value)) {
+        if (!passwordEncoder.matches(command.password, account.password.value)) {
             throw PasswordMismatchException()
         }
 
         val accessToken = tokenProvider.generateAccessToken(accountId = account.id)
 
-        return LoginResponse(
+        return LoginResult(
             id = account.id,
             email = account.email.value,
             name = account.name.value,
@@ -45,7 +48,7 @@ class AuthService(
     }
 
     @Transactional
-    fun verifyEmail(token: String) {
+    override fun verifyEmail(token: String) {
         val now = LocalDateTime.now()
         val verification = emailVerificationReader.readByToken(token)
 
@@ -54,7 +57,7 @@ class AuthService(
     }
 
     @Transactional(readOnly = true)
-    fun resendVerificationEmail(email: String) {
+    override fun resendVerificationEmail(email: String) {
         val account = accountReader.readByEmail(email)
         if (account.verified) {
             throw AccountAlreadyVerifiedException()

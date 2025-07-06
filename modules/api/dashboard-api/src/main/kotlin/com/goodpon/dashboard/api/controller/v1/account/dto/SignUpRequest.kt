@@ -1,4 +1,4 @@
-package com.goodpon.dashboard.application.auth.service.request
+package com.goodpon.dashboard.api.controller.v1.account.dto
 
 import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpCommand
 

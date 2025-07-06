@@ -2,7 +2,7 @@ package com.goodpon.infra.redis
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.domain.auth.EmailVerification
-import com.goodpon.domain.auth.EmailVerificationRepository
+import com.goodpon.dashboard.application.auth.port.out.EmailVerificationRepository
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration

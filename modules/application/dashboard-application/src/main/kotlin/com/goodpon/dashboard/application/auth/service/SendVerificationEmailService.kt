@@ -1,15 +1,16 @@
 package com.goodpon.dashboard.application.auth.service
 
-import com.goodpon.domain.auth.EmailSender
+import com.goodpon.dashboard.application.auth.port.out.EmailVerificationRepository
+import com.goodpon.dashboard.application.auth.port.out.SendVerificationEmailPort
+import com.goodpon.dashboard.application.auth.port.out.dto.SendVerificationEmailRequest
 import com.goodpon.domain.auth.EmailVerification
-import com.goodpon.domain.auth.EmailVerificationRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class EmailVerificationSender(
-    private val emailSender: EmailSender,
+class SendVerificationEmailService(
+    private val sendVerificationEmailPort: SendVerificationEmailPort,
     private val emailVerificationRepository: EmailVerificationRepository,
     private val verificationTokenGenerator: VerificationTokenGenerator,
     private val verificationLinkBuilder: VerificationLinkBuilder,
@@ -33,6 +34,8 @@ class EmailVerificationSender(
         emailVerificationRepository.save(emailVerification)
 
         val verificationLink = verificationLinkBuilder.build(token)
-        emailSender.sendVerificationEmail(name, email, verificationLink)
+
+        val request = SendVerificationEmailRequest(name, email, verificationLink)
+        sendVerificationEmailPort.send(request)
     }
 }

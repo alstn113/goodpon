@@ -1,4 +1,6 @@
-package com.goodpon.domain.auth
+package com.goodpon.dashboard.application.auth.port.out
+
+import com.goodpon.domain.auth.EmailVerification
 
 interface EmailVerificationRepository {
 

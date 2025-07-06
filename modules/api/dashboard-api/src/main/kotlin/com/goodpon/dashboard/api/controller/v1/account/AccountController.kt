@@ -1,11 +1,11 @@
 package com.goodpon.dashboard.api.controller.v1.account
 
+import com.goodpon.dashboard.api.controller.v1.account.dto.SignUpRequest
 import com.goodpon.dashboard.api.response.ApiResponse
 import com.goodpon.dashboard.api.security.AccountPrincipal
 import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
 import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpResult
 import com.goodpon.dashboard.application.account.service.AccountService
-import com.goodpon.dashboard.application.auth.service.request.SignUpRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping

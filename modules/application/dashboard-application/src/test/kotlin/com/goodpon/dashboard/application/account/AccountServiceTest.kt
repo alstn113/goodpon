@@ -5,7 +5,6 @@ import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
 import com.goodpon.dashboard.application.account.service.AccountRegistrationService
 import com.goodpon.dashboard.application.account.service.AccountService
 import com.goodpon.dashboard.application.auth.service.event.AccountCreatedEvent
-import com.goodpon.dashboard.application.auth.service.request.SignUpRequest
 import com.goodpon.domain.account.Account
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe

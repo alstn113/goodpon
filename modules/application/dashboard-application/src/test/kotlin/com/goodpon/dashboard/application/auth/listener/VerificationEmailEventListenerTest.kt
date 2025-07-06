@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.auth.listener
 
-import com.goodpon.dashboard.application.auth.service.EmailVerificationSender
+import com.goodpon.dashboard.application.auth.service.SendVerificationEmailService
 import com.goodpon.dashboard.application.auth.service.event.AccountCreatedEvent
 import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
 import com.goodpon.dashboard.application.auth.service.listener.VerificationEmailEventListener
@@ -10,8 +10,8 @@ import io.mockk.verify
 
 class VerificationEmailEventListenerTest : DescribeSpec({
 
-    val emailVerificationSender = mockk<EmailVerificationSender>(relaxed = true)
-    val verificationEmailEventListener = VerificationEmailEventListener(emailVerificationSender)
+    val sendVerificationEmailService = mockk<SendVerificationEmailService>(relaxed = true)
+    val verificationEmailEventListener = VerificationEmailEventListener(sendVerificationEmailService)
 
     describe("AccountCreatedEvent 수신 시") {
         val event = AccountCreatedEvent(1L, "test@example.com", "홍길동")
@@ -20,7 +20,7 @@ class VerificationEmailEventListenerTest : DescribeSpec({
             verificationEmailEventListener.handleAccountCreatedEvent(event)
 
             verify {
-                emailVerificationSender.send(
+                sendVerificationEmailService.send(
                     event.accountId,
                     event.email,
                     event.name
@@ -36,7 +36,7 @@ class VerificationEmailEventListenerTest : DescribeSpec({
             verificationEmailEventListener.handleResendVerificationEmailEvent(event)
 
             verify {
-                emailVerificationSender.send(
+                sendVerificationEmailService.send(
                     event.accountId,
                     event.email,
                     event.name

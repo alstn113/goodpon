@@ -1,11 +1,11 @@
 package com.goodpon.dashboard.api.controller.v1.auth
 
+import com.goodpon.dashboard.api.controller.v1.auth.dto.LoginRequest
 import com.goodpon.dashboard.api.response.ApiResponse
+import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
 import com.goodpon.dashboard.application.auth.service.AuthService
-import com.goodpon.dashboard.application.auth.service.request.LoginRequest
-import com.goodpon.dashboard.application.auth.service.request.ResendVerificationEmailRequest
-import com.goodpon.dashboard.application.auth.service.request.VerifyEmailRequest
-import com.goodpon.dashboard.application.auth.service.response.LoginResponse
+import com.goodpon.dashboard.api.controller.v1.auth.dto.ResendVerificationEmailRequest
+import com.goodpon.dashboard.api.controller.v1.auth.dto.VerifyEmailRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,10 +19,11 @@ class AuthController(
     @PostMapping("/v1/auth/login")
     fun login(
         @RequestBody request: LoginRequest,
-    ): ResponseEntity<ApiResponse<LoginResponse>> {
-        val response = authService.login(request)
+    ): ResponseEntity<ApiResponse<LoginResult>> {
+        val command = request.toCommand()
+        val result = authService.login(command)
 
-        return ResponseEntity.ok(ApiResponse.success(response))
+        return ResponseEntity.ok(ApiResponse.success(result))
     }
 
     @PostMapping("/v1/auth/verify")
