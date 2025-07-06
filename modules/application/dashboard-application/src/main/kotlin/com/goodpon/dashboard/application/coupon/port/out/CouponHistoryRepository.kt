@@ -1,4 +1,6 @@
-package com.goodpon.domain.coupon.history
+package com.goodpon.dashboard.application.coupon.port.out
+
+import com.goodpon.domain.coupon.history.CouponHistory
 
 interface CouponHistoryRepository {
 

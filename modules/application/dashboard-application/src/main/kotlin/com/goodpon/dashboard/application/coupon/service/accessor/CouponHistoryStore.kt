@@ -1,7 +1,7 @@
 package com.goodpon.dashboard.application.coupon.service.accessor
 
+import com.goodpon.dashboard.application.coupon.port.out.CouponHistoryRepository
 import com.goodpon.domain.coupon.history.CouponHistory
-import com.goodpon.domain.coupon.history.CouponHistoryRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -12,10 +12,7 @@ class CouponHistoryStore(
 ) {
 
     @Transactional
-    fun recordExpired(
-        userCouponId: String,
-        recordedAt: LocalDateTime,
-    ): CouponHistory {
+    fun recordExpired(userCouponId: String, recordedAt: LocalDateTime): CouponHistory {
         val history = CouponHistory.expired(
             userCouponId = userCouponId,
             recordedAt = recordedAt

@@ -1,16 +1,17 @@
 package com.goodpon.infra.jpa.coupon
 
 import com.goodpon.domain.coupon.user.UserCoupon
-import com.goodpon.domain.coupon.user.UserCouponRepository
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
+import com.goodpon.dashboard.application.coupon.port.out.UserCouponRepository as Dashboard_UserCouponRepository
+import com.goodpon.partner.application.coupon.port.out.UserCouponRepository as Partner_UserCouponRepository
 
 @Repository
 class UserCouponCoreRepository(
     private val userCouponJpaRepository: UserCouponJpaRepository,
-) : UserCouponRepository {
+) : Partner_UserCouponRepository, Dashboard_UserCouponRepository {
 
     override fun save(userCoupon: UserCoupon): UserCoupon {
         val entity = userCouponJpaRepository.findByIdOrNull(userCoupon.id)

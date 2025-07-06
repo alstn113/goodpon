@@ -1,18 +1,19 @@
 package com.goodpon.infra.jpa.coupon
 
 import com.goodpon.domain.coupon.template.CouponTemplate
-import com.goodpon.domain.coupon.template.CouponTemplateRepository
 import com.goodpon.domain.coupon.template.exception.CouponTemplateNotFoundException
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
+import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository as Dashboard_CouponTemplateRepository
+import com.goodpon.partner.application.coupon.port.out.CouponTemplateRepository as Partner_CouponTemplateRepository
 
 
 @Repository
 class CouponTemplateCoreRepository(
     private val couponTemplateJpaRepository: CouponTemplateJpaRepository,
-) : CouponTemplateRepository {
+) : Partner_CouponTemplateRepository, Dashboard_CouponTemplateRepository {
 
     override fun save(couponTemplate: CouponTemplate): CouponTemplate {
         if (couponTemplate.id == 0L) {

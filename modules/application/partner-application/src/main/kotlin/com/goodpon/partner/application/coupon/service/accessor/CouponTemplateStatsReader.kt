@@ -1,8 +1,8 @@
 package com.goodpon.partner.application.coupon.service.accessor
 
-import com.goodpon.partner.application.coupon.service.exception.CouponTemplateStatsNotFoundException
 import com.goodpon.domain.coupon.stats.CouponTemplateStats
-import com.goodpon.domain.coupon.stats.CouponTemplateStatsRepository
+import com.goodpon.partner.application.coupon.port.out.CouponTemplateStatsRepository
+import com.goodpon.partner.application.coupon.service.exception.CouponTemplateStatsNotFoundException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 

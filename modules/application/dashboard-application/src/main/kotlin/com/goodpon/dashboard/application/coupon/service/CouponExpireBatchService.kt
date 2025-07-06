@@ -1,9 +1,7 @@
 package com.goodpon.dashboard.application.coupon.service
 
-import com.goodpon.dashboard.application.coupon.service.accessor.CouponHistoryStore
-import com.goodpon.domain.coupon.template.CouponTemplateRepository
+import com.goodpon.dashboard.application.coupon.service.accessor.*
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
-import com.goodpon.domain.coupon.user.UserCouponRepository
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -11,34 +9,39 @@ import java.time.LocalDateTime
 
 @Service
 class CouponExpireBatchService(
-    private val userCouponRepository: UserCouponRepository,
+    private val userCouponReader: UserCouponReader,
+    private val userCouponStore: UserCouponStore,
     private val couponHistoryStore: CouponHistoryStore,
-    private val couponTemplateRepository: CouponTemplateRepository,
+    private val couponTemplateStore: CouponTemplateStore,
+    private val couponTemplateReader: CouponTemplateReader,
 ) {
 
     @Transactional
     fun expireCouponsAndTemplates(now: LocalDateTime) {
-        val expireLimit = now.toLocalDate().atStartOfDay()
+        val expirationThreshold = now.toLocalDate().atStartOfDay()
 
-        val couponsToExpire = userCouponRepository.findByStatusAndExpiresAtLessThanEqual(
+        expireUserCoupons(expirationThreshold, now)
+        expireCouponTemplates(expirationThreshold)
+    }
+
+    private fun expireUserCoupons(expireCutoff: LocalDateTime, recordedAt: LocalDateTime) {
+        val issuedCoupons = userCouponReader.readByStatusAndExpiresAtLessThanEqual(
             status = UserCouponStatus.ISSUED,
-            expiresAt = expireLimit
+            expiresAt = expireCutoff
         )
-
-        couponsToExpire.forEach { coupon ->
+        issuedCoupons.forEach { coupon ->
             coupon.expire()
-            couponHistoryStore.recordExpired(userCouponId = coupon.id, recordedAt = now)
+            couponHistoryStore.recordExpired(userCouponId = coupon.id, recordedAt = recordedAt)
         }
-        userCouponRepository.saveAll(couponsToExpire)
+        userCouponStore.saveAll(issuedCoupons)
+    }
 
-        val templatesToExpire = couponTemplateRepository.findByStatusAndAbsoluteExpiresAtLessThanEqual(
+    private fun expireCouponTemplates(expireCutoff: LocalDateTime) {
+        val issuableTemplates = couponTemplateReader.readByStatusAndAbsoluteExpiresAtLessThanEqual(
             status = CouponTemplateStatus.ISSUABLE,
-            absoluteExpiresAt = expireLimit
+            absoluteExpiresAt = expireCutoff
         )
-
-        templatesToExpire.forEach { template ->
-            template.expire()
-        }
-        couponTemplateRepository.saveAll(templatesToExpire)
+        issuableTemplates.forEach { it.expire() }
+        couponTemplateStore.saveAll(issuableTemplates)
     }
 }

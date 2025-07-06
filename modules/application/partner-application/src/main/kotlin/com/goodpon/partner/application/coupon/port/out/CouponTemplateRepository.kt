@@ -1,5 +1,6 @@
-package com.goodpon.domain.coupon.template
+package com.goodpon.partner.application.coupon.port.out
 
+import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import java.time.LocalDateTime
 

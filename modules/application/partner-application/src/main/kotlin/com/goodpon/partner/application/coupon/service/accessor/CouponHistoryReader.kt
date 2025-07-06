@@ -3,7 +3,7 @@ package com.goodpon.partner.application.coupon.service.accessor
 import com.goodpon.partner.application.coupon.service.exception.CouponHistoryLastActionTypeNotRedeemException
 import com.goodpon.domain.coupon.history.CouponActionType
 import com.goodpon.domain.coupon.history.CouponHistory
-import com.goodpon.domain.coupon.history.CouponHistoryRepository
+import com.goodpon.partner.application.coupon.port.out.CouponHistoryRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 

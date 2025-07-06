@@ -1,4 +1,6 @@
-package com.goodpon.domain.coupon.stats
+package com.goodpon.partner.application.coupon.port.out
+
+import com.goodpon.domain.coupon.stats.CouponTemplateStats
 
 interface CouponTemplateStatsRepository {
 
