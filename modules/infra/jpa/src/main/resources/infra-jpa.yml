@@ -26,6 +26,19 @@ spring:
       enabled: true
 
 ---
+spring.config.activate.on-profile: test
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        highlight_sql: true
+
+---
 spring.config.activate.on-profile: prod
 
 spring:

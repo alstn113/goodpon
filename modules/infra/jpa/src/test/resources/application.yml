@@ -1,0 +1,6 @@
+spring.application.name: infra-jpa-test
+
+spring:
+  config:
+    import:
+      - infra-jpa.yml
