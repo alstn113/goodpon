@@ -1,4 +1,4 @@
-package com.goodpon.infra.redis
+package com.goodpon.infra.redis.support
 
 import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext

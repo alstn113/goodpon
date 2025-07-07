@@ -1,0 +1,6 @@
+spring.application.name: infra-redis-test
+
+spring:
+  config:
+    import:
+      - infra-redis.yml

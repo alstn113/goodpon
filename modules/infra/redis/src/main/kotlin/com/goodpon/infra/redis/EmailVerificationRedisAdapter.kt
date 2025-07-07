@@ -1,6 +1,5 @@
 package com.goodpon.infra.redis
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.dashboard.application.auth.port.out.EmailVerificationRepository
 import com.goodpon.domain.auth.EmailVerification
 import org.springframework.data.redis.core.RedisTemplate
@@ -8,9 +7,8 @@ import org.springframework.stereotype.Component
 import java.time.Duration
 
 @Component
-class EmailVerificationRedisRepository(
-    private val redisTemplate: RedisTemplate<String, String>,
-    private val objectMapper: ObjectMapper,
+class EmailVerificationRedisAdapter(
+    private val redisTemplate: RedisTemplate<String, Any>,
 ) : EmailVerificationRepository {
 
     override fun save(verification: EmailVerification, ttlMinutes: Long) {
@@ -26,21 +24,14 @@ class EmailVerificationRedisRepository(
         )
         redisTemplate.opsForValue().set(
             tokenKey,
-            objectMapper.writeValueAsString(verification),
+            verification,
             Duration.ofMinutes(ttlMinutes)
         )
     }
 
     override fun findByToken(token: String): EmailVerification? {
         val tokenKey = buildTokenKey(token)
-        val verificationJson = redisTemplate.opsForValue().get(tokenKey)
-            ?: return null
-
-        return try {
-            objectMapper.readValue(verificationJson, EmailVerification::class.java)
-        } catch (e: Exception) {
-            null
-        }
+        return redisTemplate.opsForValue().get(tokenKey) as EmailVerification?
     }
 
     override fun delete(token: String, accountId: Long) {
@@ -60,8 +51,8 @@ class EmailVerificationRedisRepository(
     }
 
     private fun deletePrevToken(accountIdKey: String) {
-        val prevToken = redisTemplate.opsForValue().get(accountIdKey)
-        if (prevToken != null) {
+        val prevToken = redisTemplate.opsForValue().get(accountIdKey) as String?
+        if (!prevToken.isNullOrBlank()) {
             redisTemplate.delete(buildTokenKey(prevToken))
         }
     }

@@ -1,6 +1,5 @@
 package com.goodpon.infra.redis.config
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator
@@ -23,10 +22,22 @@ class RedisConfig(
 ) {
 
     @Bean
-    fun redisTemplate(): RedisTemplate<String, Any> {
+    fun redisObjectMapper(): ObjectMapper {
+        val validator = BasicPolymorphicTypeValidator.builder()
+            .allowIfBaseType(Any::class.java)
+            .build()
+
+        return ObjectMapper()
+            .registerKotlinModule()
+            .registerModules(JavaTimeModule())
+            .activateDefaultTyping(validator, DefaultTyping.EVERYTHING)
+    }
+
+    @Bean
+    fun redisTemplate(objectMapper: ObjectMapper): RedisTemplate<String, Any> {
         return RedisTemplate<String, Any>().apply {
             keySerializer = StringRedisSerializer()
-            valueSerializer = GenericJackson2JsonRedisSerializer(createObjectMapper())
+            valueSerializer = GenericJackson2JsonRedisSerializer(objectMapper)
             connectionFactory = lettuceConnectionFactory()
         }
     }
@@ -37,26 +48,8 @@ class RedisConfig(
             hostName = properties.host
             port = properties.port
         }
-
-        val clientConfig = LettuceClientConfiguration.builder().apply {
-            if (properties.ssl.enabled) useSsl()
-        }.build()
-
-        return LettuceConnectionFactory(configuration, clientConfig)
-    }
-
-    private fun createObjectMapper(): ObjectMapper {
-        val validator = BasicPolymorphicTypeValidator.builder()
-            .allowIfBaseType(Any::class.java)
-            .build()
-
-        return ObjectMapper()
-            .registerKotlinModule()
-            .registerModules(JavaTimeModule())
-            .activateDefaultTyping(
-                validator,
-                DefaultTyping.EVERYTHING,
-                JsonTypeInfo.As.PROPERTY,
-            )
+        val clientConfigBuilder = LettuceClientConfiguration.builder()
+        if (properties.ssl.enabled) clientConfigBuilder.useSsl()
+        return LettuceConnectionFactory(configuration, clientConfigBuilder.build())
     }
 }
