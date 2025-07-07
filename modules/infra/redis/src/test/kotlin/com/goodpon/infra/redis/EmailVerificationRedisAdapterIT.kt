@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 class EmailVerificationRedisAdapterIT(
     private val redisTemplate: RedisTemplate<String, Any>,
     private val emailVerificationRedisAdapter: EmailVerificationRedisAdapter,
-) : AbstractRedisIntegrationTest() {
+) : IntegrationTest() {
 
     @Test
     fun `이메일 인증 정보를 저장할 수 있다`() {

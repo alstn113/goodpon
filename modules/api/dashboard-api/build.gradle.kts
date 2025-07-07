@@ -9,11 +9,11 @@ tasks.getByName("jar") {
 dependencies {
     implementation(project(":modules:domain"))
     implementation(project(":modules:application:dashboard-application"))
+    implementation(project(":modules:support:logging"))
 
     runtimeOnly(project(":modules:infra:jpa"))
     runtimeOnly(project(":modules:infra:aws"))
     runtimeOnly(project(":modules:infra:redis"))
-    runtimeOnly(project(":modules:support:logging"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
