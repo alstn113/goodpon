@@ -1,9 +1,6 @@
 package com.goodpon.domain.coupon.template.vo
 
-import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidExpireBeforeIssueEndException
-import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidExpireBeforeStartException
-import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidIssueEndBeforeStartException
-import com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidValidityDaysException
+import com.goodpon.domain.coupon.template.exception.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -48,7 +45,7 @@ data class CouponPeriod(
             throw CouponPeriodInvalidExpireBeforeIssueEndException()
         }
         if (absoluteExpiresAt != null && issueEndAt == null) {
-            throw com.goodpon.domain.coupon.template.exception.CouponPeriodInvalidExpireWithoutIssueEndException()
+            throw CouponPeriodInvalidExpireWithoutIssueEndException()
         }
     }
 

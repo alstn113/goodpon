@@ -3,15 +3,15 @@ package com.goodpon.dashboard.application.merchant.port.`in`.dto
 import com.goodpon.domain.merchant.MerchantAccountRole
 import java.time.LocalDateTime
 
-data class CreateMerchantResult(
+data class MerchantDetail(
     val merchantId: Long,
     val name: String,
     val secretKey: String,
-    val owner: MerchantOwnerInfo,
+    val accounts: List<MerchantAccountInfo>,
     val createdAt: LocalDateTime,
 ) {
 
-    data class MerchantOwnerInfo(
+    data class MerchantAccountInfo(
         val merchantAccountId: Long,
         val accountId: Long,
         val name: String,

@@ -27,13 +27,13 @@ class MerchantController(
     }
 
     @GetMapping("/v1/merchants")
-    fun getMerchants(
+    fun getMyMerchants(
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ) {
     }
 
     @GetMapping("/v1/merchants/{merchantId}")
-    fun getMerchant(
+    fun getMyMerchant(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ) {

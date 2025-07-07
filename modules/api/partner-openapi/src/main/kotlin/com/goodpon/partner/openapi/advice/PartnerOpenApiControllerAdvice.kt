@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@RestControllerAdvice(basePackages = ["com.goodpon.goodpon.api.goodpon"])
+@RestControllerAdvice(basePackages = ["com.goodpon.partner.openapi"])
 class PartnerOpenApiControllerAdvice(
     private val traceIdProvider: TraceIdProvider,
 ) {

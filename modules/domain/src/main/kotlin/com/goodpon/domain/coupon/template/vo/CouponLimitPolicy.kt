@@ -1,9 +1,6 @@
 package com.goodpon.domain.coupon.template.vo
 
-import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyInvalidIssueValueException
-import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyInvalidRedeemValueException
-import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyNoneConflictException
-import com.goodpon.domain.coupon.template.exception.CouponLimitPolicyRedeemIssueConflictException
+import com.goodpon.domain.coupon.template.exception.*
 
 data class CouponLimitPolicy(
     val limitType: CouponLimitPolicyType,
@@ -38,7 +35,7 @@ data class CouponLimitPolicy(
             throw CouponLimitPolicyInvalidIssueValueException()
         }
         if (maxRedeemCount != null) {
-            throw com.goodpon.domain.coupon.template.exception.CouponLimitPolicyIssueRedeemConflictException()
+            throw CouponLimitPolicyIssueRedeemConflictException()
         }
     }
 

@@ -26,7 +26,7 @@ class AccountVerifiedFilter(
         filterChain: FilterChain,
     ) {
         val authentication = SecurityContextHolder.getContext().authentication
-        if (authentication !is com.goodpon.dashboard.api.security.filter.AuthenticationToken) {
+        if (authentication !is AuthenticationToken) {
             throw BadCredentialsException("유효하지 않은 인증입니다.")
         }
 

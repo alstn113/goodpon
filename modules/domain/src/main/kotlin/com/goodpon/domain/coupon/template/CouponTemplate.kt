@@ -1,10 +1,7 @@
 package com.goodpon.domain.coupon.template
 
 import com.goodpon.domain.coupon.template.exception.*
-import com.goodpon.domain.coupon.template.vo.CouponDiscountPolicy
-import com.goodpon.domain.coupon.template.vo.CouponPeriod
-import com.goodpon.domain.coupon.template.vo.CouponRedemptionCondition
-import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
+import com.goodpon.domain.coupon.template.vo.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -16,7 +13,7 @@ data class CouponTemplate(
     val redemptionCondition: CouponRedemptionCondition,
     val discountPolicy: CouponDiscountPolicy,
     val period: CouponPeriod,
-    val limitPolicy: com.goodpon.domain.coupon.template.vo.CouponLimitPolicy,
+    val limitPolicy: CouponLimitPolicy,
     val status: CouponTemplateStatus,
 ) {
 

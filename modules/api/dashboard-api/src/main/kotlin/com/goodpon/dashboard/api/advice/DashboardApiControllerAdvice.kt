@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@RestControllerAdvice(basePackages = ["com.goodpon.api.dashboard"])
+@RestControllerAdvice(basePackages = ["com.goodpon.dashboard.api"])
 class DashboardApiControllerAdvice {
 
     private val log = LoggerFactory.getLogger(javaClass)

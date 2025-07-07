@@ -7,6 +7,7 @@ import com.goodpon.dashboard.api.security.jwt.exception.TokenExpiredException
 import com.goodpon.dashboard.application.account.port.`in`.GetAccountInfoUseCase
 import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
 import com.goodpon.dashboard.application.auth.port.out.TokenProvider
+import com.goodpon.domain.account.exception.AccountNotFoundException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -66,9 +67,10 @@ class TokenAuthenticationFilter(
     private fun fetchAccountInfo(accountId: Long): AccountInfo {
         try {
             return getAccountInfoUseCase.getAccountInfo(accountId)
-            //TODO: 구체적이게 변환
+        } catch (e: AccountNotFoundException) {
+            throw BadCredentialsException("존재하지 않는 계정입니다.", e)
         } catch (e: Exception) {
-            throw BadCredentialsException("계정을 조회하는 중 오류가 발생했습니다.", e)
+            throw BadCredentialsException("계정을 조회하는 중 알 수 없는 오류가 발생했습니다.", e)
         }
     }
 }
