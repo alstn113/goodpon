@@ -14,4 +14,7 @@ include(
     "modules:infra:aws",
 
     "modules:support:logging",
+
+    "modules:tests:testcontainers",
+    "modules:tests:api-docs",
 )
