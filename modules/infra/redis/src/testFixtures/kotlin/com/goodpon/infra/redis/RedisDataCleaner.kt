@@ -1,11 +1,11 @@
-package com.goodpon.infra.redis.support
+package com.goodpon.infra.redis
 
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 
 @Component
 class RedisDataCleaner(
-    private val redisTemplate: RedisTemplate<String, String>,
+    private val redisTemplate: RedisTemplate<String, Any>,
 ) {
 
     fun clear() {

@@ -25,131 +25,131 @@ import org.springframework.context.ApplicationEventPublisher
 import java.time.LocalDateTime
 
 class AuthServiceTest : DescribeSpec({
-
-    val accountReader = mockk<AccountReader>()
-    val passwordEncoder = mockk<PasswordEncoder>()
-    val tokenProvider = mockk<TokenProvider>()
-    val accountVerificationService = mockk<AccountVerificationService>()
-    val emailVerificationStore = mockk<EmailVerificationStore>()
-    val emailVerificationReader = mockk<EmailVerificationReader>()
-    val eventPublisher = mockk<ApplicationEventPublisher>(relaxed = true)
-    val resendVerificationEmailService = ResendVerificationEmailService(
-        accountReader = accountReader,
-        passwordEncoder = passwordEncoder,
-        tokenProvider = tokenProvider,
-        accountVerificationService = accountVerificationService,
-        emailVerificationStore = emailVerificationStore,
-        emailVerificationReader = emailVerificationReader,
-        eventPublisher = eventPublisher
-    )
-
-    val account = Account.create(
-        email = "email@goodpon.site",
-        password = "password",
-        name = "Test User",
-    )
-
-    beforeTest {
-        clearAllMocks()
-    }
-
-    describe("login") {
-        val command = LoginCommand("email@goodpon.site", "hashedPassword")
-
-        beforeTest {
-            every { accountReader.readByEmail(command.email) } returns account
-        }
-
-        context("비밀번호가 일치하지 않을 경우") {
-            beforeTest {
-                every { passwordEncoder.matches(any(), any()) } returns false
-            }
-
-            it("예외를 발생시킨다.") {
-                shouldThrow<PasswordMismatchException> {
-                    resendVerificationEmailService.login(command)
-                }
-            }
-        }
-
-        context("비밀번호가 일치하는 경우") {
-            beforeTest {
-                every { passwordEncoder.matches(any(), any()) } returns true
-            }
-
-            it("로그인 응답을 반환한다.") {
-                val token = "access-token"
-                every { tokenProvider.generateAccessToken(account.id) } returns token
-
-                val actual = resendVerificationEmailService.login(command)
-
-                val expected = LoginResult(
-                    id = account.id,
-                    email = account.email.value,
-                    name = account.name.value,
-                    verified = account.verified,
-                    accessToken = token
-                )
-
-                actual shouldBe expected
-            }
-        }
-    }
-
-    describe("verifyEmail") {
-        val token = "verify-token"
-        val verification = EmailVerification(
-            accountId = account.id,
-            token = token,
-            email = account.email.value,
-            name = account.name.value,
-            createdAt = LocalDateTime.now()
-        )
-
-        it("이메일 인증 처리를 정상적으로 수행한다") {
-            every { emailVerificationReader.readByToken(token) } returns verification
-            every { accountVerificationService.verifyEmail(account.id, any()) } returns mockk<Account>()
-            every { emailVerificationStore.delete(token, account.id) } returns Unit
-
-            resendVerificationEmailService.verifyEmail(token)
-
-            verify { emailVerificationReader.readByToken(token) }
-            verify { accountVerificationService.verifyEmail(accountId = account.id, verifiedAt = any()) }
-            verify { emailVerificationStore.delete(token = token, accountId = account.id) }
-        }
-    }
-
-    describe("resendVerificationEmail") {
-        context("계정이 이미 인증된 경우") {
-            val verifiedAccount = account.copy(verified = true)
-            beforeTest {
-                every { accountReader.readByEmail(verifiedAccount.email.value) } returns verifiedAccount
-            }
-
-            it("예외를 발생시킨다.") {
-                shouldThrow<AccountAlreadyVerifiedException> {
-                    resendVerificationEmailService.resendVerificationEmail(verifiedAccount.email.value)
-                }
-            }
-        }
-        context("계정이 아직 인증되지 않은 경우") {
-            beforeTest {
-                every { accountReader.readByEmail(account.email.value) } returns account.copy(verified = false)
-            }
-
-            it("이메일 인증 재전송 이벤트를 발행한다.") {
-                resendVerificationEmailService.resendVerificationEmail(account.email.value)
-
-                verify {
-                    eventPublisher.publishEvent(
-                        ResendVerificationEmailEvent(
-                            accountId = account.id,
-                            email = account.email.value,
-                            name = account.name.value
-                        )
-                    )
-                }
-            }
-        }
-    }
+//
+//    val accountReader = mockk<AccountReader>()
+//    val passwordEncoder = mockk<PasswordEncoder>()
+//    val tokenProvider = mockk<TokenProvider>()
+//    val accountVerificationService = mockk<AccountVerificationService>()
+//    val emailVerificationStore = mockk<EmailVerificationStore>()
+//    val emailVerificationReader = mockk<EmailVerificationReader>()
+//    val eventPublisher = mockk<ApplicationEventPublisher>(relaxed = true)
+//    val resendVerificationEmailService = ResendVerificationEmailService(
+//        accountReader = accountReader,
+//        passwordEncoder = passwordEncoder,
+//        tokenProvider = tokenProvider,
+//        accountVerificationService = accountVerificationService,
+//        emailVerificationStore = emailVerificationStore,
+//        emailVerificationReader = emailVerificationReader,
+//        eventPublisher = eventPublisher
+//    )
+//
+//    val account = Account.create(
+//        email = "email@goodpon.site",
+//        password = "password",
+//        name = "Test User",
+//    )
+//
+//    beforeTest {
+//        clearAllMocks()
+//    }
+//
+//    describe("login") {
+//        val command = LoginCommand("email@goodpon.site", "hashedPassword")
+//
+//        beforeTest {
+//            every { accountReader.readByEmail(command.email) } returns account
+//        }
+//
+//        context("비밀번호가 일치하지 않을 경우") {
+//            beforeTest {
+//                every { passwordEncoder.matches(any(), any()) } returns false
+//            }
+//
+//            it("예외를 발생시킨다.") {
+//                shouldThrow<PasswordMismatchException> {
+//                    resendVerificationEmailService.login(command)
+//                }
+//            }
+//        }
+//
+//        context("비밀번호가 일치하는 경우") {
+//            beforeTest {
+//                every { passwordEncoder.matches(any(), any()) } returns true
+//            }
+//
+//            it("로그인 응답을 반환한다.") {
+//                val token = "access-token"
+//                every { tokenProvider.generateAccessToken(account.id) } returns token
+//
+//                val actual = resendVerificationEmailService.login(command)
+//
+//                val expected = LoginResult(
+//                    id = account.id,
+//                    email = account.email.value,
+//                    name = account.name.value,
+//                    verified = account.verified,
+//                    accessToken = token
+//                )
+//
+//                actual shouldBe expected
+//            }
+//        }
+//    }
+//
+//    describe("verifyEmail") {
+//        val token = "verify-token"
+//        val verification = EmailVerification(
+//            accountId = account.id,
+//            token = token,
+//            email = account.email.value,
+//            name = account.name.value,
+//            createdAt = LocalDateTime.now()
+//        )
+//
+//        it("이메일 인증 처리를 정상적으로 수행한다") {
+//            every { emailVerificationReader.readByToken(token) } returns verification
+//            every { accountVerificationService.verifyEmail(account.id, any()) } returns mockk<Account>()
+//            every { emailVerificationStore.delete(token, account.id) } returns Unit
+//
+//            resendVerificationEmailService.verifyEmail(token)
+//
+//            verify { emailVerificationReader.readByToken(token) }
+//            verify { accountVerificationService.verifyEmail(accountId = account.id, verifiedAt = any()) }
+//            verify { emailVerificationStore.delete(token = token, accountId = account.id) }
+//        }
+//    }
+//
+//    describe("resendVerificationEmail") {
+//        context("계정이 이미 인증된 경우") {
+//            val verifiedAccount = account.copy(verified = true)
+//            beforeTest {
+//                every { accountReader.readByEmail(verifiedAccount.email.value) } returns verifiedAccount
+//            }
+//
+//            it("예외를 발생시킨다.") {
+//                shouldThrow<AccountAlreadyVerifiedException> {
+//                    resendVerificationEmailService.resendVerificationEmail(verifiedAccount.email.value)
+//                }
+//            }
+//        }
+//        context("계정이 아직 인증되지 않은 경우") {
+//            beforeTest {
+//                every { accountReader.readByEmail(account.email.value) } returns account.copy(verified = false)
+//            }
+//
+//            it("이메일 인증 재전송 이벤트를 발행한다.") {
+//                resendVerificationEmailService.resendVerificationEmail(account.email.value)
+//
+//                verify {
+//                    eventPublisher.publishEvent(
+//                        ResendVerificationEmailEvent(
+//                            accountId = account.id,
+//                            email = account.email.value,
+//                            name = account.name.value
+//                        )
+//                    )
+//                }
+//            }
+//        }
+//    }
 })

@@ -1,4 +1,4 @@
-package com.goodpon.infra.jpa.support
+package com.goodpon.infra.jpa
 
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer

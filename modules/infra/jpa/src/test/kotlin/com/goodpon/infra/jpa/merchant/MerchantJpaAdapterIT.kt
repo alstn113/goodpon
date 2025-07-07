@@ -1,9 +1,9 @@
 package com.goodpon.infra.jpa.merchant
 
 import com.goodpon.domain.merchant.Merchant
+import com.goodpon.infra.jpa.AbstractJpaIntegrationTest
 import com.goodpon.infra.jpa.merchant.adapter.MerchantJpaAdapter
 import com.goodpon.infra.jpa.merchant.repository.MerchantJpaRepository
-import com.goodpon.infra.jpa.support.AbstractJpaIntegrationTest
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -13,7 +13,16 @@ class MerchantJpaAdapterIT(
 ) : AbstractJpaIntegrationTest() {
 
     @Test
-    fun `save`() {
+    fun `save1`() {
+        val merchant = Merchant.create(name = "name")
+
+        merchantJpaAdapter.save(merchant)
+
+        merchantJpaRepository.findAll().size shouldBe 1
+    }
+
+    @Test
+    fun `save2`() {
         val merchant = Merchant.create(name = "name")
 
         merchantJpaAdapter.save(merchant)

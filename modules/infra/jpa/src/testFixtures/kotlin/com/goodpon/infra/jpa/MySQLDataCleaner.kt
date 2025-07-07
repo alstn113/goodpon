@@ -1,4 +1,4 @@
-package com.goodpon.infra.jpa.support
+package com.goodpon.infra.jpa
 
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext

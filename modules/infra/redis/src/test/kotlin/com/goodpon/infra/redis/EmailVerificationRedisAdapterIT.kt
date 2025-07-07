@@ -1,7 +1,6 @@
 package com.goodpon.infra.redis
 
 import com.goodpon.domain.auth.EmailVerification
-import com.goodpon.infra.redis.support.AbstractRedisIntegrationTest
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.data.redis.core.RedisTemplate

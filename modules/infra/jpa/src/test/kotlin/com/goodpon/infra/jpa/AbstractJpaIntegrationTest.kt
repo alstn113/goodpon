@@ -1,4 +1,4 @@
-package com.goodpon.infra.jpa.support
+package com.goodpon.infra.jpa
 
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.boot.test.context.SpringBootTest

@@ -1,14 +1,14 @@
-package com.goodpon.infra.redis.support
+package com.goodpon.infra.jpa
 
 import org.junit.jupiter.api.extension.AfterEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
-class RedisDataCleanupExtension : AfterEachCallback {
+class MySQLDataCleanupExtension : AfterEachCallback {
 
     override fun afterEach(context: ExtensionContext) {
         val cleaner = SpringExtension.getApplicationContext(context)
-            .getBean(RedisDataCleaner::class.java)
+            .getBean(MySQLDataCleaner::class.java)
 
         cleaner.clear()
     }
