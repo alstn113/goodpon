@@ -3,12 +3,9 @@ dependencies {
     implementation(project(":modules:application:partner-application"))
     implementation(project(":modules:application:dashboard-application"))
 
-    // db
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
 
-    // testcontainers
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.mysql)
 }
