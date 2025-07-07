@@ -1,7 +1,6 @@
 package com.goodpon.partner.openapi.security.filter
 
-import com.goodpon.domain.support.error.CoreException
-import com.goodpon.domain.support.error.ErrorType
+import com.goodpon.domain.merchant.exception.MerchantNotFoundException
 import com.goodpon.partner.application.merchant.port.`in`.dto.MerchantInfo
 import com.goodpon.partner.application.merchant.service.MerchantService
 import com.goodpon.partner.openapi.security.AuthHeaderUtil
@@ -45,11 +44,8 @@ class ApiKeyAuthenticationFilter(
     private fun fetchMerchantInfo(apiKey: String): MerchantInfo {
         try {
             return merchantService.getMerchantInfoBySecretKey(apiKey)
-        } catch (e: CoreException) {
-            when (e.errorType) {
-                ErrorType.MERCHANT_NOT_FOUND -> throw BadCredentialsException(ErrorType.MERCHANT_NOT_FOUND.message, e)
-                else -> throw BadCredentialsException("가맹점을 조회하던 중 오류가 발생했습니다.", e)
-            }
+        } catch (e: MerchantNotFoundException) {
+            throw BadCredentialsException("가맹점을 조회하던 중 오류가 발생했습니다.", e)
         } catch (e: Exception) {
             throw BadCredentialsException("가맹점을 조회하던 중 알 수 없는 오류가 발생했습니다.", e)
         }

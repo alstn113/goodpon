@@ -2,7 +2,6 @@ package com.goodpon.dashboard.api.security.exception
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.dashboard.api.response.ApiResponse
-import com.goodpon.domain.support.error.ErrorType
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType
@@ -24,7 +23,7 @@ class TokenAuthenticationEntryPoint(
         response.characterEncoding = "UTF-8"
         response.status = HttpServletResponse.SC_UNAUTHORIZED
 
-        val errorResponse = ApiResponse.error<Unit>(ErrorType.UNAUTHORIZED)
+        val errorResponse = ApiResponse.error<Unit>("UNAUTHORIZED")
         val body = objectMapper.writeValueAsString(errorResponse)
 
         response.writer.write(body)

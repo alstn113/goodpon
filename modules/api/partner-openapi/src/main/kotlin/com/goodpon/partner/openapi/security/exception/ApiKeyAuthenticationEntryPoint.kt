@@ -1,7 +1,6 @@
 package com.goodpon.partner.openapi.security.exception
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.goodpon.domain.support.error.ErrorType
 import com.goodpon.partner.openapi.response.ApiErrorResponse
 import com.goodpon.partner.openapi.response.TraceIdProvider
 import jakarta.servlet.http.HttpServletRequest
@@ -27,7 +26,7 @@ class ApiKeyAuthenticationEntryPoint(
         response.status = HttpServletResponse.SC_UNAUTHORIZED
 
         val traceId = traceIdProvider.getTraceId()
-        val errorResponse = ApiErrorResponse.of(traceId, ErrorType.UNAUTHORIZED)
+        val errorResponse = ApiErrorResponse.of(traceId, "UNAUTHORIZED")
         val body = objectMapper.writeValueAsString(errorResponse)
 
         response.writer.write(body)

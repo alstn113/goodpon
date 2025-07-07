@@ -1,21 +1,18 @@
 package com.goodpon.partner.openapi.response
 
-import com.goodpon.domain.support.error.ErrorMessage
-import com.goodpon.domain.support.error.ErrorType
-
 
 data class ApiErrorResponse private constructor(
     val version: String,
     val traceId: String,
-    val error: ErrorMessage,
+    val errorMessage: String,
 ) {
 
     companion object {
-        fun of(traceId: String, errorType: ErrorType): ApiErrorResponse {
+        fun of(traceId: String, errorMessage: String): ApiErrorResponse {
             return ApiErrorResponse(
                 version = "2025-05-29",
                 traceId = traceId,
-                error = ErrorMessage(errorType),
+                errorMessage = errorMessage
             )
         }
     }

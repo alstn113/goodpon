@@ -1,7 +1,6 @@
 package com.goodpon.partner.openapi.config
 
-import com.goodpon.domain.support.error.CoreException
-import com.goodpon.domain.support.error.ErrorLevel
+import com.goodpon.domain.support.error.BaseException
 import org.slf4j.LoggerFactory
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
 import java.lang.reflect.Method
@@ -11,12 +10,8 @@ class AsyncExceptionHandler : AsyncUncaughtExceptionHandler {
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun handleUncaughtException(e: Throwable, method: Method, vararg params: Any?) {
-        if (e is CoreException) {
-            when (e.errorType.errorLevel) {
-                ErrorLevel.ERROR -> log.error("CoreException : {}", e.message, e)
-                ErrorLevel.WARN -> log.warn("CoreException : {}", e.message, e)
-                else -> log.info("CoreException : {}", e.message, e)
-            }
+        if (e is BaseException) {
+            log.warn("CoreException : {}", e.message, e)
         } else {
             log.error("Exception : {}", e.message, e)
         }
