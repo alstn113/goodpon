@@ -40,7 +40,7 @@ val copyOpenapiToSwagger = tasks.register<Copy>("copyOpenapiToSwagger") {
     description = "Copy OpenAPI generated documentation to Swagger directory"
 
     from("build/api-spec/openapi3.yaml")
-    into("build/resources/main/static/swagger-ui")
+    into("build/resources/main/static/api-docs")
 
     dependsOn("openapi3")
 }

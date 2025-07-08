@@ -41,7 +41,7 @@ class SecurityConfig(
                 "/v1/auth/verify/resend",
                 "/v1/account/sign-up",
                 "/v1/account",
-                "/swagger-ui/**"
+                "/api-docs/**",
             )
         )
 
@@ -59,7 +59,7 @@ class SecurityConfig(
                         "/v1/auth/login",
                         "/v1/auth/verify",
                         "/v1/auth/verify/resend",
-                        "/swagger-ui/**"
+                        "/api-docs/**",
                     ).permitAll()
                     .anyRequest().authenticated()
             }
