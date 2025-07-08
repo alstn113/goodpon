@@ -1,20 +1,6 @@
 package com.goodpon.dashboard.application.account
 
-import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
-import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpCommand
-import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpResult
-import com.goodpon.dashboard.application.account.service.AccountRegistrationService
-import com.goodpon.dashboard.application.account.service.SignUpService
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
-import com.goodpon.dashboard.application.auth.service.event.AccountCreatedEvent
-import com.goodpon.domain.account.Account
 import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.matchers.shouldBe
-import io.mockk.clearAllMocks
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
-import org.springframework.context.ApplicationEventPublisher
 
 
 class AccountServiceTest : DescribeSpec({

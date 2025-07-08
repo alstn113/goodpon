@@ -1,7 +1,6 @@
 package com.goodpon.dashboard.application.merchant.port.`in`.dto
 
 import com.goodpon.domain.merchant.MerchantAccountRole
-import java.time.LocalDateTime
 
 data class CreateMerchantResult(
     val id: Long,

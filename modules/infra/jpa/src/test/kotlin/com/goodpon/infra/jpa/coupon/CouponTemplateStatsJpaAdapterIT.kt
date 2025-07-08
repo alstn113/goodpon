@@ -1,8 +1,8 @@
 package com.goodpon.infra.jpa.coupon
 
+import com.goodpon.infra.jpa.IntegrationTest
 import com.goodpon.infra.jpa.coupon.adapter.CouponTemplateStatsJpaAdapter
 import com.goodpon.infra.jpa.coupon.repository.CouponTemplateStatsJpaRepository
-import com.goodpon.infra.jpa.IntegrationTest
 
 class CouponTemplateStatsJpaAdapterIT(
     private val couponTemplateStatsJpaAdapter: CouponTemplateStatsJpaAdapter,

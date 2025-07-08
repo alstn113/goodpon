@@ -6,13 +6,10 @@ spring:
     import:
       - infra-jpa.yml
       - infra-redis.yml
-      - infra-aws.yml
+      - infra-aws-ses.yml
+      - infra-auth.yml
       - logging.yml
   web.resources.add-mappings: false
-
-security:
-  jwt:
-    access-token-expiration-time: 86400000 # 1 day
 
 ---
 spring.config.activate.on-profile: local
@@ -21,15 +18,8 @@ server.port: 8080
 
 client-host: http://localhost:5173
 
-security:
-  jwt:
-    access-token-secret-key: abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz
-
 ---
 spring.config.activate.on-profile: prod
 
 client-host: ${CLIENT_HOST}
 
-security:
-  jwt:
-    access-token-secret-key: ${JWT_ACCESS_TOKEN_SECRET_KEY}

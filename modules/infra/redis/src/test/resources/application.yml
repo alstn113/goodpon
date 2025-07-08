@@ -1,6 +1,9 @@
 spring.application.name: infra-redis-test
 
 spring:
-  config:
-    import:
-      - infra-redis.yml
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      ssl:
+        enabled: false

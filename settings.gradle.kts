@@ -11,9 +11,8 @@ include(
 
     "modules:infra:jpa",
     "modules:infra:redis",
-    "modules:infra:aws",
+    "modules:infra:aws:ses",
+    "modules:infra:auth",
 
     "modules:support:logging",
-
-    "modules:tests:api-docs",
 )

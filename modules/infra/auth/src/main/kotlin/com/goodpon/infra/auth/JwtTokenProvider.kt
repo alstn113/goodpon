@@ -1,9 +1,9 @@
-package com.goodpon.dashboard.api.security.jwt
+package com.goodpon.infra.auth
 
-import com.goodpon.dashboard.api.security.jwt.exception.BlankTokenException
-import com.goodpon.dashboard.api.security.jwt.exception.InvalidTokenException
-import com.goodpon.dashboard.api.security.jwt.exception.TokenExpiredException
 import com.goodpon.dashboard.application.auth.port.out.TokenProvider
+import com.goodpon.dashboard.application.auth.port.out.exception.BlankTokenException
+import com.goodpon.dashboard.application.auth.port.out.exception.InvalidTokenException
+import com.goodpon.dashboard.application.auth.port.out.exception.TokenExpiredException
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -16,8 +16,8 @@ class JwtTokenProvider(
     private val properties: JwtTokenProperties,
 ) : TokenProvider {
 
-    private val accessTokenSecretKey = Keys.hmacShaKeyFor(properties.accessTokenSecretKey.toByteArray())
-    private val accessTokenExpirationTime = properties.accessTokenExpirationTime
+    private val accessTokenSecretKey = Keys.hmacShaKeyFor(properties.accessToken.secretKey.toByteArray())
+    private val accessTokenExpirationTime = properties.accessToken.expirationTime
 
     override fun generateAccessToken(accountId: Long): String {
         val now = Date()

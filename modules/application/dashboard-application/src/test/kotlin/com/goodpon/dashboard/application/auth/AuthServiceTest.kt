@@ -1,28 +1,6 @@
 package com.goodpon.dashboard.application.auth
 
-import com.goodpon.dashboard.application.account.service.AccountVerificationService
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
-import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginCommand
-import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
-import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
-import com.goodpon.dashboard.application.auth.port.out.TokenProvider
-import com.goodpon.dashboard.application.auth.service.ResendVerificationEmailService
-import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationReader
-import com.goodpon.dashboard.application.auth.service.accessor.EmailVerificationStore
-import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
-import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
-import com.goodpon.domain.account.Account
-import com.goodpon.domain.account.exception.AccountAlreadyVerifiedException
-import com.goodpon.domain.auth.EmailVerification
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.matchers.shouldBe
-import io.mockk.clearAllMocks
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
-import org.springframework.context.ApplicationEventPublisher
-import java.time.LocalDateTime
 
 class AuthServiceTest : DescribeSpec({
 //

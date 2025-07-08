@@ -1,4 +1,4 @@
-package com.goodpon.dashboard.api.security.jwt.exception
+package com.goodpon.dashboard.application.auth.port.out.exception
 
 class BlankTokenException(
     cause: Throwable? = null,

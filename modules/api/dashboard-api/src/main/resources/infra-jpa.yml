@@ -47,16 +47,3 @@ spring:
     url: jdbc:mysql://${DB_CORE_URL}
     username: ${DB_CORE_USERNAME}
     password: ${DB_CORE_PASSWORD}
-  data:
-    redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-      ssl:
-        enabled: true
-  cloud:
-    aws:
-      ses:
-        region: ap-northeast-2
-        source-arn: arn:aws:ses:ap-northeast-2:123456789012:identity/example.com
-        from-arn: arn:aws:ses:ap-northeast-2:123456789012:identity/example.com
-        configuration-set-name: ConfigSet

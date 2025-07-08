@@ -22,22 +22,10 @@ class RedisConfig(
 ) {
 
     @Bean
-    fun redisObjectMapper(): ObjectMapper {
-        val validator = BasicPolymorphicTypeValidator.builder()
-            .allowIfBaseType(Any::class.java)
-            .build()
-
-        return ObjectMapper()
-            .registerKotlinModule()
-            .registerModules(JavaTimeModule())
-            .activateDefaultTyping(validator, DefaultTyping.EVERYTHING)
-    }
-
-    @Bean
-    fun redisTemplate(objectMapper: ObjectMapper): RedisTemplate<String, Any> {
+    fun redisTemplate(): RedisTemplate<String, Any> {
         return RedisTemplate<String, Any>().apply {
             keySerializer = StringRedisSerializer()
-            valueSerializer = GenericJackson2JsonRedisSerializer(objectMapper)
+            valueSerializer = GenericJackson2JsonRedisSerializer(redisObjectMapper())
             connectionFactory = lettuceConnectionFactory()
         }
     }
@@ -51,5 +39,16 @@ class RedisConfig(
         val clientConfigBuilder = LettuceClientConfiguration.builder()
         if (properties.ssl.enabled) clientConfigBuilder.useSsl()
         return LettuceConnectionFactory(configuration, clientConfigBuilder.build())
+    }
+
+    private fun redisObjectMapper(): ObjectMapper {
+        val validator = BasicPolymorphicTypeValidator.builder()
+            .allowIfBaseType(Any::class.java)
+            .build()
+
+        return ObjectMapper()
+            .registerKotlinModule()
+            .registerModules(JavaTimeModule())
+            .activateDefaultTyping(validator, DefaultTyping.EVERYTHING)
     }
 }
