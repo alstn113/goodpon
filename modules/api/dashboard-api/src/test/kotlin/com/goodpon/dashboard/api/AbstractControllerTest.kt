@@ -1,5 +1,6 @@
 package com.goodpon.dashboard.api
 
+import com.goodpon.dashboard.api.controller.v1.TestController
 import com.goodpon.dashboard.api.controller.v1.account.AccountController
 import com.goodpon.dashboard.api.controller.v1.auth.AuthController
 import com.goodpon.dashboard.api.controller.v1.coupon.CouponTemplateController
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc
 
 @WebMvcTest(
     value = [
+        TestController::class,
         AccountController::class,
         AuthController::class,
         CouponTemplateController::class,
