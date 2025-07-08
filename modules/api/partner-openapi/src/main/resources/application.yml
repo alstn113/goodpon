@@ -5,18 +5,12 @@ spring:
   config:
     import:
       - infra-jpa.yml
-      - infra-redis.yml
       - logging.yml
-  web.resources.add-mappings: false
 
 ---
 spring.config.activate.on-profile: local
 
 server.port: 8081
 
-client-host: http://localhost:5173
-
 ---
 spring.config.activate.on-profile: prod
-
-client-host: ${CLIENT_HOST}

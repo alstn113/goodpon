@@ -3,7 +3,7 @@ package com.goodpon.partner.openapi
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication(scanBasePackages = ["com.goodpon.partner", "com.goodpon.infra"])
+@SpringBootApplication(scanBasePackages = ["com.goodpon"])
 class PartnerOpenApiApplication
 
 fun main(args: Array<String>) {

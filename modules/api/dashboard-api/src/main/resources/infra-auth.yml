@@ -14,4 +14,3 @@ security:
   jwt:
     access-token:
       secret-key: ${JWT_ACCESS_TOKEN_SECRET_KEY}
-

@@ -1,4 +1,4 @@
-package com.goodpon.dashboard.api
+package com.goodpon.partner.openapi
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
