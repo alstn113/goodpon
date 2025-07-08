@@ -9,7 +9,6 @@ spring:
       - infra-aws-ses.yml
       - infra-auth.yml
       - logging.yml
-  web.resources.add-mappings: false
 
 ---
 spring.config.activate.on-profile: local

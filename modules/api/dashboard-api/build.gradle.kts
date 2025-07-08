@@ -1,9 +1,5 @@
-tasks.getByName("bootJar") {
-    enabled = true
-}
-
-tasks.getByName("jar") {
-    enabled = false
+plugins {
+    alias(libs.plugins.epage.restdocs)
 }
 
 dependencies {
@@ -22,4 +18,39 @@ dependencies {
 
     testImplementation(testFixtures(project(":modules:infra:jpa")))
     testImplementation(testFixtures(project(":modules:infra:redis")))
+
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation(libs.epage.restdocs.mockmvc)
+}
+
+openapi3 {
+    this.setServer("https://dashboard.goodpon.site")
+    title = "Goodpon Dashboard API"
+    description = "Goodpon Dashboard API Documentation"
+    version = "1.0.0"
+    format = "yaml"
+}
+
+tasks.resolveMainClassName {
+    dependsOn(copyOpenapiToSwagger)
+}
+
+val copyOpenapiToSwagger = tasks.register<Copy>("copyOpenapiToSwagger") {
+    group = "documentation"
+    description = "Copy OpenAPI generated documentation to Swagger directory"
+
+    from("build/api-spec/openapi3.yaml")
+    into("build/resources/main/static/swagger-ui")
+
+    dependsOn("openapi3")
+}
+
+tasks.bootJar {
+    enabled = true
+
+    dependsOn(copyOpenapiToSwagger)
+}
+
+tasks.jar {
+    enabled = false
 }

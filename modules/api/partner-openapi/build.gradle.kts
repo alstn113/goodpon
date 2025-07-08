@@ -1,11 +1,3 @@
-tasks.getByName("bootJar") {
-    enabled = true
-}
-
-tasks.getByName("jar") {
-    enabled = false
-}
-
 dependencies {
     implementation(project(":modules:domain"))
     implementation(project(":modules:application:partner-application"))
@@ -18,3 +10,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
+tasks.bootJar {
+    enabled = true
+}
+
+tasks.jar {
+    enabled = false
+}

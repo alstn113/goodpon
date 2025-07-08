@@ -1,6 +1,7 @@
 package com.goodpon.dashboard.api.security
 
 import com.goodpon.dashboard.api.security.exception.TokenAccessDeniedHandler
+import com.goodpon.dashboard.api.security.filter.AccountVerifiedFilter
 import com.goodpon.dashboard.api.security.filter.TokenAuthenticationFilter
 import com.goodpon.dashboard.application.account.port.`in`.GetAccountInfoUseCase
 import com.goodpon.dashboard.application.auth.port.out.TokenProvider
@@ -33,13 +34,14 @@ class SecurityConfig(
             authenticationEntryPoint = authenticationEntryPoint,
         )
 
-        val accountVerifierFilter = com.goodpon.dashboard.api.security.filter.AccountVerifiedFilter(
+        val accountVerifierFilter = AccountVerifiedFilter(
             allowListPatterns = listOf(
                 "/v1/auth/login",
                 "/v1/auth/verify",
                 "/v1/auth/verify/resend",
                 "/v1/account/sign-up",
                 "/v1/account",
+                "/swagger-ui/**"
             )
         )
 
@@ -57,6 +59,7 @@ class SecurityConfig(
                         "/v1/auth/login",
                         "/v1/auth/verify",
                         "/v1/auth/verify/resend",
+                        "/swagger-ui/**"
                     ).permitAll()
                     .anyRequest().authenticated()
             }
@@ -65,7 +68,7 @@ class SecurityConfig(
                 it.accessDeniedHandler(accessDeniedHandler)
             }
             .addFilterAfter(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .addFilterBefore(accountVerifierFilter, tokenAuthenticationFilter::class.java)
+            .addFilterAfter(accountVerifierFilter, tokenAuthenticationFilter::class.java)
 
         return http.build()
     }

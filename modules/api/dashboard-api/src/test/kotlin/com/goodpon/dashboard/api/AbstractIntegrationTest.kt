@@ -23,4 +23,4 @@ import org.springframework.test.context.TestConstructor
     RedisDataCleanupExtension::class
 )
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-abstract class IntegrationTest
+abstract class AbstractIntegrationTest

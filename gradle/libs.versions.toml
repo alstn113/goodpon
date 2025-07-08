@@ -8,6 +8,7 @@ springmockk = "4.0.2"
 jjwt = "0.12.6"
 testcontainers = "1.21.3"
 aws-sdk-bom = "2.31.76"
+epage-restdocs = "0.19.4"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -15,6 +16,7 @@ kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
+epage-restdocs = { id = "com.epages.restdocs-api-spec", version.ref = "epage-restdocs" }
 
 [libraries]
 
@@ -31,3 +33,5 @@ aws-sdk-bom = { module = "software.amazon.awssdk:bom", version.ref = "aws-sdk-bo
 
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainers" }
+
+epage-restdocs-mockmvc = { module = "com.epages:restdocs-api-spec-mockmvc", version.ref = "epage-restdocs" }

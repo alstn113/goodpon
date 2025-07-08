@@ -6,5 +6,5 @@ interface MerchantRepository {
 
     fun save(merchant: Merchant): Merchant
 
-    fun findById(merchantId: Long): Merchant?
+    fun findById(id: Long): Merchant?
 }
