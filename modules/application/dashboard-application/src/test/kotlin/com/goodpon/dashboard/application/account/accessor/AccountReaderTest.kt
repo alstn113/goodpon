@@ -2,7 +2,6 @@ package com.goodpon.dashboard.application.account.accessor
 
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
 import com.goodpon.dashboard.application.account.service.accessor.AccountReader
-import com.goodpon.domain.account.exception.AccountNotFoundException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
