@@ -55,14 +55,16 @@ class AccountDocumentTest : AbstractDocumentTest() {
         result.andDocument(
             "Sign Up",
             ResourceSnippetParameters.builder()
+                .tag("Account")
+                .summary("회원 가입")
+                .description("회원 가입을 위한 API입니다. 사용자의 이메일, 비밀번호, 이름을 입력받아 회원 가입을 처리합니다.")
                 .requestSchema(Schema("SignUpRequest"))
-                .responseSchema(Schema("SignUpResult"))
-                .description("회원 가입 API")
                 .requestFields(
                     fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
                     fieldWithPath("password").type(JsonFieldType.STRING).description("사용자 비밀번호"),
                     fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름")
                 )
+                .responseSchema(Schema("SignUpResult"))
                 .responseFields(
                     fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과"),
                     fieldWithPath("errorMessage").type(JsonFieldType.STRING).optional().description("오류 메시지"),
