@@ -1,8 +1,8 @@
-package com.goodpon.domain.auth
+package com.goodpon.dashboard.application.auth.port.out.dto
 
 import java.time.LocalDateTime
 
-data class EmailVerification(
+data class EmailVerificationDto(
     val accountId: Long,
     val token: String,
     val email: String,

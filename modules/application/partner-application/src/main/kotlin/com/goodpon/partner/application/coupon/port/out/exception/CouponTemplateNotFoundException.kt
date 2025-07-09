@@ -1,4 +1,4 @@
-package com.goodpon.domain.coupon.template.exception
+package com.goodpon.partner.application.coupon.port.out.exception
 
 import com.goodpon.domain.support.error.BaseException
 

@@ -1,6 +1,7 @@
 package com.goodpon.dashboard.application.account.accessor
 
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
+import com.goodpon.dashboard.application.account.port.out.exception.AccountNotFoundException
 import com.goodpon.dashboard.application.account.service.accessor.AccountReader
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec

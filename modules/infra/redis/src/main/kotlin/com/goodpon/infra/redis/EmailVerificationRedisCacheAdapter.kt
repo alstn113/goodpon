@@ -1,17 +1,17 @@
 package com.goodpon.infra.redis
 
-import com.goodpon.dashboard.application.auth.port.out.EmailVerificationRepository
-import com.goodpon.domain.auth.EmailVerification
+import com.goodpon.dashboard.application.auth.port.out.EmailVerificationCache
+import com.goodpon.dashboard.application.auth.port.out.dto.EmailVerificationDto
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration
 
 @Component
-class EmailVerificationRedisAdapter(
+class EmailVerificationRedisCacheAdapter(
     private val redisTemplate: RedisTemplate<String, Any>,
-) : EmailVerificationRepository {
+) : EmailVerificationCache {
 
-    override fun save(verification: EmailVerification, ttlMinutes: Long) {
+    override fun save(verification: EmailVerificationDto, ttlMinutes: Long) {
         val tokenKey = buildTokenKey(verification.token)
         val accountIdKey = buildAccountIdKey(verification.accountId)
 
@@ -29,9 +29,9 @@ class EmailVerificationRedisAdapter(
         )
     }
 
-    override fun findByToken(token: String): EmailVerification? {
+    override fun findByToken(token: String): EmailVerificationDto? {
         val tokenKey = buildTokenKey(token)
-        return redisTemplate.opsForValue().get(tokenKey) as EmailVerification?
+        return redisTemplate.opsForValue().get(tokenKey) as EmailVerificationDto?
     }
 
     override fun delete(token: String, accountId: Long) {

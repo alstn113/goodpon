@@ -1,7 +1,7 @@
 package com.goodpon.partner.openapi.security.filter
 
-import com.goodpon.domain.merchant.exception.MerchantNotFoundException
 import com.goodpon.partner.application.merchant.port.`in`.dto.MerchantInfo
+import com.goodpon.partner.application.merchant.port.out.exception.MerchantNotFoundException
 import com.goodpon.partner.application.merchant.service.MerchantService
 import com.goodpon.partner.openapi.security.AuthHeaderUtil
 import jakarta.servlet.FilterChain

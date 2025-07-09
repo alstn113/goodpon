@@ -1,7 +1,6 @@
 package com.goodpon.infra.jpa.core
 
 import com.goodpon.domain.merchant.Merchant
-import com.goodpon.domain.merchant.exception.MerchantNotFoundException
 import com.goodpon.infra.jpa.entity.MerchantEntity
 import com.goodpon.infra.jpa.repository.MerchantJpaRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -12,7 +11,7 @@ class MerchantCoreRepository(
     private val merchantJpaRepository: MerchantJpaRepository,
 ) {
 
-    fun save(merchant: Merchant): Merchant {
+    fun save(merchant: Merchant): Merchant? {
         if (merchant.id == 0L) {
             val entity = MerchantEntity.fromDomain(merchant)
             val savedEntity = merchantJpaRepository.save(entity)
@@ -20,7 +19,7 @@ class MerchantCoreRepository(
         }
 
         val entity = merchantJpaRepository.findByIdOrNull(merchant.id)
-            ?: throw MerchantNotFoundException()
+            ?: return null
         entity.update(merchant)
         val savedEntity = merchantJpaRepository.save(entity)
         return savedEntity.toDomain()

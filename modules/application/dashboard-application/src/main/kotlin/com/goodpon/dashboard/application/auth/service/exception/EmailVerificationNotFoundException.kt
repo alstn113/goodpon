@@ -1,4 +1,4 @@
-package com.goodpon.domain.auth.exception
+package com.goodpon.dashboard.application.auth.service.exception
 
 import com.goodpon.domain.support.error.BaseException
 

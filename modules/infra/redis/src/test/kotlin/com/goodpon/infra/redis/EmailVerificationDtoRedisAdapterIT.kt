@@ -1,14 +1,14 @@
 package com.goodpon.infra.redis
 
-import com.goodpon.domain.auth.EmailVerification
+import com.goodpon.dashboard.application.auth.port.out.dto.EmailVerificationDto
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.data.redis.core.RedisTemplate
 import java.time.LocalDateTime
 
-class EmailVerificationRedisAdapterIT(
+class EmailVerificationDtoRedisAdapterIT(
     private val redisTemplate: RedisTemplate<String, Any>,
-    private val emailVerificationRedisAdapter: EmailVerificationRedisAdapter,
+    private val emailVerificationRedisCacheAdapter: EmailVerificationRedisCacheAdapter,
 ) : AbstractIntegrationTest() {
 
     @Test
@@ -19,7 +19,7 @@ class EmailVerificationRedisAdapterIT(
         val emailVerification = createEmailVerification(accountId = accountId, token = token)
 
         // when
-        emailVerificationRedisAdapter.save(
+        emailVerificationRedisCacheAdapter.save(
             verification = emailVerification,
             ttlMinutes = 30
         )
@@ -27,7 +27,7 @@ class EmailVerificationRedisAdapterIT(
         // then
         val foundToken = redisTemplate.opsForValue().get("email-verification:accountId:$accountId") as String?
         val foundEmailVerification = redisTemplate.opsForValue()
-            .get("email-verification:token:$token") as EmailVerification?
+            .get("email-verification:token:$token") as EmailVerificationDto?
 
         foundToken shouldBe token
         foundEmailVerification shouldBe emailVerification
@@ -40,19 +40,19 @@ class EmailVerificationRedisAdapterIT(
         val prevToken = "prev-token"
         val prevEmailVerification = createEmailVerification(accountId = accountId, token = prevToken)
 
-        emailVerificationRedisAdapter.save(verification = prevEmailVerification, ttlMinutes = 30)
+        emailVerificationRedisCacheAdapter.save(verification = prevEmailVerification, ttlMinutes = 30)
 
         // when
         val nextToken = "next-token"
         val nextEmailVerification = createEmailVerification(accountId = accountId, token = nextToken)
 
-        emailVerificationRedisAdapter.save(verification = nextEmailVerification, ttlMinutes = 30)
+        emailVerificationRedisCacheAdapter.save(verification = nextEmailVerification, ttlMinutes = 30)
 
         // then
         val foundPrevToken = redisTemplate.opsForValue()
-            .get("email-verification:token:$prevToken") as EmailVerification?
+            .get("email-verification:token:$prevToken") as EmailVerificationDto?
         val foundNextToken = redisTemplate.opsForValue()
-            .get("email-verification:token:$nextToken") as EmailVerification?
+            .get("email-verification:token:$nextToken") as EmailVerificationDto?
 
         foundPrevToken shouldBe null
         foundNextToken shouldBe nextEmailVerification
@@ -65,10 +65,10 @@ class EmailVerificationRedisAdapterIT(
         val accountId = 1L
         val emailVerification = createEmailVerification(accountId = accountId, token = token)
 
-        emailVerificationRedisAdapter.save(verification = emailVerification, ttlMinutes = 30)
+        emailVerificationRedisCacheAdapter.save(verification = emailVerification, ttlMinutes = 30)
 
         // when
-        val foundEmailVerification = emailVerificationRedisAdapter.findByToken(token)
+        val foundEmailVerification = emailVerificationRedisCacheAdapter.findByToken(token)
 
         // then
         foundEmailVerification shouldBe emailVerification
@@ -80,7 +80,7 @@ class EmailVerificationRedisAdapterIT(
         val nonExistentToken = "non-existent"
 
         // when
-        val foundEmailVerification = emailVerificationRedisAdapter.findByToken(nonExistentToken)
+        val foundEmailVerification = emailVerificationRedisCacheAdapter.findByToken(nonExistentToken)
 
         // then
         foundEmailVerification shouldBe null
@@ -93,22 +93,22 @@ class EmailVerificationRedisAdapterIT(
         val accountId = 1L
         val emailVerification = createEmailVerification(accountId = accountId, token = token)
 
-        emailVerificationRedisAdapter.save(verification = emailVerification, ttlMinutes = 30)
+        emailVerificationRedisCacheAdapter.save(verification = emailVerification, ttlMinutes = 30)
 
         // when
-        emailVerificationRedisAdapter.delete(token = token, accountId = accountId)
+        emailVerificationRedisCacheAdapter.delete(token = token, accountId = accountId)
 
         // then
         val foundToken = redisTemplate.opsForValue().get("email-verification:accountId:$accountId")
         val foundEmailVerification = redisTemplate.opsForValue()
-            .get("email-verification:token:$token") as EmailVerification?
+            .get("email-verification:token:$token") as EmailVerificationDto?
 
         foundToken shouldBe null
         foundEmailVerification shouldBe null
     }
 
-    private fun createEmailVerification(accountId: Long, token: String): EmailVerification {
-        return EmailVerification(
+    private fun createEmailVerification(accountId: Long, token: String): EmailVerificationDto {
+        return EmailVerificationDto(
             accountId = accountId,
             token = token,
             email = "email@goodpon.site",

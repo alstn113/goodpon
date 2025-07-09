@@ -5,7 +5,7 @@ import com.goodpon.domain.coupon.history.CouponHistory
 import com.goodpon.infra.jpa.core.CouponHistoryCoreRepository
 import org.springframework.stereotype.Repository
 
-@Repository
+@Repository("dashboardCouponHistoryJpaAdapter")
 class CouponHistoryJpaAdapter(
     private val couponHistoryCoreRepository: CouponHistoryCoreRepository,
 ) : CouponHistoryRepository {

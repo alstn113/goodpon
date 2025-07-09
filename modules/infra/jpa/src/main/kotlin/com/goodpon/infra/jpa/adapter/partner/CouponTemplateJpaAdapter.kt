@@ -5,7 +5,7 @@ import com.goodpon.infra.jpa.core.CouponTemplateCoreRepository
 import com.goodpon.partner.application.coupon.port.out.CouponTemplateRepository
 import org.springframework.stereotype.Repository
 
-@Repository
+@Repository("partnerCouponTemplateJpaAdapter")
 class CouponTemplateJpaAdapter(
     private val couponTemplateCoreRepository: CouponTemplateCoreRepository,
 ) : CouponTemplateRepository {

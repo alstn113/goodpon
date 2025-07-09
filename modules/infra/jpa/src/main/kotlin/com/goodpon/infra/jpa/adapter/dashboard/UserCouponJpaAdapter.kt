@@ -7,7 +7,7 @@ import com.goodpon.infra.jpa.core.UserCouponCoreRepository
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
 
-@Repository
+@Repository("dashboardUserCouponJpaAdapter")
 class UserCouponJpaAdapter(
     private val userCouponCoreRepository: UserCouponCoreRepository,
 ) : UserCouponRepository {

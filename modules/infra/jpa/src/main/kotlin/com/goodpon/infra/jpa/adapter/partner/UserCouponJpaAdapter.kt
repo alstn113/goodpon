@@ -5,7 +5,7 @@ import com.goodpon.infra.jpa.core.UserCouponCoreRepository
 import com.goodpon.partner.application.coupon.port.out.UserCouponRepository
 import org.springframework.stereotype.Repository
 
-@Repository
+@Repository("partnerUserCouponJpaAdapter")
 class UserCouponJpaAdapter(
     private val userCouponCoreRepository: UserCouponCoreRepository,
 ) : UserCouponRepository {

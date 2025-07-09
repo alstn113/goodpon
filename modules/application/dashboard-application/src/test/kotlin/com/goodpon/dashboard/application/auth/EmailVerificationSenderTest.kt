@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.auth
 
-import com.goodpon.dashboard.application.auth.port.out.EmailVerificationRepository
+import com.goodpon.dashboard.application.auth.port.out.EmailVerificationCache
 import com.goodpon.dashboard.application.auth.port.out.VerificationEmailSender
 import com.goodpon.dashboard.application.auth.port.out.dto.SendVerificationEmailRequest
 import com.goodpon.dashboard.application.auth.service.SendVerificationEmailService
@@ -15,12 +15,12 @@ import io.mockk.verify
 class EmailVerificationSenderTest : DescribeSpec({
 
     val verificationEmailSender = mockk<VerificationEmailSender>(relaxed = true)
-    val emailVerificationRepository = mockk<EmailVerificationRepository>()
+    val emailVerificationCache = mockk<EmailVerificationCache>()
     val verificationTokenGenerator: VerificationTokenGenerator = mockk()
     val verificationLinkBuilder: VerificationLinkBuilder = mockk()
     val sendVerificationEmailService = SendVerificationEmailService(
         verificationEmailSender,
-        emailVerificationRepository,
+        emailVerificationCache,
         verificationTokenGenerator,
         verificationLinkBuilder
     )
@@ -40,13 +40,13 @@ class EmailVerificationSenderTest : DescribeSpec({
         it("토큰을 생성하여 저장하고, 토큰이 담긴 링크를 이메일로 전송한다.") {
             every { verificationTokenGenerator.generate() } returns token
             every { verificationLinkBuilder.build(token) } returns verificationLink
-            every { emailVerificationRepository.save(any()) } returns Unit
+            every { emailVerificationCache.save(any()) } returns Unit
 
             sendVerificationEmailService.send(accountId, email, name)
 
             verify { verificationTokenGenerator.generate() }
             verify { verificationLinkBuilder.build(token) }
-            verify { emailVerificationRepository.save(any()) }
+            verify { emailVerificationCache.save(any()) }
             verify {
                 verificationEmailSender.send(
                     SendVerificationEmailRequest(

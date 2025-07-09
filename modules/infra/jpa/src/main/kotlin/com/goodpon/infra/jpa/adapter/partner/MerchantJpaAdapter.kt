@@ -5,7 +5,7 @@ import com.goodpon.infra.jpa.core.MerchantCoreRepository
 import com.goodpon.partner.application.merchant.port.out.MerchantRepository
 import org.springframework.stereotype.Repository
 
-@Repository
+@Repository("partnerMerchantJpaAdapter")
 class MerchantJpaAdapter(
     private val merchantCoreRepository: MerchantCoreRepository,
 ) : MerchantRepository {

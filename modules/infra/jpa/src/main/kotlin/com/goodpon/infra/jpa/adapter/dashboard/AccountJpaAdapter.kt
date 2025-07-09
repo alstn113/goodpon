@@ -6,7 +6,7 @@ import com.goodpon.domain.account.Account
 import com.goodpon.infra.jpa.core.AccountCoreRepository
 import org.springframework.stereotype.Repository
 
-@Repository
+@Repository("dashboardAccountJpaAdapter")
 class AccountJpaAdapter(
     private val accountCoreRepository: AccountCoreRepository,
 ) : AccountRepository {
