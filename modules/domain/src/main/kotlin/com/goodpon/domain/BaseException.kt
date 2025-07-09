@@ -1,4 +1,4 @@
-package com.goodpon.domain.support.error
+package com.goodpon.domain
 
 abstract class BaseException(
     message: String? = null,

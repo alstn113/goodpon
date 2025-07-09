@@ -6,7 +6,4 @@ enum class CouponLimitPolicyType {
     ISSUE_COUNT,
     REDEEM_COUNT,
     ;
-
-    fun isNotIssueCountLimit(): Boolean = this != ISSUE_COUNT
-    fun isNotRedeemCountLimit(): Boolean = this != REDEEM_COUNT
 }

@@ -1,6 +1,6 @@
 package com.goodpon.partner.application.merchant.port.out.exception
 
-import com.goodpon.domain.support.error.BaseException
+import com.goodpon.domain.BaseException
 
 class MerchantNotFoundException(
     cause: Throwable? = null,

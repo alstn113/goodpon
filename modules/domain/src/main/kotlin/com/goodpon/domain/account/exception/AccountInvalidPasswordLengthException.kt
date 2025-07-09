@@ -1,6 +1,6 @@
 package com.goodpon.domain.account.exception
 
-import com.goodpon.domain.support.error.BaseException
+import com.goodpon.domain.BaseException
 
 class AccountInvalidPasswordLengthException(
     cause: Throwable? = null,

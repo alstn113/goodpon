@@ -1,6 +1,6 @@
 package com.goodpon.partner.application.coupon.service.exception
 
-import com.goodpon.domain.support.error.BaseException
+import com.goodpon.domain.BaseException
 
 class UserCouponNotFoundException(
     cause: Throwable? = null,

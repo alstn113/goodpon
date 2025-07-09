@@ -1,6 +1,6 @@
 package com.goodpon.domain.coupon.user.exception
 
-import com.goodpon.domain.support.error.BaseException
+import com.goodpon.domain.BaseException
 
 class UserCouponExpiredException(
     cause: Throwable? = null,

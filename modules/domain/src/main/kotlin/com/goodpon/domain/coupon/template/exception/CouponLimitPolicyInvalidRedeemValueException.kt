@@ -1,6 +1,6 @@
 package com.goodpon.domain.coupon.template.exception
 
-import com.goodpon.domain.support.error.BaseException
+import com.goodpon.domain.BaseException
 
 class CouponLimitPolicyInvalidRedeemValueException(
     cause: Throwable? = null,

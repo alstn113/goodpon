@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.account.service.exception
 
-import com.goodpon.domain.support.error.BaseException
+import com.goodpon.domain.BaseException
 
 class AccountEmailExistsException(
     cause: Throwable? = null,

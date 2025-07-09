@@ -1,6 +1,6 @@
 package com.goodpon.partner.application.coupon.port.out.exception
 
-import com.goodpon.domain.support.error.BaseException
+import com.goodpon.domain.BaseException
 
 class CouponTemplateNotFoundException(
     cause: Throwable? = null,

@@ -1,6 +1,6 @@
 package com.goodpon.partner.openapi.config
 
-import com.goodpon.domain.support.error.BaseException
+import com.goodpon.domain.BaseException
 import org.slf4j.LoggerFactory
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
 import java.lang.reflect.Method
