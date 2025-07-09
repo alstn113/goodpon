@@ -41,6 +41,9 @@ subprojects {
         testImplementation(rootProject.libs.kotest.assertions.core)
         testImplementation(rootProject.libs.mockk)
         testImplementation(rootProject.libs.springmockk)
+        implementation(rootProject.libs.kotlinx.coroutines.core)
+        implementation(rootProject.libs.kotlinx.coroutines.jdk8)
+        testImplementation(rootProject.libs.kotlinx.coroutines.test)
 
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
