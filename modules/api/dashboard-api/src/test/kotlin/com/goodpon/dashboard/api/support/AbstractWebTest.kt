@@ -1,6 +1,6 @@
-package com.goodpon.dashboard.api
+package com.goodpon.dashboard.api.support
 
-import com.goodpon.dashboard.api.controller.v1.TestController
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.dashboard.api.controller.v1.account.AccountController
 import com.goodpon.dashboard.api.controller.v1.auth.AuthController
 import com.goodpon.dashboard.api.controller.v1.coupon.CouponTemplateController
@@ -19,17 +19,19 @@ import org.springframework.test.web.servlet.MockMvc
 
 @WebMvcTest(
     value = [
-        TestController::class,
         AccountController::class,
         AuthController::class,
         CouponTemplateController::class,
         MerchantController::class
     ]
 )
-abstract class AbstractControllerTest {
+abstract class AbstractWebTest {
 
     @Autowired
     protected lateinit var mockMvc: MockMvc
+
+    @Autowired
+    protected lateinit var objectMapper: ObjectMapper
 
     @MockkBean
     protected lateinit var signUpUseCase: SignUpUseCase

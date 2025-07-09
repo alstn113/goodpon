@@ -8,7 +8,7 @@ springmockk = "4.0.2"
 jjwt = "0.12.6"
 testcontainers = "1.21.3"
 aws-sdk-bom = "2.31.76"
-epage-restdocs = "0.19.4"
+epage-restdocs = "0.18.2"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

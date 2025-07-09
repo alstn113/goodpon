@@ -1,4 +1,4 @@
-package com.goodpon.partner.openapi
+package com.goodpon.partner.openapi.support
 
 import com.goodpon.partner.application.coupon.port.`in`.CancelCouponRedemptionUseCase
 import com.goodpon.partner.application.coupon.port.`in`.IssueCouponUseCase
@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc
         CouponController::class
     ]
 )
-abstract class AbstractControllerTest {
+abstract class AbstractWebTest {
 
     @Autowired
     protected lateinit var mockMvc: MockMvc
