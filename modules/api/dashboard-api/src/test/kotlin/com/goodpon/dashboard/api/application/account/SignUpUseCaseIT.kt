@@ -18,7 +18,7 @@ class SignUpUseCaseIT(
 ) : AbstractIntegrationTest() {
 
     @MockkBean
-    private lateinit var eventListener: VerificationEmailEventListener
+    private lateinit var verificationEmailEventListener: VerificationEmailEventListener
 
     @Test
     fun `회원 가입을 할 수 있다`() {
@@ -43,7 +43,7 @@ class SignUpUseCaseIT(
                 email = savedAccount.email.value,
                 name = savedAccount.name.value
             )
-            eventListener.handleAccountCreatedEvent(event)
+            verificationEmailEventListener.handleAccountCreatedEvent(event)
         }
     }
 }
