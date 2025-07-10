@@ -1,4 +1,4 @@
-spring.application.name: "infra-jpa-test"
+spring.application.name: "infra-db-jpa-test"
 
 spring:
   jpa:

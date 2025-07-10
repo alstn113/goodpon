@@ -4,7 +4,8 @@ spring.profiles.active: local
 spring:
   config:
     import:
-      - infra-jpa.yml
+      - infra-db-jpa.yml
+      - infra-db-flyway.yml
       - infra-redis.yml
       - infra-aws-ses.yml
       - infra-auth.yml
@@ -14,6 +15,11 @@ spring:
 spring.config.activate.on-profile: local
 
 server.port: 8080
+
+client-host: http://localhost:5173
+
+---
+spring.config.activate.on-profile: test
 
 client-host: http://localhost:5173
 

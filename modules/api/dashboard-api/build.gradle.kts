@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":modules:support:logging"))
 
     runtimeOnly(project(":modules:infra:db:jpa"))
+    implementation(project(":modules:infra:db:flyway"))
     runtimeOnly(project(":modules:infra:aws:ses"))
     runtimeOnly(project(":modules:infra:redis"))
     runtimeOnly(project(":modules:infra:auth"))
