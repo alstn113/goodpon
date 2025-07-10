@@ -7,7 +7,7 @@ dependencies {
     implementation(project(":modules:application:dashboard-application"))
     implementation(project(":modules:support:logging"))
 
-    runtimeOnly(project(":modules:infra:jpa"))
+    runtimeOnly(project(":modules:infra:db:jpa"))
     runtimeOnly(project(":modules:infra:aws:ses"))
     runtimeOnly(project(":modules:infra:redis"))
     runtimeOnly(project(":modules:infra:auth"))
@@ -16,7 +16,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-    testImplementation(testFixtures(project(":modules:infra:jpa")))
+    testImplementation(testFixtures(project(":modules:infra:db:jpa")))
     testImplementation(testFixtures(project(":modules:infra:redis")))
 
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")

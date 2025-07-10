@@ -7,13 +7,13 @@ dependencies {
     implementation(project(":modules:application:partner-application"))
     implementation(project(":modules:support:logging"))
 
-    runtimeOnly(project(":modules:infra:jpa"))
+    runtimeOnly(project(":modules:infra:db:jpa"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-    testImplementation(testFixtures(project(":modules:infra:jpa")))
+    testImplementation(testFixtures(project(":modules:infra:db:jpa")))
 
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation(libs.epage.restdocs.mockmvc)

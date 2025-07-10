@@ -9,10 +9,11 @@ include(
 
     "modules:domain",
 
-    "modules:infra:jpa",
-    "modules:infra:redis",
-    "modules:infra:aws:ses",
     "modules:infra:auth",
+    "modules:infra:aws:ses",
+    "modules:infra:redis",
+    "modules:infra:db:jpa",
+    "modules:infra:db:flyway",
 
     "modules:support:logging",
 )

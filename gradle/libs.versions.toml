@@ -11,6 +11,7 @@ testcontainers = "1.21.3"
 aws-sdk-bom = "2.31.76"
 epage-restdocs = "0.18.2"
 coroutines = "1.9.0"
+flyway = "11.10.1"
 
 [plugins]
 
@@ -46,3 +47,7 @@ testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "tes
 
 # restdocs
 epage-restdocs-mockmvc = { module = "com.epages:restdocs-api-spec-mockmvc", version.ref = "epage-restdocs" }
+
+## flyway
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway" }

@@ -1,8 +1,0 @@
-package com.goodpon.infra.jpa
-
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan
-
-@SpringBootApplication
-@ConfigurationPropertiesScan
-class InfraJpaTestApplication
