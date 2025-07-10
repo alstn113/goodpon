@@ -22,6 +22,7 @@ dependencies {
 
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation(libs.epage.restdocs.mockmvc)
+    testImplementation(libs.rest.assured)
 }
 
 openapi3 {

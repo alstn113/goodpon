@@ -1,6 +1,7 @@
 package com.goodpon.dashboard.api.support
 
 import com.goodpon.infra.db.jpa.MySQLContainerInitializer
+import com.goodpon.infra.db.jpa.MySQLDataCleanupExtension
 import com.goodpon.infra.redis.RedisContainerInitializer
 import com.goodpon.infra.redis.RedisDataCleanupExtension
 import org.junit.jupiter.api.extension.ExtendWith
@@ -18,7 +19,7 @@ import org.springframework.test.context.TestConstructor
     ]
 )
 @ExtendWith(
-    com.goodpon.infra.db.jpa.MySQLDataCleanupExtension::class,
+    MySQLDataCleanupExtension::class,
     RedisDataCleanupExtension::class
 )
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)

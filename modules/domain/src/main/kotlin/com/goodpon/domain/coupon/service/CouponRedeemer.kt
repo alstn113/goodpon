@@ -13,10 +13,7 @@ object CouponRedeemer {
         orderAmount: Int,
         redeemAt: LocalDateTime,
     ): CouponRedemptionResult {
-        couponTemplate.validateRedeem(
-            currentRedeemedCount = currentRedeemCount,
-            orderAmount = orderAmount
-        )
+        couponTemplate.validateRedeem(currentRedeemedCount = currentRedeemCount, orderAmount = orderAmount)
 
         val redeemedCoupon = userCoupon.redeem(redeemAt = redeemAt)
 
