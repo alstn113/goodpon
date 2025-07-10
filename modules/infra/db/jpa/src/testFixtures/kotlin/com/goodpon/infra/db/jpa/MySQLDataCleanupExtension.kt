@@ -8,7 +8,7 @@ class MySQLDataCleanupExtension : AfterEachCallback {
 
     override fun afterEach(context: ExtensionContext) {
         val cleaner = SpringExtension.getApplicationContext(context)
-            .getBean(com.goodpon.infra.db.jpa.MySQLDataCleaner::class.java)
+            .getBean(MySQLDataCleaner::class.java)
 
         cleaner.clear()
     }

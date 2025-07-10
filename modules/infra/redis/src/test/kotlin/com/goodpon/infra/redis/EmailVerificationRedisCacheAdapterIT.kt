@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.data.redis.core.RedisTemplate
 import java.time.LocalDateTime
 
-class EmailVerificationDtoRedisAdapterIT(
+class EmailVerificationRedisCacheAdapterIT(
     private val redisTemplate: RedisTemplate<String, Any>,
     private val emailVerificationRedisCacheAdapter: EmailVerificationRedisCacheAdapter,
 ) : AbstractIntegrationTest() {

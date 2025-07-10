@@ -14,7 +14,7 @@ class AccountReaderTest : DescribeSpec({
     val accountReader = AccountReader(accountRepository)
 
     describe("readById") {
-        it("존재하지 않는 경우 예외를 발생시킨다.") {
+        it("계정 식별자로 계정을 조회할 수 없는 경우 예외를 발생시킨다.") {
             every {
                 accountRepository.findById(any())
             } returns null
@@ -26,7 +26,7 @@ class AccountReaderTest : DescribeSpec({
     }
 
     describe("readByEmail") {
-        it("존재하지 않는 경우 예외를 발생시킨다.") {
+        it("계정 이메일로 계정을 조회할 수 없는 경우 예외를 발생시킨다.") {
             every {
                 accountRepository.findByEmail(any())
             } returns null

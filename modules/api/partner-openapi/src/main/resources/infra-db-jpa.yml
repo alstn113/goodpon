@@ -5,19 +5,17 @@ spring:
       ddl-auto: validate
     properties:
       hibernate.default_batch_fetch_size: 100
+      hibernate:
+        format_sql: true
+        show_sql: true
+        highlight_sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 ---
 spring.config.activate.on-profile: local
 
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
-        highlight_sql: true
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:db;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -28,22 +26,23 @@ spring:
 ---
 spring.config.activate.on-profile: test
 
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
-        highlight_sql: true
+logging:
+  level:
+    org.springframework.orm.jpa: debug
+    org.springframework.orm.transaction: debug
+    org.hibernate.orm.jdbc.bind: trace
 
 ---
 spring.config.activate.on-profile: prod
 
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_CORE_URL}
     username: ${DB_CORE_USERNAME}
     password: ${DB_CORE_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: false
+        highlight_sql: false
