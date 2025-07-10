@@ -12,7 +12,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 
-class EmailVerificationSenderTest : DescribeSpec({
+class SendVerificationEmailServiceTest : DescribeSpec({
 
     val verificationEmailSender = mockk<VerificationEmailSender>(relaxed = true)
     val emailVerificationCache = mockk<EmailVerificationCache>()

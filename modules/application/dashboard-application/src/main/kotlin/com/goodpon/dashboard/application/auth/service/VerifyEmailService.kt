@@ -6,17 +6,19 @@ import com.goodpon.dashboard.application.auth.port.out.EmailVerificationCache
 import com.goodpon.dashboard.application.auth.service.exception.EmailVerificationNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Clock
 import java.time.LocalDateTime
 
 @Service
 class VerifyEmailService(
     private val accountVerificationService: AccountVerificationService,
     private val emailVerificationCache: EmailVerificationCache,
+    private val clock: Clock,
 ) : VerifyEmailUseCase {
 
     @Transactional
     override fun verifyEmail(token: String) {
-        val now = LocalDateTime.now()
+        val now = LocalDateTime.now(clock)
         val verification = emailVerificationCache.findByToken(token)
             ?: throw EmailVerificationNotFoundException()
 
