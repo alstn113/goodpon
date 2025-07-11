@@ -7,10 +7,6 @@ data class ApiResponse<T> private constructor(
 ) {
 
     companion object {
-        fun success(): ApiResponse<Unit> {
-            return ApiResponse(ResultType.SUCCESS, null, null)
-        }
-
         fun <T> success(data: T): ApiResponse<T> {
             return ApiResponse(ResultType.SUCCESS, data, null)
         }
