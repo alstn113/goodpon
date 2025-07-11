@@ -4,6 +4,7 @@ import com.goodpon.dashboard.api.response.ApiResponse
 import com.goodpon.dashboard.api.response.ErrorType
 import com.goodpon.dashboard.application.account.port.out.exception.AccountNotFoundException
 import com.goodpon.dashboard.application.account.service.exception.AccountEmailExistsException
+import com.goodpon.dashboard.application.auth.service.exception.EmailVerificationNotFoundException
 import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
 import com.goodpon.domain.BaseException
 import com.goodpon.domain.account.exception.*
@@ -30,14 +31,10 @@ class DashboardApiControllerAdvice {
             is AccountNameBlankException,
                 -> ErrorType.ACCOUNT_SIGN_UP_INVALID_INPUT
 
-            is PasswordMismatchException,
-                -> ErrorType.PASSWORD_MISMATCH
-
-            is AccountAlreadyVerifiedException,
-                -> ErrorType.ACCOUNT_ALREADY_VERIFIED
-
-            is AccountNotFoundException,
-                -> ErrorType.ACCOUNT_NOT_FOUND
+            is PasswordMismatchException -> ErrorType.PASSWORD_MISMATCH
+            is AccountAlreadyVerifiedException -> ErrorType.ACCOUNT_ALREADY_VERIFIED
+            is AccountNotFoundException -> ErrorType.ACCOUNT_NOT_FOUND
+            is EmailVerificationNotFoundException -> ErrorType.INVALID_EMAIL_VERIFICATION_TOKEN
 
             else -> ErrorType.INTERNAL_SERVER_ERROR
         }

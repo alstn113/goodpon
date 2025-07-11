@@ -1,7 +1,3 @@
-import com.epages.restdocs.apispec.gradle.OpenApi3Extension
-import io.swagger.v3.oas.annotations.servers.Servers
-import io.swagger.v3.oas.models.servers.Server
-
 plugins {
     alias(libs.plugins.epage.restdocs)
 }
