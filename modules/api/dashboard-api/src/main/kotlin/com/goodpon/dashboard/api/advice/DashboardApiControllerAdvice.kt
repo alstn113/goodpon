@@ -4,6 +4,7 @@ import com.goodpon.dashboard.api.response.ApiResponse
 import com.goodpon.dashboard.api.response.ErrorType
 import com.goodpon.dashboard.application.account.port.out.exception.AccountNotFoundException
 import com.goodpon.dashboard.application.account.service.exception.AccountEmailExistsException
+import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
 import com.goodpon.domain.BaseException
 import com.goodpon.domain.account.exception.*
 import org.slf4j.LoggerFactory
@@ -28,6 +29,9 @@ class DashboardApiControllerAdvice {
             is AccountInvalidPasswordLengthException,
             is AccountNameBlankException,
                 -> ErrorType.ACCOUNT_SIGN_UP_INVALID_INPUT
+
+            is PasswordMismatchException,
+                -> ErrorType.PASSWORD_MISMATCH
 
             is AccountAlreadyVerifiedException,
                 -> ErrorType.ACCOUNT_ALREADY_VERIFIED

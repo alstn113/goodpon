@@ -10,6 +10,7 @@ import com.goodpon.dashboard.api.support.WithMockAccount
 import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
 import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpResult
 import com.goodpon.dashboard.application.account.service.exception.AccountEmailExistsException
+import com.goodpon.domain.account.exception.AccountInvalidEmailFormatException
 import io.mockk.every
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
@@ -99,7 +100,48 @@ class AccountDocumentTest : AbstractDocumentTest() {
                 .tag("Account")
                 .requestSchema(Schema("SignUpRequest"))
                 .requestFields(*signUpRequestFields().toTypedArray())
-                .responseFields(* signUpFailureResponseFields().toTypedArray())
+                .responseFields(* failureResponseFields().toTypedArray())
+                .build()
+        )
+    }
+
+    @Test
+    fun `회원가입 - 실패 - 잘못된 입력값`() {
+        // given
+        val request = SignUpRequest(
+            email = "invalid-email-format",
+            password = "password123",
+            name = "테스트 사용자"
+        )
+
+        every { signUpUseCase.signUp(any()) } throws AccountInvalidEmailFormatException()
+
+        // when
+        val result = mockMvc.perform(
+            RestDocumentationRequestBuilders
+                .post("/v1/account/sign-up")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        )
+
+        // then
+        result.andExpectAll(
+            status().isBadRequest,
+            jsonPath("$.result").value(ResultType.ERROR.name),
+            jsonPath("$.data").value(null),
+            jsonPath("$.error.code").value("ACCOUNT_SIGN_UP_INVALID_INPUT"),
+            jsonPath("$.error.message").value("계정 생성에 필요한 입력값이 올바르지 않습니다."),
+            jsonPath("$.error.data").value(null)
+        )
+
+        // document
+        result.andDocument(
+            "회원가입 - 실패 - 잘못된 입력값",
+            ResourceSnippetParameters.builder()
+                .tag("Account")
+                .requestSchema(Schema("SignUpRequest"))
+                .requestFields(*signUpRequestFields().toTypedArray())
+                .responseFields(* failureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -118,15 +160,6 @@ class AccountDocumentTest : AbstractDocumentTest() {
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("사용자 이름"),
         fieldWithPath("data.verified").type(JsonFieldType.BOOLEAN).description("이메일 인증 여부"),
         fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)")
-    )
-
-    private fun signUpFailureResponseFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.NULL).description("회원가입 결과 데이터 (실패 시 null)"),
-        fieldWithPath("error").type(JsonFieldType.OBJECT).description("오류 정보"),
-        fieldWithPath("error.code").type(JsonFieldType.STRING).description("오류 코드"),
-        fieldWithPath("error.message").type(JsonFieldType.STRING).description("오류 메시지"),
-        fieldWithPath("error.data").type(JsonFieldType.NULL).description("오류 데이터 (없을 경우 null)")
     )
 
     @Test
