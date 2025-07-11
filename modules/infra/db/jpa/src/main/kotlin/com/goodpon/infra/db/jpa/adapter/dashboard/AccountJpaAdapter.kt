@@ -4,6 +4,7 @@ import com.goodpon.dashboard.application.account.port.out.AccountRepository
 import com.goodpon.dashboard.application.account.port.out.exception.AccountNotFoundException
 import com.goodpon.domain.account.Account
 import com.goodpon.infra.db.jpa.core.AccountCoreRepository
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Repository
 
 @Repository("dashboardAccountJpaAdapter")
@@ -12,8 +13,11 @@ class AccountJpaAdapter(
 ) : AccountRepository {
 
     override fun save(account: Account): Account {
-        return accountCoreRepository.save(account)
-            ?: throw AccountNotFoundException()
+        return try {
+            accountCoreRepository.save(account)
+        } catch (e: EntityNotFoundException) {
+            throw AccountNotFoundException()
+        }
     }
 
     override fun findById(id: Long): Account? {

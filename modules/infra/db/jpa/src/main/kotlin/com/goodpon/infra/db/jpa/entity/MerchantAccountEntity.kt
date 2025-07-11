@@ -7,8 +7,9 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "merchant_accounts")
 class MerchantAccountEntity(
-    @Column(nullable = false)
-    val merchantId: Long,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "merchant_id", nullable = false)
+    var merchant: MerchantEntity? = null,
 
     @Column(nullable = false)
     val accountId: Long,
@@ -27,18 +28,17 @@ class MerchantAccountEntity(
     fun toDomain(): MerchantAccount {
         return MerchantAccount.reconstruct(
             id = id,
-            merchantId = merchantId,
             accountId = accountId,
             role = role,
         )
     }
 
     companion object {
-        fun fromDomain(merchantAccount: MerchantAccount): MerchantAccountEntity {
+        fun fromDomain(merchantAccount: MerchantAccount, merchantEntity: MerchantEntity): MerchantAccountEntity {
             return MerchantAccountEntity(
-                merchantId = merchantAccount.merchantId,
                 accountId = merchantAccount.accountId,
                 role = merchantAccount.role,
+                merchant = merchantEntity
             )
         }
     }

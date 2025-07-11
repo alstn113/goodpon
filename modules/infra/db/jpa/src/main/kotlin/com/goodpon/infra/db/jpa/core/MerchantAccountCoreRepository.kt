@@ -3,6 +3,7 @@ package com.goodpon.infra.db.jpa.core
 import com.goodpon.domain.merchant.MerchantAccount
 import com.goodpon.infra.db.jpa.entity.MerchantAccountEntity
 import com.goodpon.infra.db.jpa.repository.MerchantAccountJpaRepository
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
@@ -11,7 +12,7 @@ class MerchantAccountCoreRepository(
     private val merchantAccountJpaRepository: MerchantAccountJpaRepository,
 ) {
 
-    fun save(merchantAccount: MerchantAccount): MerchantAccount? {
+    fun save(merchantAccount: MerchantAccount): MerchantAccount {
         if (merchantAccount.id == 0L) {
             val entity = MerchantAccountEntity.fromDomain(merchantAccount)
             val savedEntity = merchantAccountJpaRepository.save(entity)
@@ -19,7 +20,7 @@ class MerchantAccountCoreRepository(
         }
 
         val entity = merchantAccountJpaRepository.findByIdOrNull(merchantAccount.id)
-            ?: return null
+            ?: throw EntityNotFoundException()
         entity.update(merchantAccount)
         val savedEntity = merchantAccountJpaRepository.save(entity)
         return savedEntity.toDomain()

@@ -1,31 +1,28 @@
 package com.goodpon.domain.merchant
 
-import java.util.*
-
-data class Merchant private constructor(
+data class Merchant(
     val id: Long = 0,
     val name: String,
-    val secretKey: String,
+    val clientId: String,
+    val secrets: List<MerchantClientSecret>,
+    val accounts: List<MerchantAccount>,
 ) {
 
     companion object {
-        fun create(name: String): Merchant {
-            return Merchant(
-                name = name,
-                secretKey = generateSecretKey()
-            )
-        }
-
-        fun reconstruct(id: Long, name: String, secretKey: String): Merchant {
+        fun reconstruct(
+            id: Long,
+            name: String,
+            clientId: String,
+            secrets: List<MerchantClientSecret>,
+            accounts: List<MerchantAccount>,
+        ): Merchant {
             return Merchant(
                 id = id,
                 name = name,
-                secretKey = secretKey
+                clientId = clientId,
+                secrets = secrets,
+                accounts = accounts
             )
-        }
-
-        private fun generateSecretKey(): String {
-            return UUID.randomUUID().toString().replace("-", "")
         }
     }
 }

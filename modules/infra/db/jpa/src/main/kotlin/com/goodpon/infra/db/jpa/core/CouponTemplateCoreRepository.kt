@@ -4,6 +4,7 @@ import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.infra.db.jpa.entity.CouponTemplateEntity
 import com.goodpon.infra.db.jpa.repository.CouponTemplateJpaRepository
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
@@ -13,7 +14,7 @@ class CouponTemplateCoreRepository(
     private val couponTemplateJpaRepository: CouponTemplateJpaRepository,
 ) {
 
-    fun save(couponTemplate: CouponTemplate): CouponTemplate? {
+    fun save(couponTemplate: CouponTemplate): CouponTemplate {
         if (couponTemplate.id == 0L) {
             val entity = CouponTemplateEntity.fromDomain(couponTemplate)
             val savedEntity = couponTemplateJpaRepository.save(entity)
@@ -21,7 +22,7 @@ class CouponTemplateCoreRepository(
         }
 
         val entity = couponTemplateJpaRepository.findByIdOrNull(couponTemplate.id)
-            ?: return null
+            ?: throw EntityNotFoundException()
         entity.update(couponTemplate)
         val savedEntity = couponTemplateJpaRepository.save(entity)
         return savedEntity.toDomain()
