@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc
         AuthController::class,
         CouponTemplateController::class,
         MerchantController::class
-    ]
+    ],
 )
 abstract class AbstractWebTest {
 

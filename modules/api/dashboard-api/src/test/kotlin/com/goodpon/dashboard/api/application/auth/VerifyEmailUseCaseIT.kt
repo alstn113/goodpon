@@ -41,7 +41,7 @@ class VerifyEmailUseCaseIT(
         emailVerificationCache.save(emailVerificationDto)
 
         // when
-        val result = verifyEmailUseCase.verifyEmail(token)
+        verifyEmailUseCase.verifyEmail(token)
 
         // then
         val verifiedAccount = accountRepository.findById(savedAccount.id)
