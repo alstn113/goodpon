@@ -14,9 +14,43 @@ import java.time.LocalDateTime
 
 class CouponTemplateTest : DescribeSpec({
 
-    val issueAt = LocalDateTime.of(2025, 7, 5, 12, 30)
+    fun createCouponTemplate(
+        merchantId: Long = 1L,
+        minOrderAmount: Int? = 1000,
+        discountType: CouponDiscountType = CouponDiscountType.FIXED_AMOUNT,
+        discountValue: Int = 1000,
+        maxDiscountAmount: Int? = null,
+        issueStartDate: LocalDate = LocalDate.of(2025, 7, 3),
+        issueEndDate: LocalDate? = LocalDate.of(2025, 7, 10),
+        validityDays: Int? = null,
+        absoluteExpiryDate: LocalDate? = LocalDate.of(2025, 7, 20),
+        limitType: CouponLimitPolicyType = CouponLimitPolicyType.ISSUE_COUNT,
+        maxIssueCount: Long? = 10L,
+        maxRedeemCount: Long? = null,
+        status: CouponTemplateStatus = CouponTemplateStatus.ISSUABLE,
+    ): CouponTemplate {
+        return CouponTemplateFactory.create(
+            name = "테스트 쿠폰 템플릿",
+            description = "테스트 쿠폰 템플릿 설명",
+            merchantId = merchantId,
+            minOrderAmount = minOrderAmount,
+            discountType = discountType,
+            discountValue = discountValue,
+            maxDiscountAmount = maxDiscountAmount,
+            issueStartDate = issueStartDate,
+            issueEndDate = issueEndDate,
+            validityDays = validityDays,
+            absoluteExpiryDate = absoluteExpiryDate,
+            limitType = limitType,
+            maxIssueCount = maxIssueCount,
+            maxRedeemCount = maxRedeemCount,
+            status = status
+        )
+    }
 
     describe("validateIssue") {
+        val issueAt = LocalDateTime.of(2025, 7, 5, 12, 30)
+
         it("쿠폰을 발급할 수 없는 기간이면 예외를 발생시킨다.") {
             val template = createCouponTemplate(
                 issueStartDate = LocalDate.of(2025, 7, 3),
@@ -192,37 +226,3 @@ class CouponTemplateTest : DescribeSpec({
         }
     }
 })
-
-fun createCouponTemplate(
-    merchantId: Long = 1L,
-    minOrderAmount: Int? = 1000,
-    discountType: CouponDiscountType = CouponDiscountType.FIXED_AMOUNT,
-    discountValue: Int = 1000,
-    maxDiscountAmount: Int? = null,
-    issueStartDate: LocalDate = LocalDate.of(2025, 7, 3),
-    issueEndDate: LocalDate? = LocalDate.of(2025, 7, 10),
-    validityDays: Int? = null,
-    absoluteExpiryDate: LocalDate? = LocalDate.of(2025, 7, 20),
-    limitType: CouponLimitPolicyType = CouponLimitPolicyType.ISSUE_COUNT,
-    maxIssueCount: Long? = 10L,
-    maxRedeemCount: Long? = null,
-    status: CouponTemplateStatus = CouponTemplateStatus.ISSUABLE,
-): CouponTemplate {
-    return CouponTemplateFactory.create(
-        name = "테스트 쿠폰 템플릿",
-        description = "테스트 쿠폰 템플릿 설명",
-        merchantId = merchantId,
-        minOrderAmount = minOrderAmount,
-        discountType = discountType,
-        discountValue = discountValue,
-        maxDiscountAmount = maxDiscountAmount,
-        issueStartDate = issueStartDate,
-        issueEndDate = issueEndDate,
-        validityDays = validityDays,
-        absoluteExpiryDate = absoluteExpiryDate,
-        limitType = limitType,
-        maxIssueCount = maxIssueCount,
-        maxRedeemCount = maxRedeemCount,
-        status = status
-    )
-}
