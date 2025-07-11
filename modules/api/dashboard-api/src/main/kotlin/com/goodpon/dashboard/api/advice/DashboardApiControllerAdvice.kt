@@ -42,7 +42,7 @@ class DashboardApiControllerAdvice {
             else -> ErrorType.INTERNAL_SERVER_ERROR
         }
 
-        log.error("BaseException : {}", e.message, e)
+        log.warn("BaseException : {}", e.message, e)
 
         val response = ApiResponse.error<Unit>(errorType)
         return ResponseEntity(response, errorType.status)
@@ -50,7 +50,7 @@ class DashboardApiControllerAdvice {
 
     @ExceptionHandler(CouponTemplateCreationException::class)
     fun handleCouponTemplateCreationException(e: CouponTemplateCreationException): ResponseEntity<ApiResponse<Unit>> {
-        log.error("CouponTemplateCreationException : {}", e.message, e)
+        log.warn("CouponTemplateCreationException : {}, errors: {}", e.message, e.errors, e)
 
         val errorDetails = e.errors.map { error ->
             ApiErrorDetail(field = error.field, message = error.message)

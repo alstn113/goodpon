@@ -14,7 +14,7 @@ class CouponTemplateController(
     private val createCouponTemplateUseCase: CreateCouponTemplateUseCase,
 ) {
 
-    @PostMapping("/v1/merchant/{merchantId}/coupon-templates")
+    @PostMapping("/v1/merchants/{merchantId}/coupon-templates")
     fun createCouponTemplate(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
@@ -26,14 +26,14 @@ class CouponTemplateController(
         return ResponseEntity.ok(ApiResponse.success(result))
     }
 
-    @GetMapping("/v1/merchant/{merchantId}/coupon-templates")
+    @GetMapping("/v1/merchants/{merchantId}/coupon-templates")
     fun getCouponTemplates(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ) {
     }
 
-    @GetMapping("/v1/merchant/{merchantId}/coupon-templates/{couponTemplateId}")
+    @GetMapping("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}")
     fun getCouponTemplate(
         @PathVariable merchantId: Long,
         @PathVariable couponTemplateId: Long,

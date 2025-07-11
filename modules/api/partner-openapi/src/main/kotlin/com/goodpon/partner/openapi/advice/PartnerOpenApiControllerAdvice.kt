@@ -17,7 +17,7 @@ class PartnerOpenApiControllerAdvice(
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ApiErrorResponse> {
-        log.error("Exception : {}", e.message, e)
+        log.warn("Exception : {}", e.message, e)
 
         val traceId = traceIdProvider.getTraceId()
         val response = ApiErrorResponse.of(traceId, "COMMON_ERROR")

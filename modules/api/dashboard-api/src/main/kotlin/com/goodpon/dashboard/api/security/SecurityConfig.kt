@@ -39,8 +39,8 @@ class SecurityConfig(
                 "/v1/auth/login",
                 "/v1/auth/verify",
                 "/v1/auth/verify/resend",
-                "/v1/account/sign-up",
-                "/v1/account",
+                "/v1/accounts/sign-up",
+                "/v1/accounts",
                 "/api-docs/**",
             )
         )
@@ -55,7 +55,7 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it
                     .requestMatchers(
-                        "/v1/account/sign-up",
+                        "/v1/accounts/sign-up",
                         "/v1/auth/login",
                         "/v1/auth/verify",
                         "/v1/auth/verify/resend",

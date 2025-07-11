@@ -93,7 +93,7 @@ class AccountAuthE2eTest : AbstractEndToEndTest() {
             .contentType(ContentType.JSON)
             .body(request)
             .`when`()
-            .post("/v1/account/sign-up")
+            .post("/v1/accounts/sign-up")
 
         return Pair(result, emailToken)
     }
@@ -141,7 +141,7 @@ class AccountAuthE2eTest : AbstractEndToEndTest() {
             .contentType(ContentType.JSON)
             .withAuthHeader(accessToken)
             .`when`()
-            .get("/v1/account")
+            .get("/v1/accounts")
 
     }
 }

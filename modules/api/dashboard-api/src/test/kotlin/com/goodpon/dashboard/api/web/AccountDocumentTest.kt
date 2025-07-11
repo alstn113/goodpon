@@ -33,7 +33,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
         // when
         val result = mockMvc.perform(
             RestDocumentationRequestBuilders
-                .post("/v1/account/sign-up")
+                .post("/v1/accounts/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -78,7 +78,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
         // when
         val result = mockMvc.perform(
             RestDocumentationRequestBuilders
-                .post("/v1/account/sign-up")
+                .post("/v1/accounts/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -119,7 +119,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
         // when
         val result = mockMvc.perform(
             RestDocumentationRequestBuilders
-                .post("/v1/account/sign-up")
+                .post("/v1/accounts/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
@@ -178,7 +178,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
         // when
         val result = mockMvc.perform(
             RestDocumentationRequestBuilders
-                .get("/v1/account")
+                .get("/v1/accounts")
                 .header("Authorization", "Bearer access-token")
                 .contentType(MediaType.APPLICATION_JSON)
         )

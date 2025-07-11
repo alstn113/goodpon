@@ -20,7 +20,7 @@ class AccountController(
     private val getAccountInfoUseCase: GetAccountInfoUseCase,
 ) {
 
-    @PostMapping("/v1/account/sign-up")
+    @PostMapping("/v1/accounts/sign-up")
     fun signUp(
         @RequestBody request: SignUpRequest,
     ): ResponseEntity<ApiResponse<SignUpResult>> {
@@ -30,7 +30,7 @@ class AccountController(
         return ResponseEntity.ok(ApiResponse.success(result))
     }
 
-    @GetMapping("/v1/account")
+    @GetMapping("/v1/accounts")
     fun getAccountInfo(
         @AuthenticationPrincipal principal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<AccountInfo>> {
