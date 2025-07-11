@@ -5,128 +5,143 @@ import com.goodpon.dashboard.api.controller.v1.auth.dto.LoginRequest
 import com.goodpon.dashboard.api.controller.v1.auth.dto.ResendVerificationEmailRequest
 import com.goodpon.dashboard.api.controller.v1.auth.dto.VerifyEmailRequest
 import com.goodpon.dashboard.api.support.AbstractEndToEndTest
-import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
 import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpResult
 import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
 import com.goodpon.dashboard.application.auth.service.VerificationTokenGenerator
-import com.ninjasquad.springmockk.SpykBean
+import com.ninjasquad.springmockk.MockkBean
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import io.restassured.response.Response
 import org.junit.jupiter.api.Test
 
 class AccountAuthE2eTest : AbstractEndToEndTest() {
 
-    @SpykBean
+    @MockkBean
     private lateinit var verificationTokenGenerator: VerificationTokenGenerator
-
-    private val email = "test@goodpon.site"
-    private val password = "test-password"
-    private val name = "테스트 계정"
-    private val emailToken = "test-verification-token"
-    private var accessToken = ""
 
     @Test
     fun `계정 인증 시나리오`() {
-        회원가입()
-        로그인()
-        인증_이메일_재전송()
-        이메일_인증()
-        내_정보_조회()
+        val email = "test@goodpon.site"
+        val password = "test-password"
+        val name = "테스트 계정"
+
+        val (response, emailToken) = 회원가입_요청(email = email, password = password, name = name)
+        response.apply { statusCode() shouldBe 200 }
+            .toApiResponse<SignUpResult>()
+            .apply { verified shouldBe false }
+
+        val accessToken = 로그인_요청(email = email, password = password)
+            .apply { statusCode() shouldBe 200 }
+            .toApiResponse<LoginResult>()
+            .accessToken
+
+        내_정보_조회_요청(accessToken = accessToken)
+            .apply { statusCode() shouldBe 200 }
+            .toApiResponse<SignUpResult>()
+            .apply { verified shouldBe false }
+
+        이메일_인증_요청(emailToken = emailToken)
+            .apply { statusCode() shouldBe 200 }
+
+        내_정보_조회_요청(accessToken = accessToken)
+            .apply { statusCode() shouldBe 200 }
+            .toApiResponse<SignUpResult>()
+            .apply { verified shouldBe true }
     }
 
-    private fun 회원가입() {
-        // given
-        val request = SignUpRequest(
-            email = email,
-            password = password,
-            name = name
-        )
+    @Test
+    fun `인증 이메일 재전송 시나리오`() {
+        val email = "test@goodpon.site"
+        val password = "test-password"
+        val name = "테스트 계정"
 
+        val (response, _) = 회원가입_요청(email = email, password = password, name = name)
+        response.apply { statusCode() shouldBe 200 }
+            .toApiResponse<SignUpResult>()
+            .apply { verified shouldBe false }
+
+        val invalidEmailToken = "invalid-email-verification-token"
+        이메일_인증_요청(emailToken = invalidEmailToken)
+            .apply { statusCode() shouldBe 400 }
+
+        val (resendResponse, newEmailToken) = 인증_이메일_재전송_요청(email = email)
+        resendResponse.apply { statusCode() shouldBe 200 }
+
+        이메일_인증_요청(emailToken = newEmailToken)
+            .apply { statusCode() shouldBe 200 }
+
+        val accessToken = 로그인_요청(email = email, password = password)
+            .apply { statusCode() shouldBe 200 }
+            .toApiResponse<LoginResult>()
+            .accessToken
+
+        내_정보_조회_요청(accessToken = accessToken)
+            .apply { statusCode() shouldBe 200 }
+            .toApiResponse<SignUpResult>()
+            .apply { verified shouldBe true }
+    }
+
+    private fun 회원가입_요청(email: String, password: String, name: String): Pair<Response, String> {
+        val request = SignUpRequest(email = email, password = password, name = name)
+
+        val emailToken = "email-verification-token"
         every { verificationTokenGenerator.generate() } returns emailToken
 
-        // when
-        val response = given()
+        val result = given()
             .contentType(ContentType.JSON)
             .body(request)
             .`when`()
             .post("/v1/account/sign-up")
 
-        // then
-        response.statusCode() shouldBe 200
-        val responseData = response.toApiResponse<SignUpResult>()
-        responseData.email shouldBe email
-        responseData.verified shouldBe false
+        return Pair(result, emailToken)
     }
 
-    private fun 로그인() {
-        // given
+    private fun 로그인_요청(email: String, password: String): Response {
         val request = LoginRequest(
             email = email,
             password = password
         )
 
-        // when
-        val response = given()
+        return given()
             .contentType(ContentType.JSON)
             .body(request)
             .`when`()
             .post("/v1/auth/login")
-
-        // then
-        response.statusCode() shouldBe 200
-        val responseData = response.toApiResponse<LoginResult>()
-        responseData.verified shouldBe false
-
-        accessToken = responseData.accessToken
     }
 
-    private fun 인증_이메일_재전송() {
-        // given
+    private fun 인증_이메일_재전송_요청(email: String): Pair<Response, String> {
         val request = ResendVerificationEmailRequest(email = email)
 
-        every { verificationTokenGenerator.generate() } returns emailToken
+        val newEmailToken = "new-email-verification-token"
+        every { verificationTokenGenerator.generate() } returns newEmailToken
 
-        // when
         val response = given()
             .contentType(ContentType.JSON)
             .body(request)
             .`when`()
             .post("/v1/auth/verify/resend")
 
-        // then
-        response.statusCode() shouldBe 200
+        return Pair(response, newEmailToken)
     }
 
-    private fun 이메일_인증() {
-        // given
+    private fun 이메일_인증_요청(emailToken: String): Response {
         val request = VerifyEmailRequest(token = emailToken)
 
-        // when
-        val response = given()
-            .withAuthHeader(accessToken)
+        return given()
             .contentType(ContentType.JSON)
             .body(request)
             .`when`()
             .post("/v1/auth/verify")
-
-        // then
-        response.statusCode() shouldBe 200
     }
 
-    private fun 내_정보_조회() {
-        // when
-        val response = given()
+    private fun 내_정보_조회_요청(accessToken: String): Response {
+        return given()
             .contentType(ContentType.JSON)
             .withAuthHeader(accessToken)
             .`when`()
             .get("/v1/account")
 
-        // then
-        response.statusCode() shouldBe 200
-        val responseData = response.toApiResponse<AccountInfo>()
-        responseData.email shouldBe email
-        responseData.verified shouldBe true
     }
 }
