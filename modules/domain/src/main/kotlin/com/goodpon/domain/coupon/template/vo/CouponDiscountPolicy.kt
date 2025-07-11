@@ -1,22 +1,15 @@
 package com.goodpon.domain.coupon.template.vo
 
-import com.goodpon.domain.coupon.template.exception.CouponDiscountPolicyInvalidFixedMaxException
-import com.goodpon.domain.coupon.template.exception.CouponDiscountPolicyInvalidFixedValueException
-import com.goodpon.domain.coupon.template.exception.CouponDiscountPolicyInvalidPercentMaxException
-import com.goodpon.domain.coupon.template.exception.CouponDiscountPolicyInvalidPercentValueException
+import com.goodpon.domain.coupon.template.exception.creation.CouponDiscountPolicyInvalidFixedMaxException
+import com.goodpon.domain.coupon.template.exception.creation.CouponDiscountPolicyInvalidFixedValueException
+import com.goodpon.domain.coupon.template.exception.creation.CouponDiscountPolicyInvalidPercentMaxException
+import com.goodpon.domain.coupon.template.exception.creation.CouponDiscountPolicyInvalidPercentValueException
 
 data class CouponDiscountPolicy(
     val discountType: CouponDiscountType,
     val discountValue: Int,
     val maxDiscountAmount: Int? = null,
 ) {
-
-    init {
-        when (discountType) {
-            CouponDiscountType.FIXED_AMOUNT -> validateFixedAmount()
-            CouponDiscountType.PERCENTAGE -> validatePercentage()
-        }
-    }
 
     fun calculateDiscountAmount(orderAmount: Int): Int {
         return discountType.calculate(
@@ -26,21 +19,31 @@ data class CouponDiscountPolicy(
         )
     }
 
-    private fun validateFixedAmount() {
-        if (discountValue <= 0) {
-            throw CouponDiscountPolicyInvalidFixedValueException()
+    fun validate(): Result<Unit> {
+        return when (discountType) {
+            CouponDiscountType.FIXED_AMOUNT -> validateFixedAmount()
+            CouponDiscountType.PERCENTAGE -> validatePercentage()
         }
-        if (maxDiscountAmount != null) {
-            throw CouponDiscountPolicyInvalidFixedMaxException()
-        }
+
     }
 
-    private fun validatePercentage() {
+    private fun validateFixedAmount(): Result<Unit> {
+        if (discountValue <= 0) {
+            return Result.failure(CouponDiscountPolicyInvalidFixedValueException(discountValue = discountValue))
+        }
+        if (maxDiscountAmount != null) {
+            return Result.failure(CouponDiscountPolicyInvalidFixedMaxException(maxDiscountAmount = maxDiscountAmount))
+        }
+        return Result.success(Unit)
+    }
+
+    private fun validatePercentage(): Result<Unit> {
         if (discountValue !in 1..100) {
-            throw CouponDiscountPolicyInvalidPercentValueException()
+            return Result.failure(CouponDiscountPolicyInvalidPercentValueException(discountValue = discountValue))
         }
         if (maxDiscountAmount == null || maxDiscountAmount <= 0) {
-            throw CouponDiscountPolicyInvalidPercentMaxException()
+            return Result.failure(CouponDiscountPolicyInvalidPercentMaxException(maxDiscountAmount = maxDiscountAmount))
         }
+        return Result.success(Unit)
     }
 }

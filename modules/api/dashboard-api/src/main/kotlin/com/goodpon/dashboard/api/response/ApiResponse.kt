@@ -14,5 +14,9 @@ data class ApiResponse<T> private constructor(
         fun <S> error(error: ErrorType, errorData: Any? = null): ApiResponse<S> {
             return ApiResponse(ResultType.ERROR, null, ErrorMessage(error, errorData))
         }
+
+        fun <S> error(error: ErrorType, details: List<ApiErrorDetail>): ApiResponse<S> {
+            return ApiResponse(ResultType.ERROR, null, ErrorMessage(error, details))
+        }
     }
 }

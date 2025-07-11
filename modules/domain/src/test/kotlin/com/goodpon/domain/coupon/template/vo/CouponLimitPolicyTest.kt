@@ -1,11 +1,11 @@
 package com.goodpon.domain.coupon.template.vo
 
-import com.goodpon.domain.coupon.template.exception.*
-import io.kotest.assertions.throwables.shouldThrow
+import com.goodpon.domain.coupon.template.exception.creation.*
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 class CouponLimitPolicyTest : DescribeSpec({
 
@@ -17,13 +17,15 @@ class CouponLimitPolicyTest : DescribeSpec({
                     row(0L),
                     row(-1L)
                 ) { maxIssueCount ->
-                    shouldThrow<CouponLimitPolicyInvalidIssueValueException> {
-                        CouponLimitPolicy(
-                            limitType = CouponLimitPolicyType.ISSUE_COUNT,
-                            maxIssueCount = maxIssueCount,
-                            maxRedeemCount = null
-                        )
-                    }
+                    val limitPolicy = CouponLimitPolicy(
+                        limitType = CouponLimitPolicyType.ISSUE_COUNT,
+                        maxIssueCount = maxIssueCount,
+                        maxRedeemCount = null
+                    )
+
+                    val result = limitPolicy.validate()
+
+                    result.exceptionOrNull().shouldBeInstanceOf<CouponLimitPolicyInvalidIssueValueException>()
                 }
             }
 
@@ -31,13 +33,15 @@ class CouponLimitPolicyTest : DescribeSpec({
                 val maxIssueCount = 10L
                 val maxRedeemCount = 5L
 
-                shouldThrow<CouponLimitPolicyIssueRedeemConflictException> {
-                    CouponLimitPolicy(
-                        limitType = CouponLimitPolicyType.ISSUE_COUNT,
-                        maxIssueCount = maxIssueCount,
-                        maxRedeemCount = maxRedeemCount
-                    )
-                }
+                val limitPolicy = CouponLimitPolicy(
+                    limitType = CouponLimitPolicyType.ISSUE_COUNT,
+                    maxIssueCount = maxIssueCount,
+                    maxRedeemCount = maxRedeemCount
+                )
+
+                val result = limitPolicy.validate()
+
+                result.exceptionOrNull().shouldBeInstanceOf<CouponLimitPolicyIssueRedeemConflictException>()
             }
         }
 
@@ -48,13 +52,15 @@ class CouponLimitPolicyTest : DescribeSpec({
                     row(0L),
                     row(-1L)
                 ) { maxRedeemCount ->
-                    shouldThrow<CouponLimitPolicyInvalidRedeemValueException> {
-                        CouponLimitPolicy(
-                            limitType = CouponLimitPolicyType.REDEEM_COUNT,
-                            maxIssueCount = null,
-                            maxRedeemCount = maxRedeemCount
-                        )
-                    }
+                    val limitPolicy = CouponLimitPolicy(
+                        limitType = CouponLimitPolicyType.REDEEM_COUNT,
+                        maxIssueCount = null,
+                        maxRedeemCount = maxRedeemCount
+                    )
+
+                    val result = limitPolicy.validate()
+
+                    result.exceptionOrNull().shouldBeInstanceOf<CouponLimitPolicyInvalidRedeemValueException>()
                 }
             }
 
@@ -62,13 +68,15 @@ class CouponLimitPolicyTest : DescribeSpec({
                 val maxIssueCount = 10L
                 val maxRedeemCount = 5L
 
-                shouldThrow<CouponLimitPolicyRedeemIssueConflictException> {
-                    CouponLimitPolicy(
-                        limitType = CouponLimitPolicyType.REDEEM_COUNT,
-                        maxIssueCount = maxIssueCount,
-                        maxRedeemCount = maxRedeemCount
-                    )
-                }
+                val limitPolicy = CouponLimitPolicy(
+                    limitType = CouponLimitPolicyType.REDEEM_COUNT,
+                    maxIssueCount = maxIssueCount,
+                    maxRedeemCount = maxRedeemCount
+                )
+
+                val result = limitPolicy.validate()
+
+                result.exceptionOrNull().shouldBeInstanceOf<CouponLimitPolicyRedeemIssueConflictException>()
             }
         }
 
@@ -77,13 +85,15 @@ class CouponLimitPolicyTest : DescribeSpec({
                 val maxIssueCountNotNull = 10L
                 val maxRedeemCountNotNull = 5L
 
-                shouldThrow<CouponLimitPolicyNoneConflictException> {
-                    CouponLimitPolicy(
-                        limitType = CouponLimitPolicyType.NONE,
-                        maxIssueCount = maxIssueCountNotNull,
-                        maxRedeemCount = maxRedeemCountNotNull
-                    )
-                }
+                val limitPolicy = CouponLimitPolicy(
+                    limitType = CouponLimitPolicyType.NONE,
+                    maxIssueCount = maxIssueCountNotNull,
+                    maxRedeemCount = maxRedeemCountNotNull
+                )
+
+                val result = limitPolicy.validate()
+
+                result.exceptionOrNull().shouldBeInstanceOf<CouponLimitPolicyNoneConflictException>()
             }
         }
     }

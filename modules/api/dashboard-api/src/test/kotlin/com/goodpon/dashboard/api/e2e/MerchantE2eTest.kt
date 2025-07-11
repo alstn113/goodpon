@@ -1,7 +1,6 @@
 package com.goodpon.dashboard.api.e2e
 
 import com.goodpon.dashboard.api.support.AbstractEndToEndTest
-import org.junit.jupiter.api.Test
 
 class MerchantE2eTest : AbstractEndToEndTest() {
 
