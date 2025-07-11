@@ -1,9 +1,9 @@
 package com.goodpon.dashboard.api.security.filter
 
+import com.goodpon.dashboard.api.security.exception.AccountNotVerifiedException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.AntPathMatcher
@@ -32,7 +32,7 @@ class AccountVerifiedFilter(
 
         val isNotVerified = !authentication.principal.verified
         if (isNotVerified) {
-            throw AccessDeniedException("계정이 인증되지 않았습니다.")
+            throw AccountNotVerifiedException()
         }
 
         filterChain.doFilter(request, response)
