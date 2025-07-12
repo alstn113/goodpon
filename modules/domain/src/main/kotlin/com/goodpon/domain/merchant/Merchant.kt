@@ -27,11 +27,11 @@ data class Merchant(
         return this.copy(secrets = updatedSecrets)
     }
 
-    fun hasValidClientSecret(clientSecret: String): Boolean {
+    fun isValidClientSecret(clientSecret: String): Boolean {
         return secrets.any { it.secret == clientSecret && !it.isExpired() }
     }
 
-    fun hasAccount(accountId: Long): Boolean {
+    fun isAccessibleBy(accountId: Long): Boolean {
         return accounts.any { it.accountId == accountId }
     }
 
@@ -52,11 +52,11 @@ data class Merchant(
         }
 
         private fun generateClientId(): String {
-            return "ck" + UUID.randomUUID().toString().replace("-", "")
+            return "ck_" + UUID.randomUUID().toString().replace("-", "")
         }
 
         private fun generateClientSecret(): String {
-            return "sk" + UUID.randomUUID().toString().replace("-", "")
+            return "sk_" + UUID.randomUUID().toString().replace("-", "")
         }
 
         fun reconstruct(

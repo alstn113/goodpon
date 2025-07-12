@@ -16,7 +16,7 @@ class MerchantService(
     override fun authenticate(clientId: String, clientSecret: String): MerchantInfo {
         val merchant = merchantAccessor.readByClientId(clientId)
 
-        if (!merchant.hasValidClientSecret(clientSecret)) {
+        if (!merchant.isValidClientSecret(clientSecret)) {
             throw MerchantClientSecretMismatchException()
         }
 
