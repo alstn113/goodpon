@@ -35,7 +35,7 @@ class MerchantEntity(
         fun fromDomain(merchant: Merchant): MerchantEntity {
             return MerchantEntity(
                 name = merchant.name,
-                secretKey = merchant.secretKey
+                clientId = merchant.clientId
             )
         }
     }

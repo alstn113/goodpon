@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS merchants
 (
     id         BIGINT       NOT NULL AUTO_INCREMENT,
     name       VARCHAR(255) NOT NULL,
-    secret_key VARCHAR(255) NOT NULL,
+    client_id  VARCHAR(255) NOT NULL,
     created_at DATETIME(6)  NOT NULL,
     updated_at DATETIME(6)  NOT NULL,
     PRIMARY KEY (id)
@@ -29,6 +29,17 @@ CREATE TABLE IF NOT EXISTS merchant_accounts
     role        VARCHAR(25) NOT NULL,
     created_at  DATETIME(6) NOT NULL,
     updated_at  DATETIME(6) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS merchant_client_secrets
+(
+    id          BIGINT       NOT NULL AUTO_INCREMENT,
+    merchant_id BIGINT       NOT NULL,
+    secret      VARCHAR(255) NOT NULL,
+    expired_at  DATETIME(6),
+    created_at  DATETIME(6)  NOT NULL,
+    updated_at  DATETIME(6)  NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
 

@@ -6,6 +6,7 @@ import com.goodpon.infra.db.jpa.entity.UserCouponEntity
 import com.goodpon.infra.db.jpa.repository.UserCouponJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Component
@@ -13,6 +14,7 @@ class UserCouponCoreRepository(
     private val userCouponJpaRepository: UserCouponJpaRepository,
 ) {
 
+    @Transactional
     fun save(userCoupon: UserCoupon): UserCoupon {
         val entity = userCouponJpaRepository.findByIdOrNull(userCoupon.id)
         if (entity == null) {
@@ -26,21 +28,24 @@ class UserCouponCoreRepository(
         return savedEntity.toDomain()
     }
 
+    @Transactional
     fun saveAll(userCoupons: List<UserCoupon>): List<UserCoupon> {
-        val entities = userCoupons.map { UserCouponEntity.fromDomain(it) }
-        val savedEntities = userCouponJpaRepository.saveAll(entities)
-        return savedEntities.map { it.toDomain() }
+        return userCoupons.map { UserCouponEntity.fromDomain(it) }
+            .map { it.toDomain() }
     }
 
+    @Transactional(readOnly = true)
     fun findByIdForUpdate(id: String): UserCoupon? {
         return userCouponJpaRepository.findByIdForUpdate(id)
             ?.toDomain()
     }
 
+    @Transactional(readOnly = true)
     fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean {
         return userCouponJpaRepository.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)
     }
 
+    @Transactional(readOnly = true)
     fun findByStatusAndExpiresAtLessThanEqual(
         status: UserCouponStatus,
         expiresAt: LocalDateTime,

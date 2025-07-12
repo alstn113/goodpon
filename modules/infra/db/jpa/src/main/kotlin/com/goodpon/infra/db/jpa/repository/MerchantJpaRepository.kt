@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface MerchantJpaRepository : JpaRepository<MerchantEntity, Long> {
 
-    fun findBySecretKey(secretKey: String): MerchantEntity?
+    fun findByClientId(clientId: String): MerchantEntity?
 }

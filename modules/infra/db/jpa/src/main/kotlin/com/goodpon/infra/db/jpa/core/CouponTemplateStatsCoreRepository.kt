@@ -5,12 +5,14 @@ import com.goodpon.infra.db.jpa.entity.CouponTemplateStatsEntity
 import com.goodpon.infra.db.jpa.repository.CouponTemplateStatsJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CouponTemplateStatsCoreRepository(
     private val couponTemplateStatsJpaRepository: CouponTemplateStatsJpaRepository,
 ) {
 
+    @Transactional
     fun save(couponTemplateStats: CouponTemplateStats): CouponTemplateStats {
         val entity = couponTemplateStatsJpaRepository.findByIdOrNull(couponTemplateStats.couponTemplateId)
         if (entity == null) {
@@ -24,6 +26,7 @@ class CouponTemplateStatsCoreRepository(
         return savedEntity.toDomain()
     }
 
+    @Transactional(readOnly = true)
     fun findByCouponTemplateIdForUpdate(couponTemplateId: Long): CouponTemplateStats? {
         return couponTemplateStatsJpaRepository.findByCouponTemplateIdForUpdate(couponTemplateId)
             ?.toDomain()

@@ -7,6 +7,7 @@ import com.goodpon.infra.db.jpa.repository.CouponTemplateJpaRepository
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Component
@@ -14,6 +15,7 @@ class CouponTemplateCoreRepository(
     private val couponTemplateJpaRepository: CouponTemplateJpaRepository,
 ) {
 
+    @Transactional
     fun save(couponTemplate: CouponTemplate): CouponTemplate {
         if (couponTemplate.id == 0L) {
             val entity = CouponTemplateEntity.fromDomain(couponTemplate)
@@ -28,17 +30,20 @@ class CouponTemplateCoreRepository(
         return savedEntity.toDomain()
     }
 
+    @Transactional
     fun saveAll(couponTemplates: List<CouponTemplate>): List<CouponTemplate> {
         val entities = couponTemplates.map { CouponTemplateEntity.fromDomain(it) }
-        val savedEntities = couponTemplateJpaRepository.saveAll(entities)
-        return savedEntities.map { it.toDomain() }
+        return couponTemplateJpaRepository.saveAll(entities)
+            .map { it.toDomain() }
     }
 
+    @Transactional(readOnly = true)
     fun findById(id: Long): CouponTemplate? {
         return couponTemplateJpaRepository.findByIdOrNull(id)
             ?.toDomain()
     }
 
+    @Transactional(readOnly = true)
     fun findByStatusAndAbsoluteExpiresAtLessThanEqual(
         status: CouponTemplateStatus,
         absoluteExpiresAt: LocalDateTime,

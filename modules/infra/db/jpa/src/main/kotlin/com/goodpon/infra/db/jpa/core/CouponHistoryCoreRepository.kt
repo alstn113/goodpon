@@ -5,12 +5,14 @@ import com.goodpon.infra.db.jpa.entity.CouponHistoryEntity
 import com.goodpon.infra.db.jpa.repository.CouponHistoryJpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CouponHistoryCoreRepository(
     private val couponHistoryJpaRepository: CouponHistoryJpaRepository,
 ) {
 
+    @Transactional
     fun save(couponHistory: CouponHistory): CouponHistory {
         val entity = couponHistoryJpaRepository.findByIdOrNull(couponHistory.id)
         if (entity == null) {
@@ -24,6 +26,7 @@ class CouponHistoryCoreRepository(
         return savedEntity.toDomain()
     }
 
+    @Transactional(readOnly = true)
     fun findByUserCouponIdOrderByRecordedAtDesc(userCouponId: String): List<CouponHistory> {
         return couponHistoryJpaRepository.findByUserCouponIdOrderByRecordedAtDesc(userCouponId)
             .map { it.toDomain() }

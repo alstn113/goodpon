@@ -14,7 +14,7 @@ class MerchantRepositoryIT(
 
     @Test
     fun `save1`() {
-        val merchant = Merchant.create(name = "name")
+        val merchant = Merchant.create(name = "name", accountId = 1L)
 
         merchantRepository.save(merchant)
 
@@ -23,7 +23,7 @@ class MerchantRepositoryIT(
 
     @Test
     fun `save2`() {
-        val merchant = Merchant.create(name = "name")
+        val merchant = Merchant.create(name = "name", accountId = 1L)
 
         merchantRepository.save(merchant)
 

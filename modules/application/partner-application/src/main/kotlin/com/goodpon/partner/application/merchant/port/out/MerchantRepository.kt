@@ -4,5 +4,5 @@ import com.goodpon.domain.merchant.Merchant
 
 interface MerchantRepository {
 
-    fun findBySecretKey(secretKey: String): Merchant?
+    fun findByClientId(clientId: String): Merchant?
 }

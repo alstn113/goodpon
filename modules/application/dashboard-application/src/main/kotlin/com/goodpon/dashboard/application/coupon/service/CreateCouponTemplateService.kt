@@ -4,7 +4,7 @@ import com.goodpon.dashboard.application.coupon.port.`in`.CreateCouponTemplateUs
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateCommand
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateResult
 import com.goodpon.dashboard.application.coupon.service.accessor.CouponTemplateStore
-import com.goodpon.dashboard.application.merchant.service.accessor.MerchantAccountReader
+import com.goodpon.dashboard.application.merchant.port.out.exception.UnauthorizedMerchantAccountException
 import com.goodpon.dashboard.application.merchant.service.accessor.MerchantReader
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,13 +13,14 @@ import org.springframework.transaction.annotation.Transactional
 class CreateCouponTemplateService(
     private val couponTemplateStore: CouponTemplateStore,
     private val merchantReader: MerchantReader,
-    private val merchantAccountReader: MerchantAccountReader,
 ) : CreateCouponTemplateUseCase {
 
     @Transactional
     override fun createCouponTemplate(command: CreateCouponTemplateCommand): CreateCouponTemplateResult {
-        merchantReader.readById(command.merchantId)
-        merchantAccountReader.readByMerchantIdAndAccountId(command.merchantId, command.accountId)
+        val merchant = merchantReader.readById(command.merchantId)
+        if (merchant.hasAccount(command.accountId)) {
+            throw UnauthorizedMerchantAccountException()
+        }
 
         val couponTemplate = CouponTemplateMapper.toCouponTemplate(command)
         val savedCouponTemplate = couponTemplateStore.create(couponTemplate)

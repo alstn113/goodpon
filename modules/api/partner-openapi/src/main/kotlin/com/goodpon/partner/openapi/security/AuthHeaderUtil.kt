@@ -4,15 +4,22 @@ import jakarta.servlet.http.HttpServletRequest
 
 object AuthHeaderUtil {
 
-    private const val AUTHORIZATION_HEADER = "Authorization"
-    private const val BEARER_PREFIX = "Bearer "
+    private const val CLIENT_ID_HEADER = "X-Goodpon-Client-Id"
+    private const val CLIENT_SECRET_PREFIX = "X-Goodpon-Client-Secret"
 
-    fun extractBearerToken(request: HttpServletRequest): String? {
-        val authHeader = request.getHeader(AUTHORIZATION_HEADER)
-        if (authHeader.isNullOrBlank()) return null
-        if (!authHeader.startsWith(BEARER_PREFIX)) return null
+    fun extractClientId(request: HttpServletRequest): String? {
+        return extractHeader(request, CLIENT_ID_HEADER)
+    }
 
-        val token = authHeader.removePrefix(BEARER_PREFIX).trim()
-        return token.ifBlank { null }
+    fun extractClientSecret(request: HttpServletRequest): String? {
+        return extractHeader(request, CLIENT_SECRET_PREFIX)
+    }
+
+    private fun extractHeader(request: HttpServletRequest, headerName: String): String? {
+        val header = request.getHeader(headerName)
+        if (header.isNullOrBlank()) {
+            return null
+        }
+        return header.trim()
     }
 }

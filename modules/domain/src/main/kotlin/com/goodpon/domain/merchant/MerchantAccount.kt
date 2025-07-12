@@ -14,6 +14,13 @@ data class MerchantAccount private constructor(
             )
         }
 
+        fun createStaff(accountId: Long): MerchantAccount {
+            return MerchantAccount(
+                accountId = accountId,
+                role = MerchantAccountRole.STAFF
+            )
+        }
+
         fun reconstruct(id: Long, accountId: Long, role: MerchantAccountRole): MerchantAccount {
             return MerchantAccount(
                 id = id,

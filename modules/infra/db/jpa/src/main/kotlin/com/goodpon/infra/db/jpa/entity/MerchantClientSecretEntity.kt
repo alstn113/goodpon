@@ -12,11 +12,11 @@ class MerchantClientSecretEntity(
     var merchant: MerchantEntity? = null,
 
     @Column(nullable = false)
-    val key: String,
+    val secret: String,
 
-    @Column(nullable = false)
+    @Column
     var expiredAt: LocalDateTime?,
-) {
+) : AuditableEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ class MerchantClientSecretEntity(
     fun toDomain(): MerchantClientSecret {
         return MerchantClientSecret.reconstruct(
             id = id,
-            key = key,
+            secret = secret,
             expiredAt = expiredAt
         )
     }
@@ -37,7 +37,7 @@ class MerchantClientSecretEntity(
     companion object {
         fun fromDomain(domain: MerchantClientSecret, merchantEntity: MerchantEntity): MerchantClientSecretEntity {
             return MerchantClientSecretEntity(
-                key = domain.key,
+                secret = domain.secret,
                 expiredAt = domain.expiredAt,
                 merchant = merchantEntity
             )

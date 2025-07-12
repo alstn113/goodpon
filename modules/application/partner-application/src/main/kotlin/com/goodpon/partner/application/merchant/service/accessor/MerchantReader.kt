@@ -12,8 +12,8 @@ class MerchantReader(
 ) {
 
     @Transactional(readOnly = true)
-    fun readBySecretKey(secretKey: String): Merchant {
-        return merchantRepository.findBySecretKey(secretKey)
+    fun readByClientId(clientId: String): Merchant {
+        return merchantRepository.findByClientId(clientId)
             ?: throw MerchantNotFoundException()
     }
 }

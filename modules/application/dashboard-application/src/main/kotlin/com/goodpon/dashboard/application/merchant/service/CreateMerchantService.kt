@@ -4,7 +4,6 @@ import com.goodpon.dashboard.application.account.service.accessor.AccountReader
 import com.goodpon.dashboard.application.merchant.port.`in`.CreateMerchantUseCase
 import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantCommand
 import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantResult
-import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantResult.MerchantOwnerInfo
 import com.goodpon.dashboard.application.merchant.service.accessor.MerchantStore
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,22 +17,8 @@ class CreateMerchantService(
     @Transactional
     override fun createMerchant(command: CreateMerchantCommand): CreateMerchantResult {
         val account = accountReader.readById(command.accountId)
-        val (merchant, merchantAccount) = merchantStore.createMerchant(
-            merchantName = command.name,
-            account = account
-        )
+        val merchant = merchantStore.createMerchant(command.name, account)
 
-        val merchantOwnerInfo = MerchantOwnerInfo(
-            id = merchantAccount.id,
-            accountId = account.id,
-            role = merchantAccount.role,
-        )
-
-        return CreateMerchantResult(
-            id = merchant.id,
-            name = merchant.name,
-            secretKey = merchant.secretKey,
-            accounts = listOf(merchantOwnerInfo)
-        )
+        return CreateMerchantResult.from(merchant)
     }
 }

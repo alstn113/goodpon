@@ -4,22 +4,30 @@ import java.time.LocalDateTime
 
 data class MerchantClientSecret private constructor(
     val id: Long = 0,
-    val key: String,
+    val secret: String,
     val expiredAt: LocalDateTime?,
 ) {
 
+    fun expire(expiredAt: LocalDateTime): MerchantClientSecret {
+        return this.copy(expiredAt = expiredAt)
+    }
+
+    fun isExpired(): Boolean {
+        return expiredAt != null
+    }
+
     companion object {
-        fun create(key: String): MerchantClientSecret {
+        fun create(secret: String): MerchantClientSecret {
             return MerchantClientSecret(
-                key = key,
+                secret = secret,
                 expiredAt = null
             )
         }
 
-        fun reconstruct(id: Long, key: String, expiredAt: LocalDateTime?): MerchantClientSecret {
+        fun reconstruct(id: Long, secret: String, expiredAt: LocalDateTime?): MerchantClientSecret {
             return MerchantClientSecret(
                 id = id,
-                key = key,
+                secret = secret,
                 expiredAt = expiredAt
             )
         }

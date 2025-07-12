@@ -10,7 +10,7 @@ class MerchantJpaAdapter(
     private val merchantCoreRepository: MerchantCoreRepository,
 ) : MerchantRepository {
 
-    override fun findBySecretKey(secretKey: String): Merchant? {
-        return merchantCoreRepository.findBySecretKey(secretKey)
+    override fun findByClientId(clientId: String): Merchant? {
+        return merchantCoreRepository.finByClientId(clientId)
     }
 }

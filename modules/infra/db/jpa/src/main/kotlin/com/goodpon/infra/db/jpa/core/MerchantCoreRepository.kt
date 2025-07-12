@@ -11,6 +11,7 @@ import com.goodpon.infra.db.jpa.repository.MerchantJpaRepository
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class MerchantCoreRepository(
@@ -19,7 +20,8 @@ class MerchantCoreRepository(
     private val merchantClientSecretJpaRepository: MerchantClientSecretJpaRepository,
 ) {
 
-    fun save(merchant: Merchant): Merchant? {
+    @Transactional
+    fun save(merchant: Merchant): Merchant {
         val isNew = merchant.id == 0L
 
         val savedMerchantEntity = if (isNew) {
@@ -61,11 +63,25 @@ class MerchantCoreRepository(
         )
     }
 
+    @Transactional(readOnly = true)
     fun findById(id: Long): Merchant? {
         val merchantEntity = merchantJpaRepository.findByIdOrNull(id)
             ?: return null
         val accounts = merchantAccountJpaRepository.findByMerchantId(id)
         val secrets = merchantClientSecretJpaRepository.findByMerchantId(id)
+
+        return merchantEntity.toDomain(
+            accounts = accounts.map { it.toDomain() },
+            secrets = secrets.map { it.toDomain() }
+        )
+    }
+
+    @Transactional(readOnly = true)
+    fun finByClientId(clientId: String): Merchant? {
+        val merchantEntity = merchantJpaRepository.findByClientId(clientId)
+            ?: return null
+        val accounts = merchantAccountJpaRepository.findByMerchantId(merchantEntity.id)
+        val secrets = merchantClientSecretJpaRepository.findByMerchantId(merchantEntity.id)
 
         return merchantEntity.toDomain(
             accounts = accounts.map { it.toDomain() },
