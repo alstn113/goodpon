@@ -1,7 +1,9 @@
 package com.goodpon.dashboard.application.coupon.service
 
 import com.goodpon.dashboard.application.coupon.port.`in`.ExpireCouponAndTemplateUseCase
-import com.goodpon.dashboard.application.coupon.service.accessor.*
+import com.goodpon.dashboard.application.coupon.service.accessor.CouponHistoryAccessor
+import com.goodpon.dashboard.application.coupon.service.accessor.CouponTemplateAccessor
+import com.goodpon.dashboard.application.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import org.springframework.stereotype.Service

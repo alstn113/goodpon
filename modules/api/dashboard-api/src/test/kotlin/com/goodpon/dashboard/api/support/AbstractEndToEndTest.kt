@@ -9,7 +9,6 @@ import com.goodpon.infra.db.jpa.MySQLDataCleanupExtension
 import com.goodpon.infra.redis.RedisContainerInitializer
 import com.goodpon.infra.redis.RedisDataCleanupExtension
 import com.ninjasquad.springmockk.MockkBean
-import com.ninjasquad.springmockk.SpykBean
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.builder.ResponseSpecBuilder

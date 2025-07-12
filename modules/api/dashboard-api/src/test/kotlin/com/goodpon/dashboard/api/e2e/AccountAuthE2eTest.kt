@@ -7,8 +7,6 @@ import com.goodpon.dashboard.api.controller.v1.auth.dto.VerifyEmailRequest
 import com.goodpon.dashboard.api.support.AbstractEndToEndTest
 import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpResult
 import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
-import com.goodpon.dashboard.application.auth.service.VerificationTokenGenerator
-import com.ninjasquad.springmockk.MockkBean
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.restassured.RestAssured.given

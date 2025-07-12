@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class AccountAccessor(
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
 ) {
 
     @Transactional(readOnly = true)

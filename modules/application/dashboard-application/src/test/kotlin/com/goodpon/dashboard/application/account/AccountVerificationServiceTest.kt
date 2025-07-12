@@ -1,7 +1,7 @@
 package com.goodpon.dashboard.application.account
 
-import com.goodpon.dashboard.application.account.service.accessor.AccountAccessor
 import com.goodpon.dashboard.application.account.service.AccountVerificationService
+import com.goodpon.dashboard.application.account.service.accessor.AccountAccessor
 import com.goodpon.domain.account.Account
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
