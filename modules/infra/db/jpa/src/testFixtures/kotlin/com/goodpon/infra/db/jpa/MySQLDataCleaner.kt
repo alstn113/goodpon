@@ -21,7 +21,9 @@ class MySQLDataCleaner(
     }
 
     private fun truncateAllTables() {
+        // 전체 추상 테스트 클래스에서 testcontainers 공유로 인해 flyway_schema_history 은 유지한다.
         val tableNames = getTableNames()
+            .filter { it != "flyway_schema_history" }
         tableNames.forEach { tableName ->
             em.createNativeQuery("TRUNCATE TABLE $tableName;").executeUpdate() // ``는 예약어 충돌 방지
         }

@@ -4,9 +4,7 @@ import com.goodpon.dashboard.api.support.AbstractIntegrationTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
 import com.goodpon.dashboard.application.auth.port.`in`.ResendVerificationEmailUseCase
 import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
-import com.goodpon.dashboard.application.auth.service.listener.VerificationEmailEventListener
 import com.goodpon.domain.account.Account
-import com.ninjasquad.springmockk.MockkBean
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 
@@ -14,9 +12,6 @@ class ResendVerificationEmailUseCaseIT(
     private val resendVerificationEmailUseCase: ResendVerificationEmailUseCase,
     private val accountRepository: AccountRepository,
 ) : AbstractIntegrationTest() {
-
-    @MockkBean
-    private lateinit var verificationEmailEventListener: VerificationEmailEventListener
 
     @Test
     fun `인증 이메일에 대한 재전송을 요청할 수 있다`() {

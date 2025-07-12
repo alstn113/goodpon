@@ -18,9 +18,6 @@ import org.junit.jupiter.api.Test
 
 class AccountAuthE2eTest : AbstractEndToEndTest() {
 
-    @MockkBean
-    private lateinit var verificationTokenGenerator: VerificationTokenGenerator
-
     @Test
     fun `계정 인증 시나리오`() {
         val email = "test@goodpon.site"

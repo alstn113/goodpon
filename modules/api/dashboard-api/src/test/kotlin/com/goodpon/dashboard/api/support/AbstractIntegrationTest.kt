@@ -1,9 +1,11 @@
 package com.goodpon.dashboard.api.support
 
+import com.goodpon.dashboard.application.auth.service.listener.VerificationEmailEventListener
 import com.goodpon.infra.db.jpa.MySQLContainerInitializer
 import com.goodpon.infra.db.jpa.MySQLDataCleanupExtension
 import com.goodpon.infra.redis.RedisContainerInitializer
 import com.goodpon.infra.redis.RedisDataCleanupExtension
+import com.ninjasquad.springmockk.MockkBean
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
@@ -23,4 +25,8 @@ import org.springframework.test.context.TestConstructor
     RedisDataCleanupExtension::class
 )
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-abstract class AbstractIntegrationTest
+abstract class AbstractIntegrationTest {
+
+    @MockkBean
+    protected lateinit var verificationEmailEventListener: VerificationEmailEventListener
+}

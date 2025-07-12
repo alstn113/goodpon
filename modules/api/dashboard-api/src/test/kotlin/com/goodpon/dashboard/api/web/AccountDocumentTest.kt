@@ -1,6 +1,5 @@
 package com.goodpon.dashboard.api.web
 
-import com.epages.restdocs.apispec.ResourceDocumentation.headerWithName
 import com.epages.restdocs.apispec.ResourceSnippetParameters
 import com.epages.restdocs.apispec.Schema
 import com.goodpon.dashboard.api.controller.v1.account.dto.SignUpRequest
@@ -179,7 +178,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
         val result = mockMvc.perform(
             RestDocumentationRequestBuilders
                 .get("/v1/accounts")
-                .header("Authorization", "Bearer access-token")
+                .withAuthHeader()
                 .contentType(MediaType.APPLICATION_JSON)
         )
 
@@ -201,7 +200,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
                 .tag("Account")
                 .summary("내 계정 정보 조회")
                 .description("내 계정 조회 API")
-                .requestHeaders(headerWithName("Authorization").description("인증 토큰 (Bearer {access-token})"))
+                .requestHeaders(authHeaderFields())
                 .responseSchema(Schema("ApiResponse<AccountInfo>"))
                 .responseFields(*getAccountInfoSuccessResponseFields().toTypedArray())
                 .build()

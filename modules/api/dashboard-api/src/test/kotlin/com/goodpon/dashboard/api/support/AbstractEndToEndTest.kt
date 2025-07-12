@@ -3,10 +3,13 @@ package com.goodpon.dashboard.api.support
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.dashboard.api.response.ApiResponse
+import com.goodpon.dashboard.application.auth.service.VerificationTokenGenerator
 import com.goodpon.infra.db.jpa.MySQLContainerInitializer
 import com.goodpon.infra.db.jpa.MySQLDataCleanupExtension
 import com.goodpon.infra.redis.RedisContainerInitializer
 import com.goodpon.infra.redis.RedisDataCleanupExtension
+import com.ninjasquad.springmockk.MockkBean
+import com.ninjasquad.springmockk.SpykBean
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.builder.ResponseSpecBuilder
@@ -38,6 +41,9 @@ import org.springframework.test.context.TestConstructor
 )
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 abstract class AbstractEndToEndTest {
+
+    @MockkBean
+    protected lateinit var verificationTokenGenerator: VerificationTokenGenerator
 
     @Autowired
     lateinit var objectMapper: ObjectMapper

@@ -5,8 +5,6 @@ import com.goodpon.dashboard.application.account.port.`in`.SignUpUseCase
 import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpCommand
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
 import com.goodpon.dashboard.application.auth.service.event.AccountCreatedEvent
-import com.goodpon.dashboard.application.auth.service.listener.VerificationEmailEventListener
-import com.ninjasquad.springmockk.MockkBean
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.mockk.verify
@@ -16,9 +14,6 @@ class SignUpUseCaseIT(
     private val signUpUseCase: SignUpUseCase,
     private val accountRepository: AccountRepository,
 ) : AbstractIntegrationTest() {
-
-    @MockkBean
-    private lateinit var verificationEmailEventListener: VerificationEmailEventListener
 
     @Test
     fun `회원 가입을 할 수 있다`() {

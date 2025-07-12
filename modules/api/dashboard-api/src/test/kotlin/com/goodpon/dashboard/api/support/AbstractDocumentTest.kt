@@ -1,6 +1,8 @@
 package com.goodpon.dashboard.api.support
 
+import com.epages.restdocs.apispec.HeaderDescriptorWithType
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
+import com.epages.restdocs.apispec.ResourceDocumentation.headerWithName
 import com.epages.restdocs.apispec.ResourceDocumentation.resource
 import com.epages.restdocs.apispec.ResourceSnippetParameters
 import org.junit.jupiter.api.BeforeEach
@@ -32,8 +34,8 @@ abstract class AbstractDocumentTest : AbstractWebTest() {
             .build()
     }
 
-    fun MockHttpServletRequestBuilder.withAuthHeader(token: String): MockHttpServletRequestBuilder {
-        return this.header("Authorization", "Bearer $token")
+    fun MockHttpServletRequestBuilder.withAuthHeader(): MockHttpServletRequestBuilder {
+        return this.header("Authorization", "Bearer {access-token}")
     }
 
     fun ResultActions.andDocument(
@@ -48,6 +50,10 @@ abstract class AbstractDocumentTest : AbstractWebTest() {
                 resource(resourceSnippetParameters)
             )
         )
+    }
+
+    fun authHeaderFields(): HeaderDescriptorWithType {
+        return headerWithName("Authorization").description("인증 토큰 (Bearer {access-token})")
     }
 
     fun failureResponseFields() = listOf(
