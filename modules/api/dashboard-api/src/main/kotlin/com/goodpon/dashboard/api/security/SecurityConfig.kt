@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.access.ExceptionTranslationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
@@ -28,22 +28,24 @@ class SecurityConfig(
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        val tokenAllowListPatterns = listOf(
+            "/v1/accounts/sign-up",
+            "/v1/auth/login",
+            "/v1/auth/verify",
+            "/v1/auth/verify/resend",
+            "/api-docs/**",
+        )
+        val verifiedAllowListPatterns = tokenAllowListPatterns + listOf(
+            "/v1/accounts",
+        )
+
         val tokenAuthenticationFilter = TokenAuthenticationFilter(
             tokenProvider = tokenProvider,
             getAccountInfoUseCase = getAccountInfoUseCase,
             authenticationEntryPoint = authenticationEntryPoint,
+            allowListPatterns = tokenAllowListPatterns,
         )
-
-        val accountVerifierFilter = AccountVerifiedFilter(
-            allowListPatterns = listOf(
-                "/v1/auth/login",
-                "/v1/auth/verify",
-                "/v1/auth/verify/resend",
-                "/v1/accounts/sign-up",
-                "/v1/accounts",
-                "/api-docs/**",
-            )
-        )
+        val accountVerifierFilter = AccountVerifiedFilter(allowListPatterns = verifiedAllowListPatterns)
 
         http
             .httpBasic { it.disable() }
@@ -54,20 +56,15 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers(
-                        "/v1/accounts/sign-up",
-                        "/v1/auth/login",
-                        "/v1/auth/verify",
-                        "/v1/auth/verify/resend",
-                        "/api-docs/**",
-                    ).permitAll()
+                    .requestMatchers(* tokenAllowListPatterns.toTypedArray()).permitAll()
                     .anyRequest().authenticated()
             }
             .exceptionHandling {
                 it.authenticationEntryPoint(authenticationEntryPoint)
                 it.accessDeniedHandler(accessDeniedHandler)
             }
-            .addFilterAfter(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            // 예외 처리를 위해 ExceptionTranslationFilter 뒤에 Custom Filter 들을 위치시킴
+            .addFilterAfter(tokenAuthenticationFilter, ExceptionTranslationFilter::class.java)
             .addFilterAfter(accountVerifierFilter, tokenAuthenticationFilter::class.java)
 
         return http.build()

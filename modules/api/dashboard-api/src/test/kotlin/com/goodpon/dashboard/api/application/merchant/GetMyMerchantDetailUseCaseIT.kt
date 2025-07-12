@@ -31,7 +31,6 @@ class GetMyMerchantDetailUseCaseIT(
         val savedMerchant = merchantRepository.save(issuedMerchant)
 
         // when
-        print("상점 상세 정보 조회: accountId=${savedAccount.id}, merchantId=${savedMerchant.id}")
         val detail = getMyMerchantDetailUseCase
             .getMyMerchantDetail(accountId = savedAccount.id, merchantId = savedMerchant.id)
 

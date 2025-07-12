@@ -16,13 +16,22 @@ import org.springframework.security.authentication.CredentialsExpiredException
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.AuthenticationEntryPoint
+import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 
 class TokenAuthenticationFilter(
     private val tokenProvider: TokenProvider,
     private val getAccountInfoUseCase: GetAccountInfoUseCase,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
+    private val allowListPatterns: List<String>,
 ) : OncePerRequestFilter() {
+
+    private val pathMatcher = AntPathMatcher()
+
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        val requestUri = request.requestURI
+        return allowListPatterns.any { pattern -> pathMatcher.match(pattern, requestUri) }
+    }
 
     override fun doFilterInternal(
         request: HttpServletRequest,

@@ -10,7 +10,7 @@ import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 
 class AccountVerifiedFilter(
-    private val allowListPatterns: List<String> = emptyList(),
+    private val allowListPatterns: List<String>,
 ) : OncePerRequestFilter() {
 
     private val pathMatcher = AntPathMatcher()

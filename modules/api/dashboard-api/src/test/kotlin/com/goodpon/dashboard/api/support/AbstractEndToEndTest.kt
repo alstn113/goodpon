@@ -3,6 +3,7 @@ package com.goodpon.dashboard.api.support
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.dashboard.api.response.ApiResponse
+import com.goodpon.dashboard.api.response.ErrorMessage
 import com.goodpon.dashboard.application.auth.service.VerificationTokenGenerator
 import com.goodpon.infra.db.jpa.MySQLContainerInitializer
 import com.goodpon.infra.db.jpa.MySQLDataCleanupExtension
@@ -67,7 +68,14 @@ abstract class AbstractEndToEndTest {
     }
 
     final inline fun <reified T> Response.toApiResponse(): T {
-        val apiResponse = objectMapper.readValue(this.asString(), object : TypeReference<ApiResponse<Any>>() {})
-        return objectMapper.convertValue(apiResponse.data, T::class.java)
+        val typeRef = object : TypeReference<ApiResponse<T>>() {}
+        val apiResponse: ApiResponse<T> = objectMapper.readValue(this.asString(), typeRef)
+        return apiResponse.data ?: throw IllegalStateException("응답 데이터가 없습니다.")
+    }
+
+    final inline fun <reified T> Response.toApiErrorResponse(): ErrorMessage {
+        val typeRef = object : TypeReference<ApiResponse<T>>() {}
+        val body = this.asString()
+        return objectMapper.readValue(body, typeRef).error!!
     }
 }
