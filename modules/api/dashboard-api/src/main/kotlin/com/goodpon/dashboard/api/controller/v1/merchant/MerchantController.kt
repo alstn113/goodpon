@@ -4,7 +4,11 @@ import com.goodpon.dashboard.api.controller.v1.merchant.dto.CreateMerchantReques
 import com.goodpon.dashboard.api.response.ApiResponse
 import com.goodpon.dashboard.api.security.AccountPrincipal
 import com.goodpon.dashboard.application.merchant.port.`in`.CreateMerchantUseCase
+import com.goodpon.dashboard.application.merchant.port.`in`.GetMyMerchantDetailUseCase
+import com.goodpon.dashboard.application.merchant.port.`in`.GetMyMerchantsUseCase
 import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantResult
+import com.goodpon.dashboard.application.merchant.port.out.dto.MyMerchantDetail
+import com.goodpon.dashboard.application.merchant.port.out.dto.MyMerchantSummary
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class MerchantController(
     private val createMerchantUseCase: CreateMerchantUseCase,
+    private val getMyMerchantsUseCase: GetMyMerchantsUseCase,
+    private val getMyMerchantDetailUseCase: GetMyMerchantDetailUseCase,
 ) {
 
     @PostMapping("/v1/merchants")
@@ -28,13 +34,22 @@ class MerchantController(
     @GetMapping("/v1/merchants")
     fun getMyMerchants(
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
-    ) {
+    ): ResponseEntity<ApiResponse<List<MyMerchantSummary>>> {
+        val result = getMyMerchantsUseCase.getMyMerchants(accountPrincipal.id)
+
+        return ResponseEntity.ok(ApiResponse.success(result))
     }
 
     @GetMapping("/v1/merchants/{merchantId}")
     fun getMyMerchant(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
-    ) {
+    ): ResponseEntity<ApiResponse<MyMerchantDetail>> {
+        val result = getMyMerchantDetailUseCase.getMyMerchantDetail(
+            accountId = accountPrincipal.id,
+            merchantId = merchantId,
+        )
+
+        return ResponseEntity.ok(ApiResponse.success(result))
     }
 }
