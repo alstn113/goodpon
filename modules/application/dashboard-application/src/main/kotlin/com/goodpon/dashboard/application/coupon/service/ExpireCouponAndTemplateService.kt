@@ -10,11 +10,9 @@ import java.time.LocalDateTime
 
 @Service
 class ExpireCouponAndTemplateService(
-    private val userCouponReader: UserCouponReader,
-    private val userCouponStore: UserCouponStore,
-    private val couponHistoryStore: CouponHistoryStore,
-    private val couponTemplateStore: CouponTemplateStore,
-    private val couponTemplateReader: CouponTemplateReader,
+    private val userCouponAccessor: UserCouponAccessor,
+    private val couponHistoryAccessor: CouponHistoryAccessor,
+    private val couponTemplateAccessor: CouponTemplateAccessor,
 ) : ExpireCouponAndTemplateUseCase {
 
     @Transactional
@@ -26,23 +24,23 @@ class ExpireCouponAndTemplateService(
     }
 
     private fun expireUserCoupons(expireCutoff: LocalDateTime, recordedAt: LocalDateTime) {
-        val issuedCoupons = userCouponReader.readByStatusAndExpiresAtLessThanEqual(
+        val issuedCoupons = userCouponAccessor.readByStatusAndExpiresAtLessThanEqual(
             status = UserCouponStatus.ISSUED,
             expiresAt = expireCutoff
         )
         issuedCoupons.forEach { coupon ->
             coupon.expire()
-            couponHistoryStore.recordExpired(userCouponId = coupon.id, recordedAt = recordedAt)
+            couponHistoryAccessor.recordExpired(userCouponId = coupon.id, recordedAt = recordedAt)
         }
-        userCouponStore.saveAll(issuedCoupons)
+        userCouponAccessor.saveAll(issuedCoupons)
     }
 
     private fun expireCouponTemplates(expireCutoff: LocalDateTime) {
-        val issuableTemplates = couponTemplateReader.readByStatusAndAbsoluteExpiresAtLessThanEqual(
+        val issuableTemplates = couponTemplateAccessor.readByStatusAndAbsoluteExpiresAtLessThanEqual(
             status = CouponTemplateStatus.ISSUABLE,
             absoluteExpiresAt = expireCutoff
         )
         issuableTemplates.forEach { it.expire() }
-        couponTemplateStore.saveAll(issuableTemplates)
+        couponTemplateAccessor.saveAll(issuableTemplates)
     }
 }

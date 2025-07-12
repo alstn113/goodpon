@@ -12,6 +12,8 @@ import com.goodpon.dashboard.application.auth.port.`in`.ResendVerificationEmailU
 import com.goodpon.dashboard.application.auth.port.`in`.VerifyEmailUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.CreateCouponTemplateUseCase
 import com.goodpon.dashboard.application.merchant.port.`in`.CreateMerchantUseCase
+import com.goodpon.dashboard.application.merchant.port.`in`.GetMyMerchantDetailUseCase
+import com.goodpon.dashboard.application.merchant.port.`in`.GetMyMerchantsUseCase
 import com.ninjasquad.springmockk.MockkBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -52,5 +54,11 @@ abstract class AbstractWebTest {
     protected lateinit var createCouponTemplateUseCase: CreateCouponTemplateUseCase
 
     @MockkBean
-    protected lateinit var merchantUseCase: CreateMerchantUseCase
+    protected lateinit var createMerchantUseCase: CreateMerchantUseCase
+
+    @MockkBean
+    protected lateinit var getMyMerchantsUseCase: GetMyMerchantsUseCase
+
+    @MockkBean
+    protected lateinit var getMyMerchantDetailUseCase: GetMyMerchantDetailUseCase
 }

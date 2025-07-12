@@ -8,6 +8,8 @@ import com.goodpon.infra.db.jpa.entity.MerchantEntity
 import com.goodpon.infra.db.jpa.repository.MerchantAccountJpaRepository
 import com.goodpon.infra.db.jpa.repository.MerchantClientSecretJpaRepository
 import com.goodpon.infra.db.jpa.repository.MerchantJpaRepository
+import com.goodpon.infra.db.jpa.repository.dto.MyMerchantDetailDto
+import com.goodpon.infra.db.jpa.repository.dto.MyMerchantSummaryDto
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -86,6 +88,31 @@ class MerchantCoreRepository(
         return merchantEntity.toDomain(
             accounts = accounts.map { it.toDomain() },
             secrets = secrets.map { it.toDomain() }
+        )
+    }
+
+    @Transactional(readOnly = true)
+    fun findMyMerchants(accountId: Long): List<MyMerchantSummaryDto> {
+        return merchantJpaRepository.findMyMerchants(accountId)
+    }
+
+    @Transactional(readOnly = true)
+    fun findMyMerchantDetailDto(accountId: Long, merchantId: Long): MyMerchantDetailDto? {
+        val merchantSummary = merchantJpaRepository
+            .findMyMerchantSummaryDto(merchantId, accountId) ?: return null
+        val accounts = merchantAccountJpaRepository
+            .findMyMerchantAccountDetailsDto(merchantId = merchantSummary.id, accountId = accountId)
+        val secrets = merchantClientSecretJpaRepository
+            .findMyMerchantClientSecretDetailsDto(merchantId = merchantSummary.id, accountId = accountId)
+
+        return MyMerchantDetailDto(
+            id = merchantSummary.id,
+            name = merchantSummary.name,
+            clientId = merchantSummary.clientId,
+            accounts = accounts,
+            clientSecrets = secrets,
+            createdAt = merchantSummary.createdAt,
+            updatedAt = merchantSummary.updatedAt
         )
     }
 }

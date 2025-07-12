@@ -5,7 +5,10 @@ import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.partner.application.coupon.port.`in`.IssueCouponUseCase
 import com.goodpon.partner.application.coupon.port.`in`.dto.IssueCouponCommand
 import com.goodpon.partner.application.coupon.port.`in`.dto.IssueCouponResult
-import com.goodpon.partner.application.coupon.service.accessor.*
+import com.goodpon.partner.application.coupon.service.accessor.CouponHistoryAccessor
+import com.goodpon.partner.application.coupon.service.accessor.CouponTemplateAccessor
+import com.goodpon.partner.application.coupon.service.accessor.CouponTemplateStatsAccessor
+import com.goodpon.partner.application.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.partner.application.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.partner.application.coupon.service.exception.UserCouponAlreadyIssuedException
 import org.springframework.stereotype.Service
@@ -14,20 +17,18 @@ import java.time.LocalDateTime
 
 @Service
 class IssueCouponService(
-    private val couponTemplateReader: CouponTemplateReader,
-    private val couponTemplateStatsReader: CouponTemplateStatsReader,
-    private val couponHistoryStore: CouponHistoryStore,
-    private val userCouponStore: UserCouponStore,
-    private val couponTemplateStatsStore: CouponTemplateStatsStore,
-    private val userCouponReader: UserCouponReader,
+    private val couponTemplateAccessor: CouponTemplateAccessor,
+    private val couponTemplateStatsAccessor: CouponTemplateStatsAccessor,
+    private val couponHistoryAccessor: CouponHistoryAccessor,
+    private val userCouponAccessor: UserCouponAccessor,
 ) : IssueCouponUseCase {
 
     @Transactional
     override fun issueCoupon(command: IssueCouponCommand): IssueCouponResult {
         val now = LocalDateTime.now()
 
-        val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(command.couponTemplateId)
-        val couponTemplate = couponTemplateReader.readById(command.couponTemplateId)
+        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId)
+        val couponTemplate = couponTemplateAccessor.readById(command.couponTemplateId)
 
         validateCouponTemplateOwnership(couponTemplate, command.merchantId)
         validateAlreadyIssued(command.userId, command.couponTemplateId)
@@ -38,10 +39,10 @@ class IssueCouponService(
             currentIssueCount = stats.issueCount,
             issueAt = now
         )
-        userCouponStore.createUserCoupon(userCoupon)
+        userCouponAccessor.createUserCoupon(userCoupon)
 
-        couponHistoryStore.recordIssued(userCouponId = userCoupon.id, recordedAt = now)
-        couponTemplateStatsStore.incrementIssueCount(stats)
+        couponHistoryAccessor.recordIssued(userCouponId = userCoupon.id, recordedAt = now)
+        couponTemplateStatsAccessor.incrementIssueCount(stats)
 
         return IssueCouponResult(
             userCouponId = userCoupon.id,
@@ -63,7 +64,7 @@ class IssueCouponService(
     }
 
     private fun validateAlreadyIssued(userId: String, couponTemplateId: Long) {
-        if (userCouponReader.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)) {
+        if (userCouponAccessor.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)) {
             throw UserCouponAlreadyIssuedException()
         }
     }

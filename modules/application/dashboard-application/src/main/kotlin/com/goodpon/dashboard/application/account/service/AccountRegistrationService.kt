@@ -1,7 +1,6 @@
 package com.goodpon.dashboard.application.account.service
 
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
-import com.goodpon.dashboard.application.account.service.accessor.AccountStore
+import com.goodpon.dashboard.application.account.service.accessor.AccountAccessor
 import com.goodpon.dashboard.application.account.service.exception.AccountEmailExistsException
 import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
 import com.goodpon.domain.account.Account
@@ -10,8 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AccountRegistrationService(
-    private val accountReader: AccountReader,
-    private val accountStore: AccountStore,
+    private val accountAccessor: AccountAccessor,
     private val passwordEncoder: PasswordEncoder,
 ) {
 
@@ -22,11 +20,11 @@ class AccountRegistrationService(
         val hashedPassword = passwordEncoder.encode(password)
         val account = Account.create(email, hashedPassword, name)
 
-        return accountStore.create(account)
+        return accountAccessor.create(account)
     }
 
     private fun validateUniqueEmail(email: String) {
-        if (accountReader.existsByEmail(email)) {
+        if (accountAccessor.existsByEmail(email)) {
             throw AccountEmailExistsException()
         }
     }

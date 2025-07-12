@@ -1,8 +1,7 @@
 package com.goodpon.dashboard.application.account
 
+import com.goodpon.dashboard.application.account.service.accessor.AccountAccessor
 import com.goodpon.dashboard.application.account.service.AccountVerificationService
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
-import com.goodpon.dashboard.application.account.service.accessor.AccountStore
 import com.goodpon.domain.account.Account
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -14,9 +13,8 @@ import java.time.LocalDateTime
 
 class AccountVerificationServiceTest : DescribeSpec({
 
-    val accountReader = mockk<AccountReader>()
-    val accountStore = mockk<AccountStore>()
-    val accountVerificationService = AccountVerificationService(accountReader, accountStore)
+    val accountAccessor = mockk<AccountAccessor>()
+    val accountVerificationService = AccountVerificationService(accountAccessor)
 
     beforeEach { clearAllMocks() }
 
@@ -33,8 +31,8 @@ class AccountVerificationServiceTest : DescribeSpec({
                 verifiedAt = verifiedAt
             )
 
-            every { accountReader.readById(any()) } returns account
-            every { accountStore.update(any()) } returns verifiedAccount
+            every { accountAccessor.readById(any()) } returns account
+            every { accountAccessor.update(any()) } returns verifiedAccount
 
             val result = accountVerificationService.verifyEmail(1L, verifiedAt)
 
@@ -42,8 +40,8 @@ class AccountVerificationServiceTest : DescribeSpec({
             result.verifiedAt shouldBe verifiedAt
 
             verify {
-                accountReader.readById(1L)
-                accountStore.update(
+                accountAccessor.readById(1L)
+                accountAccessor.update(
                     match { it.id == account.id && it.verified && it.verifiedAt == verifiedAt }
                 )
             }

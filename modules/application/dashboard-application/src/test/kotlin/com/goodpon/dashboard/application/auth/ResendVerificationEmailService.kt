@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.auth
 
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
+import com.goodpon.dashboard.application.account.service.accessor.AccountAccessor
 import com.goodpon.dashboard.application.auth.service.ResendVerificationEmailService
 import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
 import com.goodpon.domain.account.Account
@@ -15,9 +15,9 @@ import org.springframework.context.ApplicationEventPublisher
 
 class ResendVerificationEmailService : DescribeSpec({
 
-    val accountReader = mockk<AccountReader>()
+    val accountAccessor = mockk<AccountAccessor>()
     val eventPublisher = mockk<ApplicationEventPublisher>(relaxed = true)
-    val resendVerificationEmailService = ResendVerificationEmailService(accountReader, eventPublisher)
+    val resendVerificationEmailService = ResendVerificationEmailService(accountAccessor, eventPublisher)
 
     beforeTest {
         clearAllMocks()
@@ -33,7 +33,7 @@ class ResendVerificationEmailService : DescribeSpec({
         context("계정이 이미 인증된 경우") {
             val verifiedAccount = account.copy(verified = true)
             beforeTest {
-                every { accountReader.readByEmail(verifiedAccount.email.value) } returns verifiedAccount
+                every { accountAccessor.readByEmail(verifiedAccount.email.value) } returns verifiedAccount
             }
 
             it("예외를 발생시킨다.") {
@@ -44,7 +44,7 @@ class ResendVerificationEmailService : DescribeSpec({
         }
         context("계정이 아직 인증되지 않은 경우") {
             beforeTest {
-                every { accountReader.readByEmail(account.email.value) } returns account.copy(verified = false)
+                every { accountAccessor.readByEmail(account.email.value) } returns account.copy(verified = false)
             }
 
             it("이메일 인증 재전송 이벤트를 발행한다.") {

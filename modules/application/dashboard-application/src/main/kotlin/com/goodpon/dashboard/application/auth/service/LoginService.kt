@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.auth.service
 
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
+import com.goodpon.dashboard.application.account.service.accessor.AccountAccessor
 import com.goodpon.dashboard.application.auth.port.`in`.LoginUseCase
 import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginCommand
 import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class LoginService(
-    private val accountReader: AccountReader,
+    private val accountAccessor: AccountAccessor,
     private val passwordEncoder: PasswordEncoder,
     private val tokenProvider: TokenProvider,
 ) : LoginUseCase {
 
     @Transactional
     override fun login(command: LoginCommand): LoginResult {
-        val account = accountReader.readByEmail(command.email)
+        val account = accountAccessor.readByEmail(command.email)
 
         if (!passwordEncoder.matches(command.password, account.password.value)) {
             throw PasswordMismatchException()

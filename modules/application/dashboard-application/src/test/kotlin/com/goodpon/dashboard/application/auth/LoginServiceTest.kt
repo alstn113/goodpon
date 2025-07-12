@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.auth
 
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
+import com.goodpon.dashboard.application.account.service.accessor.AccountAccessor
 import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginCommand
 import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
 import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
@@ -17,10 +17,10 @@ import io.mockk.mockk
 
 class LoginServiceTest : DescribeSpec({
 
-    val accountReader = mockk<AccountReader>()
+    val accountAccessor = mockk<AccountAccessor>()
     val passwordEncoder = mockk<PasswordEncoder>()
     val tokenProvider = mockk<TokenProvider>()
-    val loginService = LoginService(accountReader, passwordEncoder, tokenProvider)
+    val loginService = LoginService(accountAccessor, passwordEncoder, tokenProvider)
 
     beforeTest {
         clearAllMocks()
@@ -31,7 +31,7 @@ class LoginServiceTest : DescribeSpec({
         val account = Account.create(email = "email@goodpon.site", password = "password", name = "Test User")
 
         beforeTest {
-            every { accountReader.readByEmail(command.email) } returns account
+            every { accountAccessor.readByEmail(command.email) } returns account
         }
 
         context("비밀번호가 일치하지 않을 경우") {

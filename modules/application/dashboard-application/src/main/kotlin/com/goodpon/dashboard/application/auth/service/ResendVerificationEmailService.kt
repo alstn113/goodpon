@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.auth.service
 
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
+import com.goodpon.dashboard.application.account.service.accessor.AccountAccessor
 import com.goodpon.dashboard.application.auth.port.`in`.ResendVerificationEmailUseCase
 import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
 import com.goodpon.domain.account.exception.AccountAlreadyVerifiedException
@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ResendVerificationEmailService(
-    private val accountReader: AccountReader,
+    private val accountAccessor: AccountAccessor,
     private val eventPublisher: ApplicationEventPublisher,
 ) : ResendVerificationEmailUseCase {
 
     @Transactional(readOnly = true)
     override fun resendVerificationEmail(email: String) {
-        val account = accountReader.readByEmail(email)
+        val account = accountAccessor.readByEmail(email)
         if (account.verified) {
             throw AccountAlreadyVerifiedException()
         }

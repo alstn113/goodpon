@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-class AccountReader(
-    private val accountRepository: AccountRepository,
+class AccountAccessor(
+    private val accountRepository: AccountRepository
 ) {
 
     @Transactional(readOnly = true)
@@ -26,5 +26,15 @@ class AccountReader(
     @Transactional(readOnly = true)
     fun existsByEmail(email: String): Boolean {
         return accountRepository.existsByEmail(email)
+    }
+
+    @Transactional
+    fun create(account: Account): Account {
+        return accountRepository.save(account)
+    }
+
+    @Transactional
+    fun update(account: Account): Account {
+        return accountRepository.save(account)
     }
 }

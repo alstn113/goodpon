@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Component
-class CouponHistoryStore(
+class CouponHistoryAccessor(
     private val couponHistoryRepository: CouponHistoryRepository,
 ) {
 

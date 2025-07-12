@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-class MerchantReader(
+class MerchantAccessor(
     private val merchantRepository: MerchantRepository,
 ) {
 

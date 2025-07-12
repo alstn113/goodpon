@@ -6,7 +6,10 @@ import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.partner.application.coupon.port.`in`.RedeemCouponUseCase
 import com.goodpon.partner.application.coupon.port.`in`.dto.RedeemCouponCommand
 import com.goodpon.partner.application.coupon.port.`in`.dto.RedeemCouponResult
-import com.goodpon.partner.application.coupon.service.accessor.*
+import com.goodpon.partner.application.coupon.service.accessor.CouponHistoryAccessor
+import com.goodpon.partner.application.coupon.service.accessor.CouponTemplateAccessor
+import com.goodpon.partner.application.coupon.service.accessor.CouponTemplateStatsAccessor
+import com.goodpon.partner.application.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.partner.application.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.partner.application.coupon.service.exception.UserCouponNotOwnedByUserException
 import org.springframework.stereotype.Service
@@ -15,21 +18,19 @@ import java.time.LocalDateTime
 
 @Service
 class RedeemCouponService(
-    private val couponTemplateReader: CouponTemplateReader,
-    private val couponTemplateStatsReader: CouponTemplateStatsReader,
-    private val userCouponReader: UserCouponReader,
-    private val couponTemplateStatsStore: CouponTemplateStatsStore,
-    private val userCouponStore: UserCouponStore,
-    private val couponHistoryStore: CouponHistoryStore,
+    private val couponTemplateAccessor: CouponTemplateAccessor,
+    private val couponTemplateStatsAccessor: CouponTemplateStatsAccessor,
+    private val userCouponAccessor: UserCouponAccessor,
+    private val couponHistoryAccessor: CouponHistoryAccessor,
 ) : RedeemCouponUseCase {
 
     @Transactional
     override fun redeemCoupon(command: RedeemCouponCommand): RedeemCouponResult {
         val now = LocalDateTime.now()
 
-        val userCoupon = userCouponReader.readByIdForUpdate(command.couponId)
-        val stats = couponTemplateStatsReader.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
-        val couponTemplate = couponTemplateReader.readById(userCoupon.couponTemplateId)
+        val userCoupon = userCouponAccessor.readByIdForUpdate(command.couponId)
+        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
+        val couponTemplate = couponTemplateAccessor.readById(userCoupon.couponTemplateId)
 
         validateCouponTemplateOwnership(couponTemplate, command.merchantId)
         validateUserCouponOwnership(userCoupon, command.userId)
@@ -41,14 +42,14 @@ class RedeemCouponService(
             orderAmount = command.orderAmount,
             redeemAt = now
         )
-        val redeemedCoupon = userCouponStore.update(result.redeemedCoupon)
+        val redeemedCoupon = userCouponAccessor.update(result.redeemedCoupon)
 
-        couponHistoryStore.recordRedeemed(
+        couponHistoryAccessor.recordRedeemed(
             userCouponId = redeemedCoupon.id,
             recordedAt = now,
             orderId = command.orderId,
         )
-        couponTemplateStatsStore.incrementRedeemCount(stats)
+        couponTemplateStatsAccessor.incrementRedeemCount(stats)
 
         return RedeemCouponResult(
             couponId = redeemedCoupon.id,

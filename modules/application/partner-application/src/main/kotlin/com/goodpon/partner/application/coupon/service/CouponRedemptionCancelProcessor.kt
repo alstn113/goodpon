@@ -1,23 +1,21 @@
 package com.goodpon.partner.application.coupon.service
 
 import com.goodpon.domain.coupon.user.UserCoupon
-import com.goodpon.partner.application.coupon.service.accessor.CouponHistoryReader
-import com.goodpon.partner.application.coupon.service.accessor.CouponHistoryStore
-import com.goodpon.partner.application.coupon.service.accessor.UserCouponStore
+import com.goodpon.partner.application.coupon.service.accessor.CouponHistoryAccessor
+import com.goodpon.partner.application.coupon.service.accessor.UserCouponAccessor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
 class CouponRedemptionCancelProcessor(
-    val couponHistoryReader: CouponHistoryReader,
-    val userCouponStore: UserCouponStore,
-    val couponHistoryStore: CouponHistoryStore,
+    val couponHistoryAccessor: CouponHistoryAccessor,
+    val userCouponAccessor: UserCouponAccessor,
 ) {
 
     @Transactional
     fun process(userCoupon: UserCoupon, reason: String, cancelAt: LocalDateTime): UserCoupon {
-        val lastRedeemHistory = couponHistoryReader.readLastRedeemHistory(userCoupon.id)
+        val lastRedeemHistory = couponHistoryAccessor.readLastRedeemHistory(userCoupon.id)
 
         val canceledCoupon = cancelAndRecord(
             userCoupon = userCoupon,
@@ -41,9 +39,9 @@ class CouponRedemptionCancelProcessor(
         cancelAt: LocalDateTime,
     ): UserCoupon {
         val canceledCoupon = userCoupon.cancelRedemption()
-        val updatedCoupon = userCouponStore.update(canceledCoupon)
+        val updatedCoupon = userCouponAccessor.update(canceledCoupon)
 
-        couponHistoryStore.recordCancelRedemption(
+        couponHistoryAccessor.recordCancelRedemption(
             userCouponId = updatedCoupon.id,
             orderId = orderId,
             reason = reason,
@@ -55,9 +53,9 @@ class CouponRedemptionCancelProcessor(
     private fun expireAndRecordIfExpired(userCoupon: UserCoupon, cancelAt: LocalDateTime): UserCoupon {
         if (userCoupon.hasExpired(cancelAt)) {
             val expiredCoupon = userCoupon.expire()
-            userCouponStore.update(expiredCoupon)
+            userCouponAccessor.update(expiredCoupon)
 
-            couponHistoryStore.recordExpired(
+            couponHistoryAccessor.recordExpired(
                 userCouponId = expiredCoupon.id,
                 recordedAt = cancelAt
             )

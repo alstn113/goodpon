@@ -2,7 +2,7 @@ package com.goodpon.dashboard.application.account
 
 import com.goodpon.dashboard.application.account.port.`in`.dto.AccountInfo
 import com.goodpon.dashboard.application.account.service.GetAccountInfoService
-import com.goodpon.dashboard.application.account.service.accessor.AccountReader
+import com.goodpon.dashboard.application.account.service.accessor.AccountAccessor
 import com.goodpon.domain.account.Account
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
@@ -13,8 +13,8 @@ import io.mockk.verify
 
 class GetAccountInfoService : DescribeSpec({
 
-    val accountReader = mockk<AccountReader>()
-    val getAccountInfoService = GetAccountInfoService(accountReader)
+    val accountAccessor = mockk<AccountAccessor>()
+    val getAccountInfoService = GetAccountInfoService(accountAccessor)
 
     beforeEach { clearAllMocks() }
 
@@ -26,7 +26,7 @@ class GetAccountInfoService : DescribeSpec({
                 password = "password",
                 name = "테스터"
             ).copy(id = accountId, verified = true)
-            every { accountReader.readById(accountId) } returns account
+            every { accountAccessor.readById(accountId) } returns account
 
             val result = getAccountInfoService.getAccountInfo(accountId)
 
@@ -36,7 +36,7 @@ class GetAccountInfoService : DescribeSpec({
                 name = account.name.value,
                 verified = account.verified
             )
-            verify { accountReader.readById(accountId) }
+            verify { accountAccessor.readById(accountId) }
         }
     }
 

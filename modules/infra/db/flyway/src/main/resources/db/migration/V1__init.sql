@@ -32,6 +32,10 @@ CREATE TABLE IF NOT EXISTS merchant_accounts
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
 
+ALTER TABLE merchant_accounts
+    ADD CONSTRAINT fk_merchant_accounts_account_id_XXXX
+        FOREIGN KEY (account_id) REFERENCES accounts (id);
+
 CREATE TABLE IF NOT EXISTS merchant_client_secrets
 (
     id          BIGINT       NOT NULL AUTO_INCREMENT,
