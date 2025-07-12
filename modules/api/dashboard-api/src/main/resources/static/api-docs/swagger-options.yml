@@ -1,0 +1,9 @@
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Authorization 헤더에 'Bearer {access-token}' 형식으로 전달되는 액세스 토큰"
+
+security:
+  - bearerAuth: []

@@ -46,11 +46,11 @@ class ApiKeyAuthenticationFilter(
             val authentication = ApiKeyAuthenticationToken.of(merchantInfo.id)
             SecurityContextHolder.getContext().authentication = authentication
         } catch (e: MerchantNotFoundException) {
-            throw BadCredentialsException("가맹점을 조회하던 중 오류가 발생했습니다.", e)
+            throw BadCredentialsException("상점을 조회하던 중 오류가 발생했습니다.", e)
         } catch (e: MerchantClientSecretMismatchException) {
-            throw BadCredentialsException("가맹점의 Client Secret이 일치하지 않습니다.", e)
+            throw BadCredentialsException("상점의 Client Secret이 일치하지 않습니다.", e)
         } catch (e: Exception) {
-            throw BadCredentialsException("가맹점을 조회하던 중 알 수 없는 오류가 발생했습니다.", e)
+            throw BadCredentialsException("상점을 조회하던 중 알 수 없는 오류가 발생했습니다.", e)
         }
     }
 }

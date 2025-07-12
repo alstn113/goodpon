@@ -19,10 +19,8 @@ interface MerchantClientSecretJpaRepository : JpaRepository<MerchantClientSecret
         )
         FROM MerchantClientSecretEntity merchantClientSecret
         WHERE merchantClientSecret.merchant.id = :merchantId
+        ORDER BY merchantClientSecret.createdAt DESC
         """
     )
-    fun findMyMerchantClientSecretDetailsDto(
-        merchantId: Long,
-        accountId: Long,
-    ): List<MerchantClientSecretDetailDto>
+    fun findMyMerchantClientSecretDetailsDto(merchantId: Long): List<MerchantClientSecretDetailDto>
 }

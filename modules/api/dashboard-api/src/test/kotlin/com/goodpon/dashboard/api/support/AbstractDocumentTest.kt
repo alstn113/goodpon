@@ -5,6 +5,7 @@ import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
 import com.epages.restdocs.apispec.ResourceDocumentation.headerWithName
 import com.epages.restdocs.apispec.ResourceDocumentation.resource
 import com.epages.restdocs.apispec.ResourceSnippetParameters
+import org.apache.http.HttpHeaders
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.restdocs.RestDocumentationContextProvider
@@ -35,7 +36,7 @@ abstract class AbstractDocumentTest : AbstractWebTest() {
     }
 
     fun MockHttpServletRequestBuilder.withAuthHeader(): MockHttpServletRequestBuilder {
-        return this.header("Authorization", "Bearer {access-token}")
+        return this.header(HttpHeaders.AUTHORIZATION, "Bearer {access-token}")
     }
 
     fun ResultActions.andDocument(
@@ -53,7 +54,7 @@ abstract class AbstractDocumentTest : AbstractWebTest() {
     }
 
     fun authHeaderFields(): HeaderDescriptorWithType {
-        return headerWithName("Authorization").description("인증 토큰 (Bearer {access-token})")
+        return headerWithName(HttpHeaders.AUTHORIZATION).description("인증 토큰 (Bearer {access-token})")
     }
 
     fun failureResponseFields() = listOf(

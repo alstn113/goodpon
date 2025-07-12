@@ -1,0 +1,16 @@
+  securitySchemes:
+    clientId:
+      type: apiKey
+      name: X-Goodpon-Client-Id
+      in: header
+      description: "가맹점 클라이언트 ID를 나타내는 HTTP 헤더"
+
+    clientSecret:
+      type: apiKey
+      name: X-Goodpon-Client-Secret
+      in: header
+      description: "가맹점 클라이언트 시크릿을 나타내는 HTTP 헤더"
+
+security:
+  - clientId: []
+  - clientSecret: []

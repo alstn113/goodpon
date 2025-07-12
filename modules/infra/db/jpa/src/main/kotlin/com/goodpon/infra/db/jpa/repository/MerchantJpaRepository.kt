@@ -15,12 +15,12 @@ interface MerchantJpaRepository : JpaRepository<MerchantEntity, Long> {
         SELECT new com.goodpon.infra.db.jpa.repository.dto.MyMerchantSummaryDto(
             merchant.id,
             merchant.name,
-            merchant.createdAt,
-            merchant.updatedAt
+            merchant.createdAt
         )
         FROM MerchantEntity merchant
         JOIN MerchantAccountEntity merchantAccount ON merchantAccount.merchant.id = merchant.id
         WHERE merchantAccount.accountId = :accountId
+        ORDER BY merchant.createdAt DESC
         """
     )
     fun findMyMerchants(accountId: Long): List<MyMerchantSummaryDto>
@@ -37,6 +37,7 @@ interface MerchantJpaRepository : JpaRepository<MerchantEntity, Long> {
         FROM MerchantEntity merchant
         JOIN MerchantAccountEntity merchantAccount ON merchantAccount.merchant.id = merchant.id
         WHERE merchantAccount.accountId = :accountId AND merchant.id = :merchantId
+        ORDER BY merchant.createdAt DESC
         """
     )
     fun findMyMerchantSummaryDto(merchantId: Long, accountId: Long): MyMerchantDetailSummaryDto?

@@ -103,13 +103,13 @@ class MerchantCoreRepository(
         val accounts = merchantAccountJpaRepository
             .findMyMerchantAccountDetailsDto(merchantId = merchantSummary.id, accountId = accountId)
         val secrets = merchantClientSecretJpaRepository
-            .findMyMerchantClientSecretDetailsDto(merchantId = merchantSummary.id, accountId = accountId)
+            .findMyMerchantClientSecretDetailsDto(merchantId = merchantSummary.id)
 
         return MyMerchantDetailDto(
             id = merchantSummary.id,
             name = merchantSummary.name,
             clientId = merchantSummary.clientId,
-            accounts = accounts,
+            merchantAccounts = accounts,
             clientSecrets = secrets,
             createdAt = merchantSummary.createdAt,
             updatedAt = merchantSummary.updatedAt

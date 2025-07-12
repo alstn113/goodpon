@@ -22,6 +22,7 @@ interface MerchantAccountJpaRepository : JpaRepository<MerchantAccountEntity, Lo
         FROM MerchantAccountEntity merchantAccount
         JOIN AccountEntity account ON merchantAccount.accountId = account.id
         WHERE merchantAccount.merchant.id = :merchantId AND merchantAccount.accountId = :accountId
+        ORDER BY merchantAccount.createdAt DESC
     """
     )
     fun findMyMerchantAccountDetailsDto(

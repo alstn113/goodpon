@@ -7,6 +7,7 @@ import com.goodpon.dashboard.application.account.port.out.exception.AccountNotFo
 import com.goodpon.dashboard.application.account.service.exception.AccountEmailExistsException
 import com.goodpon.dashboard.application.auth.service.exception.EmailVerificationNotFoundException
 import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
+import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
 import com.goodpon.domain.BaseException
 import com.goodpon.domain.account.exception.*
 import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateCreationException
@@ -39,6 +40,10 @@ class DashboardApiControllerAdvice {
             is AccountNotFoundException -> ErrorType.ACCOUNT_NOT_FOUND
             is EmailVerificationNotFoundException -> ErrorType.INVALID_EMAIL_VERIFICATION_TOKEN
 
+            // Merchant
+            is MerchantNotFoundException -> ErrorType.MERCHANT_NOT_FOUND
+
+            // Common
             else -> ErrorType.INTERNAL_SERVER_ERROR
         }
 

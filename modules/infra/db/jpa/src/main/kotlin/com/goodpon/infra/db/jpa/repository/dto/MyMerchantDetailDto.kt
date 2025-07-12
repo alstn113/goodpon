@@ -7,7 +7,7 @@ data class MyMerchantDetailDto(
     val id: Long,
     val name: String,
     val clientId: String,
-    val accounts: List<MerchantAccountDetailDto>,
+    val merchantAccounts: List<MerchantAccountDetailDto>,
     val clientSecrets: List<MerchantClientSecretDetailDto>,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime,
@@ -34,5 +34,5 @@ data class MerchantClientSecretDetailDto(
     val merchantClientSecretId: Long,
     val secret: String,
     val createdAt: LocalDateTime,
-    val expiredAt: LocalDateTime,
+    val expiredAt: LocalDateTime?,
 )

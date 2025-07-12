@@ -22,6 +22,9 @@ enum class ErrorType(
     PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다."),
     INVALID_EMAIL_VERIFICATION_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않은 이메일 인증 토큰입니다."),
 
+    // Merchant
+    MERCHANT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 상점입니다."),
+
     // Coupon Template
     COUPON_TEMPLATE_CREATION_FAILED(HttpStatus.BAD_REQUEST, "쿠폰 템플릿 생성에 실패했습니다."),
 }

@@ -6,5 +6,4 @@ data class MyMerchantSummaryDto(
     val id: Long,
     val name: String,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime,
 )
