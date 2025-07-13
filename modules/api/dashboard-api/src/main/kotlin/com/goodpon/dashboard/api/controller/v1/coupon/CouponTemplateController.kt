@@ -4,8 +4,8 @@ import com.goodpon.dashboard.api.controller.v1.coupon.dto.CreateCouponTemplateRe
 import com.goodpon.dashboard.api.response.ApiResponse
 import com.goodpon.dashboard.api.security.AccountPrincipal
 import com.goodpon.dashboard.application.coupon.port.`in`.CreateCouponTemplateUseCase
-import com.goodpon.dashboard.application.coupon.port.`in`.GetMyCouponTemplateDetailUseCase
-import com.goodpon.dashboard.application.coupon.port.`in`.GetMyCouponTemplatesUseCase
+import com.goodpon.dashboard.application.coupon.port.`in`.GetMerchantCouponTemplateDetailUseCase
+import com.goodpon.dashboard.application.coupon.port.`in`.GetMerchantCouponTemplatesUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.PublishCouponTemplateUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateResult
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.GetMerchantCouponTemplateDetail
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.*
 class CouponTemplateController(
     private val createCouponTemplateUseCase: CreateCouponTemplateUseCase,
     private val publishCouponTemplateUseCase: PublishCouponTemplateUseCase,
-    private val getMerchantCouponTemplates: GetMyCouponTemplatesUseCase,
-    private val getMerchantCouponTemplateDetail: GetMyCouponTemplateDetailUseCase,
+    private val getMerchantCouponTemplates: GetMerchantCouponTemplatesUseCase,
+    private val getMerchantCouponTemplateDetail: GetMerchantCouponTemplateDetailUseCase,
 ) {
 
     @PostMapping("/v1/merchants/{merchantId}/coupon-templates")

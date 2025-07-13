@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.coupon.service
 
-import com.goodpon.dashboard.application.coupon.port.`in`.GetMyCouponTemplateDetailUseCase
+import com.goodpon.dashboard.application.coupon.port.`in`.GetMerchantCouponTemplateDetailUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.GetMerchantCouponTemplateDetail
 import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository
 import com.goodpon.dashboard.application.coupon.port.out.exception.CouponTemplateNotFoundException
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class GetMyCouponTemplateDetailService(
+class GetMerchantCouponTemplateDetailService(
     private val merchantAccessor: MerchantAccessor,
     private val couponTemplateRepository: CouponTemplateRepository,
-) : GetMyCouponTemplateDetailUseCase {
+) : GetMerchantCouponTemplateDetailUseCase {
 
     @Transactional(readOnly = true)
     override fun getMerchantCouponTemplateDetail(query: GetMerchantCouponTemplateDetail): CouponTemplateDetail {

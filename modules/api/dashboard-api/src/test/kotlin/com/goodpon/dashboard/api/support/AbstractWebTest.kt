@@ -11,6 +11,8 @@ import com.goodpon.dashboard.application.auth.port.`in`.LoginUseCase
 import com.goodpon.dashboard.application.auth.port.`in`.ResendVerificationEmailUseCase
 import com.goodpon.dashboard.application.auth.port.`in`.VerifyEmailUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.CreateCouponTemplateUseCase
+import com.goodpon.dashboard.application.coupon.port.`in`.GetMerchantCouponTemplateDetailUseCase
+import com.goodpon.dashboard.application.coupon.port.`in`.GetMerchantCouponTemplatesUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.PublishCouponTemplateUseCase
 import com.goodpon.dashboard.application.merchant.port.`in`.CreateMerchantUseCase
 import com.goodpon.dashboard.application.merchant.port.`in`.GetMyMerchantDetailUseCase
@@ -59,6 +61,12 @@ abstract class AbstractWebTest {
 
     @MockkBean
     protected lateinit var publishCouponTemplateUseCase: PublishCouponTemplateUseCase
+
+    @MockkBean
+    protected lateinit var getMerchantCouponTemplateDetailUseCase: GetMerchantCouponTemplateDetailUseCase
+
+    @MockkBean
+    protected lateinit var getMerchantCouponTemplatesUseCase: GetMerchantCouponTemplatesUseCase
 
     // Merchant
     @MockkBean
