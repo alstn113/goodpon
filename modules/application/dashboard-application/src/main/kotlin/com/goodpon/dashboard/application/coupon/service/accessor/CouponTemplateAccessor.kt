@@ -24,7 +24,7 @@ class CouponTemplateAccessor(
     }
 
     @Transactional
-    fun create(couponTemplate: CouponTemplate): CouponTemplate {
+    fun save(couponTemplate: CouponTemplate): CouponTemplate {
         return couponTemplateRepository.save(couponTemplate)
     }
 

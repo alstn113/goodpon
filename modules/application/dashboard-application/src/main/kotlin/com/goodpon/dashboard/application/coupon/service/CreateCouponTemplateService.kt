@@ -18,12 +18,12 @@ class CreateCouponTemplateService(
     @Transactional
     override fun createCouponTemplate(command: CreateCouponTemplateCommand): CreateCouponTemplateResult {
         val merchant = merchantAccessor.readById(command.merchantId)
-        if (merchant.isAccessibleBy(command.accountId)) {
+        if (!merchant.isAccessibleBy(command.accountId)) {
             throw UnauthorizedMerchantAccountException()
         }
 
         val couponTemplate = CouponTemplateMapper.toCouponTemplate(command)
-        val savedCouponTemplate = couponTemplateAccessor.create(couponTemplate)
+        val savedCouponTemplate = couponTemplateAccessor.save(couponTemplate)
 
         return CouponTemplateMapper.toCreateCouponTemplateResult(savedCouponTemplate)
     }

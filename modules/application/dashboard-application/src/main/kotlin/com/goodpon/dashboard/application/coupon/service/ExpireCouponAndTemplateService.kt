@@ -30,11 +30,12 @@ class ExpireCouponAndTemplateService(
             status = UserCouponStatus.ISSUED,
             expiresAt = expireCutoff
         )
-        issuedCoupons.forEach { coupon ->
-            coupon.expire()
-            couponHistoryAccessor.recordExpired(userCouponId = coupon.id, recordedAt = recordedAt)
+        val expiredCoupons = issuedCoupons.map {
+            val expired = it.expire()
+            couponHistoryAccessor.recordExpired(userCouponId = it.id, recordedAt = recordedAt)
+            expired
         }
-        userCouponAccessor.saveAll(issuedCoupons)
+        userCouponAccessor.saveAll(expiredCoupons)
     }
 
     private fun expireCouponTemplates(expireCutoff: LocalDateTime) {
@@ -42,7 +43,7 @@ class ExpireCouponAndTemplateService(
             status = CouponTemplateStatus.ISSUABLE,
             absoluteExpiresAt = expireCutoff
         )
-        issuableTemplates.forEach { it.expire() }
-        couponTemplateAccessor.saveAll(issuableTemplates)
+        val expiredTemplates = issuableTemplates.map { it.expire() }
+        couponTemplateAccessor.saveAll(expiredTemplates)
     }
 }
