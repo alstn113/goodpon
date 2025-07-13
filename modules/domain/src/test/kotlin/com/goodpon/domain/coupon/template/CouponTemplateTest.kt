@@ -193,7 +193,7 @@ class CouponTemplateTest : DescribeSpec({
             ) { status ->
                 val template = createCouponTemplate(status = status)
 
-                shouldThrow<CouponTemplatePublishNotAllowedException> {
+                shouldThrow<CouponTemplateInvalidStatusToPublishException> {
                     template.publish()
                 }
             }

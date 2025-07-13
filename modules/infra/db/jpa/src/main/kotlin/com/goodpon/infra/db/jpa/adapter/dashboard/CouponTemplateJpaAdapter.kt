@@ -1,10 +1,10 @@
 package com.goodpon.infra.db.jpa.adapter.dashboard
 
 import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository
+import com.goodpon.dashboard.application.coupon.port.out.exception.CouponTemplateNotFoundException
 import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.infra.db.jpa.core.CouponTemplateCoreRepository
-import com.goodpon.partner.application.coupon.port.out.exception.CouponTemplateNotFoundException
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
@@ -34,5 +34,9 @@ class CouponTemplateJpaAdapter(
             status,
             absoluteExpiresAt
         )
+    }
+
+    override fun findById(couponTemplateId: Long): CouponTemplate? {
+        return couponTemplateCoreRepository.findById(couponTemplateId)
     }
 }

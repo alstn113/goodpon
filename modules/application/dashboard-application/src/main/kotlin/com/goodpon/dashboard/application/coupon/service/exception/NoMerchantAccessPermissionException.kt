@@ -1,4 +1,4 @@
-package com.goodpon.dashboard.application.merchant.port.out.exception
+package com.goodpon.dashboard.application.coupon.service.exception
 
 import com.goodpon.domain.BaseException
 

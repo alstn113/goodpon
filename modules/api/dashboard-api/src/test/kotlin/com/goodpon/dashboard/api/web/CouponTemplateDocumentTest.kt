@@ -1,5 +1,6 @@
 package com.goodpon.dashboard.api.web
 
+import com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName
 import com.epages.restdocs.apispec.ResourceSnippetParameters
 import com.epages.restdocs.apispec.Schema
 import com.goodpon.dashboard.api.controller.v1.coupon.dto.CreateCouponTemplateRequest
@@ -7,8 +8,12 @@ import com.goodpon.dashboard.api.response.ResultType
 import com.goodpon.dashboard.api.support.AbstractDocumentTest
 import com.goodpon.dashboard.api.support.WithMockAccount
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateResult
+import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateResult
+import com.goodpon.dashboard.application.coupon.port.out.exception.CouponTemplateNotFoundException
+import com.goodpon.dashboard.application.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
+import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
-import com.goodpon.dashboard.application.merchant.port.out.exception.NoMerchantAccessPermissionException
+import com.goodpon.domain.coupon.template.exception.CouponTemplateInvalidStatusToPublishException
 import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationError
 import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationException
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
@@ -26,7 +31,7 @@ import java.time.LocalDate
 
 class CouponTemplateDocumentTest : AbstractDocumentTest() {
 
-    private val request = CreateCouponTemplateRequest(
+    private val createCouponTemplateRequest = CreateCouponTemplateRequest(
         name = "테스트 쿠폰",
         description = "테스트 쿠폰 설명",
         minOrderAmount = 10000,
@@ -48,20 +53,20 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
         // given
         val createCouponTemplateResult = CreateCouponTemplateResult(
             id = 1L,
-            name = request.name,
-            description = request.description,
+            name = createCouponTemplateRequest.name,
+            description = createCouponTemplateRequest.description,
             merchantId = 1L,
-            minOrderAmount = request.minOrderAmount,
-            discountType = request.discountType,
-            discountValue = request.discountValue,
-            maxDiscountAmount = request.maxDiscountAmount,
+            minOrderAmount = createCouponTemplateRequest.minOrderAmount,
+            discountType = createCouponTemplateRequest.discountType,
+            discountValue = createCouponTemplateRequest.discountValue,
+            maxDiscountAmount = createCouponTemplateRequest.maxDiscountAmount,
             issueStartAt = LocalDate.of(2025, 7, 13).atStartOfDay(),
             issueEndAt = LocalDate.of(2025, 7, 21)?.atStartOfDay(),
-            validityDays = request.validityDays,
+            validityDays = createCouponTemplateRequest.validityDays,
             absoluteExpiresAt = LocalDate.of(2025, 8, 21).atStartOfDay(),
-            limitType = request.limitType,
-            maxIssueCount = request.maxIssueCount,
-            maxRedeemCount = request.maxRedeemCount,
+            limitType = createCouponTemplateRequest.limitType,
+            maxIssueCount = createCouponTemplateRequest.maxIssueCount,
+            maxRedeemCount = createCouponTemplateRequest.maxRedeemCount,
             status = CouponTemplateStatus.DRAFT
         )
 
@@ -73,7 +78,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .post("/v1/merchants/{merchantId}/coupon-templates", 1L)
                 .withAuthHeader()
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                .content(objectMapper.writeValueAsString(createCouponTemplateRequest))
         )
 
         // then
@@ -98,6 +103,8 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .tag("Coupon Template")
                 .summary("쿠폰 템플릿 생성")
                 .description("쿠폰 템플릿 생성 API")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(parameterWithName("merchantId").description("쿠폰 템플릿을 생성할 상점 ID"))
                 .requestSchema(Schema("CreateCouponTemplateRequest"))
                 .requestFields(*createCouponTemplateRequestFields().toTypedArray())
                 .responseSchema(Schema("ApiResponse<CreateCouponTemplateResult>"))
@@ -118,7 +125,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .post("/v1/merchants/{merchantId}/coupon-templates", 1L)
                 .withAuthHeader()
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                .content(objectMapper.writeValueAsString(createCouponTemplateRequest))
         )
 
         // then
@@ -136,6 +143,8 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
             "쿠폰 템플릿 생성 - 실패 - 존재하지 않는 상점",
             ResourceSnippetParameters.builder()
                 .tag("Coupon Template")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(parameterWithName("merchantId").description("쿠폰 템플릿을 생성할 상점 ID"))
                 .requestSchema(Schema("CreateCouponTemplateRequest"))
                 .requestFields(*createCouponTemplateRequestFields().toTypedArray())
                 .responseFields(*failureResponseFields().toTypedArray())
@@ -155,7 +164,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .post("/v1/merchants/{merchantId}/coupon-templates", 1L)
                 .withAuthHeader()
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
+                .content(objectMapper.writeValueAsString(createCouponTemplateRequest))
         )
 
         // then
@@ -173,6 +182,8 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
             "쿠폰 템플릿 생성 - 실패 - 상점 접근 권한 없음",
             ResourceSnippetParameters.builder()
                 .tag("Coupon Template")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(parameterWithName("merchantId").description("쿠폰 템플릿을 생성할 상점 ID"))
                 .requestSchema(Schema("CreateCouponTemplateRequest"))
                 .requestFields(*createCouponTemplateRequestFields().toTypedArray())
                 .responseFields(*failureResponseFields().toTypedArray())
@@ -184,7 +195,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     @WithMockAccount
     fun `쿠폰 템플릿 생성 - 실패 - 유효하지 않은 요청 데이터`() {
         // given
-        val invalidRequest = request.copy(
+        val invalidRequest = createCouponTemplateRequest.copy(
             minOrderAmount = 0, // 최소 주문 금액이 있을 경우 0보다 커야 함
             discountType = CouponDiscountType.PERCENTAGE,
             discountValue = 105, // 할인율은 0~100 사이여야 함
@@ -240,7 +251,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.data").value(null),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_VALIDATION_FAILED"),
-            jsonPath("$.error.message").value("유효하지 않은 쿠폰 템플릿 생성 요청입니다. 각 필드의 오류를 확인하세요."),
+            jsonPath("$.error.message").value("잘못된 쿠폰 템플릿 생성 요청입니다. 각 필드의 오류를 확인하세요."),
             jsonPath("$.error.data[0].field").value("minOrderAmount"),
             jsonPath("$.error.data[1].field").value("discountValue"),
             jsonPath("$.error.data[2].field").value("issueEndDate"),
@@ -252,6 +263,8 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
             "쿠폰 템플릿 생성 - 실패 - 유효하지 않은 요청 데이터",
             ResourceSnippetParameters.builder()
                 .tag("Coupon Template")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(parameterWithName("merchantId").description("쿠폰 템플릿을 생성할 상점 ID"))
                 .requestSchema(Schema("CreateCouponTemplateRequest"))
                 .requestFields(*createCouponTemplateRequestFields().toTypedArray())
                 .responseFields(
@@ -317,5 +330,262 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
         fieldWithPath("data.maxRedeemCount").type(JsonFieldType.NUMBER).optional()
             .description("최대 사용 수량 (REDEEM_COUNT 선택 시)"),
         fieldWithPath("data.status").type(JsonFieldType.STRING).description("쿠폰 템플릿 상태 (DRAFT, ACTIVE, EXPIRED 등)")
+    )
+
+    @Test
+    @WithMockAccount
+    fun `쿠폰 템플릿 발행 - 성공`() {
+        // given
+        val publishCouponTemplateResult = PublishCouponTemplateResult(
+            id = 1L,
+            name = "테스트 쿠폰",
+            merchantId = 1L,
+            status = CouponTemplateStatus.ISSUABLE
+        )
+
+        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } returns publishCouponTemplateResult
+
+        // when
+        val result = mockMvc.perform(
+            RestDocumentationRequestBuilders
+                .post("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}/publish", 1L, 1L)
+                .withAuthHeader()
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+
+        // then
+        result.andExpectAll(
+            status().isOk,
+            jsonPath("$.result").value(ResultType.SUCCESS.name),
+            jsonPath("$.error").value(null),
+            jsonPath("$.data.id").value(1L),
+            jsonPath("$.data.name").value("테스트 쿠폰"),
+            jsonPath("$.data.merchantId").value(1L),
+            jsonPath("$.data.status").value("ISSUABLE")
+        )
+
+        // document
+        result.andDocument(
+            "쿠폰 템플릿 발행 - 성공",
+            ResourceSnippetParameters.builder()
+                .tag("Coupon Template")
+                .summary("쿠폰 템플릿 발행")
+                .description("쿠폰 템플릿 발행 API")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(
+                    parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
+                    parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
+                )
+                .responseSchema(Schema("ApiResponse<PublishCouponTemplateResult>"))
+                .responseFields(*publishCouponTemplateSuccessResponseFields().toTypedArray())
+                .build()
+        )
+    }
+
+    @Test
+    @WithMockAccount
+    fun `쿠폰 템플릿 발행 - 실패 - 존재하지 않는 상점`() {
+        // given
+        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } throws MerchantNotFoundException()
+
+        // when
+        val result = mockMvc.perform(
+            RestDocumentationRequestBuilders
+                .post("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}/publish", 1L, 1L)
+                .withAuthHeader()
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+
+        // then
+        result.andExpectAll(
+            status().isNotFound,
+            jsonPath("$.result").value(ResultType.ERROR.name),
+            jsonPath("$.data").value(null),
+            jsonPath("$.error.code").value("MERCHANT_NOT_FOUND"),
+            jsonPath("$.error.message").value("존재하지 않는 상점입니다."),
+            jsonPath("$.error.data").value(null)
+        )
+
+        // document
+        result.andDocument(
+            "쿠폰 템플릿 발행 - 실패 - 존재하지 않는 상점",
+            ResourceSnippetParameters.builder()
+                .tag("Coupon Template")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(
+                    parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
+                    parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
+                )
+                .responseFields(*failureResponseFields().toTypedArray())
+                .build()
+        )
+    }
+
+    @Test
+    @WithMockAccount
+    fun `쿠폰 템플릿 발행 - 실패 - 상점 접근 권한 없음`() {
+        // given
+        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } throws NoMerchantAccessPermissionException()
+
+        // when
+        val result = mockMvc.perform(
+            RestDocumentationRequestBuilders
+                .post("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}/publish", 1L, 1L)
+                .withAuthHeader()
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+
+        // then
+        result.andExpectAll(
+            status().isForbidden,
+            jsonPath("$.result").value(ResultType.ERROR.name),
+            jsonPath("$.data").value(null),
+            jsonPath("$.error.code").value("NO_MERCHANT_ACCESS_PERMISSION"),
+            jsonPath("$.error.message").value("해당 상점에 접근할 수 있는 권한이 없습니다."),
+            jsonPath("$.error.data").value(null)
+        )
+
+        // document
+        result.andDocument(
+            "쿠폰 템플릿 발행 - 실패 - 상점 접근 권한 없음",
+            ResourceSnippetParameters.builder()
+                .tag("Coupon Template")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(
+                    parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
+                    parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
+                )
+                .responseFields(*failureResponseFields().toTypedArray())
+                .build()
+        )
+    }
+
+    @Test
+    @WithMockAccount
+    fun `쿠폰 템플릿 발행 - 실패 - 존재하지 않는 쿠폰 템플릿`() {
+        // given
+        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } throws CouponTemplateNotFoundException()
+
+        // when
+        val result = mockMvc.perform(
+            RestDocumentationRequestBuilders
+                .post("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}/publish", 1L, 1L)
+                .withAuthHeader()
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+
+        // then
+        result.andExpectAll(
+            status().isNotFound,
+            jsonPath("$.result").value(ResultType.ERROR.name),
+            jsonPath("$.data").value(null),
+            jsonPath("$.error.code").value("COUPON_TEMPLATE_NOT_FOUND"),
+            jsonPath("$.error.message").value("존재하지 않는 쿠폰 템플릿입니다."),
+            jsonPath("$.error.data").value(null)
+        )
+
+        // document
+        result.andDocument(
+            "쿠폰 템플릿 발행 - 실패 - 존재하지 않는 쿠폰 템플릿",
+            ResourceSnippetParameters.builder()
+                .tag("Coupon Template")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(
+                    parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
+                    parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
+                )
+                .responseFields(*failureResponseFields().toTypedArray())
+                .build()
+        )
+    }
+
+    @Test
+    @WithMockAccount
+    fun `쿠폰 템플릿 발행 - 실패 - 상점이 소유하지 않은 쿠폰 템플릿`() {
+        // given
+        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } throws CouponTemplateNotOwnedByMerchantException()
+
+        // when
+        val result = mockMvc.perform(
+            RestDocumentationRequestBuilders
+                .post("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}/publish", 1L, 1L)
+                .withAuthHeader()
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+
+        // then
+        result.andExpectAll(
+            status().isForbidden,
+            jsonPath("$.result").value(ResultType.ERROR.name),
+            jsonPath("$.data").value(null),
+            jsonPath("$.error.code").value("COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT"),
+            jsonPath("$.error.message").value("상점이 소유한 쿠폰 템플릿이 아닙니다."),
+            jsonPath("$.error.data").value(null)
+        )
+
+        // document
+        result.andDocument(
+            "쿠폰 템플릿 발행 - 실패 - 상점이 소유하지 않은 쿠폰 템플릿",
+            ResourceSnippetParameters.builder()
+                .tag("Coupon Template")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(
+                    parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
+                    parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
+                )
+                .responseFields(*failureResponseFields().toTypedArray())
+                .build()
+        )
+    }
+
+    @Test
+    @WithMockAccount
+    fun `쿠폰 템플릿 발행 - 실패 - 발행할 수 없는 상태`() {
+        // given
+        every {
+            publishCouponTemplateUseCase.publishCouponTemplate(any())
+        } throws CouponTemplateInvalidStatusToPublishException()
+
+        // when
+        val result = mockMvc.perform(
+            RestDocumentationRequestBuilders
+                .post("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}/publish", 1L, 1L)
+                .withAuthHeader()
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+
+        // then
+        result.andExpectAll(
+            status().isBadRequest,
+            jsonPath("$.result").value(ResultType.ERROR.name),
+            jsonPath("$.data").value(null),
+            jsonPath("$.error.code").value("COUPON_TEMPLATE_INVALID_STATUS_TO_PUBLISH"),
+            jsonPath("$.error.message").value("쿠폰 템플릿을 발행할 수 있는 상태가 아닙니다."),
+            jsonPath("$.error.data").value(null)
+        )
+
+        // document
+        result.andDocument(
+            "쿠폰 템플릿 발행 - 실패 - 상점이 소유하지 않은 쿠폰 템플릿",
+            ResourceSnippetParameters.builder()
+                .tag("Coupon Template")
+                .requestHeaders(authHeaderFields())
+                .pathParameters(
+                    parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
+                    parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
+                )
+                .responseFields(*failureResponseFields().toTypedArray())
+                .build()
+        )
+    }
+
+    private fun publishCouponTemplateSuccessResponseFields() = listOf(
+        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
+        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
+        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보"),
+        fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("쿠폰 템플릿 ID"),
+        fieldWithPath("data.name").type(JsonFieldType.STRING).description("쿠폰 템플릿 이름"),
+        fieldWithPath("data.merchantId").type(JsonFieldType.NUMBER).description("상점 ID"),
+        fieldWithPath("data.status").type(JsonFieldType.STRING).description("쿠폰 템플릿 상태 ISSUABLE")
     )
 }

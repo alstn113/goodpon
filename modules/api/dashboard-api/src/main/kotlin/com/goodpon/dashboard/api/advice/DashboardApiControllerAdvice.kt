@@ -7,10 +7,13 @@ import com.goodpon.dashboard.application.account.port.out.exception.AccountNotFo
 import com.goodpon.dashboard.application.account.service.exception.AccountEmailExistsException
 import com.goodpon.dashboard.application.auth.service.exception.EmailVerificationNotFoundException
 import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
+import com.goodpon.dashboard.application.coupon.port.out.exception.CouponTemplateNotFoundException
+import com.goodpon.dashboard.application.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
+import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
-import com.goodpon.dashboard.application.merchant.port.out.exception.NoMerchantAccessPermissionException
 import com.goodpon.domain.BaseException
 import com.goodpon.domain.account.exception.*
+import com.goodpon.domain.coupon.template.exception.CouponTemplateInvalidStatusToPublishException
 import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -44,6 +47,11 @@ class DashboardApiControllerAdvice {
             // Merchant
             is MerchantNotFoundException -> ErrorType.MERCHANT_NOT_FOUND
             is NoMerchantAccessPermissionException -> ErrorType.NO_MERCHANT_ACCESS_PERMISSION
+
+            // Coupon Template
+            is CouponTemplateNotFoundException -> ErrorType.COUPON_TEMPLATE_NOT_FOUND
+            is CouponTemplateInvalidStatusToPublishException -> ErrorType.COUPON_TEMPLATE_INVALID_STATUS_TO_PUBLISH
+            is CouponTemplateNotOwnedByMerchantException -> ErrorType.COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT
 
             // Common
             else -> ErrorType.INTERNAL_SERVER_ERROR

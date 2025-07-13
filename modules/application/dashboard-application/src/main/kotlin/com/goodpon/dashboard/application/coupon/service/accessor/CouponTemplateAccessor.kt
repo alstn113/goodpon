@@ -1,6 +1,7 @@
 package com.goodpon.dashboard.application.coupon.service.accessor
 
 import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository
+import com.goodpon.dashboard.application.coupon.port.out.exception.CouponTemplateNotFoundException
 import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import org.springframework.stereotype.Component
@@ -21,6 +22,12 @@ class CouponTemplateAccessor(
             status = status,
             absoluteExpiresAt = absoluteExpiresAt
         )
+    }
+
+    @Transactional(readOnly = true)
+    fun readById(couponTemplateId: Long): CouponTemplate {
+        return couponTemplateRepository.findById(couponTemplateId)
+            ?: throw CouponTemplateNotFoundException()
     }
 
     @Transactional

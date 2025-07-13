@@ -55,7 +55,7 @@ data class CouponTemplate(
 
     fun publish(): CouponTemplate {
         if (status.isNotDraft()) {
-            throw CouponTemplatePublishNotAllowedException()
+            throw CouponTemplateInvalidStatusToPublishException()
         }
         return this.copy(status = CouponTemplateStatus.ISSUABLE)
     }

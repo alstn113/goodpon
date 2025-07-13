@@ -4,15 +4,18 @@ import com.goodpon.dashboard.api.support.AbstractIntegrationTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
 import com.goodpon.dashboard.application.coupon.port.`in`.CreateCouponTemplateUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateCommand
+import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository
+import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
-import com.goodpon.dashboard.application.merchant.port.out.exception.NoMerchantAccessPermissionException
 import com.goodpon.domain.account.Account
 import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationError
 import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationException
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
+import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.domain.merchant.Merchant
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
@@ -22,6 +25,7 @@ import java.time.LocalDateTime
 class CreateCouponTemplateUseCaseIT(
     private val accountRepository: AccountRepository,
     private val merchantRepository: MerchantRepository,
+    private val couponTemplateRepository: CouponTemplateRepository,
     private val createCouponTemplateUseCase: CreateCouponTemplateUseCase,
 ) : AbstractIntegrationTest() {
 
@@ -50,24 +54,16 @@ class CreateCouponTemplateUseCaseIT(
             .verify(verifiedAt = LocalDateTime.now())
         val savedAccount = accountRepository.save(account)
         val merchant = Merchant.create(name = "테스트 상점", accountId = savedAccount.id)
-        val savedMerchant = merchantRepository.save(merchant)
+        merchantRepository.save(merchant)
 
         // when
         val result = createCouponTemplateUseCase.createCouponTemplate(command)
 
         // then
-        result.id shouldNotBe null
-        result.name shouldBe command.name
-        result.description shouldBe command.description
-        result.merchantId shouldBe savedMerchant.id
-        result.minOrderAmount shouldBe command.minOrderAmount
-        result.discountType shouldBe command.discountType
-        result.discountValue shouldBe command.discountValue
-        result.maxDiscountAmount shouldBe command.maxDiscountAmount
-        result.validityDays shouldBe command.validityDays
-        result.limitType shouldBe command.limitType
-        result.maxIssueCount shouldBe command.maxIssueCount
-        result.maxRedeemCount shouldBe command.maxRedeemCount
+        val foundCouponTemplate = couponTemplateRepository.findById(result.id)
+        foundCouponTemplate.shouldNotBeNull()
+        foundCouponTemplate.id shouldBe result.id
+        foundCouponTemplate.status shouldBe CouponTemplateStatus.DRAFT
     }
 
     @Test

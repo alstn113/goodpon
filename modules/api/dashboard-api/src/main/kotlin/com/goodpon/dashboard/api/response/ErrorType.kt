@@ -27,6 +27,9 @@ enum class ErrorType(
     NO_MERCHANT_ACCESS_PERMISSION(HttpStatus.FORBIDDEN, "해당 상점에 접근할 수 있는 권한이 없습니다."),
 
     // Coupon Template
-    COUPON_TEMPLATE_VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "유효하지 않은 쿠폰 템플릿 생성 요청입니다. 각 필드의 오류를 확인하세요.")
+    COUPON_TEMPLATE_VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "잘못된 쿠폰 템플릿 생성 요청입니다. 각 필드의 오류를 확인하세요."),
+    COUPON_TEMPLATE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 쿠폰 템플릿입니다."),
+    COUPON_TEMPLATE_INVALID_STATUS_TO_PUBLISH(HttpStatus.BAD_REQUEST, "쿠폰 템플릿을 발행할 수 있는 상태가 아닙니다."),
+    COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT(HttpStatus.FORBIDDEN, "상점이 소유한 쿠폰 템플릿이 아닙니다.")
     ;
 }

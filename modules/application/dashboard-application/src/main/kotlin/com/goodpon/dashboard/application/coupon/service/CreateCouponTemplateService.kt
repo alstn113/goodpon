@@ -4,7 +4,7 @@ import com.goodpon.dashboard.application.coupon.port.`in`.CreateCouponTemplateUs
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateCommand
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateResult
 import com.goodpon.dashboard.application.coupon.service.accessor.CouponTemplateAccessor
-import com.goodpon.dashboard.application.merchant.port.out.exception.NoMerchantAccessPermissionException
+import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.service.accessor.MerchantAccessor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

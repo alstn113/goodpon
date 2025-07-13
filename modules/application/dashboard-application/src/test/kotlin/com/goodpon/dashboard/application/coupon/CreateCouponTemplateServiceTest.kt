@@ -3,8 +3,8 @@ package com.goodpon.dashboard.application.coupon
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateCommand
 import com.goodpon.dashboard.application.coupon.service.CreateCouponTemplateService
 import com.goodpon.dashboard.application.coupon.service.accessor.CouponTemplateAccessor
+import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
-import com.goodpon.dashboard.application.merchant.port.out.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.service.accessor.MerchantAccessor
 import com.goodpon.domain.coupon.template.CouponTemplateFactory
 import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationException
@@ -30,43 +30,44 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
         clearAllMocks()
     }
 
+    val command = CreateCouponTemplateCommand(
+        accountId = 1L,
+        name = "쿠폰 템플릿 이름",
+        description = "쿠폰 템플릿 설명",
+        merchantId = 1L,
+        minOrderAmount = 10000,
+        discountType = CouponDiscountType.FIXED_AMOUNT,
+        discountValue = 4000,
+        maxDiscountAmount = null,
+        issueStartDate = LocalDate.now(),
+        issueEndDate = LocalDate.now().plusDays(30),
+        validityDays = 10,
+        absoluteExpiryDate = LocalDate.now().plusDays(40),
+        limitType = CouponLimitPolicyType.ISSUE_COUNT,
+        maxIssueCount = 1000,
+        maxRedeemCount = null
+    )
+
+    val couponTemplate = CouponTemplateFactory.create(
+        name = command.name,
+        description = command.description,
+        merchantId = command.merchantId,
+        minOrderAmount = command.minOrderAmount,
+        discountType = command.discountType,
+        discountValue = command.discountValue,
+        maxDiscountAmount = command.maxDiscountAmount,
+        issueStartDate = command.issueStartDate,
+        issueEndDate = command.issueEndDate,
+        validityDays = command.validityDays,
+        absoluteExpiryDate = command.absoluteExpiryDate,
+        limitType = command.limitType,
+        maxIssueCount = command.maxIssueCount,
+        maxRedeemCount = command.maxRedeemCount
+    ).copy(id = 1L)
+
     describe("createCouponTemplate") {
-        val command = CreateCouponTemplateCommand(
-            accountId = 1L,
-            name = "쿠폰 템플릿 이름",
-            description = "쿠폰 템플릿 설명",
-            merchantId = 1L,
-            minOrderAmount = 10000,
-            discountType = CouponDiscountType.FIXED_AMOUNT,
-            discountValue = 4000,
-            maxDiscountAmount = null,
-            issueStartDate = LocalDate.now(),
-            issueEndDate = LocalDate.now().plusDays(30),
-            validityDays = 10,
-            absoluteExpiryDate = LocalDate.now().plusDays(40),
-            limitType = CouponLimitPolicyType.ISSUE_COUNT,
-            maxIssueCount = 1000,
-            maxRedeemCount = null
-        )
-
-        val couponTemplate = CouponTemplateFactory.create(
-            name = command.name,
-            description = command.description,
-            merchantId = command.merchantId,
-            minOrderAmount = command.minOrderAmount,
-            discountType = command.discountType,
-            discountValue = command.discountValue,
-            maxDiscountAmount = command.maxDiscountAmount,
-            issueStartDate = command.issueStartDate,
-            issueEndDate = command.issueEndDate,
-            validityDays = command.validityDays,
-            absoluteExpiryDate = command.absoluteExpiryDate,
-            limitType = command.limitType,
-            maxIssueCount = command.maxIssueCount,
-            maxRedeemCount = command.maxRedeemCount
-        ).copy(id = 1L)
-
         it("상점에 쿠폰 템플릿을 생성한다.") {
+            // given
             val merchant = Merchant.create(
                 name = "Test Merchant",
                 accountId = command.accountId
@@ -74,6 +75,7 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
             every { merchantAccessor.readById(command.merchantId) } returns merchant
             every { couponTemplateAccessor.save(any()) } returns couponTemplate
 
+            // when
             val result = createCouponTemplateService.createCouponTemplate(command)
 
             result.id shouldBe couponTemplate.id

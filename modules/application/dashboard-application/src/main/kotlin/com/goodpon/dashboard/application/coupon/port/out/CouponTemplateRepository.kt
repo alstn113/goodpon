@@ -10,6 +10,8 @@ interface CouponTemplateRepository {
 
     fun saveAll(couponTemplates: List<CouponTemplate>): List<CouponTemplate>
 
+    fun findById(couponTemplateId: Long): CouponTemplate?
+
     fun findByStatusAndAbsoluteExpiresAtLessThanEqual(
         status: CouponTemplateStatus,
         absoluteExpiresAt: LocalDateTime,
