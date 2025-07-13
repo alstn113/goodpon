@@ -16,6 +16,11 @@ Goodpon은 `Dashboard API`와 `Partner OpenAPI`로 서버가 분리되어 있습
 
 ![goodpon0713 drawio](https://github.com/user-attachments/assets/b1ad3c21-0a33-4673-b6b4-f30903748fc0)
 
+## 프로젝트 API 명세서
+
+- ### [Dashboard API 명세서](https://alstn113.github.io/goodpon/dashboard/)   
+- ### [Partner OpenAPI 명세서](https://alstn113.github.io/goodpon/partner/)
+
 ## 프로젝트 기술 스택
 
 - Kotlin
