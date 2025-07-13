@@ -1,0 +1,43 @@
+name: Build & Deploy API Docs
+
+workflow-dispatch:
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build All (Run Tests Too)
+        run: ./gradlew clean build
+
+      - name: Copy API Docs
+        run: |
+          mkdir -p api-docs/dashboard
+          mkdir -p api-docs/partner
+
+          cp modules/api/dashboard-api/build/resources/main/static/api-docs/index.html api-docs/dashboard/
+          cp modules/api/dashboard-api/build/resources/main/static/api-docs/openapi3.yaml api-docs/dashboard/
+          
+          cp modules/api/partner-openapi/build/resources/main/static/api-docs/index.html api-docs/partner/
+          cp modules/api/partner-openapi/build/resources/main/static/api-docs/openapi3.yaml api-docs/partner/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./api-docs
+          publish_branch: gh-pages
