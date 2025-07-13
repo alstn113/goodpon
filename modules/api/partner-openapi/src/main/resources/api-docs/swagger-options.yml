@@ -1,3 +1,4 @@
+# @formatter:off
   securitySchemes:
     clientId:
       type: apiKey
@@ -14,3 +15,4 @@
 security:
   - clientId: []
   - clientSecret: []
+# @formatter:on

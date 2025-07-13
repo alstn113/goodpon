@@ -271,14 +271,14 @@ class MerchantDocumentTest : AbstractDocumentTest() {
         // document
         result
             .andDocument(
-            "상점 상세 조회 - 실패 - 존재하지 않는 상점",
-            ResourceSnippetParameters.builder()
-                .tag("Merchant")
-                .requestHeaders(authHeaderFields())
-                .pathParameters(parameterWithName("merchantId").description("조회할 상점 ID"))
-                .responseFields(*failureResponseFields().toTypedArray())
-                .build()
-        )
+                "상점 상세 조회 - 실패 - 존재하지 않는 상점",
+                ResourceSnippetParameters.builder()
+                    .tag("Merchant")
+                    .requestHeaders(authHeaderFields())
+                    .pathParameters(parameterWithName("merchantId").description("조회할 상점 ID"))
+                    .responseFields(*failureResponseFields().toTypedArray())
+                    .build()
+            )
     }
 
     private fun getMyMerchantDetailSuccessFields() = listOf(

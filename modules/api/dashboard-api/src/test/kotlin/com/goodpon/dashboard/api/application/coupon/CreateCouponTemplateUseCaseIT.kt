@@ -5,10 +5,10 @@ import com.goodpon.dashboard.application.account.port.out.AccountRepository
 import com.goodpon.dashboard.application.coupon.port.`in`.CreateCouponTemplateUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateCommand
 import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
-import com.goodpon.dashboard.application.merchant.port.out.exception.UnauthorizedMerchantAccountException
+import com.goodpon.dashboard.application.merchant.port.out.exception.NoMerchantAccessPermissionException
 import com.goodpon.domain.account.Account
-import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateCreationErrorDetail
-import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateCreationException
+import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationError
+import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationException
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import com.goodpon.domain.merchant.Merchant
@@ -86,7 +86,7 @@ class CreateCouponTemplateUseCaseIT(
         )
 
         // when & then
-        shouldThrow<UnauthorizedMerchantAccountException> {
+        shouldThrow<NoMerchantAccessPermissionException> {
             createCouponTemplateUseCase.createCouponTemplate(newCommand)
         }
     }
@@ -117,26 +117,26 @@ class CreateCouponTemplateUseCaseIT(
         )
 
         // when & then
-        val exception = shouldThrow<CouponTemplateCreationException> {
+        val exception = shouldThrow<CouponTemplateValidationException> {
             createCouponTemplateUseCase.createCouponTemplate(invalidCommand)
         }
         val expectedErrors = listOf(
-            CouponTemplateCreationErrorDetail(
+            CouponTemplateValidationError(
                 field = "minOrderAmount",
                 rejectedValue = 0,
                 message = "쿠폰 사용 조건의 최소 주문 금액은 0보다 커야 합니다."
             ),
-            CouponTemplateCreationErrorDetail(
+            CouponTemplateValidationError(
                 field = "discountValue",
                 rejectedValue = 105,
                 message = "백분율 할인 값은 1~100 사이여야 합니다."
             ),
-            CouponTemplateCreationErrorDetail(
+            CouponTemplateValidationError(
                 field = "issueEndDate",
                 rejectedValue = LocalDate.now().plusDays(3),
                 message = "쿠폰 발행 종료일은 발행 시작일보다 이전일 수 없습니다."
             ),
-            CouponTemplateCreationErrorDetail(
+            CouponTemplateValidationError(
                 field = "maxRedeemCount",
                 rejectedValue = 200L,
                 message = "발행 제한 정책이 설정된 쿠폰은 사용 제한 수량을 함께 설정할 수 없습니다."

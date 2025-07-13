@@ -4,10 +4,10 @@ import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTempla
 import com.goodpon.dashboard.application.coupon.service.CreateCouponTemplateService
 import com.goodpon.dashboard.application.coupon.service.accessor.CouponTemplateAccessor
 import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
-import com.goodpon.dashboard.application.merchant.port.out.exception.UnauthorizedMerchantAccountException
+import com.goodpon.dashboard.application.merchant.port.out.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.service.accessor.MerchantAccessor
 import com.goodpon.domain.coupon.template.CouponTemplateFactory
-import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateCreationException
+import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationException
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import com.goodpon.domain.merchant.Merchant
@@ -99,7 +99,7 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
             )
             every { merchantAccessor.readById(command.merchantId) } returns merchant
 
-            shouldThrow<UnauthorizedMerchantAccountException> {
+            shouldThrow<NoMerchantAccessPermissionException> {
                 createCouponTemplateService.createCouponTemplate(command)
             }
         }
@@ -115,7 +115,7 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
             )
             every { merchantAccessor.readById(invalidCommand.merchantId) } returns merchant
 
-            shouldThrow<CouponTemplateCreationException> {
+            shouldThrow<CouponTemplateValidationException> {
                 createCouponTemplateService.createCouponTemplate(invalidCommand)
             }
         }

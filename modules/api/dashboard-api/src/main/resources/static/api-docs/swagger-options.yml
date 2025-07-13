@@ -1,3 +1,4 @@
+# @formatter:off
   securitySchemes:
     bearerAuth:
       type: http
@@ -7,3 +8,4 @@
 
 security:
   - bearerAuth: []
+# @formatter:on

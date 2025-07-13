@@ -8,9 +8,10 @@ import com.goodpon.dashboard.application.account.service.exception.AccountEmailE
 import com.goodpon.dashboard.application.auth.service.exception.EmailVerificationNotFoundException
 import com.goodpon.dashboard.application.auth.service.exception.PasswordMismatchException
 import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
+import com.goodpon.dashboard.application.merchant.port.out.exception.NoMerchantAccessPermissionException
 import com.goodpon.domain.BaseException
 import com.goodpon.domain.account.exception.*
-import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateCreationException
+import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -42,6 +43,7 @@ class DashboardApiControllerAdvice {
 
             // Merchant
             is MerchantNotFoundException -> ErrorType.MERCHANT_NOT_FOUND
+            is NoMerchantAccessPermissionException -> ErrorType.NO_MERCHANT_ACCESS_PERMISSION
 
             // Common
             else -> ErrorType.INTERNAL_SERVER_ERROR
@@ -53,15 +55,15 @@ class DashboardApiControllerAdvice {
         return ResponseEntity(response, errorType.status)
     }
 
-    @ExceptionHandler(CouponTemplateCreationException::class)
-    fun handleCouponTemplateCreationException(e: CouponTemplateCreationException): ResponseEntity<ApiResponse<Unit>> {
+    @ExceptionHandler(CouponTemplateValidationException::class)
+    fun handleCouponTemplateCreationException(e: CouponTemplateValidationException): ResponseEntity<ApiResponse<Unit>> {
         log.warn("CouponTemplateCreationException : {}, errors: {}", e.message, e.errors, e)
 
         val errorDetails = e.errors.map { error ->
             ApiErrorDetail(field = error.field, message = error.message)
         }
 
-        val response = ApiResponse.error<Unit>(ErrorType.COUPON_TEMPLATE_CREATION_FAILED, errorDetails)
+        val response = ApiResponse.error<Unit>(ErrorType.COUPON_TEMPLATE_VALIDATION_FAILED, errorDetails)
         return ResponseEntity(response, HttpStatus.BAD_REQUEST)
     }
 

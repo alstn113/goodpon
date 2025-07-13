@@ -1,6 +1,6 @@
 package com.goodpon.domain.coupon.template
 
-import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateCreationException
+import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValidationException
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
@@ -48,7 +48,7 @@ class CouponTemplateFactoryTest : DescribeSpec({
 
     describe("CouponTemplateFactory.create") {
         it("쿠폰 템플릿을 정상적으로 생성할 수 있다.") {
-            shouldNotThrow<CouponTemplateCreationException> {
+            shouldNotThrow<CouponTemplateValidationException> {
                 CouponTemplateFactory.create(
                     merchantId = 1L,
                     name = "여름 할인 쿠폰",
@@ -70,7 +70,7 @@ class CouponTemplateFactoryTest : DescribeSpec({
         }
 
         it("최소 주문 금액이 0 이하면 예외를 발생시키고, 예외 항목에 minOrderAmount가 포함된다.") {
-            val exception = shouldThrow<CouponTemplateCreationException> {
+            val exception = shouldThrow<CouponTemplateValidationException> {
                 createCouponTemplate(
                     minOrderAmount = 0,
                     discountType = CouponDiscountType.FIXED_AMOUNT,
@@ -80,7 +80,7 @@ class CouponTemplateFactoryTest : DescribeSpec({
         }
 
         it("고정 할인인데 최대 할인 금액이 있으면 예외를 발생시키고, 예외 항목에 maxDiscountAmount가 포함된다.") {
-            val exception = shouldThrow<CouponTemplateCreationException> {
+            val exception = shouldThrow<CouponTemplateValidationException> {
                 createCouponTemplate(
                     discountType = CouponDiscountType.FIXED_AMOUNT,
                     maxDiscountAmount = 1000,
@@ -90,7 +90,7 @@ class CouponTemplateFactoryTest : DescribeSpec({
         }
 
         it("백분율 할인인데 할인값이 1~100 사이가 아니면 예외를 발생시키고, 예외 항목에 discountValue가 포함된다.") {
-            val exception = shouldThrow<CouponTemplateCreationException> {
+            val exception = shouldThrow<CouponTemplateValidationException> {
                 createCouponTemplate(
                     discountType = CouponDiscountType.PERCENTAGE,
                     discountValue = 101,
@@ -100,7 +100,7 @@ class CouponTemplateFactoryTest : DescribeSpec({
         }
 
         it("쿠폰 발행 종료일이 쿠폰 발행 시작일보다 이전이면 예외를 발생시키고, 예외 항목에 issueEndDate가 포함된다.") {
-            val exception = shouldThrow<CouponTemplateCreationException> {
+            val exception = shouldThrow<CouponTemplateValidationException> {
                 createCouponTemplate(
                     issueStartDate = LocalDate.of(2025, 7, 10),
                     issueEndDate = LocalDate.of(2025, 7, 9),
@@ -110,7 +110,7 @@ class CouponTemplateFactoryTest : DescribeSpec({
         }
 
         it("쿠폰 유효 기간이 0일 이하이면 예외를 발생시키고, 예외 항목에 validityDays가 포함된다.") {
-            val exception = shouldThrow<CouponTemplateCreationException> {
+            val exception = shouldThrow<CouponTemplateValidationException> {
                 createCouponTemplate(
                     validityDays = 0,
                 )
@@ -119,7 +119,7 @@ class CouponTemplateFactoryTest : DescribeSpec({
         }
 
         it("발급 제한 정책이 설정됐지만 발급 제한 수량이 없으면 예외를 발생시키고, 예외 항목에 maxIssueCount가 포함된다.") {
-            val exception = shouldThrow<CouponTemplateCreationException> {
+            val exception = shouldThrow<CouponTemplateValidationException> {
                 createCouponTemplate(
                     limitType = CouponLimitPolicyType.ISSUE_COUNT,
                     maxIssueCount = null,
@@ -129,7 +129,7 @@ class CouponTemplateFactoryTest : DescribeSpec({
         }
 
         it("여러 예외를 동시에 발생시킬 수 있다.") {
-            val exception = shouldThrow<CouponTemplateCreationException> {
+            val exception = shouldThrow<CouponTemplateValidationException> {
                 createCouponTemplate(
                     minOrderAmount = 0,
                     discountType = CouponDiscountType.FIXED_AMOUNT,

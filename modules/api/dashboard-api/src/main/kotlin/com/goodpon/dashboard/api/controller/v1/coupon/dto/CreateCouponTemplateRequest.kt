@@ -15,7 +15,7 @@ data class CreateCouponTemplateRequest(
     val issueStartDate: LocalDate,
     val issueEndDate: LocalDate?,
     val validityDays: Int?,
-    val redeemEndDate: LocalDate?,
+    val absoluteExpiryDate: LocalDate?,
     val limitType: CouponLimitPolicyType,
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
@@ -34,7 +34,7 @@ data class CreateCouponTemplateRequest(
             issueStartDate = issueStartDate,
             issueEndDate = issueEndDate,
             validityDays = validityDays,
-            absoluteExpiryDate = redeemEndDate,
+            absoluteExpiryDate = absoluteExpiryDate,
             limitType = limitType,
             maxIssueCount = maxIssueCount,
             maxRedeemCount = maxRedeemCount

@@ -2,6 +2,6 @@ package com.goodpon.dashboard.application.merchant.port.out.exception
 
 import com.goodpon.domain.BaseException
 
-class UnauthorizedMerchantAccountException(
+class NoMerchantAccessPermissionException(
     cause: Throwable? = null,
-) : BaseException("상점에 속하지 않은 계정입니다.", cause)
+) : BaseException("해당 상점에 접근할 수 있는 권한이 없습니다.", cause)

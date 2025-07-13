@@ -39,7 +39,12 @@ class ExpireCouponAndTemplateServiceTest : DescribeSpec({
             every {
                 userCouponAccessor.readByStatusAndExpiresAtLessThanEqual(UserCouponStatus.ISSUED, expireCutoff)
             } returns listOf(issuedCoupon)
-            every { couponHistoryAccessor.recordExpired(userCouponId = issuedCoupon.id, recordedAt = now) } returns mockk()
+            every {
+                couponHistoryAccessor.recordExpired(
+                    userCouponId = issuedCoupon.id,
+                    recordedAt = now
+                )
+            } returns mockk()
             every { userCouponAccessor.saveAll(listOf(expiredCoupon)) } returns listOf(expiredCoupon)
 
             val couponTemplate = mockk<CouponTemplate>()
