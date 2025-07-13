@@ -1,7 +1,7 @@
 package com.goodpon.dashboard.application.merchant.port.out
 
-import com.goodpon.dashboard.application.merchant.port.out.dto.MyMerchantDetail
-import com.goodpon.dashboard.application.merchant.port.out.dto.MyMerchantSummary
+import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
+import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
 import com.goodpon.domain.merchant.Merchant
 
 interface MerchantRepository {

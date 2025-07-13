@@ -97,7 +97,7 @@ class MerchantCoreRepository(
     }
 
     @Transactional(readOnly = true)
-    fun findMyMerchantDetailDto(accountId: Long, merchantId: Long): MyMerchantDetailDto? {
+    fun findMyMerchantDetail(accountId: Long, merchantId: Long): MyMerchantDetailDto? {
         val merchantSummary = merchantJpaRepository
             .findMyMerchantSummaryDto(merchantId, accountId) ?: return null
         val accounts = merchantAccountJpaRepository

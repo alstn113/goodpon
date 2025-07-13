@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.merchant.port.`in`
 
-import com.goodpon.dashboard.application.merchant.port.out.dto.MyMerchantDetail
+import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
 
 interface GetMyMerchantDetailUseCase {
 

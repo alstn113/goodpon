@@ -4,6 +4,8 @@ import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.infra.db.jpa.entity.CouponTemplateEntity
 import com.goodpon.infra.db.jpa.repository.CouponTemplateJpaRepository
+import com.goodpon.infra.db.jpa.repository.dto.CouponTemplateDetailDto
+import com.goodpon.infra.db.jpa.repository.dto.CouponTemplateSummaryDto
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -52,5 +54,15 @@ class CouponTemplateCoreRepository(
             status = status,
             absoluteExpiresAt = absoluteExpiresAt,
         ).map { it.toDomain() }
+    }
+
+    @Transactional(readOnly = true)
+    fun findCouponTemplateSummaries(merchantId: Long): List<CouponTemplateSummaryDto> {
+        return couponTemplateJpaRepository.findCouponTemplateSummaries(merchantId)
+    }
+
+    @Transactional(readOnly = true)
+    fun findCouponTemplateDetail(couponTemplateId: Long): CouponTemplateDetailDto? {
+        return couponTemplateJpaRepository.findCouponTemplateDetail(couponTemplateId)
     }
 }

@@ -3,6 +3,7 @@ package com.goodpon.dashboard.application.coupon
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateCommand
 import com.goodpon.dashboard.application.coupon.service.CreateCouponTemplateService
 import com.goodpon.dashboard.application.coupon.service.accessor.CouponTemplateAccessor
+import com.goodpon.dashboard.application.coupon.service.accessor.CouponTemplateStatsAccessor
 import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
 import com.goodpon.dashboard.application.merchant.service.accessor.MerchantAccessor
@@ -24,7 +25,12 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
 
     val couponTemplateAccessor = mockk<CouponTemplateAccessor>()
     val merchantAccessor = mockk<MerchantAccessor>()
-    val createCouponTemplateService = CreateCouponTemplateService(couponTemplateAccessor, merchantAccessor)
+    val couponTemplateStatsAccessor = mockk<CouponTemplateStatsAccessor>(relaxed = true)
+    val createCouponTemplateService = CreateCouponTemplateService(
+        couponTemplateAccessor,
+        merchantAccessor,
+        couponTemplateStatsAccessor
+    )
 
     beforeEach {
         clearAllMocks()
@@ -83,6 +89,7 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
 
             verify { merchantAccessor.readById(command.merchantId) }
             verify { couponTemplateAccessor.save(any()) }
+            verify { couponTemplateStatsAccessor.save(any()) }
         }
 
 

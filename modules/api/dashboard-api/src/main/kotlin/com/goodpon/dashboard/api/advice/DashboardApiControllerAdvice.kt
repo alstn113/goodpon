@@ -75,7 +75,6 @@ class DashboardApiControllerAdvice {
         return ResponseEntity(response, HttpStatus.BAD_REQUEST)
     }
 
-
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ApiResponse<Unit>> {
         log.error("Exception : {}", e.message, e)

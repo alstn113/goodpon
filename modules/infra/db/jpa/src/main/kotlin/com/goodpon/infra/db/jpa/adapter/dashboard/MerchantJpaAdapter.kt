@@ -1,8 +1,8 @@
 package com.goodpon.infra.db.jpa.adapter.dashboard
 
 import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
-import com.goodpon.dashboard.application.merchant.port.out.dto.MyMerchantDetail
-import com.goodpon.dashboard.application.merchant.port.out.dto.MyMerchantSummary
+import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
+import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
 import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
 import com.goodpon.domain.merchant.Merchant
 import com.goodpon.infra.db.jpa.core.MerchantCoreRepository
@@ -39,7 +39,7 @@ class MerchantJpaAdapter(
 
     override fun findMyMerchantDetail(accountId: Long, merchantId: Long): MyMerchantDetail? {
         val merchantDetail = merchantCoreRepository
-            .findMyMerchantDetailDto(accountId = accountId, merchantId = merchantId) ?: return null
+            .findMyMerchantDetail(accountId = accountId, merchantId = merchantId) ?: return null
 
         return MyMerchantDetail(
             id = merchantDetail.id,

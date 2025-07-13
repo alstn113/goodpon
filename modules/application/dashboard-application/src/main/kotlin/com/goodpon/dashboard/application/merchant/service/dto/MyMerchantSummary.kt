@@ -1,4 +1,4 @@
-package com.goodpon.dashboard.application.merchant.port.out.dto
+package com.goodpon.dashboard.application.merchant.service.dto
 
 import java.time.LocalDateTime
 

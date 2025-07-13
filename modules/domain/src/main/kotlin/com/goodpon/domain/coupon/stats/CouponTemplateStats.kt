@@ -1,6 +1,6 @@
 package com.goodpon.domain.coupon.stats
 
-data class CouponTemplateStats(
+data class CouponTemplateStats private constructor(
     val couponTemplateId: Long,
     val issueCount: Long,
     val redeemCount: Long,
@@ -16,5 +16,27 @@ data class CouponTemplateStats(
 
     fun decrementRedeemCount(): CouponTemplateStats {
         return this.copy(redeemCount = redeemCount - 1)
+    }
+
+    companion object {
+        fun create(couponTemplateId: Long): CouponTemplateStats {
+            return CouponTemplateStats(
+                couponTemplateId = couponTemplateId,
+                issueCount = 0L,
+                redeemCount = 0L
+            )
+        }
+
+        fun reconstruct(
+            couponTemplateId: Long,
+            issueCount: Long,
+            redeemCount: Long,
+        ): CouponTemplateStats {
+            return CouponTemplateStats(
+                couponTemplateId = couponTemplateId,
+                issueCount = issueCount,
+                redeemCount = redeemCount
+            )
+        }
     }
 }

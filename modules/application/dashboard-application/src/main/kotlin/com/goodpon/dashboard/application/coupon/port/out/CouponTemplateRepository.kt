@@ -1,5 +1,7 @@
 package com.goodpon.dashboard.application.coupon.port.out
 
+import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateDetail
+import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummary
 import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import java.time.LocalDateTime
@@ -16,4 +18,8 @@ interface CouponTemplateRepository {
         status: CouponTemplateStatus,
         absoluteExpiresAt: LocalDateTime,
     ): List<CouponTemplate>
+
+    fun findCouponTemplateSummaries(merchantId: Long): List<CouponTemplateSummary>
+
+    fun findCouponTemplateDetail(couponTemplateId: Long): CouponTemplateDetail?
 }

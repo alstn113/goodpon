@@ -26,7 +26,7 @@ class CouponTemplateStatsEntity(
     }
 
     fun toDomain(): CouponTemplateStats {
-        return CouponTemplateStats(
+        return CouponTemplateStats.reconstruct(
             couponTemplateId = this.couponTemplateId,
             issueCount = this.issueCount,
             redeemCount = this.redeemCount

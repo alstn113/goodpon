@@ -4,10 +4,15 @@ import com.goodpon.dashboard.api.controller.v1.coupon.dto.CreateCouponTemplateRe
 import com.goodpon.dashboard.api.response.ApiResponse
 import com.goodpon.dashboard.api.security.AccountPrincipal
 import com.goodpon.dashboard.application.coupon.port.`in`.CreateCouponTemplateUseCase
+import com.goodpon.dashboard.application.coupon.port.`in`.GetMyCouponTemplateDetailUseCase
+import com.goodpon.dashboard.application.coupon.port.`in`.GetMyCouponTemplatesUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.PublishCouponTemplateUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateResult
+import com.goodpon.dashboard.application.coupon.port.`in`.dto.GetMerchantCouponTemplateDetail
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateCommand
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateResult
+import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateDetail
+import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummary
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -16,6 +21,8 @@ import org.springframework.web.bind.annotation.*
 class CouponTemplateController(
     private val createCouponTemplateUseCase: CreateCouponTemplateUseCase,
     private val publishCouponTemplateUseCase: PublishCouponTemplateUseCase,
+    private val getMerchantCouponTemplates: GetMyCouponTemplatesUseCase,
+    private val getMerchantCouponTemplateDetail: GetMyCouponTemplateDetailUseCase,
 ) {
 
     @PostMapping("/v1/merchants/{merchantId}/coupon-templates")
@@ -47,17 +54,31 @@ class CouponTemplateController(
     }
 
     @GetMapping("/v1/merchants/{merchantId}/coupon-templates")
-    fun getCouponTemplates(
+    fun getMerchantCouponTemplates(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
-    ) {
+    ): ResponseEntity<ApiResponse<List<CouponTemplateSummary>>> {
+        val result = getMerchantCouponTemplates.getMerchantCouponTemplates(
+            accountId = accountPrincipal.id,
+            merchantId = merchantId,
+        )
+
+        return ResponseEntity.ok(ApiResponse.success(result))
     }
 
     @GetMapping("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}")
-    fun getCouponTemplate(
+    fun getMerchantCouponTemplateDetail(
         @PathVariable merchantId: Long,
         @PathVariable couponTemplateId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
-    ) {
+    ): ResponseEntity<ApiResponse<CouponTemplateDetail>> {
+        val query = GetMerchantCouponTemplateDetail(
+            accountId = accountPrincipal.id,
+            merchantId = merchantId,
+            couponTemplateId = couponTemplateId,
+        )
+        val result = getMerchantCouponTemplateDetail.getMerchantCouponTemplateDetail(query)
+
+        return ResponseEntity.ok(ApiResponse.success(result))
     }
 }
