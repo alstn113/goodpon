@@ -1,8 +1,0 @@
-package com.goodpon.infra.redis
-
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan
-
-@SpringBootApplication
-@ConfigurationPropertiesScan
-class InfraRedisTestApplication
