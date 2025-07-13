@@ -14,7 +14,7 @@ Goodpon은 `Dashboard API`와 `Partner OpenAPI`로 서버가 분리되어 있습
 
 현재 다이어그램에는 `infra-db-jpa` 모듈만 표시되어 있으며, **지면의 제한**으로 인해 다른 인프라 모듈은 생략되었습니다.
 
-![goodpon0713 drawio](https://github.com/user-attachments/assets/b1ad3c21-0a33-4673-b6b4-f30903748fc0)
+![goodpon0714](https://github.com/user-attachments/assets/7eef4339-546c-47d7-a179-7ccad93deb6a)
 
 ## 프로젝트 API 명세서
 
