@@ -27,11 +27,11 @@ class ApiKeyAuthenticationFilter(
     ) {
         try {
             val clientId = AuthHeaderUtil.extractClientId(request)
-            val clientSecret = AuthHeaderUtil.extractClientSecret(request)
-
             if (clientId.isNullOrBlank()) {
                 throw ClientIdMissingException()
             }
+
+            val clientSecret = AuthHeaderUtil.extractClientSecret(request)
             if (clientSecret.isNullOrBlank()) {
                 throw ClientSecretMissingException()
             }

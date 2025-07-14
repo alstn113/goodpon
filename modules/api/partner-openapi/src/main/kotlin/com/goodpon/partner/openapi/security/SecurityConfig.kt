@@ -38,14 +38,13 @@ class SecurityConfig(
             .logout { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
-                it
-                    .anyRequest().authenticated()
+                it.anyRequest().authenticated()
             }
             .exceptionHandling {
                 it.authenticationEntryPoint(authenticationEntryPoint)
                 it.accessDeniedHandler(accessDeniedHandler)
             }
-            .addFilterBefore(apiKeyAuthenticationFilter, ExceptionTranslationFilter::class.java)
+            .addFilterAfter(apiKeyAuthenticationFilter, ExceptionTranslationFilter::class.java)
 
         return http.build()
     }
@@ -54,7 +53,7 @@ class SecurityConfig(
     fun corsConfigurationSource(): CorsConfigurationSource {
         val corsConfiguration = CorsConfiguration().apply {
             allowedOrigins = listOf("*")
-            allowedMethods = listOf("GET", "POST", "OPTIONS")
+            allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
             allowedHeaders = listOf("*")
             allowCredentials = true
         }

@@ -1,5 +1,6 @@
 package com.goodpon.partner.openapi.support
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.partner.application.coupon.port.`in`.CancelCouponRedemptionUseCase
 import com.goodpon.partner.application.coupon.port.`in`.IssueCouponUseCase
 import com.goodpon.partner.application.coupon.port.`in`.RedeemCouponUseCase
@@ -18,6 +19,9 @@ abstract class AbstractWebTest {
 
     @Autowired
     protected lateinit var mockMvc: MockMvc
+
+    @Autowired
+    protected lateinit var objectMapper: ObjectMapper
 
     @MockkBean
     protected lateinit var issueCouponUseCase: IssueCouponUseCase

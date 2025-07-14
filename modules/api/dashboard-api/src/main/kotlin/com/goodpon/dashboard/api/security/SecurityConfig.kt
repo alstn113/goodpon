@@ -45,7 +45,9 @@ class SecurityConfig(
             authenticationEntryPoint = authenticationEntryPoint,
             allowListPatterns = tokenAllowListPatterns,
         )
-        val accountVerifierFilter = AccountVerifiedFilter(allowListPatterns = verifiedAllowListPatterns)
+        val accountVerifierFilter = AccountVerifiedFilter(
+            allowListPatterns = verifiedAllowListPatterns
+        )
 
         http
             .httpBasic { it.disable() }

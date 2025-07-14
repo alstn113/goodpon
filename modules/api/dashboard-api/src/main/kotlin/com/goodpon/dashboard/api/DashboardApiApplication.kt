@@ -3,7 +3,12 @@ package com.goodpon.dashboard.api
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication(scanBasePackages = ["com.goodpon.dashboard", "com.goodpon.infra"])
+@SpringBootApplication(
+    scanBasePackages = [
+        "com.goodpon.dashboard",
+        "com.goodpon.infra"
+    ]
+)
 class DashboardApiApplication
 
 fun main(args: Array<String>) {

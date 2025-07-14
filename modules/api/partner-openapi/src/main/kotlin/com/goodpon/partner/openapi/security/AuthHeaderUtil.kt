@@ -4,15 +4,12 @@ import jakarta.servlet.http.HttpServletRequest
 
 object AuthHeaderUtil {
 
-    private const val CLIENT_ID_HEADER = "X-Goodpon-Client-Id"
-    private const val CLIENT_SECRET_PREFIX = "X-Goodpon-Client-Secret"
-
     fun extractClientId(request: HttpServletRequest): String? {
-        return extractHeader(request, CLIENT_ID_HEADER)
+        return extractHeader(request, ApiKeyHeader.CLIENT_ID.headerName)
     }
 
     fun extractClientSecret(request: HttpServletRequest): String? {
-        return extractHeader(request, CLIENT_SECRET_PREFIX)
+        return extractHeader(request, ApiKeyHeader.CLIENT_SECRET.headerName)
     }
 
     private fun extractHeader(request: HttpServletRequest, headerName: String): String? {

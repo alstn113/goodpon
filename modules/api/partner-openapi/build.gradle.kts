@@ -3,24 +3,23 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":modules:domain"))
-    implementation(project(":modules:application:partner-application"))
-    implementation(project(":modules:support:logging"))
-
     runtimeOnly(project(":modules:infra:db:jpa"))
     runtimeOnly(project(":modules:infra:db:flyway"))
 
+    implementation(project(":modules:domain"))
+    implementation(project(":modules:application:partner-application"))
+    implementation(project(":modules:support:logging"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
     testImplementation(project(":modules:infra:db:jpa"))
     testImplementation(project(":modules:infra:db:flyway"))
-
-    testImplementation(testFixtures(project(":modules:infra:db:jpa")))
-
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation("org.springframework.security:spring-security-test")
     testImplementation(libs.epage.restdocs.mockmvc)
+    testImplementation(libs.rest.assured)
+    testImplementation(testFixtures(project(":modules:infra:db:jpa")))
 }
 
 openapi3 {

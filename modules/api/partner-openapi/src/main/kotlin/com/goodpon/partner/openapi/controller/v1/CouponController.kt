@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
-
 @RestController
 class CouponController(
     private val issueCouponUseCase: IssueCouponUseCase,
@@ -31,7 +30,7 @@ class CouponController(
         @RequestBody request: IssueCouponRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<IssueCouponResult>> {
-        val command = request.toCommand(merchantPrincipal.id)
+        val command = request.toCommand(merchantPrincipal.merchantId)
         val result = issueCouponUseCase.issueCoupon(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
@@ -43,7 +42,7 @@ class CouponController(
         @RequestBody request: RedeemCouponRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<RedeemCouponResult>> {
-        val command = request.toCommand(merchantPrincipal.id, couponId)
+        val command = request.toCommand(merchantPrincipal.merchantId, couponId)
         val result = redeemCouponUseCase.redeemCoupon(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
@@ -55,7 +54,7 @@ class CouponController(
         @RequestBody request: CancelCouponRedemptionRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<CancelCouponRedemptionResult>> {
-        val command = request.toCommand(merchantPrincipal.id, couponId)
+        val command = request.toCommand(merchantPrincipal.merchantId, couponId)
         val result = cancelCouponRedemptionUseCase.cancelCouponRedemption(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))

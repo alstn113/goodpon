@@ -17,7 +17,7 @@ data class ApiKeyAuthenticationToken private constructor(
 
     override fun getCredentials(): Any? = null
 
-    override fun getName(): String = merchantPrincipal.id.toString()
+    override fun getName(): String = merchantPrincipal.merchantId.toString()
 
     companion object {
         fun of(

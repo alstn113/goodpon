@@ -3,33 +3,31 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":modules:domain"))
-    implementation(project(":modules:application:dashboard-application"))
-    implementation(project(":modules:support:logging"))
-
     runtimeOnly(project(":modules:infra:db:jpa"))
     runtimeOnly(project(":modules:infra:db:flyway"))
     runtimeOnly(project(":modules:infra:aws:ses"))
     runtimeOnly(project(":modules:infra:redis"))
     runtimeOnly(project(":modules:infra:auth"))
 
+    implementation(project(":modules:domain"))
+    implementation(project(":modules:application:dashboard-application"))
+    implementation(project(":modules:support:logging"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    testImplementation("org.springframework.security:spring-security-test")
 
     testImplementation(project(":modules:infra:db:jpa"))
     testImplementation(project(":modules:infra:db:flyway"))
     testImplementation(project(":modules:infra:aws:ses"))
     testImplementation(project(":modules:infra:redis"))
     testImplementation(project(":modules:infra:auth"))
-
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation(libs.epage.restdocs.mockmvc)
+    testImplementation(libs.rest.assured)
     testImplementation(testFixtures(project(":modules:infra:db:jpa")))
     testImplementation(testFixtures(project(":modules:infra:redis")))
 
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-    testImplementation(libs.epage.restdocs.mockmvc)
-    testImplementation(libs.rest.assured)
 }
 
 openapi3 {
