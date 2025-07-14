@@ -17,7 +17,6 @@ import com.goodpon.domain.merchant.Merchant
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalDateTime

@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CouponTemplateStatsAccessor(
-    private val couponTemplateStatsRepository: CouponTemplateStatsRepository
+    private val couponTemplateStatsRepository: CouponTemplateStatsRepository,
 ) {
 
     @Transactional

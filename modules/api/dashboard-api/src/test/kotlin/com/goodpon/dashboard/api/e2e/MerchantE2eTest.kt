@@ -24,21 +24,12 @@ class MerchantE2eTest(
 
     @Test
     fun `상점 생성 시나리오`() {
-        val email = "test@goodpon.site"
-        val password = "password"
-
-        val account = Account.create(
-            email = email,
-            password = passwordEncoder.encode(password),
-            name = "테스트 상점"
-        )
-        val verifiedAccount = account.verify(LocalDateTime.now())
-        val savedAccount = accountRepository.save(verifiedAccount)
+        val (email, password, savedAccountId) = createAccount(verified = true)
 
         val (accountId, accessToken) = 로그인_요청(email = email, password = password)
             .apply { statusCode() shouldBe 200 }
             .toApiResponse<LoginResult>()
-            .apply { id shouldBe savedAccount.id }
+            .apply { id shouldBe savedAccountId }
             .let { it.id to it.accessToken }
 
         내_상점_목록_조회_요청(accessToken = accessToken)
@@ -73,20 +64,12 @@ class MerchantE2eTest(
 
     @Test
     fun `인증되지 않은 사용자 시나리오`() {
-        val email = "test@goodpon.site"
-        val password = "password"
-
-        val account = Account.create(
-            email = email,
-            password = passwordEncoder.encode(password),
-            name = "테스트 상점"
-        )
-        val savedAccount = accountRepository.save(account)
+        val (email, password, savedAccountId) = createAccount(verified = false)
 
         val accessToken = 로그인_요청(email = email, password = password)
             .apply { statusCode() shouldBe 200 }
             .toApiResponse<LoginResult>()
-            .apply { id shouldBe savedAccount.id }
+            .apply { id shouldBe savedAccountId }
             .accessToken
 
         내_상점_목록_조회_요청(accessToken = accessToken)
@@ -140,5 +123,25 @@ class MerchantE2eTest(
             .header("Authorization", "Bearer $accessToken")
             .`when`()
             .get("/v1/merchants/$merchantId")
+    }
+
+    private fun createAccount(verified: Boolean): Triple<String, String, Long> {
+        val email = "test@goodpon.site"
+        val password = "password"
+
+        val account = Account.create(
+            email = email,
+            password = passwordEncoder.encode(password),
+            name = "테스트 상점"
+        ).let {
+            if (verified) {
+                it.verify(LocalDateTime.now())
+            } else {
+                it
+            }
+        }
+
+        val savedAccount = accountRepository.save(account)
+        return Triple(email, password, savedAccount.id)
     }
 }

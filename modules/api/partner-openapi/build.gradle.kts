@@ -8,11 +8,14 @@ dependencies {
     implementation(project(":modules:support:logging"))
 
     runtimeOnly(project(":modules:infra:db:jpa"))
-    implementation(project(":modules:infra:db:flyway"))
+    runtimeOnly(project(":modules:infra:db:flyway"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
+
+    testImplementation(project(":modules:infra:db:jpa"))
+    testImplementation(project(":modules:infra:db:flyway"))
 
     testImplementation(testFixtures(project(":modules:infra:db:jpa")))
 

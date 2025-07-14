@@ -8,9 +8,9 @@ import com.goodpon.dashboard.api.response.ResultType
 import com.goodpon.dashboard.api.support.AbstractDocumentTest
 import com.goodpon.dashboard.api.support.WithMockAccount
 import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantResult
+import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
-import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
 import com.goodpon.domain.merchant.MerchantAccountRole
 import io.mockk.every
 import org.junit.jupiter.api.Test

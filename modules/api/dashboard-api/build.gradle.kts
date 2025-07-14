@@ -8,7 +8,7 @@ dependencies {
     implementation(project(":modules:support:logging"))
 
     runtimeOnly(project(":modules:infra:db:jpa"))
-    implementation(project(":modules:infra:db:flyway"))
+    runtimeOnly(project(":modules:infra:db:flyway"))
     runtimeOnly(project(":modules:infra:aws:ses"))
     runtimeOnly(project(":modules:infra:redis"))
     runtimeOnly(project(":modules:infra:auth"))
@@ -17,6 +17,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.security:spring-security-test")
+
+    testImplementation(project(":modules:infra:db:jpa"))
+    testImplementation(project(":modules:infra:db:flyway"))
+    testImplementation(project(":modules:infra:aws:ses"))
+    testImplementation(project(":modules:infra:redis"))
+    testImplementation(project(":modules:infra:auth"))
 
     testImplementation(testFixtures(project(":modules:infra:db:jpa")))
     testImplementation(testFixtures(project(":modules:infra:redis")))
