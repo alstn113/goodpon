@@ -8,7 +8,7 @@ import com.goodpon.dashboard.application.coupon.port.`in`.GetMerchantCouponTempl
 import com.goodpon.dashboard.application.coupon.port.`in`.GetMerchantCouponTemplatesUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.PublishCouponTemplateUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateResult
-import com.goodpon.dashboard.application.coupon.port.`in`.dto.GetMerchantCouponTemplateDetail
+import com.goodpon.dashboard.application.coupon.port.`in`.dto.GetMerchantCouponTemplateDetailQuery
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateCommand
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateResult
 import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateDetail
@@ -72,7 +72,7 @@ class CouponTemplateController(
         @PathVariable couponTemplateId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<CouponTemplateDetail>> {
-        val query = GetMerchantCouponTemplateDetail(
+        val query = GetMerchantCouponTemplateDetailQuery(
             accountId = accountPrincipal.id,
             merchantId = merchantId,
             couponTemplateId = couponTemplateId,

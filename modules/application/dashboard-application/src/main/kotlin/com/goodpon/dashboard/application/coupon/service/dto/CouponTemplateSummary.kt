@@ -8,7 +8,7 @@ data class CouponTemplateSummary(
     val name: String,
     val description: String,
     val status: CouponTemplateStatus,
-    val issuedCount: Long,
-    val redeemedCount: Long,
+    val issueCount: Long,
+    val redeemCount: Long,
     val createdAt: LocalDateTime,
 )

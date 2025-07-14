@@ -50,8 +50,8 @@ class CouponTemplateJpaAdapter(
                     name = it.name,
                     description = it.description,
                     status = it.status,
-                    issuedCount = it.issuedCount,
-                    redeemedCount = it.redeemedCount,
+                    issueCount = it.issueCount,
+                    redeemCount = it.redeemCount,
                     createdAt = it.createdAt
                 )
             }

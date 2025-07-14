@@ -1,7 +1,7 @@
 package com.goodpon.dashboard.application.coupon.service
 
 import com.goodpon.dashboard.application.coupon.port.`in`.GetMerchantCouponTemplateDetailUseCase
-import com.goodpon.dashboard.application.coupon.port.`in`.dto.GetMerchantCouponTemplateDetail
+import com.goodpon.dashboard.application.coupon.port.`in`.dto.GetMerchantCouponTemplateDetailQuery
 import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository
 import com.goodpon.dashboard.application.coupon.port.out.exception.CouponTemplateNotFoundException
 import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateDetail
@@ -18,7 +18,7 @@ class GetMerchantCouponTemplateDetailService(
 ) : GetMerchantCouponTemplateDetailUseCase {
 
     @Transactional(readOnly = true)
-    override fun getMerchantCouponTemplateDetail(query: GetMerchantCouponTemplateDetail): CouponTemplateDetail {
+    override fun getMerchantCouponTemplateDetail(query: GetMerchantCouponTemplateDetailQuery): CouponTemplateDetail {
         val merchant = merchantAccessor.readById(query.merchantId)
         if (!merchant.isAccessibleBy(query.accountId)) {
             throw NoMerchantAccessPermissionException()
