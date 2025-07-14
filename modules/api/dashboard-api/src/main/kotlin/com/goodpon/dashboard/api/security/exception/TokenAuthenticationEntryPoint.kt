@@ -29,7 +29,7 @@ class TokenAuthenticationEntryPoint(
         response.characterEncoding = "UTF-8"
         response.status = HttpServletResponse.SC_UNAUTHORIZED
 
-        val errorResponse = ApiResponse.error<Unit>(ErrorType.UNAUTHORIZED)
+        val errorResponse = ApiResponse.error(ErrorType.UNAUTHORIZED)
         val body = objectMapper.writeValueAsString(errorResponse)
 
         response.writer.write(body)

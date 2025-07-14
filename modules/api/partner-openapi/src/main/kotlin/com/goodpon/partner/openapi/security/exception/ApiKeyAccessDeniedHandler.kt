@@ -1,7 +1,8 @@
 package com.goodpon.partner.openapi.security.exception
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.goodpon.partner.openapi.response.ApiErrorResponse
+import com.goodpon.partner.openapi.response.ApiResponse
+import com.goodpon.partner.openapi.response.ErrorType
 import com.goodpon.partner.openapi.response.TraceIdProvider
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -25,8 +26,10 @@ class ApiKeyAccessDeniedHandler(
         response.characterEncoding = "UTF-8"
         response.status = HttpServletResponse.SC_FORBIDDEN
 
-        val traceId = tracerIdProvider.getTraceId()
-        val errorResponse = ApiErrorResponse.of(traceId, "FORBIDDEN_REQUEST")
+        val errorResponse = ApiResponse.error(
+            error = ErrorType.FORBIDDEN,
+            traceId = tracerIdProvider.getTraceId()
+        )
         val body = objectMapper.writeValueAsString(errorResponse)
 
         response.writer.write(body)

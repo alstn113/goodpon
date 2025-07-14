@@ -34,7 +34,7 @@ class TokenAccessDeniedHandler(
         response.characterEncoding = "UTF-8"
         response.status = HttpServletResponse.SC_FORBIDDEN
 
-        val errorResponse = ApiResponse.error<Unit>(errorType)
+        val errorResponse = ApiResponse.error(errorType)
         val body = objectMapper.writeValueAsString(errorResponse)
 
         response.writer.write(body)

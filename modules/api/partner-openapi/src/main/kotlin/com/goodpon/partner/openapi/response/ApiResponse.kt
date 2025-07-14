@@ -1,19 +1,25 @@
 package com.goodpon.partner.openapi.response
 
 data class ApiResponse<T> private constructor(
-    val version: String,
-    val traceId: String,
-    val entityType: String,
-    val entityBody: T,
+    val result: ResultType,
+    val data: T? = null,
+    val error: ErrorMessage? = null,
+    val traceId: String? = null, // filter 에서 자동으로 주입
 ) {
 
     companion object {
-        fun <T> of(entityType: String, entityBody: T): ApiResponse<T> {
+        fun <T> success(data: T): ApiResponse<T> {
             return ApiResponse(
-                version = "2025-05-29",
-                traceId = "",
-                entityType = entityType,
-                entityBody = entityBody,
+                result = ResultType.SUCCESS,
+                data = data
+            )
+        }
+
+        fun error(error: ErrorType, errorData: Any? = null, traceId: String? = null): ApiResponse<Unit> {
+            return ApiResponse(
+                result = ResultType.ERROR,
+                error = ErrorMessage(error, errorData),
+                traceId = traceId
             )
         }
     }

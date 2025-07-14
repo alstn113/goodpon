@@ -59,7 +59,7 @@ class DashboardApiControllerAdvice {
 
         log.warn("BaseException : {}", e.message, e)
 
-        val response = ApiResponse.error<Unit>(errorType)
+        val response = ApiResponse.error(errorType)
         return ResponseEntity(response, errorType.status)
     }
 
@@ -71,7 +71,7 @@ class DashboardApiControllerAdvice {
             ApiErrorDetail(field = error.field, message = error.message)
         }
 
-        val response = ApiResponse.error<Unit>(ErrorType.COUPON_TEMPLATE_VALIDATION_FAILED, errorDetails)
+        val response = ApiResponse.error(ErrorType.COUPON_TEMPLATE_VALIDATION_FAILED, errorDetails)
         return ResponseEntity(response, HttpStatus.BAD_REQUEST)
     }
 
@@ -79,7 +79,8 @@ class DashboardApiControllerAdvice {
     fun handleException(e: Exception): ResponseEntity<ApiResponse<Unit>> {
         log.error("Exception : {}", e.message, e)
 
-        val response = ApiResponse.error<Unit>(ErrorType.INTERNAL_SERVER_ERROR)
-        return ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR)
+        val errorType = ErrorType.INTERNAL_SERVER_ERROR
+        val response = ApiResponse.error(error = errorType)
+        return ResponseEntity(response, errorType.status)
     }
 }

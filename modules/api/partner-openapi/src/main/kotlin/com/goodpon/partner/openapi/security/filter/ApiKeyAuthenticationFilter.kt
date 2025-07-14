@@ -4,10 +4,12 @@ import com.goodpon.partner.application.merchant.port.out.exception.MerchantNotFo
 import com.goodpon.partner.application.merchant.service.MerchantService
 import com.goodpon.partner.application.merchant.service.exception.MerchantClientSecretMismatchException
 import com.goodpon.partner.openapi.security.AuthHeaderUtil
+import com.goodpon.partner.openapi.security.exception.ClientIdMissingException
+import com.goodpon.partner.openapi.security.exception.ClientSecretMissingException
+import com.goodpon.partner.openapi.security.exception.InvalidCredentialsException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.AuthenticationEntryPoint
@@ -27,8 +29,11 @@ class ApiKeyAuthenticationFilter(
             val clientId = AuthHeaderUtil.extractClientId(request)
             val clientSecret = AuthHeaderUtil.extractClientSecret(request)
 
-            if (clientId.isNullOrBlank() || clientSecret.isNullOrBlank()) {
-                throw BadCredentialsException("Client ID 또는 Client Secret이 누락되었습니다.")
+            if (clientId.isNullOrBlank()) {
+                throw ClientIdMissingException()
+            }
+            if (clientSecret.isNullOrBlank()) {
+                throw ClientSecretMissingException()
             }
 
             authenticateMerchant(clientId = clientId, clientSecret = clientSecret)
@@ -46,11 +51,9 @@ class ApiKeyAuthenticationFilter(
             val authentication = ApiKeyAuthenticationToken.of(merchantInfo.id)
             SecurityContextHolder.getContext().authentication = authentication
         } catch (e: MerchantNotFoundException) {
-            throw BadCredentialsException("상점을 조회하던 중 오류가 발생했습니다.", e)
+            throw InvalidCredentialsException("상점을 찾을 수 없습니다. 올바른 클라이언트 ID를 사용했는지 확인해주세요.")
         } catch (e: MerchantClientSecretMismatchException) {
-            throw BadCredentialsException("상점의 Client Secret이 일치하지 않습니다.", e)
-        } catch (e: Exception) {
-            throw BadCredentialsException("상점을 조회하던 중 알 수 없는 오류가 발생했습니다.", e)
+            throw InvalidCredentialsException("Client Secret이 일치하지 않습니다. 올바른 Client Secret을 사용했는지 확인해주세요.")
         }
     }
 }

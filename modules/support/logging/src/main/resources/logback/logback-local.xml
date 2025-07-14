@@ -5,6 +5,8 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
+                <!-- traceId는 하나의 요청에 대한 고유 식별자 -->
+                <!-- spanId는 traceId 내에서의 특정 작업을 식별하는 ID -->
                 %clr(%d{HH:mm:ss.SSS}){faint}|%clr(${level:-%5p})|%32X{traceId:-},%16X{spanId:-}|%clr(%-40.40logger{39}){cyan}%clr(|){faint}%m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}
             </pattern>
             <charset>utf8</charset>

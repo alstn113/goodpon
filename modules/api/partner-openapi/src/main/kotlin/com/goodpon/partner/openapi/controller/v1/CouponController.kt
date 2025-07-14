@@ -34,7 +34,7 @@ class CouponController(
         val command = request.toCommand(merchantPrincipal.id)
         val result = issueCouponUseCase.issueCoupon(command)
 
-        return ResponseEntity.ok(ApiResponse.of("coupon", result))
+        return ResponseEntity.ok(ApiResponse.success(result))
     }
 
     @PostMapping("/v1/coupons/{couponId}/redeem")
@@ -46,7 +46,7 @@ class CouponController(
         val command = request.toCommand(merchantPrincipal.id, couponId)
         val result = redeemCouponUseCase.redeemCoupon(command)
 
-        return ResponseEntity.ok(ApiResponse.of("coupon", result))
+        return ResponseEntity.ok(ApiResponse.success(result))
     }
 
     @PostMapping("/v1/coupons/{couponId}/cancel")
@@ -58,6 +58,6 @@ class CouponController(
         val command = request.toCommand(merchantPrincipal.id, couponId)
         val result = cancelCouponRedemptionUseCase.cancelCouponRedemption(command)
 
-        return ResponseEntity.ok(ApiResponse.of("coupon", result))
+        return ResponseEntity.ok(ApiResponse.success(result))
     }
 }

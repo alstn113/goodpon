@@ -1,7 +1,8 @@
 package com.goodpon.partner.openapi.security.exception
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.goodpon.partner.openapi.response.ApiErrorResponse
+import com.goodpon.partner.openapi.response.ApiResponse
+import com.goodpon.partner.openapi.response.ErrorType
 import com.goodpon.partner.openapi.response.TraceIdProvider
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -21,12 +22,21 @@ class ApiKeyAuthenticationEntryPoint(
         response: HttpServletResponse,
         authException: AuthenticationException,
     ) {
+        val (status, errorType) = when (authException) {
+            is ClientIdMissingException -> HttpServletResponse.SC_BAD_REQUEST to ErrorType.CLIENT_ID_MISSING
+            is ClientSecretMissingException -> HttpServletResponse.SC_BAD_REQUEST to ErrorType.CLIENT_SECRET_MISSING
+            is InvalidCredentialsException -> HttpServletResponse.SC_UNAUTHORIZED to ErrorType.INVALID_CREDENTIALS
+            else -> HttpServletResponse.SC_UNAUTHORIZED to ErrorType.UNAUTHORIZED
+        }
+
+        response.status = status
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.characterEncoding = "UTF-8"
-        response.status = HttpServletResponse.SC_UNAUTHORIZED
 
-        val traceId = traceIdProvider.getTraceId()
-        val errorResponse = ApiErrorResponse.of(traceId, "UNAUTHORIZED")
+        val errorResponse = ApiResponse.error(
+            error = errorType,
+            traceId = traceIdProvider.getTraceId()
+        )
         val body = objectMapper.writeValueAsString(errorResponse)
 
         response.writer.write(body)

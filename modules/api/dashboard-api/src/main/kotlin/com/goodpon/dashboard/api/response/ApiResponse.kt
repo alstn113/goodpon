@@ -11,11 +11,11 @@ data class ApiResponse<T> private constructor(
             return ApiResponse(ResultType.SUCCESS, data, null)
         }
 
-        fun <S> error(error: ErrorType, errorData: Any? = null): ApiResponse<S> {
+        fun error(error: ErrorType, errorData: Any? = null): ApiResponse<Unit> {
             return ApiResponse(ResultType.ERROR, null, ErrorMessage(error, errorData))
         }
 
-        fun <S> error(error: ErrorType, details: List<ApiErrorDetail>): ApiResponse<S> {
+        fun error(error: ErrorType, details: List<ApiErrorDetail>): ApiResponse<Unit> {
             return ApiResponse(ResultType.ERROR, null, ErrorMessage(error, details))
         }
     }
