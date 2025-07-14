@@ -2,9 +2,9 @@ package com.goodpon.dashboard.api.application.coupon
 
 import com.goodpon.dashboard.api.support.AbstractIntegrationTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
-import com.goodpon.dashboard.application.coupon.port.`in`.PublishCouponTemplateUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateCommand
 import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository
+import com.goodpon.dashboard.application.coupon.service.PublishCouponTemplateService
 import com.goodpon.dashboard.application.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
@@ -22,11 +22,11 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-class PublishCouponTemplateUseCaseIT(
+class PublishCouponTemplateServiceIT(
+    private val publishCouponTemplateService: PublishCouponTemplateService,
     private val accountRepository: AccountRepository,
     private val merchantRepository: MerchantRepository,
     private val couponTemplateRepository: CouponTemplateRepository,
-    private val publishCouponTemplateUseCase: PublishCouponTemplateUseCase,
 ) : AbstractIntegrationTest() {
 
     @Test
@@ -42,7 +42,7 @@ class PublishCouponTemplateUseCaseIT(
             merchantId = savedMerchant.id,
             couponTemplateId = savedCouponTemplate.id
         )
-        val result = publishCouponTemplateUseCase.publishCouponTemplate(command)
+        val result = publishCouponTemplateService.publishCouponTemplate(command)
 
         // then
         val foundCouponTemplate = couponTemplateRepository.findById(result.id)
@@ -68,7 +68,7 @@ class PublishCouponTemplateUseCaseIT(
 
         // then
         shouldThrow<NoMerchantAccessPermissionException> {
-            publishCouponTemplateUseCase.publishCouponTemplate(command)
+            publishCouponTemplateService.publishCouponTemplate(command)
         }
     }
 
@@ -89,7 +89,7 @@ class PublishCouponTemplateUseCaseIT(
 
         // then
         shouldThrow<CouponTemplateNotOwnedByMerchantException> {
-            publishCouponTemplateUseCase.publishCouponTemplate(command)
+            publishCouponTemplateService.publishCouponTemplate(command)
         }
     }
 

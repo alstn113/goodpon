@@ -2,15 +2,15 @@ package com.goodpon.dashboard.api.application.merchant
 
 import com.goodpon.dashboard.api.support.AbstractIntegrationTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
-import com.goodpon.dashboard.application.merchant.port.`in`.GetMyMerchantsUseCase
 import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
+import com.goodpon.dashboard.application.merchant.service.GetMyMerchantsService
 import com.goodpon.domain.account.Account
 import com.goodpon.domain.merchant.Merchant
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class GetMyMerchantsUseCaseIT(
-    private val getMyMerchantsUseCase: GetMyMerchantsUseCase,
+class GetMyMerchantsServiceIT(
+    private val getMyMerchantsService: GetMyMerchantsService,
     private val merchantRepository: MerchantRepository,
     private val accountRepository: AccountRepository,
 ) : AbstractIntegrationTest() {
@@ -32,7 +32,7 @@ class GetMyMerchantsUseCaseIT(
         merchantRepository.save(secondMerchant)
 
         // when
-        val merchants = getMyMerchantsUseCase.getMyMerchants(savedAccount.id)
+        val merchants = getMyMerchantsService.getMyMerchants(savedAccount.id)
 
         // then
         merchants.size shouldBe 2

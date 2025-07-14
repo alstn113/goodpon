@@ -1,17 +1,17 @@
 package com.goodpon.dashboard.api.application.account
 
 import com.goodpon.dashboard.api.support.AbstractIntegrationTest
-import com.goodpon.dashboard.application.account.port.`in`.SignUpUseCase
 import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpCommand
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
+import com.goodpon.dashboard.application.account.service.SignUpService
 import com.goodpon.dashboard.application.auth.service.event.AccountCreatedEvent
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 
-class SignUpUseCaseIT(
-    private val signUpUseCase: SignUpUseCase,
+class SignUpServiceIT(
+    private val signUpService: SignUpService,
     private val accountRepository: AccountRepository,
 ) : AbstractIntegrationTest() {
 
@@ -25,7 +25,7 @@ class SignUpUseCaseIT(
         )
 
         // when
-        val result = signUpUseCase.signUp(command)
+        val result = signUpService.signUp(command)
 
         // then
         val savedAccount = accountRepository.findById(result.id)

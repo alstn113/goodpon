@@ -2,9 +2,9 @@ package com.goodpon.dashboard.api.application.auth
 
 import com.goodpon.dashboard.api.support.AbstractIntegrationTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
-import com.goodpon.dashboard.application.auth.port.`in`.VerifyEmailUseCase
 import com.goodpon.dashboard.application.auth.port.out.EmailVerificationCache
 import com.goodpon.dashboard.application.auth.port.out.dto.EmailVerificationDto
+import com.goodpon.dashboard.application.auth.service.VerifyEmailService
 import com.goodpon.domain.account.Account
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -12,8 +12,8 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
-class VerifyEmailUseCaseIT(
-    private val verifyEmailUseCase: VerifyEmailUseCase,
+class VerifyEmailServiceIT(
+    private val verifyEmailService: VerifyEmailService,
     private val accountRepository: AccountRepository,
     private val emailVerificationCache: EmailVerificationCache,
 ) : AbstractIntegrationTest() {
@@ -41,7 +41,7 @@ class VerifyEmailUseCaseIT(
         emailVerificationCache.save(emailVerificationDto)
 
         // when
-        verifyEmailUseCase.verifyEmail(token)
+        verifyEmailService.verifyEmail(token)
 
         // then
         val verifiedAccount = accountRepository.findById(savedAccount.id)

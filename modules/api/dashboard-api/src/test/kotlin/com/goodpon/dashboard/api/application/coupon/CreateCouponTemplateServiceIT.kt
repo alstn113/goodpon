@@ -2,9 +2,9 @@ package com.goodpon.dashboard.api.application.coupon
 
 import com.goodpon.dashboard.api.support.AbstractIntegrationTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
-import com.goodpon.dashboard.application.coupon.port.`in`.CreateCouponTemplateUseCase
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateCommand
 import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository
+import com.goodpon.dashboard.application.coupon.service.CreateCouponTemplateService
 import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
 import com.goodpon.domain.account.Account
@@ -21,11 +21,11 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-class CreateCouponTemplateUseCaseIT(
+class CreateCouponTemplateServiceIT(
+    private val createCouponTemplateService: CreateCouponTemplateService,
     private val accountRepository: AccountRepository,
     private val merchantRepository: MerchantRepository,
     private val couponTemplateRepository: CouponTemplateRepository,
-    private val createCouponTemplateUseCase: CreateCouponTemplateUseCase,
 ) : AbstractIntegrationTest() {
 
     val command = CreateCouponTemplateCommand(
@@ -56,7 +56,7 @@ class CreateCouponTemplateUseCaseIT(
         merchantRepository.save(merchant)
 
         // when
-        val result = createCouponTemplateUseCase.createCouponTemplate(command)
+        val result = createCouponTemplateService.createCouponTemplate(command)
 
         // then
         val foundCouponTemplate = couponTemplateRepository.findById(result.id)
@@ -82,7 +82,7 @@ class CreateCouponTemplateUseCaseIT(
 
         // when & then
         shouldThrow<NoMerchantAccessPermissionException> {
-            createCouponTemplateUseCase.createCouponTemplate(newCommand)
+            createCouponTemplateService.createCouponTemplate(newCommand)
         }
     }
 
@@ -113,7 +113,7 @@ class CreateCouponTemplateUseCaseIT(
 
         // when & then
         val exception = shouldThrow<CouponTemplateValidationException> {
-            createCouponTemplateUseCase.createCouponTemplate(invalidCommand)
+            createCouponTemplateService.createCouponTemplate(invalidCommand)
         }
         val expectedErrors = listOf(
             CouponTemplateValidationError(

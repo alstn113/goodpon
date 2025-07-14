@@ -1,15 +1,15 @@
 package com.goodpon.dashboard.api.application.account
 
 import com.goodpon.dashboard.api.support.AbstractIntegrationTest
-import com.goodpon.dashboard.application.account.port.`in`.GetAccountInfoUseCase
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
+import com.goodpon.dashboard.application.account.service.GetAccountInfoService
 import com.goodpon.domain.account.Account
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class GetAccountInfoUseCaseIT(
-    private val getAccountInfoUseCase: GetAccountInfoUseCase,
+class GetAccountInfoServiceIT(
+    private val getAccountInfoService: GetAccountInfoService,
     private val accountRepository: AccountRepository,
 ) : AbstractIntegrationTest() {
 
@@ -25,7 +25,7 @@ class GetAccountInfoUseCaseIT(
         val savedAccount = accountRepository.save(account)
 
         // when
-        val accountInfo = getAccountInfoUseCase.getAccountInfo(savedAccount.id)
+        val accountInfo = getAccountInfoService.getAccountInfo(savedAccount.id)
 
         // then
         val foundAccount = accountRepository.findById(savedAccount.id)

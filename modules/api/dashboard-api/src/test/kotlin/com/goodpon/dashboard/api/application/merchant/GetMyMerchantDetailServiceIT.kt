@@ -2,16 +2,16 @@ package com.goodpon.dashboard.api.application.merchant
 
 import com.goodpon.dashboard.api.support.AbstractIntegrationTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
-import com.goodpon.dashboard.application.merchant.port.`in`.GetMyMerchantDetailUseCase
 import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
+import com.goodpon.dashboard.application.merchant.service.GetMyMerchantDetailService
 import com.goodpon.domain.account.Account
 import com.goodpon.domain.merchant.Merchant
 import com.goodpon.domain.merchant.MerchantAccountRole
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class GetMyMerchantDetailUseCaseIT(
-    private val getMyMerchantDetailUseCase: GetMyMerchantDetailUseCase,
+class GetMyMerchantDetailServiceIT(
+    private val getMyMerchantDetailService: GetMyMerchantDetailService,
     private val merchantRepository: MerchantRepository,
     private val accountRepository: AccountRepository,
 ) : AbstractIntegrationTest() {
@@ -31,7 +31,7 @@ class GetMyMerchantDetailUseCaseIT(
         val savedMerchant = merchantRepository.save(issuedMerchant)
 
         // when
-        val detail = getMyMerchantDetailUseCase
+        val detail = getMyMerchantDetailService
             .getMyMerchantDetail(accountId = savedAccount.id, merchantId = savedMerchant.id)
 
         // then

@@ -12,7 +12,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class LoginUseCaseIT(
+class LoginServiceIT(
     private val tokenProvider: TokenProvider,
     private val accountAccessor: AccountAccessor,
     private val accountRepository: AccountRepository,
@@ -23,7 +23,7 @@ class LoginUseCaseIT(
         override fun matches(rawPassword: String, encodedPassword: String): Boolean = true
     }
 
-    val loginUseCase = LoginService(
+    val loginService = LoginService(
         passwordEncoder = FakePasswordEncoder(),
         accountAccessor = accountAccessor,
         tokenProvider = tokenProvider
@@ -42,7 +42,7 @@ class LoginUseCaseIT(
         val command = LoginCommand(email = email, password = password)
 
         // when
-        val result = loginUseCase.login(command)
+        val result = loginService.login(command)
 
         // then
         result.email shouldBe email

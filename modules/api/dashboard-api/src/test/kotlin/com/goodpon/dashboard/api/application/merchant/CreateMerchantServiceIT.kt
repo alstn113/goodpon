@@ -2,17 +2,17 @@ package com.goodpon.dashboard.api.application.merchant
 
 import com.goodpon.dashboard.api.support.AbstractIntegrationTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
-import com.goodpon.dashboard.application.merchant.port.`in`.CreateMerchantUseCase
 import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantCommand
 import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
+import com.goodpon.dashboard.application.merchant.service.CreateMerchantService
 import com.goodpon.domain.account.Account
 import com.goodpon.domain.merchant.MerchantAccountRole
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class CreateMerchantUseCaseIT(
-    private val createMerchantUseCase: CreateMerchantUseCase,
+class CreateMerchantServiceIT(
+    private val createMerchantService: CreateMerchantService,
     private val accountRepository: AccountRepository,
     private val merchantRepository: MerchantRepository,
 ) : AbstractIntegrationTest() {
@@ -32,7 +32,7 @@ class CreateMerchantUseCaseIT(
         )
 
         // when
-        val result = createMerchantUseCase.createMerchant(command)
+        val result = createMerchantService.createMerchant(command)
 
         // then
         result.id.shouldNotBeNull()

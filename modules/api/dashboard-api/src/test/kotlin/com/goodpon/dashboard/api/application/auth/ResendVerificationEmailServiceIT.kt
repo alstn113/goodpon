@@ -2,14 +2,14 @@ package com.goodpon.dashboard.api.application.auth
 
 import com.goodpon.dashboard.api.support.AbstractIntegrationTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
-import com.goodpon.dashboard.application.auth.port.`in`.ResendVerificationEmailUseCase
+import com.goodpon.dashboard.application.auth.service.ResendVerificationEmailService
 import com.goodpon.dashboard.application.auth.service.event.ResendVerificationEmailEvent
 import com.goodpon.domain.account.Account
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 
-class ResendVerificationEmailUseCaseIT(
-    private val resendVerificationEmailUseCase: ResendVerificationEmailUseCase,
+class ResendVerificationEmailServiceIT(
+    private val resendVerificationEmailService: ResendVerificationEmailService,
     private val accountRepository: AccountRepository,
 ) : AbstractIntegrationTest() {
 
@@ -25,7 +25,7 @@ class ResendVerificationEmailUseCaseIT(
         val savedAccount = accountRepository.save(account)
 
         // when
-        resendVerificationEmailUseCase.resendVerificationEmail(email)
+        resendVerificationEmailService.resendVerificationEmail(email)
 
         // then
         verify {
