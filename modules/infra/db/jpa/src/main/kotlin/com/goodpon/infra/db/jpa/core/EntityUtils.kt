@@ -4,7 +4,7 @@ object EntityUtils {
 
     fun <ID, Domain, Entity> synchronizeEntityList(
         isNew: Boolean,
-        existingEntities: List<Entity>,
+        findExistingEntities: () -> List<Entity>,
         newDomains: List<Domain>,
         idSelector: (Domain) -> ID?,
         entityIdSelector: (Entity) -> ID?,
@@ -19,8 +19,9 @@ object EntityUtils {
 
         val newDomainById = newDomains.associateBy(idSelector)
         val newIds = newDomainById.keys.filterNotNull().toSet()
+        val existingEntities = findExistingEntities()
 
-        val toDelete = existingEntities.filter { entityIdSelector(it) !in newIds }
+        val toDelete = findExistingEntities().filter { entityIdSelector(it) !in newIds }
         if (toDelete.isNotEmpty()) deleteAll(toDelete)
 
         val toInsert = newDomains.filter { idSelector(it) == null || idSelector(it) == 0L }

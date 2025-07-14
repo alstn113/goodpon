@@ -38,7 +38,7 @@ class MerchantCoreRepository(
 
         val savedAccountEntities = synchronizeEntityList(
             isNew = isNew,
-            existingEntities = merchantAccountJpaRepository.findByMerchantId(savedMerchantEntity.id),
+            findExistingEntities = { merchantAccountJpaRepository.findByMerchantId(savedMerchantEntity.id) },
             newDomains = merchant.accounts,
             idSelector = { it.id },
             entityIdSelector = { it.id },
@@ -49,7 +49,7 @@ class MerchantCoreRepository(
         )
         val savedSecretEntities = synchronizeEntityList(
             isNew = isNew,
-            existingEntities = merchantClientSecretJpaRepository.findByMerchantId(savedMerchantEntity.id),
+            findExistingEntities = { merchantClientSecretJpaRepository.findByMerchantId(savedMerchantEntity.id) },
             newDomains = merchant.secrets,
             idSelector = { it.id },
             entityIdSelector = { it.id },
