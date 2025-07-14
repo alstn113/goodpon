@@ -61,8 +61,8 @@ paths:
                 내 상점 목록 조회 - 성공:
                   value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : [ {\n    \"\
                     id\" : 2,\n    \"name\" : \"두번째 상점\",\n    \"createdAt\" : \"\
-                    2025-07-13T15:53:39.83764563\"\n  }, {\n    \"id\" : 1,\n    \"\
-                    name\" : \"첫번째 상점\",\n    \"createdAt\" : \"2025-07-12T15:53:39.837659325\"\
+                    2025-07-14T05:08:51.352409025\"\n  }, {\n    \"id\" : 1,\n   \
+                    \ \"name\" : \"첫번째 상점\",\n    \"createdAt\" : \"2025-07-13T05:08:51.35242236\"\
                     \n  } ],\n  \"error\" : null\n}"
     post:
       tags:
@@ -130,7 +130,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 회원가입 - 실패 - 이미 사용 중인 이메일:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -181,7 +181,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 로그인 - 실패 - 존재하지 않는 계정:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -205,7 +205,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 로그인 - 실패 - 비밀번호 불일치:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -248,7 +248,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 이메일 인증 - 실패 - 이미 인증된 계정:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -264,7 +264,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 이메일 인증 - 실패 - 존재하지 않는 계정:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -305,19 +305,19 @@ paths:
                     ,\n    \"merchantAccounts\" : [ {\n      \"merchantAccountId\"\
                     \ : 1,\n      \"accountId\" : 1,\n      \"email\" : \"test@goodpon.site\"\
                     ,\n      \"name\" : \"테스트 사용자\",\n      \"role\" : \"OWNER\",\n\
-                    \      \"createdAt\" : \"2025-07-13T15:53:40.097289707\"\n   \
+                    \      \"createdAt\" : \"2025-07-14T05:08:51.370558511\"\n   \
                     \ } ],\n    \"clientSecrets\" : [ {\n      \"merchantClientSecretId\"\
                     \ : 1,\n      \"secret\" : \"sk_8f3b95144877a0dcbaad2b321380\"\
-                    ,\n      \"createdAt\" : \"2025-07-13T15:53:40.097298915\",\n\
+                    ,\n      \"createdAt\" : \"2025-07-14T05:08:51.370565324\",\n\
                     \      \"expiredAt\" : null\n    } ],\n    \"createdAt\" : \"\
-                    2025-07-13T15:53:40.097302211\",\n    \"updatedAt\" : \"2025-07-13T15:53:40.097303233\"\
+                    2025-07-14T05:08:51.370567949\",\n    \"updatedAt\" : \"2025-07-14T05:08:51.37056862\"\
                     \n  },\n  \"error\" : null\n}"
         "404":
           description: "404"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 상점 상세 조회 - 실패 - 존재하지 않는 상점:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -358,7 +358,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 인증 이메일 재전송 - 실패 - 존재하지 않는 이메일:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -369,13 +369,55 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 인증 이메일 재전송 - 실패 - 이미 인증된 이메일:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
                     \ : {\n    \"code\" : \"ACCOUNT_ALREADY_VERIFIED\",\n    \"message\"\
                     \ : \"이미 인증된 계정입니다.\",\n    \"data\" : null\n  }\n}"
   /v1/merchants/{merchantId}/coupon-templates:
+    get:
+      tags:
+      - Coupon Template
+      operationId: '상점의 쿠폰 템플릿 목록 조회 - 실패 - '
+      parameters:
+      - name: merchantId
+        in: path
+        description: 쿠폰 템플릿이 있는 상점 ID
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: "인증 토큰 (Bearer {access-token})"
+        required: true
+        schema:
+          type: string
+        example: "Bearer {access-token}"
+      responses:
+        "404":
+          description: "404"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
+              examples:
+                상점의 쿠폰 템플릿 목록 조회 - 실패 - 존재하지 않는 상점:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"MERCHANT_NOT_FOUND\",\n    \"message\"\
+                    \ : \"존재하지 않는 상점입니다.\",\n    \"data\" : null\n  }\n}"
+        "403":
+          description: "403"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
+              examples:
+                상점의 쿠폰 템플릿 목록 조회 - 실패 - 상점 접근 권한 없음:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"NO_MERCHANT_ACCESS_PERMISSION\",\n   \
+                    \ \"message\" : \"해당 상점에 접근할 수 있는 권한이 없습니다.\",\n    \"data\" :\
+                    \ null\n  }\n}"
     post:
       tags:
       - Coupon Template
@@ -422,9 +464,9 @@ paths:
                 value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰\
                   \ 설명\",\n  \"minOrderAmount\" : 0,\n  \"discountType\" : \"PERCENTAGE\"\
                   ,\n  \"discountValue\" : 105,\n  \"maxDiscountAmount\" : 5000,\n\
-                  \  \"issueStartDate\" : \"2025-07-18\",\n  \"issueEndDate\" : \"\
-                  2025-07-16\",\n  \"validityDays\" : 3,\n  \"absoluteExpiryDate\"\
-                  \ : \"2025-07-05\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\"\
+                  \  \"issueStartDate\" : \"2025-07-19\",\n  \"issueEndDate\" : \"\
+                  2025-07-17\",\n  \"validityDays\" : 3,\n  \"absoluteExpiryDate\"\
+                  \ : \"2025-07-06\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\"\
                   \ : 100,\n  \"maxRedeemCount\" : 200\n}"
               쿠폰 템플릿 생성 - 실패 - 존재하지 않는 상점:
                 value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰\
@@ -440,7 +482,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 쿠폰 템플릿 생성 - 실패 - 상점 접근 권한 없음:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -489,12 +531,94 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 쿠폰 템플릿 생성 - 실패 - 존재하지 않는 상점:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
                     \ : {\n    \"code\" : \"MERCHANT_NOT_FOUND\",\n    \"message\"\
                     \ : \"존재하지 않는 상점입니다.\",\n    \"data\" : null\n  }\n}"
+  /v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}:
+    get:
+      tags:
+      - Coupon Template
+      summary: 상점의 쿠폰 템플릿 목록 조회
+      description: 상점의 쿠폰 템플릿 목록 조회 API
+      operationId: 상점의 쿠폰 템플릿 목록 조회 - 성공쿠폰 템플릿 상세 조회 - 실패 - 상점 접근 권한 없음쿠폰 템플릿 상세 조회
+        - 실패 - 상점이 소유하지 않은 쿠폰 템플릿쿠폰 템플릿 상세 조회 - 실패 - 존재하지 않는 상점쿠폰 템플릿 상세 조회 - 실패 -
+        존재하지 않는 쿠폰 템플릿
+      parameters:
+      - name: merchantId
+        in: path
+        description: 쿠폰 템플릿이 있는 상점 ID
+        required: true
+        schema:
+          type: string
+      - name: couponTemplateId
+        in: path
+        description: 조회할 쿠폰 템플릿 ID
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: "인증 토큰 (Bearer {access-token})"
+        required: true
+        schema:
+          type: string
+        example: "Bearer {access-token}"
+      responses:
+        "403":
+          description: "403"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
+              examples:
+                쿠폰 템플릿 상세 조회 - 실패 - 상점 접근 권한 없음:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"NO_MERCHANT_ACCESS_PERMISSION\",\n   \
+                    \ \"message\" : \"해당 상점에 접근할 수 있는 권한이 없습니다.\",\n    \"data\" :\
+                    \ null\n  }\n}"
+                쿠폰 템플릿 상세 조회 - 실패 - 상점이 소유하지 않은 쿠폰 템플릿:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT\"\
+                    ,\n    \"message\" : \"상점이 소유한 쿠폰 템플릿이 아닙니다.\",\n    \"data\"\
+                    \ : null\n  }\n}"
+        "404":
+          description: "404"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
+              examples:
+                쿠폰 템플릿 상세 조회 - 실패 - 존재하지 않는 상점:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"MERCHANT_NOT_FOUND\",\n    \"message\"\
+                    \ : \"존재하지 않는 상점입니다.\",\n    \"data\" : null\n  }\n}"
+                쿠폰 템플릿 상세 조회 - 실패 - 존재하지 않는 쿠폰 템플릿:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_FOUND\",\n    \"message\"\
+                    \ : \"존재하지 않는 쿠폰 템플릿입니다.\",\n    \"data\" : null\n  }\n}"
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<CouponTemplateDetail>'
+              examples:
+                상점의 쿠폰 템플릿 목록 조회 - 성공:
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\"\
+                    \ : 1,\n    \"merchantId\" : 1,\n    \"name\" : \"테스트 쿠폰\",\n\
+                    \    \"description\" : \"테스트 쿠폰 설명\",\n    \"minOrderAmount\"\
+                    \ : 10000,\n    \"discountType\" : \"FIXED_AMOUNT\",\n    \"discountValue\"\
+                    \ : 1000,\n    \"maxDiscountAmount\" : null,\n    \"status\" :\
+                    \ \"ISSUABLE\",\n    \"issueStartAt\" : \"2025-07-13T00:00:00\"\
+                    ,\n    \"issueEndAt\" : \"2025-07-21T00:00:00\",\n    \"validityDays\"\
+                    \ : null,\n    \"absoluteExpiresAt\" : null,\n    \"limitType\"\
+                    \ : \"ISSUE_COUNT\",\n    \"maxIssueCount\" : 100,\n    \"maxRedeemCount\"\
+                    \ : null,\n    \"issueCount\" : 30,\n    \"redeemCount\" : 10,\n\
+                    \    \"createdAt\" : \"2025-07-13T10:00:00\"\n  },\n  \"error\"\
+                    \ : null\n}"
   /v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}/publish:
     post:
       tags:
@@ -528,7 +652,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 쿠폰 템플릿 발행 - 실패 - 존재하지 않는 상점:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -543,7 +667,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 쿠폰 템플릿 발행 - 실패 - 상점 접근 권한 없음:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -566,7 +690,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-accounts-sign-up1265661162'
+                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162'
               examples:
                 쿠폰 템플릿 발행 - 실패 - 상점이 소유하지 않은 쿠폰 템플릿:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
@@ -1020,6 +1144,98 @@ components:
               type: number
               description: 상점 ID
           description: 상점 생성 결과 데이터
+    ApiResponse<CouponTemplateDetail>:
+      title: ApiResponse<CouponTemplateDetail>
+      required:
+      - data
+      - error
+      - result
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        data:
+          required:
+          - createdAt
+          - description
+          - discountType
+          - discountValue
+          - id
+          - issueCount
+          - issueStartAt
+          - limitType
+          - merchantId
+          - name
+          - redeemCount
+          - status
+          type: object
+          properties:
+            maxIssueCount:
+              type: number
+              description: 최대 발급 수량
+              nullable: true
+            issueEndAt:
+              type: string
+              description: 쿠폰 발급 종료 날짜
+              nullable: true
+            issueStartAt:
+              type: string
+              description: 쿠폰 발급 시작 날짜
+            description:
+              type: string
+              description: 쿠폰 템플릿 설명
+            absoluteExpiresAt:
+              type: string
+              description: 쿠폰 절대 만료 날짜
+              nullable: true
+            issueCount:
+              type: number
+              description: 발급된 쿠폰 수
+            limitType:
+              type: string
+              description: 쿠폰 제한 유형
+            redeemCount:
+              type: number
+              description: 사용된 쿠폰 수
+            maxRedeemCount:
+              type: number
+              description: 최대 사용 수량
+              nullable: true
+            createdAt:
+              type: string
+              description: 쿠폰 템플릿 생성 일시
+            minOrderAmount:
+              type: number
+              description: 최소 주문 금액 (선택 사항)
+              nullable: true
+            merchantId:
+              type: number
+              description: 상점 ID
+            maxDiscountAmount:
+              type: number
+              description: 최대 할인 금액 (PERCENTAGE 선택 시)
+              nullable: true
+            name:
+              type: string
+              description: 쿠폰 템플릿 이름
+            discountType:
+              type: string
+              description: "할인 유형 (FIXED_AMOUNT, PERCENTAGE)"
+            id:
+              type: number
+              description: 쿠폰 템플릿 ID
+            discountValue:
+              type: number
+              description: 할인 금액 또는 비율
+            validityDays:
+              type: number
+              description: 쿠폰 유효 기간
+              nullable: true
+            status:
+              type: string
+              description: 쿠폰 템플릿 상태
+          description: 응답 데이터
     ApiResponse<AccountInfo>:
       title: ApiResponse<AccountInfo>
       required:
@@ -1084,7 +1300,7 @@ components:
               type: string
               description: 사용자 이메일
           description: 회원가입 결과 데이터
-    v1-accounts-sign-up1265661162:
+    v1-merchants-merchantId-coupon-templates-couponTemplateId1265661162:
       required:
       - data
       - error
