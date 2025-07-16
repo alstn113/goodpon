@@ -4,7 +4,11 @@ import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import java.time.LocalDateTime
 
-data class AvailableUserCouponResult(
+data class UserCouponsView(
+    val coupons: List<UserCouponView>,
+)
+
+data class UserCouponView(
     val userCouponId: String,
     val couponTemplateId: Long,
     val couponTemplateName: String,
@@ -13,7 +17,7 @@ data class AvailableUserCouponResult(
     val discountValue: Int,
     val maxDiscountAmount: Int?,
     val minOrderAmount: Int?,
-    val discountAmount: Int, // 주문 금액에 따른 할인 금액 계산
+    val discountAmount: Int,
     val issuedAt: LocalDateTime,
     val expiresAt: LocalDateTime?,
     val limitType: CouponLimitPolicyType,

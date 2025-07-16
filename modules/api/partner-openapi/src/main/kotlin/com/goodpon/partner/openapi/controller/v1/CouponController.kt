@@ -13,7 +13,10 @@ import com.goodpon.partner.openapi.response.ApiResponse
 import com.goodpon.partner.openapi.security.MerchantPrincipal
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class CouponController(
@@ -59,31 +62,5 @@ class CouponController(
         val result = cancelCouponRedemptionUseCase.cancelCouponRedemption(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
-    }
-
-    @GetMapping("/v1/user-coupons")
-    fun getUserCoupons(
-        @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-        @RequestParam userId: String,
-    ): ResponseEntity<ApiResponse<Unit>> {
-        return ResponseEntity.ok(ApiResponse.success(Unit))
-    }
-
-    @GetMapping("/v1/user-coupons/available")
-    fun getAvailableUserCoupons(
-        @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-        @RequestParam userId: String,
-        @RequestParam orderAmount: Int,
-    ): ResponseEntity<ApiResponse<Unit>> {
-        return ResponseEntity.ok(ApiResponse.success(Unit))
-    }
-
-    @GetMapping("/v1/coupon-templates/{couponTemplateId}")
-    fun getCouponTemplate(
-        @PathVariable couponTemplateId: Long,
-        @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-        @RequestParam(required = false) userId: String? = null,
-    ): ResponseEntity<ApiResponse<Unit>> {
-        return ResponseEntity.ok(ApiResponse.success(Unit))
     }
 }

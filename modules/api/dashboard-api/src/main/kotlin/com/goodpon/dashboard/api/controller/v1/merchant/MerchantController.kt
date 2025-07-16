@@ -35,9 +35,9 @@ class MerchantController(
     fun getMyMerchants(
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<MyMerchantSummaries>> {
-        val result = getMyMerchantsUseCase.getMyMerchants(accountPrincipal.id)
+        val summaries = getMyMerchantsUseCase.getMyMerchants(accountPrincipal.id)
 
-        return ResponseEntity.ok(ApiResponse.success(result))
+        return ResponseEntity.ok(ApiResponse.success(summaries))
     }
 
     @GetMapping("/v1/merchants/{merchantId}")
@@ -45,11 +45,11 @@ class MerchantController(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<MyMerchantDetail>> {
-        val result = getMyMerchantDetailUseCase.getMyMerchantDetail(
+        val detail = getMyMerchantDetailUseCase.getMyMerchantDetail(
             accountId = accountPrincipal.id,
             merchantId = merchantId,
         )
 
-        return ResponseEntity.ok(ApiResponse.success(result))
+        return ResponseEntity.ok(ApiResponse.success(detail))
     }
 }

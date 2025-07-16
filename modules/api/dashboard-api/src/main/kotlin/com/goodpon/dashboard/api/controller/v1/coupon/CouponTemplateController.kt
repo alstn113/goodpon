@@ -58,12 +58,12 @@ class CouponTemplateController(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<CouponTemplateSummaries>> {
-        val result = getMerchantCouponTemplates.getMerchantCouponTemplates(
+        val summaries = getMerchantCouponTemplates.getMerchantCouponTemplates(
             accountId = accountPrincipal.id,
             merchantId = merchantId,
         )
 
-        return ResponseEntity.ok(ApiResponse.success(result))
+        return ResponseEntity.ok(ApiResponse.success(summaries))
     }
 
     @GetMapping("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}")
@@ -77,8 +77,8 @@ class CouponTemplateController(
             merchantId = merchantId,
             couponTemplateId = couponTemplateId,
         )
-        val result = getMerchantCouponTemplateDetail.getMerchantCouponTemplateDetail(query)
+        val detail = getMerchantCouponTemplateDetail.getMerchantCouponTemplateDetail(query)
 
-        return ResponseEntity.ok(ApiResponse.success(result))
+        return ResponseEntity.ok(ApiResponse.success(detail))
     }
 }
