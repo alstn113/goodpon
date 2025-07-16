@@ -58,29 +58,29 @@ class CouponTemplateJpaAdapter(
     }
 
     override fun findCouponTemplateDetail(couponTemplateId: Long): CouponTemplateDetail? {
-        val couponTemplateDetail = couponTemplateCoreRepository.findCouponTemplateDetail(couponTemplateId)
+        val dto = couponTemplateCoreRepository.findByIdWithStats(couponTemplateId)
             ?: return null
 
         return CouponTemplateDetail(
-            id = couponTemplateDetail.id,
-            merchantId = couponTemplateDetail.merchantId,
-            name = couponTemplateDetail.name,
-            description = couponTemplateDetail.description,
-            minOrderAmount = couponTemplateDetail.minOrderAmount,
-            discountType = couponTemplateDetail.discountType,
-            discountValue = couponTemplateDetail.discountValue,
-            maxDiscountAmount = couponTemplateDetail.maxDiscountAmount,
-            status = couponTemplateDetail.status,
-            issueStartAt = couponTemplateDetail.issueStartAt,
-            issueEndAt = couponTemplateDetail.issueEndAt,
-            validityDays = couponTemplateDetail.validityDays,
-            absoluteExpiresAt = couponTemplateDetail.absoluteExpiresAt,
-            limitType = couponTemplateDetail.limitType,
-            maxIssueCount = couponTemplateDetail.maxIssueCount,
-            maxRedeemCount = couponTemplateDetail.maxRedeemCount,
-            issueCount = couponTemplateDetail.issueCount,
-            redeemCount = couponTemplateDetail.redeemCount,
-            createdAt = couponTemplateDetail.createdAt
+            id = dto.id,
+            merchantId = dto.merchantId,
+            name = dto.name,
+            description = dto.description,
+            minOrderAmount = dto.minOrderAmount,
+            discountType = dto.discountType,
+            discountValue = dto.discountValue,
+            maxDiscountAmount = dto.maxDiscountAmount,
+            status = dto.status,
+            issueStartAt = dto.issueStartAt,
+            issueEndAt = dto.issueEndAt,
+            validityDays = dto.validityDays,
+            absoluteExpiresAt = dto.absoluteExpiresAt,
+            limitType = dto.limitType,
+            maxIssueCount = dto.maxIssueCount,
+            maxRedeemCount = dto.maxRedeemCount,
+            issueCount = dto.issueCount,
+            redeemCount = dto.redeemCount,
+            createdAt = dto.createdAt
         )
     }
 

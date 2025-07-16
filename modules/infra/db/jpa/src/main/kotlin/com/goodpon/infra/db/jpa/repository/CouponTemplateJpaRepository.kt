@@ -64,5 +64,36 @@ interface CouponTemplateJpaRepository : JpaRepository<CouponTemplateEntity, Long
         WHERE couponTemplate.id = :couponTemplateId
         """
     )
-    fun findCouponTemplateDetail(couponTemplateId: Long): CouponTemplateDetailDto?
+    fun findByIdWithStats(couponTemplateId: Long): CouponTemplateDetailDto?
+
+    @Query(
+        """
+        SELECT new com.goodpon.infra.db.jpa.repository.dto.CouponTemplateDetailDto(
+            couponTemplate.id,
+            couponTemplate.merchantId,
+            couponTemplate.name,
+            couponTemplate.description,
+            couponTemplate.minOrderAmount,
+            couponTemplate.discountType,
+            couponTemplate.discountValue,
+            couponTemplate.maxDiscountAmount,
+            couponTemplate.status,
+            couponTemplate.issueStartAt,
+            couponTemplate.issueEndAt,
+            couponTemplate.validityDays,
+            couponTemplate.absoluteExpiresAt,
+            couponTemplate.limitType,
+            couponTemplate.maxIssueCount,
+            couponTemplate.maxRedeemCount,
+            stats.issueCount,
+            stats.redeemCount,
+            couponTemplate.createdAt
+        ) 
+        FROM CouponTemplateEntity couponTemplate
+        LEFT JOIN CouponTemplateStatsEntity stats
+        ON stats.couponTemplateId = couponTemplate.id
+        WHERE couponTemplate.id = :couponTemplateId AND couponTemplate.merchantId = :merchantId
+        """
+    )
+    fun findByIdAndMerchantIdWithStats(couponTemplateId: Long, merchantId: Long): CouponTemplateDetailDto?
 }

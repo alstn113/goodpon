@@ -49,7 +49,7 @@ class RedeemCouponService(
         couponHistoryAccessor.recordRedeemed(
             userCouponId = redeemedCoupon.id,
             recordedAt = now,
-            orderId = command.orderId,
+            orderId = command.orderId
         )
         couponTemplateStatsAccessor.incrementRedeemCount(stats)
 
@@ -63,10 +63,7 @@ class RedeemCouponService(
         )
     }
 
-    private fun validateCouponTemplateOwnership(
-        couponTemplate: CouponTemplate,
-        merchantId: Long,
-    ) {
+    private fun validateCouponTemplateOwnership(couponTemplate: CouponTemplate, merchantId: Long) {
         if (!couponTemplate.isOwnedBy(merchantId)) {
             throw CouponTemplateNotOwnedByMerchantException()
         }

@@ -1,10 +1,12 @@
 package com.goodpon.partner.openapi.controller.v1
 
 import com.goodpon.partner.application.coupon.port.`in`.GetAvailableUserCouponsUseCase
-import com.goodpon.partner.application.coupon.port.`in`.GetCouponTemplateStatusesUseCase
+import com.goodpon.partner.application.coupon.port.`in`.GetCouponTemplateDetailForUserUseCase
 import com.goodpon.partner.application.coupon.port.`in`.GetUserCouponsUseCase
+import com.goodpon.partner.application.coupon.port.`in`.dto.GetAvailableUserCouponsQuery
+import com.goodpon.partner.application.coupon.port.`in`.dto.GetCouponTemplateDetailForUserQuery
 import com.goodpon.partner.application.coupon.service.dto.AvailableUserCouponsView
-import com.goodpon.partner.application.coupon.service.dto.CouponTemplateStatusesView
+import com.goodpon.partner.application.coupon.service.dto.CouponTemplateDetailForUser
 import com.goodpon.partner.application.coupon.service.dto.UserCouponsView
 import com.goodpon.partner.openapi.response.ApiResponse
 import com.goodpon.partner.openapi.security.MerchantPrincipal
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 class CouponQueryController(
     private val getUserCouponsUseCase: GetUserCouponsUseCase,
     private val getAvailableUserCouponsUseCase: GetAvailableUserCouponsUseCase,
-    private val couponTemplateStatusesUseCase: GetCouponTemplateStatusesUseCase,
+    private val getCouponTemplateDetailForUserUseCase: GetCouponTemplateDetailForUserUseCase,
 ) {
 
     @GetMapping("/v1/user-coupons")
@@ -27,7 +29,7 @@ class CouponQueryController(
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
         @RequestParam userId: String,
     ): ResponseEntity<ApiResponse<UserCouponsView>> {
-        val views = getUserCouponsUseCase.getUserCoupons(
+        val views = getUserCouponsUseCase(
             merchantId = merchantPrincipal.merchantId,
             userId = userId
         )
@@ -41,27 +43,29 @@ class CouponQueryController(
         @RequestParam userId: String,
         @RequestParam orderAmount: Int,
     ): ResponseEntity<ApiResponse<AvailableUserCouponsView>> {
-        val views = getAvailableUserCouponsUseCase.getAvailableUserCoupons(
+        val query = GetAvailableUserCouponsQuery(
             merchantId = merchantPrincipal.merchantId,
             userId = userId,
             orderAmount = orderAmount
         )
+        val views = getAvailableUserCouponsUseCase(query)
 
         return ResponseEntity.ok(ApiResponse.success(views))
     }
 
     @GetMapping("/v1/coupon-templates/{couponTemplateId}")
-    fun getCouponTemplate(
+    fun getCouponTemplateDetailForUser(
         @PathVariable couponTemplateId: Long,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
         @RequestParam(required = false) userId: String? = null,
-    ): ResponseEntity<ApiResponse<CouponTemplateStatusesView>> {
-        val views = couponTemplateStatusesUseCase.getCouponTemplateStatuses(
+    ): ResponseEntity<ApiResponse<CouponTemplateDetailForUser>> {
+        val query = GetCouponTemplateDetailForUserQuery(
             merchantId = merchantPrincipal.merchantId,
             couponTemplateId = couponTemplateId,
             userId = userId
         )
+        val detail = getCouponTemplateDetailForUserUseCase(query)
 
-        return ResponseEntity.ok(ApiResponse.success(views))
+        return ResponseEntity.ok(ApiResponse.success(detail))
     }
 }

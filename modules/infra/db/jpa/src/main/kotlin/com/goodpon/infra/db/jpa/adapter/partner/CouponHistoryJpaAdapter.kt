@@ -14,7 +14,7 @@ class CouponHistoryJpaAdapter(
         return couponHistoryCoreRepository.save(couponHistory)
     }
 
-    override fun findByUserCouponIdOrderByRecordedAtDesc(userCouponId: String): List<CouponHistory> {
-        return couponHistoryCoreRepository.findByUserCouponIdOrderByRecordedAtDesc(userCouponId)
+    override fun findLastCouponHistory(userCouponId: String): CouponHistory? {
+        return couponHistoryCoreRepository.findFirstByUserCouponIdOrderByRecordedAtDesc(userCouponId)
     }
 }

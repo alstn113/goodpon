@@ -38,14 +38,14 @@ class MerchantJpaAdapter(
     }
 
     override fun findMyMerchantDetail(accountId: Long, merchantId: Long): MyMerchantDetail? {
-        val merchantDetail = merchantCoreRepository
+        val dto = merchantCoreRepository
             .findMyMerchantDetail(accountId = accountId, merchantId = merchantId) ?: return null
 
         return MyMerchantDetail(
-            id = merchantDetail.id,
-            name = merchantDetail.name,
-            clientId = merchantDetail.clientId,
-            merchantAccounts = merchantDetail.merchantAccounts.map { account ->
+            id = dto.id,
+            name = dto.name,
+            clientId = dto.clientId,
+            merchantAccounts = dto.merchantAccounts.map { account ->
                 MyMerchantDetail.MerchantAccountDetail(
                     merchantAccountId = account.merchantAccountId,
                     accountId = account.accountId,
@@ -55,7 +55,7 @@ class MerchantJpaAdapter(
                     createdAt = account.createdAt
                 )
             },
-            clientSecrets = merchantDetail.clientSecrets.map { secret ->
+            clientSecrets = dto.clientSecrets.map { secret ->
                 MyMerchantDetail.MerchantClientSecretDetail(
                     merchantClientSecretId = secret.merchantClientSecretId,
                     secret = secret.secret,
@@ -63,8 +63,8 @@ class MerchantJpaAdapter(
                     expiredAt = secret.expiredAt
                 )
             },
-            createdAt = merchantDetail.createdAt,
-            updatedAt = merchantDetail.updatedAt
+            createdAt = dto.createdAt,
+            updatedAt = dto.updatedAt
         )
     }
 }

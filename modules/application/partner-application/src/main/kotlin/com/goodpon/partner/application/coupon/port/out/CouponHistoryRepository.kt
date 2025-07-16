@@ -6,5 +6,5 @@ interface CouponHistoryRepository {
 
     fun save(couponHistory: CouponHistory): CouponHistory
 
-    fun findByUserCouponIdOrderByRecordedAtDesc(userCouponId: String): List<CouponHistory>
+    fun findLastCouponHistory(userCouponId: String): CouponHistory?
 }

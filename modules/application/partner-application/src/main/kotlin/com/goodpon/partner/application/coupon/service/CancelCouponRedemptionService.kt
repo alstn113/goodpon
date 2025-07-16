@@ -46,10 +46,7 @@ class CancelCouponRedemptionService(
         )
     }
 
-    private fun validateCouponTemplateOwnership(
-        couponTemplate: CouponTemplate,
-        merchantId: Long,
-    ) {
+    private fun validateCouponTemplateOwnership(couponTemplate: CouponTemplate, merchantId: Long) {
         if (!couponTemplate.isOwnedBy(merchantId)) {
             throw CouponTemplateNotOwnedByMerchantException()
         }

@@ -12,10 +12,8 @@ class CouponHistoryAccessor(
 ) {
 
     @Transactional(readOnly = true)
-    fun readLastHistory(userCouponId: String): CouponHistory? {
-        return couponHistoryRepository
-            .findByUserCouponIdOrderByRecordedAtDesc(userCouponId)
-            .firstOrNull()
+    fun findLastCouponHistory(userCouponId: String): CouponHistory? {
+        return couponHistoryRepository.findLastCouponHistory(userCouponId)
     }
 
     @Transactional

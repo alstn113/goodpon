@@ -62,7 +62,12 @@ class CouponTemplateCoreRepository(
     }
 
     @Transactional(readOnly = true)
-    fun findCouponTemplateDetail(couponTemplateId: Long): CouponTemplateDetailDto? {
-        return couponTemplateJpaRepository.findCouponTemplateDetail(couponTemplateId)
+    fun findByIdWithStats(couponTemplateId: Long): CouponTemplateDetailDto? {
+        return couponTemplateJpaRepository.findByIdWithStats(couponTemplateId)
+    }
+
+    @Transactional(readOnly = true)
+    fun findByIdAndMerchantIdWithStats(couponTemplateId: Long, merchantId: Long): CouponTemplateDetailDto? {
+        return couponTemplateJpaRepository.findByIdAndMerchantIdWithStats(couponTemplateId, merchantId)
     }
 }

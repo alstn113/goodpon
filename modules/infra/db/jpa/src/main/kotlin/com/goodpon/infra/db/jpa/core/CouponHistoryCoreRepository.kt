@@ -27,8 +27,8 @@ class CouponHistoryCoreRepository(
     }
 
     @Transactional(readOnly = true)
-    fun findByUserCouponIdOrderByRecordedAtDesc(userCouponId: String): List<CouponHistory> {
-        return couponHistoryJpaRepository.findByUserCouponIdOrderByRecordedAtDesc(userCouponId)
-            .map { it.toDomain() }
+    fun findFirstByUserCouponIdOrderByRecordedAtDesc(userCouponId: String): CouponHistory? {
+        return couponHistoryJpaRepository.findFirstByUserCouponIdOrderByRecordedAtDesc(userCouponId)
+            ?.toDomain()
     }
 }

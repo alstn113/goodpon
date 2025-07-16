@@ -18,12 +18,7 @@ class CouponRedemptionCancelProcessor(
 ) {
 
     @Transactional
-    fun process(
-        userCoupon: UserCoupon,
-        orderId: String,
-        cancelReason: String,
-        cancelAt: LocalDateTime,
-    ): UserCoupon {
+    fun process(userCoupon: UserCoupon, orderId: String, cancelReason: String, cancelAt: LocalDateTime): UserCoupon {
         validateRedeemHistory(userCoupon, orderId)
 
         val canceledCoupon = cancelAndRecord(
@@ -41,7 +36,7 @@ class CouponRedemptionCancelProcessor(
             throw UserCouponAlreadyCanceledException()
         }
 
-        val lastHistory = couponHistoryAccessor.readLastHistory(userCoupon.id)
+        val lastHistory = couponHistoryAccessor.findLastCouponHistory(userCoupon.id)
             ?.takeIf { it.actionType == CouponActionType.REDEEM }
             ?: throw CouponHistoryLastActionTypeNotRedeemException()
 
@@ -68,10 +63,7 @@ class CouponRedemptionCancelProcessor(
         return canceledCoupon
     }
 
-    private fun expireAndRecordIfExpired(
-        userCoupon: UserCoupon,
-        cancelAt: LocalDateTime,
-    ): UserCoupon {
+    private fun expireAndRecordIfExpired(userCoupon: UserCoupon, cancelAt: LocalDateTime): UserCoupon {
         if (!userCoupon.hasExpired(cancelAt)) {
             return userCoupon
         }

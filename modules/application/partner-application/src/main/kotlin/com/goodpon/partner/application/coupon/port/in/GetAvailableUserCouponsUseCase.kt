@@ -1,8 +1,9 @@
 package com.goodpon.partner.application.coupon.port.`in`
 
+import com.goodpon.partner.application.coupon.port.`in`.dto.GetAvailableUserCouponsQuery
 import com.goodpon.partner.application.coupon.service.dto.AvailableUserCouponsView
 
-interface GetAvailableUserCouponsUseCase {
+fun interface GetAvailableUserCouponsUseCase {
 
-    fun getAvailableUserCoupons(merchantId: Long, userId: String, orderAmount: Int): AvailableUserCouponsView
+    operator fun invoke(query: GetAvailableUserCouponsQuery): AvailableUserCouponsView
 }
