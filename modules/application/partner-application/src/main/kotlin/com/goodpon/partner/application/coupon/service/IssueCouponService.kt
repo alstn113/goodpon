@@ -13,6 +13,7 @@ import com.goodpon.partner.application.coupon.service.exception.CouponTemplateNo
 import com.goodpon.partner.application.coupon.service.exception.UserCouponAlreadyIssuedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Clock
 import java.time.LocalDateTime
 
 @Service
@@ -21,11 +22,12 @@ class IssueCouponService(
     private val couponTemplateStatsAccessor: CouponTemplateStatsAccessor,
     private val couponHistoryAccessor: CouponHistoryAccessor,
     private val userCouponAccessor: UserCouponAccessor,
+    private val clock: Clock,
 ) : IssueCouponUseCase {
 
     @Transactional
     override fun issueCoupon(command: IssueCouponCommand): IssueCouponResult {
-        val now = LocalDateTime.now()
+        val now = LocalDateTime.now(clock)
 
         val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId)
         val couponTemplate = couponTemplateAccessor.readById(command.couponTemplateId)
@@ -39,25 +41,22 @@ class IssueCouponService(
             currentIssueCount = stats.issueCount,
             issueAt = now
         )
-        userCouponAccessor.createUserCoupon(userCoupon)
+        val savedUserCoupon = userCouponAccessor.createUserCoupon(userCoupon)
 
-        couponHistoryAccessor.recordIssued(userCouponId = userCoupon.id, recordedAt = now)
+        couponHistoryAccessor.recordIssued(userCouponId = savedUserCoupon.id, recordedAt = now)
         couponTemplateStatsAccessor.incrementIssueCount(stats)
 
         return IssueCouponResult(
-            userCouponId = userCoupon.id,
-            userId = userCoupon.userId,
+            userCouponId = savedUserCoupon.id,
+            userId = savedUserCoupon.userId,
             couponTemplateId = couponTemplate.id,
             couponTemplateName = couponTemplate.name,
-            issuedAt = userCoupon.issuedAt,
-            expiresAt = userCoupon.expiresAt
+            issuedAt = now,
+            expiresAt = savedUserCoupon.expiresAt,
         )
     }
 
-    private fun validateCouponTemplateOwnership(
-        couponTemplate: CouponTemplate,
-        merchantId: Long,
-    ) {
+    private fun validateCouponTemplateOwnership(couponTemplate: CouponTemplate, merchantId: Long) {
         if (!couponTemplate.isOwnedBy(merchantId)) {
             throw CouponTemplateNotOwnedByMerchantException()
         }
