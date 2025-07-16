@@ -4,12 +4,14 @@ import com.goodpon.partner.application.coupon.port.`in`.dto.CancelCouponRedempti
 
 data class CancelCouponRedemptionRequest(
     val cancelReason: String,
+    val orderId: String,
 ) {
 
-    fun toCommand(merchantId: Long, couponId: String): CancelCouponRedemptionCommand {
+    fun toCommand(merchantId: Long, userCouponId: String): CancelCouponRedemptionCommand {
         return CancelCouponRedemptionCommand(
             merchantId = merchantId,
-            couponId = couponId,
+            userCouponId = userCouponId,
+            orderId = orderId,
             cancelReason = cancelReason,
         )
     }

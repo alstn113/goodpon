@@ -36,25 +36,25 @@ class CouponController(
         return ResponseEntity.ok(ApiResponse.success(result))
     }
 
-    @PostMapping("/v1/coupons/{couponId}/redeem")
+    @PostMapping("/v1/coupons/{userCouponId}/redeem")
     fun redeemCoupon(
-        @PathVariable couponId: String,
+        @PathVariable userCouponId: String,
         @RequestBody request: RedeemCouponRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<RedeemCouponResult>> {
-        val command = request.toCommand(merchantPrincipal.merchantId, couponId)
+        val command = request.toCommand(merchantPrincipal.merchantId, userCouponId)
         val result = redeemCouponUseCase.redeemCoupon(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
     }
 
-    @PostMapping("/v1/coupons/{couponId}/cancel")
+    @PostMapping("/v1/coupons/{userCouponId}/cancel")
     fun cancelCouponRedemption(
-        @PathVariable couponId: String,
+        @PathVariable userCouponId: String,
         @RequestBody request: CancelCouponRedemptionRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<CancelCouponRedemptionResult>> {
-        val command = request.toCommand(merchantPrincipal.merchantId, couponId)
+        val command = request.toCommand(merchantPrincipal.merchantId, userCouponId)
         val result = cancelCouponRedemptionUseCase.cancelCouponRedemption(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))

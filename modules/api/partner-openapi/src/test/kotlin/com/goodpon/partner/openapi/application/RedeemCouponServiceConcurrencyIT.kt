@@ -62,7 +62,7 @@ class RedeemCouponServiceConcurrencyIT(
                         val userCouponId = userIdToCouponIdMap[userId]!!
                         val command = RedeemCouponCommand(
                             merchantId = merchantId,
-                            couponId = userCouponId,
+                            userCouponId = userCouponId,
                             userId = userId,
                             orderAmount = 15000,
                             orderId = "unique-order-id-$userId"
@@ -125,7 +125,7 @@ class RedeemCouponServiceConcurrencyIT(
                     try {
                         val command = RedeemCouponCommand(
                             merchantId = merchantId,
-                            couponId = issuedCoupon.userCouponId,
+                            userCouponId = issuedCoupon.userCouponId,
                             userId = userId,
                             orderAmount = 15000,
                             orderId = "unique-order-id-$index"

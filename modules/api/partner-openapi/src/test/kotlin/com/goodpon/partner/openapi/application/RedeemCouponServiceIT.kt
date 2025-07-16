@@ -1,5 +1,6 @@
 package com.goodpon.partner.openapi.application
 
+import com.goodpon.domain.coupon.history.CouponActionType
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.partner.application.coupon.port.`in`.dto.IssueCouponCommand
@@ -47,7 +48,7 @@ class RedeemCouponServiceIT(
         val orderAmount = 15000
         val redeemCouponCommand = RedeemCouponCommand(
             merchantId = merchantId,
-            couponId = issueCouponResult.userCouponId,
+            userCouponId = issueCouponResult.userCouponId,
             userId = userId,
             orderAmount = orderAmount,
             orderId = orderId
@@ -55,7 +56,7 @@ class RedeemCouponServiceIT(
         val redeemCouponResult = redeemCouponService.redeemCoupon(redeemCouponCommand)
 
         // then
-        redeemCouponResult.couponId shouldBe issueCouponResult.userCouponId
+        redeemCouponResult.userCouponId shouldBe issueCouponResult.userCouponId
         redeemCouponResult.discountAmount shouldBe discountAmount
         redeemCouponResult.originalPrice shouldBe orderAmount
         redeemCouponResult.finalPrice shouldBe (orderAmount - discountAmount)
@@ -67,10 +68,10 @@ class RedeemCouponServiceIT(
 
         val foundCouponHistoryEntities = testCouponHistoryAccessor.findByUserCouponId(issueCouponResult.userCouponId)
         foundCouponHistoryEntities.size shouldBe 2
-        foundCouponHistoryEntities[0].userCouponId shouldBe issueCouponResult.userCouponId
-        foundCouponHistoryEntities[0].actionType.name shouldBe "ISSUE"
-        foundCouponHistoryEntities[1].userCouponId shouldBe issueCouponResult.userCouponId
-        foundCouponHistoryEntities[1].actionType.name shouldBe "REDEEM"
+        foundCouponHistoryEntities.sortedBy { it.createdAt }.also { sortedHistory ->
+            sortedHistory[0].actionType shouldBe CouponActionType.ISSUE
+            sortedHistory[1].actionType shouldBe CouponActionType.REDEEM
+        }
 
         val foundCouponTemplateStatsEntity = testCouponTemplateStatsAccessor.findById(couponTemplateId)
         foundCouponTemplateStatsEntity.shouldNotBeNull()

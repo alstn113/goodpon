@@ -45,6 +45,10 @@ data class UserCoupon private constructor(
         return copy(redeemedAt = null, status = UserCouponStatus.ISSUED)
     }
 
+    fun isRedeemed(): Boolean {
+        return status == UserCouponStatus.REDEEMED
+    }
+
     fun expire(): UserCoupon {
         if (status != UserCouponStatus.ISSUED) {
             throw UserCouponExpireNotAllowedException()

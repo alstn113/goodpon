@@ -20,8 +20,6 @@ class TestCouponHistoryAccessor(
         return entityManager.createQuery(
             "SELECT ch FROM CouponHistoryEntity ch WHERE ch.userCouponId = :userCouponId",
             CouponHistoryEntity::class.java
-        )
-            .setParameter("userCouponId", userCouponId)
-            .resultList
+        ).setParameter("userCouponId", userCouponId).resultList
     }
 }

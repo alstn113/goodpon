@@ -30,7 +30,7 @@ class RedeemCouponService(
     override fun redeemCoupon(command: RedeemCouponCommand): RedeemCouponResult {
         val now = LocalDateTime.now(clock)
 
-        val userCoupon = userCouponAccessor.readByIdForUpdate(command.couponId)
+        val userCoupon = userCouponAccessor.readByIdForUpdate(command.userCouponId)
         val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         val couponTemplate = couponTemplateAccessor.readById(userCoupon.couponTemplateId)
 
@@ -54,7 +54,7 @@ class RedeemCouponService(
         couponTemplateStatsAccessor.incrementRedeemCount(stats)
 
         return RedeemCouponResult(
-            couponId = redeemedCoupon.id,
+            userCouponId = redeemedCoupon.id,
             discountAmount = result.discountAmount,
             originalPrice = result.originalPrice,
             finalPrice = result.finalPrice,

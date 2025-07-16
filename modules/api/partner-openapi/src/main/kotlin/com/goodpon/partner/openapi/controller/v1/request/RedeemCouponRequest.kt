@@ -8,10 +8,10 @@ data class RedeemCouponRequest(
     val orderId: String,
 ) {
 
-    fun toCommand(merchantId: Long, couponId: String): RedeemCouponCommand {
+    fun toCommand(merchantId: Long, userCouponId: String): RedeemCouponCommand {
         return RedeemCouponCommand(
             merchantId = merchantId,
-            couponId = couponId,
+            userCouponId = userCouponId,
             userId = userId,
             orderAmount = orderAmount,
             orderId = orderId

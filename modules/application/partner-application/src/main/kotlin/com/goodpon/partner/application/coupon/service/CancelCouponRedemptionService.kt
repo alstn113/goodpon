@@ -24,7 +24,7 @@ class CancelCouponRedemptionService(
     override fun cancelCouponRedemption(command: CancelCouponRedemptionCommand): CancelCouponRedemptionResult {
         val now = LocalDateTime.now()
 
-        val userCoupon = userCouponAccessor.readByIdForUpdate(command.couponId)
+        val userCoupon = userCouponAccessor.readByIdForUpdate(command.userCouponId)
         val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         val couponTemplate = couponTemplateAccessor.readById(userCoupon.couponTemplateId)
 
@@ -32,7 +32,8 @@ class CancelCouponRedemptionService(
 
         val canceledCoupon = couponRedemptionCancelProcessor.process(
             userCoupon = userCoupon,
-            reason = command.cancelReason,
+            orderId = command.orderId,
+            cancelReason = command.cancelReason,
             cancelAt = now
         )
         couponTemplateStatsAccessor.decrementRedeemCount(stats)
