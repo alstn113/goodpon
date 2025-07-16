@@ -29,9 +29,9 @@ class CouponQueryController(
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
         @RequestParam userId: String,
     ): ResponseEntity<ApiResponse<UserCouponsView>> {
-        val views = getUserCouponsUseCase(merchantId = merchantPrincipal.merchantId, userId = userId)
+        val view = getUserCouponsUseCase(merchantId = merchantPrincipal.merchantId, userId = userId)
 
-        return ResponseEntity.ok(ApiResponse.success(views))
+        return ResponseEntity.ok(ApiResponse.success(view))
     }
 
     @GetMapping("/v1/user-coupons/available")
@@ -45,9 +45,9 @@ class CouponQueryController(
             userId = userId,
             orderAmount = orderAmount
         )
-        val views = getAvailableUserCouponsUseCase(query)
+        val view = getAvailableUserCouponsUseCase(query)
 
-        return ResponseEntity.ok(ApiResponse.success(views))
+        return ResponseEntity.ok(ApiResponse.success(view))
     }
 
     @GetMapping("/v1/coupon-templates/{couponTemplateId}")

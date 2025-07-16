@@ -23,5 +23,5 @@ data class AvailableUserCouponView(
     val limitType: CouponLimitPolicyType,
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
-    val isRedeemable: Boolean,
+    val isRedeemable: Boolean, // 쿠폰 사용 제한 수에 따른 사용 가능 여부
 )

@@ -1,14 +1,10 @@
-package com.goodpon.partner.application.coupon.service.dto
+package com.goodpon.infra.db.jpa.repository.dto
 
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import java.time.LocalDateTime
 
-data class UserCouponsView(
-    val coupons: List<UserCouponView>,
-)
-
-data class UserCouponView(
+data class UserCouponViewDto(
     val userCouponId: String,
     val couponTemplateId: Long,
     val couponTemplateName: String,
@@ -22,5 +18,5 @@ data class UserCouponView(
     val limitType: CouponLimitPolicyType,
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
-    val isRedeemable: Boolean, // 쿠폰 사용 제한 수에 따른 사용 가능 여부
+    val isRedeemable: Boolean,
 )

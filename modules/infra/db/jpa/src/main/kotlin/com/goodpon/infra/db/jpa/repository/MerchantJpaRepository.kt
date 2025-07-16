@@ -18,7 +18,8 @@ interface MerchantJpaRepository : JpaRepository<MerchantEntity, Long> {
             merchant.createdAt
         )
         FROM MerchantEntity merchant
-        JOIN MerchantAccountEntity merchantAccount ON merchantAccount.merchant.id = merchant.id
+        JOIN MerchantAccountEntity merchantAccount 
+            ON merchantAccount.merchant.id = merchant.id
         WHERE merchantAccount.accountId = :accountId
         ORDER BY merchant.createdAt DESC
         """
@@ -35,8 +36,10 @@ interface MerchantJpaRepository : JpaRepository<MerchantEntity, Long> {
             merchant.updatedAt
         )
         FROM MerchantEntity merchant
-        JOIN MerchantAccountEntity merchantAccount ON merchantAccount.merchant.id = merchant.id
-        WHERE merchantAccount.accountId = :accountId AND merchant.id = :merchantId
+        JOIN MerchantAccountEntity merchantAccount 
+            ON merchantAccount.merchant.id = merchant.id
+        WHERE merchantAccount.accountId = :accountId 
+            AND merchant.id = :merchantId
         ORDER BY merchant.createdAt DESC
         """
     )

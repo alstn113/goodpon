@@ -28,7 +28,7 @@ interface CouponTemplateJpaRepository : JpaRepository<CouponTemplateEntity, Long
         )
         FROM CouponTemplateEntity couponTemplate
         LEFT JOIN CouponTemplateStatsEntity stats
-        ON stats.couponTemplateId = couponTemplate.id
+            ON stats.couponTemplateId = couponTemplate.id
         WHERE couponTemplate.merchantId = :merchantId
         ORDER BY couponTemplate.createdAt DESC
         """
@@ -60,7 +60,7 @@ interface CouponTemplateJpaRepository : JpaRepository<CouponTemplateEntity, Long
         )
         FROM CouponTemplateEntity couponTemplate
         LEFT JOIN CouponTemplateStatsEntity stats
-        ON stats.couponTemplateId = couponTemplate.id
+            ON stats.couponTemplateId = couponTemplate.id
         WHERE couponTemplate.id = :couponTemplateId
         """
     )
@@ -91,7 +91,7 @@ interface CouponTemplateJpaRepository : JpaRepository<CouponTemplateEntity, Long
         ) 
         FROM CouponTemplateEntity couponTemplate
         LEFT JOIN CouponTemplateStatsEntity stats
-        ON stats.couponTemplateId = couponTemplate.id
+            ON stats.couponTemplateId = couponTemplate.id
         WHERE couponTemplate.id = :couponTemplateId AND couponTemplate.merchantId = :merchantId
         """
     )

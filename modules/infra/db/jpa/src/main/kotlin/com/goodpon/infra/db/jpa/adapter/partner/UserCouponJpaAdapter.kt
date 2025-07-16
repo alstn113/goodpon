@@ -3,6 +3,7 @@ package com.goodpon.infra.db.jpa.adapter.partner
 import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.infra.db.jpa.core.UserCouponCoreRepository
 import com.goodpon.partner.application.coupon.port.out.UserCouponRepository
+import com.goodpon.partner.application.coupon.service.dto.UserCouponView
 import org.springframework.stereotype.Repository
 
 @Repository("partnerUserCouponJpaAdapter")
@@ -20,5 +21,27 @@ class UserCouponJpaAdapter(
 
     override fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean {
         return userCouponCoreRepository.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)
+    }
+
+    override fun findUserCouponsView(userId: String, merchantId: Long): List<UserCouponView> {
+        return userCouponCoreRepository.findIssuedUserCouponsByUserId(userId = userId, merchantId = merchantId)
+            .map {
+                UserCouponView(
+                    userCouponId = it.userCouponId,
+                    couponTemplateId = it.couponTemplateId,
+                    couponTemplateName = it.couponTemplateName,
+                    couponTemplateDescription = it.couponTemplateDescription,
+                    discountType = it.discountType,
+                    discountValue = it.discountValue,
+                    maxDiscountAmount = it.maxDiscountAmount,
+                    minOrderAmount = it.minOrderAmount,
+                    issuedAt = it.issuedAt,
+                    expiresAt = it.expiresAt,
+                    limitType = it.limitType,
+                    maxIssueCount = it.maxIssueCount,
+                    maxRedeemCount = it.maxRedeemCount,
+                    isRedeemable = it.isRedeemable,
+                )
+            }
     }
 }

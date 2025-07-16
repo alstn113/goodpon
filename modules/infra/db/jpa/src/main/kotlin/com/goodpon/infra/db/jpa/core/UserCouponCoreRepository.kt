@@ -4,6 +4,7 @@ import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.infra.db.jpa.entity.UserCouponEntity
 import com.goodpon.infra.db.jpa.repository.UserCouponJpaRepository
+import com.goodpon.infra.db.jpa.repository.dto.UserCouponViewDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -52,5 +53,10 @@ class UserCouponCoreRepository(
     ): List<UserCoupon> {
         return userCouponJpaRepository.findByStatusAndExpiresAtLessThanEqual(status, expiresAt)
             .map { it.toDomain() }
+    }
+
+    @Transactional(readOnly = true)
+    fun findIssuedUserCouponsByUserId(userId: String, merchantId: Long): List<UserCouponViewDto> {
+        return userCouponJpaRepository.findIssuedUserCouponsByUserId(userId = userId, merchantId = merchantId)
     }
 }
