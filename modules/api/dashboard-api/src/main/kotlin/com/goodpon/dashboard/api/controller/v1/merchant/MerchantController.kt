@@ -8,7 +8,7 @@ import com.goodpon.dashboard.application.merchant.port.`in`.GetMyMerchantDetailU
 import com.goodpon.dashboard.application.merchant.port.`in`.GetMyMerchantsUseCase
 import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantResult
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
-import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
+import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummaries
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -34,7 +34,7 @@ class MerchantController(
     @GetMapping("/v1/merchants")
     fun getMyMerchants(
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
-    ): ResponseEntity<ApiResponse<List<MyMerchantSummary>>> {
+    ): ResponseEntity<ApiResponse<MyMerchantSummaries>> {
         val result = getMyMerchantsUseCase.getMyMerchants(accountPrincipal.id)
 
         return ResponseEntity.ok(ApiResponse.success(result))

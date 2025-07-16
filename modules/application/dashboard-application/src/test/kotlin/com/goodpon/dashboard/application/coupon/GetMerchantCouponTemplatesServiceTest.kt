@@ -58,7 +58,7 @@ class GetMerchantCouponTemplatesServiceTest : DescribeSpec({
             )
 
             // then
-            result shouldBe couponTemplateSummaries
+            result.templates shouldBe couponTemplateSummaries
         }
 
         it("상점이 존재하지 않으면 예외를 발생시킨다") {

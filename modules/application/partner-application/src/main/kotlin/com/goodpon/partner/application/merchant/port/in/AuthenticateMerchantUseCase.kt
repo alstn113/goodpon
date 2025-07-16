@@ -4,5 +4,5 @@ import com.goodpon.partner.application.merchant.port.`in`.dto.MerchantInfo
 
 interface AuthenticateMerchantUseCase {
 
-    fun authenticate(clientId: String, clientSecret: String): MerchantInfo?
+    fun authenticateMerchant(clientId: String, clientSecret: String): MerchantInfo?
 }

@@ -8,6 +8,7 @@ import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
 import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
 import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantResult
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
+import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummaries
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
 import com.goodpon.domain.account.Account
 import io.kotest.matchers.shouldBe
@@ -34,8 +35,8 @@ class MerchantE2eTest(
 
         내_상점_목록_조회_요청(accessToken = accessToken)
             .apply { statusCode() shouldBe 200 }
-            .toApiResponse<List<MyMerchantSummary>>()
-            .apply { size shouldBe 0 }
+            .toApiResponse<MyMerchantSummaries>()
+            .apply { merchants.size shouldBe 0 }
 
         val newMerchantName = "테스트 상점"
         val merchantId = 상점_생성_요청(accessToken = accessToken, name = newMerchantName)
@@ -45,10 +46,10 @@ class MerchantE2eTest(
 
         내_상점_목록_조회_요청(accessToken = accessToken)
             .apply { statusCode() shouldBe 200 }
-            .toApiResponse<List<MyMerchantSummary>>()
+            .toApiResponse<MyMerchantSummaries>()
             .apply {
-                size shouldBe 1
-                first().id shouldBe merchantId
+                merchants.size shouldBe 1
+                merchants.first().name shouldBe newMerchantName
             }
 
         상점_상세_조회_요청(accessToken = accessToken, merchantId = merchantId)

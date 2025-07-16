@@ -1,8 +1,8 @@
 package com.goodpon.dashboard.application.merchant.port.`in`
 
-import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
+import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummaries
 
 interface GetMyMerchantsUseCase {
 
-    fun getMyMerchants(accountId: Long): List<MyMerchantSummary>
+    fun getMyMerchants(accountId: Long): MyMerchantSummaries
 }

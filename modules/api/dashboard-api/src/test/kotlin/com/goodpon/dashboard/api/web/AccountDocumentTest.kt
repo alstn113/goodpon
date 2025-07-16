@@ -153,7 +153,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
 
     private fun signUpSuccessResponseFields() = listOf(
         fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원가입 결과 데이터"),
+        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("사용자 ID"),
         fieldWithPath("data.email").type(JsonFieldType.STRING).description("사용자 이메일"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("사용자 이름"),
@@ -209,7 +209,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
 
     private fun getAccountInfoSuccessResponseFields() = listOf(
         fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("계정 정보 데이터"),
+        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("사용자 ID"),
         fieldWithPath("data.email").type(JsonFieldType.STRING).description("사용자 이메일"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("사용자 이름"),

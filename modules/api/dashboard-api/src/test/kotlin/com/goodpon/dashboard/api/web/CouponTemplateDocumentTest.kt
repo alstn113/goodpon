@@ -11,6 +11,7 @@ import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTempla
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateResult
 import com.goodpon.dashboard.application.coupon.port.out.exception.CouponTemplateNotFoundException
 import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateDetail
+import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummaries
 import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummary
 import com.goodpon.dashboard.application.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
@@ -619,7 +620,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
 
         every {
             getMerchantCouponTemplatesUseCase.getMerchantCouponTemplates(any(), any())
-        } returns couponTemplateSummaries
+        } returns CouponTemplateSummaries(templates = couponTemplateSummaries)
 
         // when
         val result = mockMvc.perform(
@@ -634,10 +635,10 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
             status().isOk,
             jsonPath("$.result").value(ResultType.SUCCESS.name),
             jsonPath("$.error").value(null),
-            jsonPath("$.data[0].id").value(2L),
-            jsonPath("$.data[0].name").value("테스트 쿠폰 2"),
-            jsonPath("$.data[1].id").value(1L),
-            jsonPath("$.data[1].name").value("테스트 쿠폰 1"),
+            jsonPath("$.data.templates[0].id").value(2L),
+            jsonPath("$.data.templates[0].name").value("테스트 쿠폰 2"),
+            jsonPath("$.data.templates[1].id").value(1L),
+            jsonPath("$.data.templates[1].name").value("테스트 쿠폰 1"),
         )
 
         // document
@@ -651,7 +652,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .pathParameters(
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID")
                 )
-                .responseSchema(Schema("ApiResponse<List<CouponTemplateSummary>>"))
+                .responseSchema(Schema("ApiResponse<CouponTemplateSummaries>"))
                 .responseFields(*getMerchantCouponTemplatesSuccessResponseFields().toTypedArray())
                 .build()
         )
@@ -739,15 +740,15 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
 
     private fun getMerchantCouponTemplatesSuccessResponseFields() = listOf(
         fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.ARRAY).description("응답 데이터"),
+        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
         fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보"),
-        fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("쿠폰 템플릿 ID"),
-        fieldWithPath("data[].name").type(JsonFieldType.STRING).description("쿠폰 템플릿 이름"),
-        fieldWithPath("data[].description").type(JsonFieldType.STRING).description("쿠폰 템플릿 설명"),
-        fieldWithPath("data[].status").type(JsonFieldType.STRING).description("쿠폰 템플릿 상태"),
-        fieldWithPath("data[].issueCount").type(JsonFieldType.NUMBER).description("발급된 쿠폰 수"),
-        fieldWithPath("data[].redeemCount").type(JsonFieldType.NUMBER).description("사용된 쿠폰 수"),
-        fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("쿠폰 템플릿 생성 일시"),
+        fieldWithPath("data.templates[].id").type(JsonFieldType.NUMBER).description("쿠폰 템플릿 ID"),
+        fieldWithPath("data.templates[].name").type(JsonFieldType.STRING).description("쿠폰 템플릿 이름"),
+        fieldWithPath("data.templates[].description").type(JsonFieldType.STRING).description("쿠폰 템플릿 설명"),
+        fieldWithPath("data.templates[].status").type(JsonFieldType.STRING).description("쿠폰 템플릿 상태"),
+        fieldWithPath("data.templates[].issueCount").type(JsonFieldType.NUMBER).description("발급된 쿠폰 수"),
+        fieldWithPath("data.templates[].redeemCount").type(JsonFieldType.NUMBER).description("사용된 쿠폰 수"),
+        fieldWithPath("data.templates[].createdAt").type(JsonFieldType.STRING).description("쿠폰 템플릿 생성 일시"),
     )
 
     @Test
@@ -801,11 +802,11 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
 
         // document
         result.andDocument(
-            "상점의 쿠폰 템플릿 목록 조회 - 성공",
+            "쿠폰 템플릿 상세 조회 - 성공",
             ResourceSnippetParameters.builder()
                 .tag("Coupon Template")
-                .summary("상점의 쿠폰 템플릿 목록 조회")
-                .description("상점의 쿠폰 템플릿 목록 조회 API")
+                .summary("쿠폰 템플릿 상세 조회")
+                .description("쿠폰 템플릿 상세 조회 API")
                 .requestHeaders(authHeaderFields())
                 .pathParameters(
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),

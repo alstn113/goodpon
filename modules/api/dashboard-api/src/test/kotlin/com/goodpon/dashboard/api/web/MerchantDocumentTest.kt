@@ -10,6 +10,7 @@ import com.goodpon.dashboard.api.support.WithMockAccount
 import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantResult
 import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
+import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummaries
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
 import com.goodpon.domain.merchant.MerchantAccountRole
 import io.mockk.every
@@ -98,7 +99,7 @@ class MerchantDocumentTest : AbstractDocumentTest() {
 
     private fun createMerchantSuccessFields() = listOf(
         fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("상점 생성 결과 데이터"),
+        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
         fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)"),
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("상점 ID"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("상점 이름"),
@@ -131,7 +132,9 @@ class MerchantDocumentTest : AbstractDocumentTest() {
             )
         )
 
-        every { getMyMerchantsUseCase.getMyMerchants(any()) } returns summaries
+        every {
+            getMyMerchantsUseCase.getMyMerchants(any())
+        } returns MyMerchantSummaries(merchants = summaries)
 
         // when
         val result = mockMvc.perform(
@@ -146,10 +149,10 @@ class MerchantDocumentTest : AbstractDocumentTest() {
             status().isOk,
             jsonPath("$.result").value(ResultType.SUCCESS.name),
             jsonPath("$.error").value(null),
-            jsonPath("$.data[0].id").value(2L),
-            jsonPath("$.data[0].name").value("두번째 상점"),
-            jsonPath("$.data[1].id").value(1L),
-            jsonPath("$.data[1].name").value("첫번째 상점"),
+            jsonPath("$.data.merchants.[0].id").value(2L),
+            jsonPath("$.data.merchants.[0].name").value("두번째 상점"),
+            jsonPath("$.data.merchants.[1].id").value(1L),
+            jsonPath("$.data.merchants.[1].name").value("첫번째 상점"),
         )
 
         // document
@@ -160,7 +163,7 @@ class MerchantDocumentTest : AbstractDocumentTest() {
                 .summary("내 상점 목록 조회")
                 .description("내 상점 목록 조회 API")
                 .requestHeaders(authHeaderFields())
-                .responseSchema(Schema("ApiResponse<List<MyMerchantSummary>>"))
+                .responseSchema(Schema("ApiResponse<MyMerchantSummaries>"))
                 .responseFields(*getMyMerchantsSuccessFields().toTypedArray())
                 .build()
         )
@@ -168,11 +171,11 @@ class MerchantDocumentTest : AbstractDocumentTest() {
 
     private fun getMyMerchantsSuccessFields() = listOf(
         fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.ARRAY).description("상점 목록 데이터"),
+        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
         fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)"),
-        fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("상점 ID"),
-        fieldWithPath("data[].name").type(JsonFieldType.STRING).description("상점 이름"),
-        fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("상점 생성 시간")
+        fieldWithPath("data.merchants[].id").type(JsonFieldType.NUMBER).description("상점 ID"),
+        fieldWithPath("data.merchants[].name").type(JsonFieldType.STRING).description("상점 이름"),
+        fieldWithPath("data.merchants[].createdAt").type(JsonFieldType.STRING).description("상점 생성 시간")
     )
 
     @Test
@@ -283,7 +286,7 @@ class MerchantDocumentTest : AbstractDocumentTest() {
 
     private fun getMyMerchantDetailSuccessFields() = listOf(
         fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("상점 상세 정보 데이터"),
+        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
         fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)"),
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("상점 ID"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("상점 이름"),

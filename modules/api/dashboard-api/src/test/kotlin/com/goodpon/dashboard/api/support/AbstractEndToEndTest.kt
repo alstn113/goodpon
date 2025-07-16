@@ -68,17 +68,28 @@ abstract class AbstractEndToEndTest {
     }
 
     final inline fun <reified T> Response.toApiResponse(): T {
-        val typeRef = object : TypeReference<ApiResponse<T>>() {}
-        val body = this.asString()
-        val apiResponse: ApiResponse<T> = objectMapper.readValue(body, typeRef)
+        val response: ApiResponse<T> = objectMapper.readValue(
+            this.asString(),
+            object : TypeReference<ApiResponse<T>>() {}
+        )
 
-        return apiResponse.data ?: throw IllegalStateException("응답 데이터가 없습니다.")
+        return response.data ?: throw IllegalStateException("응답 데이터가 없습니다.")
     }
 
     final inline fun <reified T> Response.toApiErrorResponse(): ErrorMessage {
-        val typeRef = object : TypeReference<ApiResponse<T>>() {}
-        val body = this.asString()
+        val response = objectMapper.readValue(
+            this.asString(),
+            object : TypeReference<ApiResponse<T>>() {}
+        )
+        return response.error ?: throw IllegalStateException("오류 메시지가 없습니다.")
+    }
 
-        return objectMapper.readValue(body, typeRef).error!!
+    final inline fun <reified R> ErrorMessage.extractErrorData(): R {
+        val data = objectMapper.convertValue(
+            this.data,
+            object : TypeReference<R>() {}
+        )
+
+        return data
     }
 }

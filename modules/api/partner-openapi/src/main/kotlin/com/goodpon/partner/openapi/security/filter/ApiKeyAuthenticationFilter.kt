@@ -1,7 +1,7 @@
 package com.goodpon.partner.openapi.security.filter
 
 import com.goodpon.partner.application.merchant.port.out.exception.MerchantNotFoundException
-import com.goodpon.partner.application.merchant.service.MerchantService
+import com.goodpon.partner.application.merchant.service.AuthenticateMerchantService
 import com.goodpon.partner.application.merchant.service.exception.MerchantClientSecretMismatchException
 import com.goodpon.partner.openapi.security.AuthHeaderUtil
 import com.goodpon.partner.openapi.security.exception.ClientIdMissingException
@@ -16,7 +16,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.web.filter.OncePerRequestFilter
 
 class ApiKeyAuthenticationFilter(
-    private val merchantService: MerchantService,
+    private val authenticateMerchantService: AuthenticateMerchantService,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
 ) : OncePerRequestFilter() {
 
@@ -47,7 +47,7 @@ class ApiKeyAuthenticationFilter(
 
     private fun authenticateMerchant(clientId: String, clientSecret: String) {
         try {
-            val merchantInfo = merchantService.authenticate(clientId = clientId, clientSecret = clientSecret)
+            val merchantInfo = authenticateMerchantService.authenticateMerchant(clientId = clientId, clientSecret = clientSecret)
             val authentication = ApiKeyAuthenticationToken.of(merchantInfo.id)
             SecurityContextHolder.getContext().authentication = authentication
         } catch (e: MerchantNotFoundException) {

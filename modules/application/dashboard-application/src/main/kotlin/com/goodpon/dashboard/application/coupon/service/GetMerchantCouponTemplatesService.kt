@@ -2,7 +2,7 @@ package com.goodpon.dashboard.application.coupon.service
 
 import com.goodpon.dashboard.application.coupon.port.`in`.GetMerchantCouponTemplatesUseCase
 import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository
-import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummary
+import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummaries
 import com.goodpon.dashboard.application.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.dashboard.application.merchant.service.accessor.MerchantAccessor
 import org.springframework.stereotype.Service
@@ -15,12 +15,13 @@ class GetMerchantCouponTemplatesService(
 ) : GetMerchantCouponTemplatesUseCase {
 
     @Transactional(readOnly = true)
-    override fun getMerchantCouponTemplates(accountId: Long, merchantId: Long): List<CouponTemplateSummary> {
+    override fun getMerchantCouponTemplates(accountId: Long, merchantId: Long): CouponTemplateSummaries {
         val merchant = merchantAccessor.readById(merchantId)
         if (!merchant.isAccessibleBy(accountId)) {
             throw NoMerchantAccessPermissionException()
         }
 
-        return couponTemplateRepository.findCouponTemplateSummaries(merchantId = merchantId)
+        val templates = couponTemplateRepository.findCouponTemplateSummaries(merchantId = merchantId)
+        return CouponTemplateSummaries(templates = templates)
     }
 }

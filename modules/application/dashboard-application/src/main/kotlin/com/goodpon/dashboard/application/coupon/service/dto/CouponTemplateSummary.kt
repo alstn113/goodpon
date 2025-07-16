@@ -3,6 +3,10 @@ package com.goodpon.dashboard.application.coupon.service.dto
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import java.time.LocalDateTime
 
+data class CouponTemplateSummaries(
+    val templates: List<CouponTemplateSummary>,
+)
+
 data class CouponTemplateSummary(
     val id: Long,
     val name: String,

@@ -11,7 +11,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class CreateMerchantServiceIT(
+class CreateAuthenticateMerchantServiceIT(
     private val createMerchantService: CreateMerchantService,
     private val accountRepository: AccountRepository,
     private val merchantRepository: MerchantRepository,

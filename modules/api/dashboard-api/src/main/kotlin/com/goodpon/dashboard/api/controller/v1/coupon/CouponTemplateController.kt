@@ -12,7 +12,7 @@ import com.goodpon.dashboard.application.coupon.port.`in`.dto.GetMerchantCouponT
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateCommand
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateResult
 import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateDetail
-import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummary
+import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummaries
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -57,7 +57,7 @@ class CouponTemplateController(
     fun getMerchantCouponTemplates(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
-    ): ResponseEntity<ApiResponse<List<CouponTemplateSummary>>> {
+    ): ResponseEntity<ApiResponse<CouponTemplateSummaries>> {
         val result = getMerchantCouponTemplates.getMerchantCouponTemplates(
             accountId = accountPrincipal.id,
             merchantId = merchantId,

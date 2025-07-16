@@ -32,10 +32,10 @@ class GetMyMerchantsServiceIT(
         merchantRepository.save(secondMerchant)
 
         // when
-        val merchants = getMyMerchantsService.getMyMerchants(savedAccount.id)
+        val result = getMyMerchantsService.getMyMerchants(savedAccount.id)
 
         // then
-        merchants.size shouldBe 2
-        merchants.map { it.name } shouldBe listOf("두번째 상점", "첫번째 상점")
+        result.merchants.size shouldBe 2
+        result.merchants.map { it.name } shouldBe listOf("두번째 상점", "첫번째 상점")
     }
 }

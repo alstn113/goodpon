@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class MerchantService(
+class AuthenticateMerchantService(
     private val merchantAccessor: MerchantAccessor,
 ) : AuthenticateMerchantUseCase {
 
     @Transactional(readOnly = true)
-    override fun authenticate(clientId: String, clientSecret: String): MerchantInfo {
+    override fun authenticateMerchant(clientId: String, clientSecret: String): MerchantInfo {
         val merchant = merchantAccessor.readByClientId(clientId)
 
         if (!merchant.isValidClientSecret(clientSecret)) {

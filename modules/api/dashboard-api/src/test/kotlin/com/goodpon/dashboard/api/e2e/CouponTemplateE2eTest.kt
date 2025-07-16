@@ -2,12 +2,14 @@ package com.goodpon.dashboard.api.e2e
 
 import com.goodpon.dashboard.api.controller.v1.auth.dto.LoginRequest
 import com.goodpon.dashboard.api.controller.v1.coupon.dto.CreateCouponTemplateRequest
+import com.goodpon.dashboard.api.response.ApiErrorDetail
 import com.goodpon.dashboard.api.support.AbstractEndToEndTest
 import com.goodpon.dashboard.application.account.port.out.AccountRepository
 import com.goodpon.dashboard.application.auth.port.`in`.dto.LoginResult
 import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.CreateCouponTemplateResult
 import com.goodpon.dashboard.application.coupon.port.`in`.dto.PublishCouponTemplateResult
+import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummaries
 import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummary
 import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
 import com.goodpon.domain.account.Account
@@ -43,8 +45,8 @@ class CouponTemplateE2eTest(
 
         `쿠폰 템플릿 목록 조회 요청`(accessToken = accessToken, merchantId = merchantId)
             .apply { statusCode() shouldBe 200 }
-            .toApiResponse<List<CouponTemplateSummary>>()
-            .apply { size shouldBe 0 }
+            .toApiResponse<CouponTemplateSummaries>()
+            .apply { templates.size shouldBe 0 }
 
         val firstCouponTemplateId =
             `쿠폰 템플릿 생성 요청`(accessToken = accessToken, merchantId = merchantId, name = "여름 할인 쿠폰")
@@ -57,10 +59,10 @@ class CouponTemplateE2eTest(
 
         `쿠폰 템플릿 목록 조회 요청`(accessToken = accessToken, merchantId = merchantId)
             .apply { statusCode() shouldBe 200 }
-            .toApiResponse<List<CouponTemplateSummary>>()
+            .toApiResponse<CouponTemplateSummaries>()
             .apply {
-                size shouldBe 1
-                first().name shouldBe "여름 할인 쿠폰"
+                templates.size shouldBe 1
+                templates.first().name shouldBe "여름 할인 쿠폰"
             }
 
         val secondCouponTemplateId =
@@ -82,15 +84,15 @@ class CouponTemplateE2eTest(
 
         `쿠폰 템플릿 목록 조회 요청`(accessToken = accessToken, merchantId = merchantId)
             .apply { statusCode() shouldBe 200 }
-            .toApiResponse<List<CouponTemplateSummary>>()
+            .toApiResponse<CouponTemplateSummaries>()
             .apply {
-                size shouldBe 2
-                first().id shouldBe secondCouponTemplateId
-                first().name shouldBe "여행 할인 쿠폰"
-                first().status shouldBe CouponTemplateStatus.DRAFT
-                last().id shouldBe firstCouponTemplateId
-                last().name shouldBe "여름 할인 쿠폰"
-                last().status shouldBe CouponTemplateStatus.ISSUABLE
+                templates.size shouldBe 2
+                templates.first().id shouldBe secondCouponTemplateId
+                templates.first().name shouldBe "여행 할인 쿠폰"
+                templates.first().status shouldBe CouponTemplateStatus.DRAFT
+                templates.last().id shouldBe firstCouponTemplateId
+                templates.last().name shouldBe "여름 할인 쿠폰"
+                templates.last().status shouldBe CouponTemplateStatus.ISSUABLE
             }
 
         `쿠폰 템플릿 상세 조회 요청`(accessToken = accessToken, merchantId = merchantId, couponTemplateId = firstCouponTemplateId)
@@ -130,27 +132,23 @@ class CouponTemplateE2eTest(
             maxRedeemCount = 200L
         )
 
-        val jsonPath = `쿠폰 템플릿 생성 요청`(
+        val errorDetails = `쿠폰 템플릿 생성 요청`(
             accessToken = accessToken,
             merchantId = merchantId,
             name = "테스트 쿠폰",
             request = request
         ).apply { statusCode() shouldBe 400 }
-            .jsonPath()
+            .toApiErrorResponse<Unit>()
+            .extractErrorData<List<ApiErrorDetail>>()
 
-        val errors: List<Map<String, String>> = jsonPath.getList("error.data")
+        val expectedErrorDetails = listOf(
+            ApiErrorDetail(field = "minOrderAmount", message = "쿠폰 사용 조건의 최소 주문 금액은 0보다 커야 합니다."),
+            ApiErrorDetail(field = "maxDiscountAmount", message = "고정 금액 할인은 최대 할인 금액을 설정할 수 없습니다."),
+            ApiErrorDetail(field = "absoluteExpiryDate", message = "쿠폰 사용 절대 만료일은 발행 시작일보다 이전일 수 없습니다."),
+            ApiErrorDetail(field = "maxIssueCount", message = "사용 제한 정책이 설정된 쿠폰은 발급 제한 수량을 함께 설정할 수 없습니다.")
+        )
 
-        errors[0]["field"] shouldBe "minOrderAmount"
-        errors[0]["message"] shouldBe "쿠폰 사용 조건의 최소 주문 금액은 0보다 커야 합니다."
-
-        errors[1]["field"] shouldBe "maxDiscountAmount"
-        errors[1]["message"] shouldBe "고정 금액 할인은 최대 할인 금액을 설정할 수 없습니다."
-
-        errors[2]["field"] shouldBe "absoluteExpiryDate"
-        errors[2]["message"] shouldBe "쿠폰 사용 절대 만료일은 발행 시작일보다 이전일 수 없습니다."
-
-        errors[3]["field"] shouldBe "maxIssueCount"
-        errors[3]["message"] shouldBe "사용 제한 정책이 설정된 쿠폰은 발급 제한 수량을 함께 설정할 수 없습니다."
+        errorDetails shouldBe expectedErrorDetails
     }
 
     @Test
