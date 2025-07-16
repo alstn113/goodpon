@@ -1,9 +1,6 @@
 package com.goodpon.domain.coupon.user
 
-import com.goodpon.domain.coupon.user.exception.UserCouponCancelNotAllowedException
-import com.goodpon.domain.coupon.user.exception.UserCouponExpireNotAllowedException
-import com.goodpon.domain.coupon.user.exception.UserCouponExpiredException
-import com.goodpon.domain.coupon.user.exception.UserCouponRedeemNotAllowedException
+import com.goodpon.domain.coupon.user.exception.*
 import java.time.LocalDateTime
 import java.util.*
 
@@ -18,6 +15,10 @@ data class UserCoupon private constructor(
 ) {
 
     fun redeem(redeemAt: LocalDateTime): UserCoupon {
+        if (status == UserCouponStatus.REDEEMED) {
+            throw UserCouponAlreadyRedeemedException()
+        }
+
         if (status != UserCouponStatus.ISSUED) {
             throw UserCouponRedeemNotAllowedException()
         }

@@ -1,7 +1,6 @@
 package com.goodpon.domain.coupon.user
 
-import com.goodpon.domain.coupon.user.exception.UserCouponCancelNotAllowedException
-import com.goodpon.domain.coupon.user.exception.UserCouponExpireNotAllowedException
+import com.goodpon.domain.coupon.user.exception.*
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.data.forAll
@@ -12,6 +11,24 @@ import java.time.LocalDateTime
 class UserCouponTest : DescribeSpec({
 
     describe("redeem") {
+        it("이미 사용된 쿠폰은 다시 사용할 수 없다.") {
+            val issueAt = LocalDateTime.now()
+            val expiresAt = LocalDateTime.now().plusDays(1)
+            val redeemAt = LocalDateTime.now().plusHours(1)
+
+            val userCoupon = UserCoupon.issue(
+                userId = "test-user",
+                couponTemplateId = 1L,
+                issueAt = issueAt,
+                expiresAt = expiresAt
+            )
+            val redeemedCoupon = userCoupon.redeem(LocalDateTime.now())
+
+            shouldThrow<UserCouponAlreadyRedeemedException> {
+                redeemedCoupon.redeem(redeemAt)
+            }
+        }
+
         it("쿠폰이 발급된 상태가 아니면 사용할 수 없다.") {
             val issueAt = LocalDateTime.now()
             val expiresAt = LocalDateTime.now().plusDays(1)
@@ -25,7 +42,7 @@ class UserCouponTest : DescribeSpec({
             )
             val expiredCoupon = userCoupon.expire()
 
-            shouldThrow<com.goodpon.domain.coupon.user.exception.UserCouponRedeemNotAllowedException> {
+            shouldThrow<UserCouponRedeemNotAllowedException> {
                 expiredCoupon.redeem(redeemAt)
             }
         }
@@ -44,7 +61,7 @@ class UserCouponTest : DescribeSpec({
                     expiresAt = expiresAt
                 )
 
-                shouldThrow<com.goodpon.domain.coupon.user.exception.UserCouponExpiredException> {
+                shouldThrow<UserCouponExpiredException> {
                     userCoupon.redeem(redeemAt)
                 }
             }

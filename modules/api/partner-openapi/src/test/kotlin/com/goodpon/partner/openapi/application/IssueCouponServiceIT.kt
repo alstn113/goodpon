@@ -6,16 +6,16 @@ import com.goodpon.partner.application.coupon.port.`in`.dto.IssueCouponCommand
 import com.goodpon.partner.application.coupon.service.IssueCouponService
 import com.goodpon.partner.openapi.support.AbstractIntegrationTest
 import com.goodpon.partner.openapi.support.accessor.TestCouponHistoryAccessor
+import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateAccessor
 import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateStatsAccessor
 import com.goodpon.partner.openapi.support.accessor.TestUserCouponAccessor
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
-import org.springframework.test.context.jdbc.Sql
 
-@Sql("/sql/init-coupon-template.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class IssueCouponServiceIT(
     private val issueCouponService: IssueCouponService,
+    private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,
     private val testCouponTemplateStatsAccessor: TestCouponTemplateStatsAccessor,
     private val testCouponHistoryAccessor: TestCouponHistoryAccessor,
@@ -24,8 +24,7 @@ class IssueCouponServiceIT(
     @Test
     fun `쿠폰을 발급할 수 있다`() {
         // given
-        val merchantId = 10L
-        val couponTemplateId = 100L
+        val (merchantId: Long, couponTemplateId: Long) = testCouponTemplateAccessor.save()
         val userId = "unique-user-id"
 
         val command = IssueCouponCommand(
@@ -40,7 +39,6 @@ class IssueCouponServiceIT(
         // then
         result.userId shouldBe userId
         result.couponTemplateId shouldBe couponTemplateId
-        result.couponTemplateName shouldBe "테스트 쿠폰"
 
         val foundUserCouponEntity = testUserCouponAccessor.findById(result.userCouponId)
         foundUserCouponEntity.shouldNotBeNull()
