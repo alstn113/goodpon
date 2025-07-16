@@ -1,6 +1,6 @@
 package com.goodpon.dashboard.application.auth.port.`in`
 
-interface VerifyEmailUseCase {
+fun interface VerifyEmailUseCase {
 
-    fun verifyEmail(token: String)
+    operator fun invoke(token: String)
 }

@@ -17,55 +17,53 @@ class SignUpServiceTest : DescribeSpec({
 
     val accountRegistrationService = mockk<AccountRegistrationService>()
     val eventPublisher = mockk<ApplicationEventPublisher>(relaxed = true)
-    val accountService = SignUpService(accountRegistrationService, eventPublisher)
+    val signUpService = SignUpService(accountRegistrationService, eventPublisher)
 
-    describe("signUp") {
-        it("회원가입 시 계정을 생성하고 이벤트를 발행하며 AccountInfo를 반환한다") {
-            val command = SignUpCommand(
-                email = "email@goodpon.site",
-                password = "password",
-                name = "name"
+    it("회원가입 시 계정을 생성하고 이벤트를 발행하며 AccountInfo를 반환한다") {
+        val command = SignUpCommand(
+            email = "email@goodpon.site",
+            password = "password",
+            name = "name"
+        )
+        val account = Account.create(
+            email = command.email,
+            password = command.password,
+            name = command.name
+        ).copy(id = 1L, verified = false)
+
+        every {
+            accountRegistrationService.register(
+                command.email,
+                command.password,
+                command.name
             )
-            val account = Account.create(
-                email = command.email,
-                password = command.password,
-                name = command.name
-            ).copy(id = 1L, verified = false)
+        } returns account
 
-            every {
-                accountRegistrationService.register(
-                    command.email,
-                    command.password,
-                    command.name
-                )
-            } returns account
+        val result = signUpService(command)
 
-            val result = accountService.signUp(command)
+        result shouldBe SignUpResult(
+            id = account.id,
+            email = account.email.value,
+            name = account.name.value,
+            verified = account.verified
+        )
 
-            result shouldBe SignUpResult(
-                id = account.id,
-                email = account.email.value,
-                name = account.name.value,
-                verified = account.verified
+        verify {
+            accountRegistrationService.register(
+                command.email,
+                command.password,
+                command.name
             )
+        }
 
-            verify {
-                accountRegistrationService.register(
-                    command.email,
-                    command.password,
-                    command.name
+        verify {
+            eventPublisher.publishEvent(
+                AccountCreatedEvent(
+                    accountId = account.id,
+                    email = account.email.value,
+                    name = account.name.value
                 )
-            }
-
-            verify {
-                eventPublisher.publishEvent(
-                    AccountCreatedEvent(
-                        accountId = account.id,
-                        email = account.email.value,
-                        name = account.name.value
-                    )
-                )
-            }
+            )
         }
     }
 })

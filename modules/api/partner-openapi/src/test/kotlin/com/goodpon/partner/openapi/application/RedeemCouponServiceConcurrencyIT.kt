@@ -47,7 +47,7 @@ class RedeemCouponServiceConcurrencyIT(
                 couponTemplateId = couponTemplateId,
                 userId = userId
             )
-            val issuedCoupon = issueCouponService.issueCoupon(command)
+            val issuedCoupon = issueCouponService(command)
             issuedCoupon.userCouponId
         }
 
@@ -67,7 +67,7 @@ class RedeemCouponServiceConcurrencyIT(
                             orderAmount = 15000,
                             orderId = "unique-order-id-$userId"
                         )
-                        redeemCouponService.redeemCoupon(command)
+                        redeemCouponService(command)
                         successCount.incrementAndGet()
                     } catch (e: CouponTemplateRedemptionLimitExceededException) {
                         failureCount.incrementAndGet()
@@ -112,7 +112,7 @@ class RedeemCouponServiceConcurrencyIT(
             couponTemplateId = couponTemplateId,
             userId = userId
         )
-        val issuedCoupon = issueCouponService.issueCoupon(issueCommand)
+        val issuedCoupon = issueCouponService(issueCommand)
 
         val concurrentRequests = 5
         val successCount = AtomicInteger(0)
@@ -130,7 +130,7 @@ class RedeemCouponServiceConcurrencyIT(
                             orderAmount = 15000,
                             orderId = "unique-order-id-$index"
                         )
-                        redeemCouponService.redeemCoupon(command)
+                        redeemCouponService(command)
                         successCount.incrementAndGet()
                     } catch (e: UserCouponAlreadyRedeemedException) {
                         failureCount.incrementAndGet()

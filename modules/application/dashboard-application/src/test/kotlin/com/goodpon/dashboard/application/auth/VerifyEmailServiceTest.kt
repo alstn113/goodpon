@@ -52,7 +52,7 @@ class VerifyEmailServiceTest : DescribeSpec({
             every { accountVerificationService.verifyEmail(emailVerificationDto.accountId, now) } returns mockk()
             every { emailVerificationCache.delete(token, accountId = emailVerificationDto.accountId) } returns Unit
 
-            verifyEmailService.verifyEmail(token)
+            verifyEmailService(token)
 
             verify { emailVerificationCache.findByToken(token) }
             verify { accountVerificationService.verifyEmail(emailVerificationDto.accountId, now) }
@@ -66,7 +66,7 @@ class VerifyEmailServiceTest : DescribeSpec({
             } returns null
 
             shouldThrow<EmailVerificationNotFoundException> {
-                verifyEmailService.verifyEmail(invalidToken)
+                verifyEmailService(invalidToken)
             }
         }
     }

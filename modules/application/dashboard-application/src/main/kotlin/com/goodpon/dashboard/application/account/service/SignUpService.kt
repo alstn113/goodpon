@@ -15,7 +15,7 @@ class SignUpService(
 ) : SignUpUseCase {
 
     @Transactional
-    override fun signUp(command: SignUpCommand): SignUpResult {
+    override fun invoke(command: SignUpCommand): SignUpResult {
         val account = accountRegistrationService.register(
             email = command.email,
             name = command.name,

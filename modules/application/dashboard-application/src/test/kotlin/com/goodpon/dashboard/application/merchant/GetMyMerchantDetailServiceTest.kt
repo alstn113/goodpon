@@ -21,7 +21,7 @@ class GetMyMerchantDetailServiceTest : DescribeSpec({
             every { merchantRepository.findMyMerchantDetail(accountId, merchantId) } returns null
 
             shouldThrow<MerchantNotFoundException> {
-                getMyMerchantDetailService.getMyMerchantDetail(accountId, merchantId)
+                getMyMerchantDetailService(accountId, merchantId)
             }
         }
     }

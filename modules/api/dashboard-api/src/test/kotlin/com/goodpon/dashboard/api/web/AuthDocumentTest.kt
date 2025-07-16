@@ -37,7 +37,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
             accessToken = accessToken
         )
 
-        every { loginUseCase.login(any()) } returns loginResult
+        every { loginUseCase(any()) } returns loginResult
 
         // when
         val result = mockMvc.perform(
@@ -79,7 +79,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
         // given
         val request = LoginRequest(email = "noExists@goodpon.site", password = "password123")
 
-        every { loginUseCase.login(any()) } throws AccountNotFoundException()
+        every { loginUseCase(any()) } throws AccountNotFoundException()
 
         // when
         val result = mockMvc.perform(
@@ -116,7 +116,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
         // given
         val request = LoginRequest(email = "test@goodpon.site", password = "wrong password")
 
-        every { loginUseCase.login(any()) } throws PasswordMismatchException()
+        every { loginUseCase(any()) } throws PasswordMismatchException()
 
         // when
         val result = mockMvc.perform(
@@ -170,7 +170,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
         val token = "email-verification-token"
         val request = VerifyEmailRequest(token = token)
 
-        every { verifyEmailUseCase.verifyEmail(any()) } returns Unit
+        every { verifyEmailUseCase(any()) } returns Unit
 
         // when
         val result = mockMvc.perform(
@@ -208,7 +208,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
         val token = "invalid-email-verification-token"
         val request = VerifyEmailRequest(token = token)
 
-        every { verifyEmailUseCase.verifyEmail(any()) } throws EmailVerificationNotFoundException()
+        every { verifyEmailUseCase(any()) } throws EmailVerificationNotFoundException()
 
         // when
         val result = mockMvc.perform(
@@ -246,7 +246,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
         val token = "invalid-email-verification-token"
         val request = VerifyEmailRequest(token = token)
 
-        every { verifyEmailUseCase.verifyEmail(any()) } throws AccountNotFoundException()
+        every { verifyEmailUseCase(any()) } throws AccountNotFoundException()
 
         // when
         val result = mockMvc.perform(
@@ -284,7 +284,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
         val token = "invalid-email-verification-token"
         val request = VerifyEmailRequest(token = token)
 
-        every { verifyEmailUseCase.verifyEmail(any()) } throws AccountAlreadyVerifiedException()
+        every { verifyEmailUseCase(any()) } throws AccountAlreadyVerifiedException()
 
         // when
         val result = mockMvc.perform(
@@ -331,7 +331,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
         // given
         val request = ResendVerificationEmailRequest(email = "test@goodpon.site")
 
-        every { resendVerificationEmailUseCase.resendVerificationEmail(any()) } returns Unit
+        every { resendVerificationEmailUseCase(any()) } returns Unit
 
         // when
         val result = mockMvc.perform(
@@ -368,7 +368,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
         // given
         val request = ResendVerificationEmailRequest(email = "test@goodpon.site")
 
-        every { resendVerificationEmailUseCase.resendVerificationEmail(any()) } throws AccountNotFoundException()
+        every { resendVerificationEmailUseCase(any()) } throws AccountNotFoundException()
 
         // when
         val result = mockMvc.perform(
@@ -405,7 +405,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
         // given
         val request = ResendVerificationEmailRequest(email = "test@goodpon.site")
 
-        every { resendVerificationEmailUseCase.resendVerificationEmail(any()) } throws AccountAlreadyVerifiedException()
+        every { resendVerificationEmailUseCase(any()) } throws AccountAlreadyVerifiedException()
 
         // when
         val result = mockMvc.perform(

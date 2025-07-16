@@ -15,7 +15,7 @@ class GetMerchantCouponTemplatesService(
 ) : GetMerchantCouponTemplatesUseCase {
 
     @Transactional(readOnly = true)
-    override fun getMerchantCouponTemplates(accountId: Long, merchantId: Long): CouponTemplateSummaries {
+    override fun invoke(accountId: Long, merchantId: Long): CouponTemplateSummaries {
         val merchant = merchantAccessor.readById(merchantId)
         if (!merchant.isAccessibleBy(accountId)) {
             throw NoMerchantAccessPermissionException()

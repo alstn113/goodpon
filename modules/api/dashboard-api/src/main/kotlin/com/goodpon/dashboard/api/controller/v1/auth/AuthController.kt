@@ -25,7 +25,7 @@ class AuthController(
         @RequestBody request: LoginRequest,
     ): ResponseEntity<ApiResponse<LoginResult>> {
         val command = request.toCommand()
-        val result = loginUseCase.login(command)
+        val result = loginUseCase(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
     }
@@ -34,7 +34,7 @@ class AuthController(
     fun verifyEmail(
         @RequestBody request: VerifyEmailRequest,
     ): ResponseEntity<ApiResponse<String>> {
-        verifyEmailUseCase.verifyEmail(request.token)
+        verifyEmailUseCase(request.token)
 
         return ResponseEntity.ok(ApiResponse.success("이메일 인증이 완료되었습니다."))
     }
@@ -43,7 +43,7 @@ class AuthController(
     fun resendVerificationEmail(
         @RequestBody request: ResendVerificationEmailRequest,
     ): ResponseEntity<ApiResponse<String>> {
-        resendVerificationEmailUseCase.resendVerificationEmail(request.email)
+        resendVerificationEmailUseCase(request.email)
 
         return ResponseEntity.ok(ApiResponse.success("인증 이메일이 재전송되었습니다."))
     }

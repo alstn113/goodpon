@@ -29,10 +29,7 @@ class CouponQueryController(
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
         @RequestParam userId: String,
     ): ResponseEntity<ApiResponse<UserCouponsView>> {
-        val views = getUserCouponsUseCase(
-            merchantId = merchantPrincipal.merchantId,
-            userId = userId
-        )
+        val views = getUserCouponsUseCase(merchantId = merchantPrincipal.merchantId, userId = userId)
 
         return ResponseEntity.ok(ApiResponse.success(views))
     }

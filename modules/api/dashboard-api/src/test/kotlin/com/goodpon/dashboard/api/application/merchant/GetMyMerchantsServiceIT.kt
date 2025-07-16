@@ -32,7 +32,7 @@ class GetMyMerchantsServiceIT(
         merchantRepository.save(secondMerchant)
 
         // when
-        val result = getMyMerchantsService.getMyMerchants(savedAccount.id)
+        val result = getMyMerchantsService(savedAccount.id)
 
         // then
         result.merchants.size shouldBe 2

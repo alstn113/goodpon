@@ -12,8 +12,9 @@ class GetMyMerchantsService(
 ) : GetMyMerchantsUseCase {
 
     @Transactional(readOnly = true)
-    override fun getMyMerchants(accountId: Long): MyMerchantSummaries {
+    override fun invoke(accountId: Long): MyMerchantSummaries {
         val merchants = merchantRepository.findMyMerchants(accountId)
+
         return MyMerchantSummaries(merchants = merchants)
     }
 }

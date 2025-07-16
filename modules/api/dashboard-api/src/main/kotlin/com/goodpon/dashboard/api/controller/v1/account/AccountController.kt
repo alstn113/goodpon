@@ -25,7 +25,7 @@ class AccountController(
         @RequestBody request: SignUpRequest,
     ): ResponseEntity<ApiResponse<SignUpResult>> {
         val command = request.toCommand()
-        val result = signUpUseCase.signUp(command)
+        val result = signUpUseCase(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
     }
@@ -34,7 +34,7 @@ class AccountController(
     fun getAccountInfo(
         @AuthenticationPrincipal principal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<AccountInfo>> {
-        val accountInfo = getAccountInfoUseCase.getAccountInfo(principal.id)
+        val accountInfo = getAccountInfoUseCase(principal.id)
 
         return ResponseEntity.ok(ApiResponse.success(accountInfo))
     }

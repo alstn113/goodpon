@@ -50,7 +50,7 @@ class MerchantDocumentTest : AbstractDocumentTest() {
             )
         )
 
-        every { createMerchantUseCase.createMerchant(any()) } returns createMerchantResult
+        every { createMerchantUseCase(any()) } returns createMerchantResult
 
         // when
         val result = mockMvc.perform(
@@ -133,7 +133,7 @@ class MerchantDocumentTest : AbstractDocumentTest() {
         )
 
         every {
-            getMyMerchantsUseCase.getMyMerchants(any())
+            getMyMerchantsUseCase(any())
         } returns MyMerchantSummaries(merchants = summaries)
 
         // when
@@ -208,7 +208,7 @@ class MerchantDocumentTest : AbstractDocumentTest() {
             updatedAt = LocalDateTime.now()
         )
 
-        every { getMyMerchantDetailUseCase.getMyMerchantDetail(any(), any()) } returns detail
+        every { getMyMerchantDetailUseCase(any(), any()) } returns detail
 
         // when
         val result = mockMvc.perform(
@@ -251,7 +251,7 @@ class MerchantDocumentTest : AbstractDocumentTest() {
     @WithMockAccount
     fun `상점 상세 조회 - 실패 - 존재하지 않는 상점`() {
         // given
-        every { getMyMerchantDetailUseCase.getMyMerchantDetail(any(), any()) } throws MerchantNotFoundException()
+        every { getMyMerchantDetailUseCase(any(), any()) } throws MerchantNotFoundException()
 
         // when
         val result = mockMvc.perform(

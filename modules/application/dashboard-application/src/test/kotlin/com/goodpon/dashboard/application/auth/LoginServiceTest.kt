@@ -41,7 +41,7 @@ class LoginServiceTest : DescribeSpec({
 
             it("예외를 발생시킨다.") {
                 shouldThrow<PasswordMismatchException> {
-                    loginService.login(command)
+                    loginService(command)
                 }
             }
         }
@@ -55,7 +55,7 @@ class LoginServiceTest : DescribeSpec({
                 val token = "access-token"
                 every { tokenProvider.generateAccessToken(account.id) } returns token
 
-                val actual = loginService.login(command)
+                val actual = loginService(command)
 
                 val expected = LoginResult(
                     id = account.id,

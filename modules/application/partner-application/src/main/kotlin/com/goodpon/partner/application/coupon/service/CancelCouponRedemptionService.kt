@@ -21,7 +21,7 @@ class CancelCouponRedemptionService(
 ) : CancelCouponRedemptionUseCase {
 
     @Transactional
-    override fun cancelCouponRedemption(command: CancelCouponRedemptionCommand): CancelCouponRedemptionResult {
+    override fun invoke(command: CancelCouponRedemptionCommand): CancelCouponRedemptionResult {
         val now = LocalDateTime.now()
 
         val userCoupon = userCouponAccessor.readByIdForUpdate(command.userCouponId)

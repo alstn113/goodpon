@@ -13,7 +13,7 @@ class GetMyMerchantDetailService(
 ) : GetMyMerchantDetailUseCase {
 
     @Transactional(readOnly = true)
-    override fun getMyMerchantDetail(accountId: Long, merchantId: Long): MyMerchantDetail {
+    override fun invoke(accountId: Long, merchantId: Long): MyMerchantDetail {
         return merchantRepository.findMyMerchantDetail(accountId = accountId, merchantId = merchantId)
             ?: throw MerchantNotFoundException()
     }

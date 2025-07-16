@@ -9,7 +9,6 @@ import com.goodpon.dashboard.application.auth.port.out.PasswordEncoder
 import com.goodpon.dashboard.application.merchant.port.`in`.dto.CreateMerchantResult
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummaries
-import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
 import com.goodpon.domain.account.Account
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured.given

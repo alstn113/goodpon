@@ -74,7 +74,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
             status = CouponTemplateStatus.DRAFT
         )
 
-        every { createCouponTemplateUseCase.createCouponTemplate(any()) } returns createCouponTemplateResult
+        every { createCouponTemplateUseCase(any()) } returns createCouponTemplateResult
 
         // when
         val result = mockMvc.perform(
@@ -121,7 +121,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     @WithMockAccount
     fun `쿠폰 템플릿 생성 - 실패 - 존재하지 않는 상점`() {
         // given
-        every { createCouponTemplateUseCase.createCouponTemplate(any()) } throws MerchantNotFoundException()
+        every { createCouponTemplateUseCase(any()) } throws MerchantNotFoundException()
 
         // when
         val result = mockMvc.perform(
@@ -160,7 +160,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     @WithMockAccount
     fun `쿠폰 템플릿 생성 - 실패 - 상점 접근 권한 없음`() {
         // given
-        every { createCouponTemplateUseCase.createCouponTemplate(any()) } throws NoMerchantAccessPermissionException()
+        every { createCouponTemplateUseCase(any()) } throws NoMerchantAccessPermissionException()
 
         // when
         val result = mockMvc.perform(
@@ -237,7 +237,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
         )
 
         every {
-            createCouponTemplateUseCase.createCouponTemplate(any())
+            createCouponTemplateUseCase(any())
         } throws CouponTemplateValidationException(errors)
 
         // when
@@ -347,7 +347,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
             status = CouponTemplateStatus.ISSUABLE
         )
 
-        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } returns publishCouponTemplateResult
+        every { publishCouponTemplateUseCase(any()) } returns publishCouponTemplateResult
 
         // when
         val result = mockMvc.perform(
@@ -390,7 +390,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     @WithMockAccount
     fun `쿠폰 템플릿 발행 - 실패 - 존재하지 않는 상점`() {
         // given
-        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } throws MerchantNotFoundException()
+        every { publishCouponTemplateUseCase(any()) } throws MerchantNotFoundException()
 
         // when
         val result = mockMvc.perform(
@@ -429,7 +429,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     @WithMockAccount
     fun `쿠폰 템플릿 발행 - 실패 - 상점 접근 권한 없음`() {
         // given
-        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } throws NoMerchantAccessPermissionException()
+        every { publishCouponTemplateUseCase(any()) } throws NoMerchantAccessPermissionException()
 
         // when
         val result = mockMvc.perform(
@@ -468,7 +468,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     @WithMockAccount
     fun `쿠폰 템플릿 발행 - 실패 - 존재하지 않는 쿠폰 템플릿`() {
         // given
-        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } throws CouponTemplateNotFoundException()
+        every { publishCouponTemplateUseCase(any()) } throws CouponTemplateNotFoundException()
 
         // when
         val result = mockMvc.perform(
@@ -507,7 +507,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     @WithMockAccount
     fun `쿠폰 템플릿 발행 - 실패 - 상점이 소유하지 않은 쿠폰 템플릿`() {
         // given
-        every { publishCouponTemplateUseCase.publishCouponTemplate(any()) } throws CouponTemplateNotOwnedByMerchantException()
+        every { publishCouponTemplateUseCase(any()) } throws CouponTemplateNotOwnedByMerchantException()
 
         // when
         val result = mockMvc.perform(
@@ -547,7 +547,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 템플릿 발행 - 실패 - 발행할 수 없는 상태`() {
         // given
         every {
-            publishCouponTemplateUseCase.publishCouponTemplate(any())
+            publishCouponTemplateUseCase(any())
         } throws CouponTemplateInvalidStatusToPublishException()
 
         // when
@@ -619,7 +619,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
         )
 
         every {
-            getMerchantCouponTemplatesUseCase.getMerchantCouponTemplates(any(), any())
+            getMerchantCouponTemplatesUseCase(any(), any())
         } returns CouponTemplateSummaries(templates = couponTemplateSummaries)
 
         // when
@@ -663,7 +663,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     fun `상점의 쿠폰 템플릿 목록 조회 - 실패 - 존재하지 않는 상점`() {
         // given
         every {
-            getMerchantCouponTemplatesUseCase.getMerchantCouponTemplates(any(), any())
+            getMerchantCouponTemplatesUseCase(any(), any())
         } throws MerchantNotFoundException()
 
         // when
@@ -703,7 +703,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     fun `상점의 쿠폰 템플릿 목록 조회 - 실패 - 상점 접근 권한 없음`() {
         // given
         every {
-            getMerchantCouponTemplatesUseCase.getMerchantCouponTemplates(any(), any())
+            getMerchantCouponTemplatesUseCase(any(), any())
         } throws NoMerchantAccessPermissionException()
 
         // when
@@ -778,7 +778,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
         )
 
         every {
-            getMerchantCouponTemplateDetailUseCase.getMerchantCouponTemplateDetail(any())
+            getMerchantCouponTemplateDetailUseCase(any())
         } returns couponTemplateDetail
 
         // when
@@ -823,7 +823,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 템플릿 상세 조회 - 실패 - 존재하지 않는 상점`() {
         // given
         every {
-            getMerchantCouponTemplateDetailUseCase.getMerchantCouponTemplateDetail(any())
+            getMerchantCouponTemplateDetailUseCase(any())
         } throws MerchantNotFoundException()
 
         // when
@@ -864,7 +864,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 템플릿 상세 조회 - 실패 - 상점 접근 권한 없음`() {
         // given
         every {
-            getMerchantCouponTemplateDetailUseCase.getMerchantCouponTemplateDetail(any())
+            getMerchantCouponTemplateDetailUseCase(any())
         } throws NoMerchantAccessPermissionException()
 
         // when
@@ -905,7 +905,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 템플릿 상세 조회 - 실패 - 존재하지 않는 쿠폰 템플릿`() {
         // given
         every {
-            getMerchantCouponTemplateDetailUseCase.getMerchantCouponTemplateDetail(any())
+            getMerchantCouponTemplateDetailUseCase(any())
         } throws CouponTemplateNotFoundException()
 
         // when
@@ -946,7 +946,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 템플릿 상세 조회 - 실패 - 상점이 소유하지 않은 쿠폰 템플릿`() {
         // given
         every {
-            getMerchantCouponTemplateDetailUseCase.getMerchantCouponTemplateDetail(any())
+            getMerchantCouponTemplateDetailUseCase(any())
         } throws CouponTemplateNotOwnedByMerchantException()
 
         // when

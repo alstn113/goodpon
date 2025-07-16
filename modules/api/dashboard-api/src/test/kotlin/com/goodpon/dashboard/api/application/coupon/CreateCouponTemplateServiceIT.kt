@@ -56,7 +56,7 @@ class CreateCouponTemplateServiceIT(
         merchantRepository.save(merchant)
 
         // when
-        val result = createCouponTemplateService.createCouponTemplate(command)
+        val result = createCouponTemplateService(command)
 
         // then
         val foundCouponTemplate = couponTemplateRepository.findById(result.id)
@@ -82,7 +82,7 @@ class CreateCouponTemplateServiceIT(
 
         // when & then
         shouldThrow<NoMerchantAccessPermissionException> {
-            createCouponTemplateService.createCouponTemplate(newCommand)
+            createCouponTemplateService(newCommand)
         }
     }
 
@@ -113,7 +113,7 @@ class CreateCouponTemplateServiceIT(
 
         // when & then
         val exception = shouldThrow<CouponTemplateValidationException> {
-            createCouponTemplateService.createCouponTemplate(invalidCommand)
+            createCouponTemplateService(invalidCommand)
         }
         val expectedErrors = listOf(
             CouponTemplateValidationError(

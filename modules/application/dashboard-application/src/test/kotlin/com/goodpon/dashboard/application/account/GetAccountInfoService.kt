@@ -18,26 +18,23 @@ class GetAccountInfoService : DescribeSpec({
 
     beforeEach { clearAllMocks() }
 
-    describe("getAccountInfo") {
-        it("계정 식별자로 계정 정보를 조회할 수 있다.") {
-            val accountId = 1L
-            val account = Account.create(
-                email = "test@email.com",
-                password = "password",
-                name = "테스터"
-            ).copy(id = accountId, verified = true)
-            every { accountAccessor.readById(accountId) } returns account
+    it("계정 식별자로 계정 정보를 조회할 수 있다.") {
+        val accountId = 1L
+        val account = Account.create(
+            email = "test@email.com",
+            password = "password",
+            name = "테스터"
+        ).copy(id = accountId, verified = true)
+        every { accountAccessor.readById(accountId) } returns account
 
-            val result = getAccountInfoService.getAccountInfo(accountId)
+        val result = getAccountInfoService(accountId)
 
-            result shouldBe AccountInfo(
-                id = account.id,
-                email = account.email.value,
-                name = account.name.value,
-                verified = account.verified
-            )
-            verify { accountAccessor.readById(accountId) }
-        }
+        result shouldBe AccountInfo(
+            id = account.id,
+            email = account.email.value,
+            name = account.name.value,
+            verified = account.verified
+        )
+        verify { accountAccessor.readById(accountId) }
     }
-
 })

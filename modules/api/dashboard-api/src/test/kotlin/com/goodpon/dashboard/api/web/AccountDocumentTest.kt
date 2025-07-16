@@ -27,7 +27,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
         val request = SignUpRequest(email = "test@goodpon.site", password = "password123", name = "테스트 사용자")
         val signUpResult = SignUpResult(id = 1L, email = request.email, name = request.name, verified = false)
 
-        every { signUpUseCase.signUp(any()) } returns signUpResult
+        every { signUpUseCase(any()) } returns signUpResult
 
         // when
         val result = mockMvc.perform(
@@ -72,7 +72,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
             name = "테스트 사용자"
         )
 
-        every { signUpUseCase.signUp(any()) } throws AccountEmailExistsException()
+        every { signUpUseCase(any()) } throws AccountEmailExistsException()
 
         // when
         val result = mockMvc.perform(
@@ -113,7 +113,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
             name = "테스트 사용자"
         )
 
-        every { signUpUseCase.signUp(any()) } throws AccountInvalidEmailFormatException()
+        every { signUpUseCase(any()) } throws AccountInvalidEmailFormatException()
 
         // when
         val result = mockMvc.perform(
@@ -172,7 +172,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
             verified = true
         )
 
-        every { getAccountInfoUseCase.getAccountInfo(any()) } returns accountInfo
+        every { getAccountInfoUseCase(any()) } returns accountInfo
 
         // when
         val result = mockMvc.perform(

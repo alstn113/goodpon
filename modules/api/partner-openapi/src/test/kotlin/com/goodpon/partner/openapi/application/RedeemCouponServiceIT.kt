@@ -41,7 +41,7 @@ class RedeemCouponServiceIT(
             couponTemplateId = couponTemplateId,
             merchantId = merchantId
         )
-        val issueCouponResult = issueCouponService.issueCoupon(issueCouponCommand)
+        val issueCouponResult = issueCouponService(issueCouponCommand)
 
         // when
         val orderId = "unique-order-id"
@@ -53,7 +53,7 @@ class RedeemCouponServiceIT(
             orderAmount = orderAmount,
             orderId = orderId
         )
-        val redeemCouponResult = redeemCouponService.redeemCoupon(redeemCouponCommand)
+        val redeemCouponResult = redeemCouponService(redeemCouponCommand)
 
         // then
         redeemCouponResult.userCouponId shouldBe issueCouponResult.userCouponId

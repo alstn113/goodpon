@@ -12,6 +12,6 @@ class CouponExpireScheduler(
 
     @Scheduled(cron = "0 0 0 * * *")
     fun expireExpiredCouponsAndTemplatesBatch() {
-        expireCouponAndTemplateService.expireExpiredCouponsAndTemplates(LocalDateTime.now())
+        expireCouponAndTemplateService(LocalDateTime.now())
     }
 }

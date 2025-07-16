@@ -46,7 +46,7 @@ class CancelCouponRedemptionServiceIT(
             couponTemplateId = couponTemplateId,
             merchantId = merchantId
         )
-        val issueCouponResult = issueCouponService.issueCoupon(issueCouponCommand)
+        val issueCouponResult = issueCouponService(issueCouponCommand)
 
         // - 쿠폰 사용
         val orderId = "unique-order-id"
@@ -58,7 +58,7 @@ class CancelCouponRedemptionServiceIT(
             orderAmount = orderAmount,
             orderId = orderId
         )
-        val redeemCouponResult = redeemCouponService.redeemCoupon(redeemCouponCommand)
+        val redeemCouponResult = redeemCouponService(redeemCouponCommand)
 
         // when
         val cancelCouponRedemptionCommand = CancelCouponRedemptionCommand(
@@ -67,7 +67,7 @@ class CancelCouponRedemptionServiceIT(
             orderId = orderId,
             cancelReason = "결제 실패"
         )
-        val cancelResult = cancelCouponRedemptionService.cancelCouponRedemption(cancelCouponRedemptionCommand)
+        val cancelResult = cancelCouponRedemptionService(cancelCouponRedemptionCommand)
 
         // then
         cancelResult.userCouponId shouldBe redeemCouponResult.userCouponId

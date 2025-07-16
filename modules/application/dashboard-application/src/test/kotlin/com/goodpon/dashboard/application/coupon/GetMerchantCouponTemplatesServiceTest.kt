@@ -52,7 +52,7 @@ class GetMerchantCouponTemplatesServiceTest : DescribeSpec({
             } returns couponTemplateSummaries
 
             // when
-            val result = getMerchantCouponTemplatesService.getMerchantCouponTemplates(
+            val result = getMerchantCouponTemplatesService(
                 accountId = accountId,
                 merchantId = merchantId
             )
@@ -70,7 +70,7 @@ class GetMerchantCouponTemplatesServiceTest : DescribeSpec({
 
             // when, then
             shouldThrow<MerchantNotFoundException> {
-                getMerchantCouponTemplatesService.getMerchantCouponTemplates(
+                getMerchantCouponTemplatesService(
                     accountId = accountId,
                     merchantId = merchantId
                 )
@@ -90,7 +90,7 @@ class GetMerchantCouponTemplatesServiceTest : DescribeSpec({
 
             // when, then
             shouldThrow<NoMerchantAccessPermissionException> {
-                getMerchantCouponTemplatesService.getMerchantCouponTemplates(
+                getMerchantCouponTemplatesService(
                     accountId = accountId,
                     merchantId = merchantId
                 )

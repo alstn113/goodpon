@@ -25,7 +25,7 @@ class GetAccountInfoServiceIT(
         val savedAccount = accountRepository.save(account)
 
         // when
-        val accountInfo = getAccountInfoService.getAccountInfo(savedAccount.id)
+        val accountInfo = getAccountInfoService(savedAccount.id)
 
         // then
         val foundAccount = accountRepository.findById(savedAccount.id)

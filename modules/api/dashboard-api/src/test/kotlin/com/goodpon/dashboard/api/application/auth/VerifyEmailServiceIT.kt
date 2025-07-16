@@ -41,7 +41,7 @@ class VerifyEmailServiceIT(
         emailVerificationCache.save(emailVerificationDto)
 
         // when
-        verifyEmailService.verifyEmail(token)
+        verifyEmailService(token)
 
         // then
         val verifiedAccount = accountRepository.findById(savedAccount.id)

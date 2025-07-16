@@ -18,7 +18,7 @@ class GetMyMerchantsService : DescribeSpec({
 
             every { merchantRepository.findMyMerchants(accountId) } returns listOf()
 
-            getMyMerchantsService.getMyMerchants(accountId)
+            getMyMerchantsService(accountId)
 
             verify { merchantRepository.findMyMerchants(accountId) }
         }

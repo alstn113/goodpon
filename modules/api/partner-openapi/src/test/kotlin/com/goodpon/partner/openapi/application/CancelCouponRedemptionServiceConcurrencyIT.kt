@@ -49,7 +49,7 @@ class CancelCouponRedemptionServiceConcurrencyIT(
             couponTemplateId = couponTemplateId,
             merchantId = merchantId
         )
-        val issueCouponResult = issueCouponService.issueCoupon(issueCouponCommand)
+        val issueCouponResult = issueCouponService(issueCouponCommand)
 
         // - 쿠폰 사용
         val orderId = "unique-order-id"
@@ -61,7 +61,7 @@ class CancelCouponRedemptionServiceConcurrencyIT(
             orderAmount = orderAmount,
             orderId = orderId
         )
-        val redeemCouponResult = redeemCouponService.redeemCoupon(redeemCouponCommand)
+        val redeemCouponResult = redeemCouponService(redeemCouponCommand)
 
         // - 동시성 테스트를 위한 값 설정
         val concurrentRequests = 5
@@ -79,7 +79,7 @@ class CancelCouponRedemptionServiceConcurrencyIT(
                             orderId = orderId,
                             cancelReason = "결제 실패"
                         )
-                        cancelCouponRedemptionService.cancelCouponRedemption(cancelCouponRedemptionCommand)
+                        cancelCouponRedemptionService(cancelCouponRedemptionCommand)
                         successCount.incrementAndGet()
                     } catch (e: UserCouponAlreadyCanceledException) {
                         failureCount.incrementAndGet()

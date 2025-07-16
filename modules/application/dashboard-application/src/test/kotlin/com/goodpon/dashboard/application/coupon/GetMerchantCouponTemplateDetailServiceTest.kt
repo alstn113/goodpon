@@ -70,7 +70,7 @@ class GetMerchantCouponTemplateDetailServiceTest : DescribeSpec({
             every { couponTemplateRepository.findCouponTemplateDetail(query.couponTemplateId) } returns couponTemplateDetail
 
             // when
-            val result = getMerchantCouponTemplateDetailService.getMerchantCouponTemplateDetail(query)
+            val result = getMerchantCouponTemplateDetailService(query)
 
             // then
             result shouldBe couponTemplateDetail
@@ -82,7 +82,7 @@ class GetMerchantCouponTemplateDetailServiceTest : DescribeSpec({
 
             // when & then
             shouldThrow<MerchantNotFoundException> {
-                getMerchantCouponTemplateDetailService.getMerchantCouponTemplateDetail(query)
+                getMerchantCouponTemplateDetailService(query)
             }
         }
 
@@ -96,7 +96,7 @@ class GetMerchantCouponTemplateDetailServiceTest : DescribeSpec({
 
             // when & then
             shouldThrow<NoMerchantAccessPermissionException> {
-                getMerchantCouponTemplateDetailService.getMerchantCouponTemplateDetail(query)
+                getMerchantCouponTemplateDetailService(query)
             }
         }
 
@@ -111,7 +111,7 @@ class GetMerchantCouponTemplateDetailServiceTest : DescribeSpec({
 
             // when & then
             shouldThrow<CouponTemplateNotFoundException> {
-                getMerchantCouponTemplateDetailService.getMerchantCouponTemplateDetail(query)
+                getMerchantCouponTemplateDetailService(query)
             }
         }
 
@@ -127,7 +127,7 @@ class GetMerchantCouponTemplateDetailServiceTest : DescribeSpec({
 
             // when & then
             shouldThrow<CouponTemplateNotOwnedByMerchantException> {
-                getMerchantCouponTemplateDetailService.getMerchantCouponTemplateDetail(query)
+                getMerchantCouponTemplateDetailService(query)
             }
         }
     }

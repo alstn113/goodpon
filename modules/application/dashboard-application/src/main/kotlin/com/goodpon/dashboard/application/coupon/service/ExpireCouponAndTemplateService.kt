@@ -18,7 +18,7 @@ class ExpireCouponAndTemplateService(
 ) : ExpireCouponAndTemplateUseCase {
 
     @Transactional
-    override fun expireExpiredCouponsAndTemplates(now: LocalDateTime) {
+    override fun invoke(now: LocalDateTime) {
         val expirationThreshold = now.toLocalDate().atStartOfDay()
 
         expireUserCoupons(expirationThreshold, now)

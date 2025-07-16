@@ -15,7 +15,7 @@ class VerifyEmailService(
     private val clock: Clock,
 ) : VerifyEmailUseCase {
 
-    override fun verifyEmail(token: String) {
+    override fun invoke(token: String) {
         val now = LocalDateTime.now(clock)
         val verification = emailVerificationCache.findByToken(token)
             ?: throw EmailVerificationNotFoundException()

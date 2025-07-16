@@ -75,7 +75,7 @@ class TokenAuthenticationFilter(
 
     private fun fetchAccountInfo(accountId: Long): AccountInfo {
         try {
-            return getAccountInfoUseCase.getAccountInfo(accountId)
+            return getAccountInfoUseCase(accountId)
         } catch (e: AccountNotFoundException) {
             throw BadCredentialsException("존재하지 않는 계정입니다.", e)
         } catch (e: Exception) {

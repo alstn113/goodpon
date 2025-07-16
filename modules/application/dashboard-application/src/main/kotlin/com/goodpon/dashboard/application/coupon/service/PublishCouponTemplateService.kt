@@ -17,7 +17,7 @@ class PublishCouponTemplateService(
 ) : PublishCouponTemplateUseCase {
 
     @Transactional
-    override fun publishCouponTemplate(command: PublishCouponTemplateCommand): PublishCouponTemplateResult {
+    override fun invoke(command: PublishCouponTemplateCommand): PublishCouponTemplateResult {
         val merchant = merchantAccessor.readById(command.merchantId)
         if (!merchant.isAccessibleBy(command.accountId)) {
             throw NoMerchantAccessPermissionException()

@@ -42,7 +42,7 @@ class PublishCouponTemplateServiceIT(
             merchantId = savedMerchant.id,
             couponTemplateId = savedCouponTemplate.id
         )
-        val result = publishCouponTemplateService.publishCouponTemplate(command)
+        val result = publishCouponTemplateService(command)
 
         // then
         val foundCouponTemplate = couponTemplateRepository.findById(result.id)
@@ -68,7 +68,7 @@ class PublishCouponTemplateServiceIT(
 
         // then
         shouldThrow<NoMerchantAccessPermissionException> {
-            publishCouponTemplateService.publishCouponTemplate(command)
+            publishCouponTemplateService(command)
         }
     }
 
@@ -89,7 +89,7 @@ class PublishCouponTemplateServiceIT(
 
         // then
         shouldThrow<CouponTemplateNotOwnedByMerchantException> {
-            publishCouponTemplateService.publishCouponTemplate(command)
+            publishCouponTemplateService(command)
         }
     }
 

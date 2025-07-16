@@ -32,7 +32,7 @@ class CouponTemplateController(
         @RequestBody request: CreateCouponTemplateRequest,
     ): ResponseEntity<ApiResponse<CreateCouponTemplateResult>> {
         val command = request.toCommand(merchantId, accountPrincipal.id)
-        val result = createCouponTemplateUseCase.createCouponTemplate(command)
+        val result = createCouponTemplateUseCase(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
     }
@@ -48,7 +48,7 @@ class CouponTemplateController(
             couponTemplateId = couponTemplateId,
             accountId = accountPrincipal.id,
         )
-        val result = publishCouponTemplateUseCase.publishCouponTemplate(command)
+        val result = publishCouponTemplateUseCase(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
     }
@@ -58,7 +58,7 @@ class CouponTemplateController(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<CouponTemplateSummaries>> {
-        val summaries = getMerchantCouponTemplates.getMerchantCouponTemplates(
+        val summaries = getMerchantCouponTemplates(
             accountId = accountPrincipal.id,
             merchantId = merchantId,
         )
@@ -77,7 +77,7 @@ class CouponTemplateController(
             merchantId = merchantId,
             couponTemplateId = couponTemplateId,
         )
-        val detail = getMerchantCouponTemplateDetail.getMerchantCouponTemplateDetail(query)
+        val detail = getMerchantCouponTemplateDetail(query)
 
         return ResponseEntity.ok(ApiResponse.success(detail))
     }

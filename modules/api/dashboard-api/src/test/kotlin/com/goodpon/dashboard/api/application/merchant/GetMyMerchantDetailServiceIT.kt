@@ -31,8 +31,7 @@ class GetMyMerchantDetailServiceIT(
         val savedMerchant = merchantRepository.save(issuedMerchant)
 
         // when
-        val detail = getMyMerchantDetailService
-            .getMyMerchantDetail(accountId = savedAccount.id, merchantId = savedMerchant.id)
+        val detail = getMyMerchantDetailService(accountId = savedAccount.id, merchantId = savedMerchant.id)
 
         // then
         detail.name shouldBe "테스트 상점"

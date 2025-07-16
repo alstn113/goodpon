@@ -19,7 +19,7 @@ class CreateCouponTemplateService(
 ) : CreateCouponTemplateUseCase {
 
     @Transactional
-    override fun createCouponTemplate(command: CreateCouponTemplateCommand): CreateCouponTemplateResult {
+    override fun invoke(command: CreateCouponTemplateCommand): CreateCouponTemplateResult {
         val merchant = merchantAccessor.readById(command.merchantId)
         if (!merchant.isAccessibleBy(command.accountId)) {
             throw NoMerchantAccessPermissionException()

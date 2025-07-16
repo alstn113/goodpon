@@ -34,7 +34,7 @@ class IssueCouponServiceIT(
         )
 
         // when
-        val result = issueCouponService.issueCoupon(command = command)
+        val result = issueCouponService(command = command)
 
         // then
         result.userId shouldBe userId

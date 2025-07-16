@@ -3,7 +3,7 @@ package com.goodpon.partner.application.coupon.port.`in`
 import com.goodpon.partner.application.coupon.port.`in`.dto.IssueCouponCommand
 import com.goodpon.partner.application.coupon.port.`in`.dto.IssueCouponResult
 
-interface IssueCouponUseCase {
+fun interface IssueCouponUseCase {
 
-    fun issueCoupon(command: IssueCouponCommand): IssueCouponResult
+    operator fun invoke(command: IssueCouponCommand): IssueCouponResult
 }

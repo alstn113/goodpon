@@ -82,7 +82,7 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
             every { couponTemplateAccessor.save(any()) } returns couponTemplate
 
             // when
-            val result = createCouponTemplateService.createCouponTemplate(command)
+            val result = createCouponTemplateService(command)
 
             result.id shouldBe couponTemplate.id
             result.name shouldBe command.name
@@ -97,7 +97,7 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
             every { merchantAccessor.readById(command.merchantId) } throws MerchantNotFoundException()
 
             shouldThrow<MerchantNotFoundException> {
-                createCouponTemplateService.createCouponTemplate(command)
+                createCouponTemplateService(command)
             }
         }
 
@@ -109,7 +109,7 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
             every { merchantAccessor.readById(command.merchantId) } returns merchant
 
             shouldThrow<NoMerchantAccessPermissionException> {
-                createCouponTemplateService.createCouponTemplate(command)
+                createCouponTemplateService(command)
             }
         }
 
@@ -125,7 +125,7 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
             every { merchantAccessor.readById(invalidCommand.merchantId) } returns merchant
 
             shouldThrow<CouponTemplateValidationException> {
-                createCouponTemplateService.createCouponTemplate(invalidCommand)
+                createCouponTemplateService(invalidCommand)
             }
         }
     }

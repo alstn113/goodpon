@@ -25,7 +25,7 @@ class ResendVerificationEmailServiceIT(
         val savedAccount = accountRepository.save(account)
 
         // when
-        resendVerificationEmailService.resendVerificationEmail(email)
+        resendVerificationEmailService(email)
 
         // then
         verify {

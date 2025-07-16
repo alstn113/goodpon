@@ -35,7 +35,7 @@ class CouponController(
             merchantId = merchantPrincipal.merchantId,
             couponTemplateId = couponTemplateId
         )
-        val result = issueCouponUseCase.issueCoupon(command)
+        val result = issueCouponUseCase(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
     }
@@ -47,7 +47,7 @@ class CouponController(
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<RedeemCouponResult>> {
         val command = request.toCommand(merchantPrincipal.merchantId, userCouponId)
-        val result = redeemCouponUseCase.redeemCoupon(command)
+        val result = redeemCouponUseCase(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
     }
@@ -59,7 +59,7 @@ class CouponController(
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
     ): ResponseEntity<ApiResponse<CancelCouponRedemptionResult>> {
         val command = request.toCommand(merchantPrincipal.merchantId, userCouponId)
-        val result = cancelCouponRedemptionUseCase.cancelCouponRedemption(command)
+        val result = cancelCouponRedemptionUseCase(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
     }

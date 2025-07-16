@@ -32,7 +32,7 @@ class CreateAuthenticateMerchantServiceIT(
         )
 
         // when
-        val result = createMerchantService.createMerchant(command)
+        val result = createMerchantService(command)
 
         // then
         result.id.shouldNotBeNull()

@@ -15,7 +15,7 @@ class CreateMerchantService(
 ) : CreateMerchantUseCase {
 
     @Transactional
-    override fun createMerchant(command: CreateMerchantCommand): CreateMerchantResult {
+    override fun invoke(command: CreateMerchantCommand): CreateMerchantResult {
         val account = accountAccessor.readById(command.accountId)
         val merchant = merchantAccessor.createMerchant(command.name, account)
 

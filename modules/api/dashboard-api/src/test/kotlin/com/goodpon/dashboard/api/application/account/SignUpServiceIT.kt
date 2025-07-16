@@ -25,7 +25,7 @@ class SignUpServiceIT(
         )
 
         // when
-        val result = signUpService.signUp(command)
+        val result = signUpService(command)
 
         // then
         val savedAccount = accountRepository.findById(result.id)

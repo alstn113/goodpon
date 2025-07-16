@@ -26,7 +26,7 @@ class IssueCouponService(
 ) : IssueCouponUseCase {
 
     @Transactional
-    override fun issueCoupon(command: IssueCouponCommand): IssueCouponResult {
+    override fun invoke(command: IssueCouponCommand): IssueCouponResult {
         val now = LocalDateTime.now(clock)
 
         val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId)

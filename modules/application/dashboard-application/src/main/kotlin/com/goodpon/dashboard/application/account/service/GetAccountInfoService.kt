@@ -12,7 +12,7 @@ class GetAccountInfoService(
 ) : GetAccountInfoUseCase {
 
     @Transactional(readOnly = true)
-    override fun getAccountInfo(accountId: Long): AccountInfo {
+    override fun invoke(accountId: Long): AccountInfo {
         val account = accountAccessor.readById(accountId)
 
         return AccountMapper.toAccountInfo(account)

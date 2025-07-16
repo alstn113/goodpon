@@ -51,7 +51,7 @@ class IssueCouponServiceConcurrencyIT(
                             couponTemplateId = couponTemplateId,
                             userId = "user-$userIndex"
                         )
-                        issueCouponService.issueCoupon(command)
+                        issueCouponService(command)
                         successCount.incrementAndGet()
                     } catch (e: CouponTemplateIssuanceLimitExceededException) {
                         failureCount.incrementAndGet()
@@ -93,7 +93,7 @@ class IssueCouponServiceConcurrencyIT(
                             couponTemplateId = couponTemplateId,
                             userId = userId
                         )
-                        issueCouponService.issueCoupon(command)
+                        issueCouponService(command)
                         successCount.incrementAndGet()
                     } catch (e: UserCouponAlreadyIssuedException) {
                         failureCount.incrementAndGet()

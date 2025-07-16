@@ -31,7 +31,7 @@ class CreateMerchantServiceTest : DescribeSpec({
             every { accountAccessor.readById(command.accountId) } returns account
             every { merchantAccessor.createMerchant(command.name, account) } returns merchant
 
-            val result = createMerchantService.createMerchant(command)
+            val result = createMerchantService(command)
 
             result.name shouldBe "Test Merchant"
             result.clientId shouldBe merchant.clientId

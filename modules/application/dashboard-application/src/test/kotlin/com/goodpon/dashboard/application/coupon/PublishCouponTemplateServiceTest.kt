@@ -70,7 +70,7 @@ class PublishCouponTemplateServiceTest : DescribeSpec({
             } returns couponTemplate.copy(id = 1L, status = CouponTemplateStatus.ISSUABLE)
 
             // when
-            val result = publishCouponTemplateService.publishCouponTemplate(command)
+            val result = publishCouponTemplateService(command)
 
             // then
             result.status shouldBe CouponTemplateStatus.ISSUABLE
@@ -88,7 +88,7 @@ class PublishCouponTemplateServiceTest : DescribeSpec({
 
             // when, then
             shouldThrow<MerchantNotFoundException> {
-                publishCouponTemplateService.publishCouponTemplate(command)
+                publishCouponTemplateService(command)
             }
         }
 
@@ -108,7 +108,7 @@ class PublishCouponTemplateServiceTest : DescribeSpec({
 
             // when, then
             shouldThrow<NoMerchantAccessPermissionException> {
-                publishCouponTemplateService.publishCouponTemplate(command)
+                publishCouponTemplateService(command)
             }
         }
 
@@ -134,7 +134,7 @@ class PublishCouponTemplateServiceTest : DescribeSpec({
 
             // when, then
             shouldThrow<CouponTemplateNotOwnedByMerchantException> {
-                publishCouponTemplateService.publishCouponTemplate(command)
+                publishCouponTemplateService(command)
             }
         }
 
@@ -154,7 +154,7 @@ class PublishCouponTemplateServiceTest : DescribeSpec({
 
             // when, then
             shouldThrow<CouponTemplateInvalidStatusToPublishException> {
-                publishCouponTemplateService.publishCouponTemplate(command)
+                publishCouponTemplateService(command)
             }
         }
     }

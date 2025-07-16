@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 class GetUserCouponsService : GetUserCouponsUseCase {
 
     @Transactional(readOnly = true)
-    override fun getUserCoupons(merchantId: Long, userId: String): UserCouponsView {
+    override fun invoke(merchantId: Long, userId: String): UserCouponsView {
         TODO("Not yet implemented")
     }
 }

@@ -3,7 +3,7 @@ package com.goodpon.dashboard.application.account.port.`in`
 import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpCommand
 import com.goodpon.dashboard.application.account.port.`in`.dto.SignUpResult
 
-interface SignUpUseCase {
+fun interface SignUpUseCase {
 
-    fun signUp(command: SignUpCommand): SignUpResult
+    operator fun invoke(command: SignUpCommand): SignUpResult
 }

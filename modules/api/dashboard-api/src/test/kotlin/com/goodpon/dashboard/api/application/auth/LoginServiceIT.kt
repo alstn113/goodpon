@@ -42,7 +42,7 @@ class LoginServiceIT(
         val command = LoginCommand(email = email, password = password)
 
         // when
-        val result = loginService.login(command)
+        val result = loginService(command)
 
         // then
         result.email shouldBe email

@@ -18,7 +18,7 @@ class LoginService(
 ) : LoginUseCase {
 
     @Transactional
-    override fun login(command: LoginCommand): LoginResult {
+    override fun invoke(command: LoginCommand): LoginResult {
         val account = accountAccessor.readByEmail(command.email)
 
         if (!passwordEncoder.matches(command.password, account.password.value)) {

@@ -26,7 +26,7 @@ class MerchantController(
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<CreateMerchantResult>> {
         val command = request.toCommand(accountPrincipal.id)
-        val result = createMerchantUseCase.createMerchant(command)
+        val result = createMerchantUseCase(command)
 
         return ResponseEntity.ok(ApiResponse.success(result))
     }
@@ -35,7 +35,7 @@ class MerchantController(
     fun getMyMerchants(
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<MyMerchantSummaries>> {
-        val summaries = getMyMerchantsUseCase.getMyMerchants(accountPrincipal.id)
+        val summaries = getMyMerchantsUseCase(accountPrincipal.id)
 
         return ResponseEntity.ok(ApiResponse.success(summaries))
     }
@@ -45,7 +45,7 @@ class MerchantController(
         @PathVariable merchantId: Long,
         @AuthenticationPrincipal accountPrincipal: AccountPrincipal,
     ): ResponseEntity<ApiResponse<MyMerchantDetail>> {
-        val detail = getMyMerchantDetailUseCase.getMyMerchantDetail(
+        val detail = getMyMerchantDetailUseCase(
             accountId = accountPrincipal.id,
             merchantId = merchantId,
         )

@@ -19,7 +19,8 @@ class ExpireCouponAndTemplateServiceTest : DescribeSpec({
     val userCouponAccessor = mockk<UserCouponAccessor>()
     val couponHistoryAccessor = mockk<CouponHistoryAccessor>()
     val couponTemplateAccessor = mockk<CouponTemplateAccessor>()
-    val service = ExpireCouponAndTemplateService(userCouponAccessor, couponHistoryAccessor, couponTemplateAccessor)
+    val expireCouponAndTemplateService =
+        ExpireCouponAndTemplateService(userCouponAccessor, couponHistoryAccessor, couponTemplateAccessor)
 
 
     describe("expireExpiredCouponsAndTemplates") {
@@ -56,7 +57,7 @@ class ExpireCouponAndTemplateServiceTest : DescribeSpec({
             every { couponTemplateAccessor.saveAll(listOf(couponTemplate)) } returns listOf(couponTemplate)
 
             // when
-            service.expireExpiredCouponsAndTemplates(now)
+            expireCouponAndTemplateService(now)
 
             // then
             verify { couponHistoryAccessor.recordExpired(any(), recordedAt = now) }

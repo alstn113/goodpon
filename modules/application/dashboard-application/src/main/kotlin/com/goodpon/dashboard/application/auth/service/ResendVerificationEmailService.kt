@@ -15,7 +15,7 @@ class ResendVerificationEmailService(
 ) : ResendVerificationEmailUseCase {
 
     @Transactional(readOnly = true)
-    override fun resendVerificationEmail(email: String) {
+    override fun invoke(email: String) {
         val account = accountAccessor.readByEmail(email)
         if (account.verified) {
             throw AccountAlreadyVerifiedException()

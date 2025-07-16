@@ -27,7 +27,7 @@ class RedeemCouponService(
 ) : RedeemCouponUseCase {
 
     @Transactional
-    override fun redeemCoupon(command: RedeemCouponCommand): RedeemCouponResult {
+    override fun invoke(command: RedeemCouponCommand): RedeemCouponResult {
         val now = LocalDateTime.now(clock)
 
         val userCoupon = userCouponAccessor.readByIdForUpdate(command.userCouponId)

@@ -38,7 +38,7 @@ class ResendVerificationEmailService : DescribeSpec({
 
             it("예외를 발생시킨다.") {
                 shouldThrow<AccountAlreadyVerifiedException> {
-                    resendVerificationEmailService.resendVerificationEmail(verifiedAccount.email.value)
+                    resendVerificationEmailService(verifiedAccount.email.value)
                 }
             }
         }
@@ -48,7 +48,7 @@ class ResendVerificationEmailService : DescribeSpec({
             }
 
             it("이메일 인증 재전송 이벤트를 발행한다.") {
-                resendVerificationEmailService.resendVerificationEmail(account.email.value)
+                resendVerificationEmailService(account.email.value)
 
                 verify {
                     eventPublisher.publishEvent(
