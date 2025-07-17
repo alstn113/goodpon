@@ -99,7 +99,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
                 .tag("Account")
                 .requestSchema(Schema("SignUpRequest"))
                 .requestFields(*signUpRequestFields().toTypedArray())
-                .responseFields(* failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -140,7 +140,7 @@ class AccountDocumentTest : AbstractDocumentTest() {
                 .tag("Account")
                 .requestSchema(Schema("SignUpRequest"))
                 .requestFields(*signUpRequestFields().toTypedArray())
-                .responseFields(* failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -151,14 +151,11 @@ class AccountDocumentTest : AbstractDocumentTest() {
         fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름")
     )
 
-    private fun signUpSuccessResponseFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
+    private fun signUpSuccessResponseFields() = commonSuccessResponseFields(
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("사용자 ID"),
         fieldWithPath("data.email").type(JsonFieldType.STRING).description("사용자 이메일"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("사용자 이름"),
-        fieldWithPath("data.verified").type(JsonFieldType.BOOLEAN).description("이메일 인증 여부"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)")
+        fieldWithPath("data.verified").type(JsonFieldType.BOOLEAN).description("이메일 인증 여부")
     )
 
     @Test
@@ -207,13 +204,10 @@ class AccountDocumentTest : AbstractDocumentTest() {
         )
     }
 
-    private fun getAccountInfoSuccessResponseFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
+    private fun getAccountInfoSuccessResponseFields() = commonSuccessResponseFields(
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("사용자 ID"),
         fieldWithPath("data.email").type(JsonFieldType.STRING).description("사용자 이메일"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("사용자 이름"),
         fieldWithPath("data.verified").type(JsonFieldType.BOOLEAN).description("이메일 인증 여부"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)")
     )
 }

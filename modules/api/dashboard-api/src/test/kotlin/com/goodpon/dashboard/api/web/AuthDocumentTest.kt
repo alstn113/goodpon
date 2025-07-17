@@ -106,7 +106,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
                 .tag("Auth")
                 .requestSchema(Schema("LoginRequest"))
                 .requestFields(*loginRequestFields().toTypedArray())
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -143,7 +143,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
                 .tag("Auth")
                 .requestSchema(Schema("LoginRequest"))
                 .requestFields(*loginRequestFields().toTypedArray())
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -153,15 +153,12 @@ class AuthDocumentTest : AbstractDocumentTest() {
         fieldWithPath("password").type(JsonFieldType.STRING).description("계정 비밀번호"),
     )
 
-    private fun loginSuccessResponseFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
+    private fun loginSuccessResponseFields() = commonSuccessResponseFields(
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("사용자 ID"),
         fieldWithPath("data.email").type(JsonFieldType.STRING).description("사용자 이메일"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("사용자 이름"),
         fieldWithPath("data.verified").type(JsonFieldType.BOOLEAN).description("이메일 인증 여부"),
         fieldWithPath("data.accessToken").type(JsonFieldType.STRING).description("액세스 토큰"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)")
     )
 
     @Test
@@ -235,7 +232,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
                 .tag("Auth")
                 .requestSchema(Schema("VerifyEmailRequest"))
                 .requestFields(*verifyEmailRequestFields().toTypedArray())
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -273,7 +270,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
                 .tag("Auth")
                 .requestSchema(Schema("VerifyEmailRequest"))
                 .requestFields(*verifyEmailRequestFields().toTypedArray())
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -311,7 +308,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
                 .tag("Auth")
                 .requestSchema(Schema("VerifyEmailRequest"))
                 .requestFields(*verifyEmailRequestFields().toTypedArray())
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -395,7 +392,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
                 .tag("Auth")
                 .requestSchema(Schema("ResendVerificationEmailRequest"))
                 .requestFields(*resendVerificationEmailRequestFields().toTypedArray())
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -432,7 +429,7 @@ class AuthDocumentTest : AbstractDocumentTest() {
                 .tag("Auth")
                 .requestSchema(Schema("ResendVerificationEmailRequest"))
                 .requestFields(*resendVerificationEmailRequestFields().toTypedArray())
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }

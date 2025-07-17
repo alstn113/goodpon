@@ -11,6 +11,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.RestDocumentationExtension
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
 import org.springframework.restdocs.operation.preprocess.Preprocessors.*
+import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.test.web.servlet.ResultActions
@@ -24,7 +25,7 @@ import org.springframework.web.context.WebApplicationContext
 abstract class AbstractDocumentTest : AbstractWebTest() {
 
     @BeforeEach
-    fun setUp(
+    protected fun setUp(
         webApplicationContext: WebApplicationContext,
         restDocumentation: RestDocumentationContextProvider,
     ) {
@@ -34,13 +35,13 @@ abstract class AbstractDocumentTest : AbstractWebTest() {
             .build()
     }
 
-    fun MockHttpServletRequestBuilder.withApiKeyHeaders(): MockHttpServletRequestBuilder {
+    protected fun MockHttpServletRequestBuilder.withApiKeyHeaders(): MockHttpServletRequestBuilder {
         return this
             .header(ApiKeyHeader.CLIENT_ID.headerName, "{client-id}")
             .header(ApiKeyHeader.CLIENT_SECRET.headerName, "{client-secret}")
     }
 
-    fun ResultActions.andDocument(
+    protected fun ResultActions.andDocument(
         identifier: String,
         resourceSnippetParameters: ResourceSnippetParameters,
     ): ResultActions {
@@ -54,18 +55,28 @@ abstract class AbstractDocumentTest : AbstractWebTest() {
         )
     }
 
-    fun apiKeyHeaderFields() = listOf(
+    protected fun apiKeyHeaderFields() = listOf(
         headerWithName(ApiKeyHeader.CLIENT_ID.headerName).description("API 클라이언트 ID"),
         headerWithName(ApiKeyHeader.CLIENT_SECRET.headerName).description("API 클라이언트 Secret")
     )
 
-    fun failureResponseFields() = listOf(
+
+    protected fun commonSuccessResponseFields(vararg dataFields: FieldDescriptor): List<FieldDescriptor> {
+        return listOf(
+            fieldWithPath("traceId").type(JsonFieldType.STRING).description("요청 추적 ID"),
+            fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
+            fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보"),
+            fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터")
+        ) + dataFields
+    }
+
+    protected fun commonFailureResponseFields() = listOf(
         fieldWithPath("traceId").type(JsonFieldType.STRING).description("오류 추적 ID"),
         fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
         fieldWithPath("data").type(JsonFieldType.NULL).description("결과 데이터 (실패 시 null)"),
         fieldWithPath("error").type(JsonFieldType.OBJECT).description("오류 정보"),
         fieldWithPath("error.code").type(JsonFieldType.STRING).description("오류 코드"),
         fieldWithPath("error.message").type(JsonFieldType.STRING).description("오류 메시지"),
-        fieldWithPath("error.data").type(JsonFieldType.NULL).description("오류 데이터 (없을 경우 null)")
+        fieldWithPath("error.data").type(JsonFieldType.NULL).optional().description("오류 데이터 (없을 경우 null)")
     )
 }

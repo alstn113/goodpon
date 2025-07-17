@@ -53,7 +53,7 @@ abstract class AbstractEndToEndTest {
     protected var port: Int = 0
 
     @BeforeEach
-    fun setUp() {
+    protected fun setUp() {
         RestAssured.requestSpecification = RequestSpecBuilder()
             .setContentType(ContentType.JSON)
             .setPort(port)
@@ -64,11 +64,11 @@ abstract class AbstractEndToEndTest {
             .build()
     }
 
-    fun RequestSpecification.withAuthHeader(token: String): RequestSpecification {
+    protected fun RequestSpecification.withAuthHeader(token: String): RequestSpecification {
         return this.header(HttpHeaders.AUTHORIZATION, "Bearer $token")
     }
 
-    final inline fun <reified T> Response.toApiResponse(): T {
+    protected final inline fun <reified T> Response.toApiResponse(): T {
         val response: ApiResponse<T> = objectMapper.readValue(
             this.asString(),
             object : TypeReference<ApiResponse<T>>() {}
@@ -77,15 +77,16 @@ abstract class AbstractEndToEndTest {
         return response.data ?: throw IllegalStateException("응답 데이터가 없습니다.")
     }
 
-    final inline fun <reified T> Response.toApiErrorResponse(): ErrorMessage {
+    protected final inline fun <reified T> Response.toApiErrorResponse(): ErrorMessage {
         val response = objectMapper.readValue(
             this.asString(),
             object : TypeReference<ApiResponse<T>>() {}
         )
+
         return response.error ?: throw IllegalStateException("오류 메시지가 없습니다.")
     }
 
-    final inline fun <reified R> ErrorMessage.extractErrorData(): R {
+    protected final inline fun <reified R> ErrorMessage.extractErrorData(): R {
         val data = objectMapper.convertValue(
             this.data,
             object : TypeReference<R>() {}

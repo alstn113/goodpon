@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
 @Order(100)
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = ["com.goodpon.partner.openapi"])
 class TraceIdResponseAdvice(
     private val tracerIdProvider: TraceIdProvider,
 ) : ResponseBodyAdvice<Any> {
@@ -30,7 +30,9 @@ class TraceIdResponseAdvice(
         request: ServerHttpRequest,
         response: ServerHttpResponse,
     ): Any? {
+        println("여기여기")
         if (body is ApiResponse<*>) {
+            println("여기여기2")
             val traceId = tracerIdProvider.getTraceId()
             return body.copy(traceId = traceId)
         }

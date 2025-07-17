@@ -151,7 +151,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .pathParameters(parameterWithName("merchantId").description("쿠폰 템플릿을 생성할 상점 ID"))
                 .requestSchema(Schema("CreateCouponTemplateRequest"))
                 .requestFields(*createCouponTemplateRequestFields().toTypedArray())
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -190,7 +190,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .pathParameters(parameterWithName("merchantId").description("쿠폰 템플릿을 생성할 상점 ID"))
                 .requestSchema(Schema("CreateCouponTemplateRequest"))
                 .requestFields(*createCouponTemplateRequestFields().toTypedArray())
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -307,10 +307,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
             .description("최대 사용 수량 (REDEEM_COUNT 선택 시)")
     )
 
-    private fun createCouponTemplateSuccessResponseFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보"),
+    private fun createCouponTemplateSuccessResponseFields() = commonSuccessResponseFields(
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("쿠폰 템플릿 ID"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("쿠폰 템플릿 이름"),
         fieldWithPath("data.description").type(JsonFieldType.STRING).description("쿠폰 템플릿 설명"),
@@ -420,7 +417,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -459,7 +456,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -498,7 +495,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -537,7 +534,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -578,15 +575,12 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
 
-    private fun publishCouponTemplateSuccessResponseFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보"),
+    private fun publishCouponTemplateSuccessResponseFields() = commonSuccessResponseFields(
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("쿠폰 템플릿 ID"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("쿠폰 템플릿 이름"),
         fieldWithPath("data.merchantId").type(JsonFieldType.NUMBER).description("상점 ID"),
@@ -693,7 +687,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .pathParameters(
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -733,15 +727,12 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .pathParameters(
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
 
-    private fun getMerchantCouponTemplatesSuccessResponseFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보"),
+    private fun getMerchantCouponTemplatesSuccessResponseFields() = commonSuccessResponseFields(
         fieldWithPath("data.templates[].id").type(JsonFieldType.NUMBER).description("쿠폰 템플릿 ID"),
         fieldWithPath("data.templates[].name").type(JsonFieldType.STRING).description("쿠폰 템플릿 이름"),
         fieldWithPath("data.templates[].description").type(JsonFieldType.STRING).description("쿠폰 템플릿 설명"),
@@ -854,7 +845,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("조회할 쿠폰 템플릿 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -895,7 +886,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("조회할 쿠폰 템플릿 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -936,7 +927,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("조회할 쿠폰 템플릿 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
@@ -977,15 +968,12 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("조회할 쿠폰 템플릿 ID")
                 )
-                .responseFields(*failureResponseFields().toTypedArray())
+                .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
     }
 
-    private fun getMerchantCouponTemplateDetailSuccessResponseFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보"),
+    private fun getMerchantCouponTemplateDetailSuccessResponseFields() = commonSuccessResponseFields(
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("쿠폰 템플릿 ID"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("쿠폰 템플릿 이름"),
         fieldWithPath("data.description").type(JsonFieldType.STRING).description("쿠폰 템플릿 설명"),

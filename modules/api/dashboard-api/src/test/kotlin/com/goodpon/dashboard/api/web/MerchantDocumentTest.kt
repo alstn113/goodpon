@@ -97,10 +97,7 @@ class MerchantDocumentTest : AbstractDocumentTest() {
         fieldWithPath("name").type(JsonFieldType.STRING).description("상점 이름")
     )
 
-    private fun createMerchantSuccessFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)"),
+    private fun createMerchantSuccessFields() = commonSuccessResponseFields(
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("상점 ID"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("상점 이름"),
         fieldWithPath("data.clientId").type(JsonFieldType.STRING).description("상점 클라이언트 ID"),
@@ -169,10 +166,7 @@ class MerchantDocumentTest : AbstractDocumentTest() {
         )
     }
 
-    private fun getMyMerchantsSuccessFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)"),
+    private fun getMyMerchantsSuccessFields() = commonSuccessResponseFields(
         fieldWithPath("data.merchants[].id").type(JsonFieldType.NUMBER).description("상점 ID"),
         fieldWithPath("data.merchants[].name").type(JsonFieldType.STRING).description("상점 이름"),
         fieldWithPath("data.merchants[].createdAt").type(JsonFieldType.STRING).description("상점 생성 시간")
@@ -279,15 +273,12 @@ class MerchantDocumentTest : AbstractDocumentTest() {
                     .tag("Merchant")
                     .requestHeaders(authHeaderFields())
                     .pathParameters(parameterWithName("merchantId").description("조회할 상점 ID"))
-                    .responseFields(*failureResponseFields().toTypedArray())
+                    .responseFields(*commonFailureResponseFields().toTypedArray())
                     .build()
             )
     }
 
-    private fun getMyMerchantDetailSuccessFields() = listOf(
-        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
-        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
-        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보 (성공시 null)"),
+    private fun getMyMerchantDetailSuccessFields() = commonSuccessResponseFields(
         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("상점 ID"),
         fieldWithPath("data.name").type(JsonFieldType.STRING).description("상점 이름"),
         fieldWithPath("data.clientId").type(JsonFieldType.STRING).description("상점 클라이언트 ID"),

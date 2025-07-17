@@ -49,7 +49,7 @@ abstract class AbstractEndToEndTest {
             .build()
     }
 
-    fun RequestSpecification.withAuthHeader(clientId: String, clientSecret: String): RequestSpecification {
+    fun RequestSpecification.withApiKeyHeaders(clientId: String, clientSecret: String): RequestSpecification {
         return this
             .header(ApiKeyHeader.CLIENT_ID.headerName, clientId)
             .header(ApiKeyHeader.CLIENT_SECRET.headerName, clientSecret)
@@ -69,6 +69,7 @@ abstract class AbstractEndToEndTest {
             this.asString(),
             object : TypeReference<ApiResponse<T>>() {}
         )
+
         return response.error ?: throw IllegalStateException("오류 메시지가 없습니다.")
     }
 
