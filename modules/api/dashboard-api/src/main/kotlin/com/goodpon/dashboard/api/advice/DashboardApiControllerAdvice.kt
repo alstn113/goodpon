@@ -30,8 +30,7 @@ class DashboardApiControllerAdvice {
     fun handleBaseException(e: BaseException): ResponseEntity<ApiResponse<Unit>> {
         val errorType = when (e) {
             // Auth, Account
-            is AccountEmailExistsException,
-                -> ErrorType.ACCOUNT_EMAIL_ALREADY_EXISTS
+            is AccountEmailExistsException -> ErrorType.ACCOUNT_EMAIL_ALREADY_EXISTS
 
             is AccountInvalidEmailFormatException,
             is AccountInvalidNameLengthException,

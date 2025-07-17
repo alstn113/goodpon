@@ -54,6 +54,11 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
             AND userCoupon.status = :userCouponStatus
             AND couponTemplate.merchantId = :merchantId
         ORDER BY 
+            CASE 
+                WHEN couponTemplate.maxRedeemCount IS NULL 
+                    OR couponTemplateStats.redeemCount < couponTemplate.maxRedeemCount 
+                THEN 1 ELSE 0
+            END DESC,
             userCoupon.expiresAt ASC,
             userCoupon.issuedAt DESC
         """

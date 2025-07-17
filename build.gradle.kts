@@ -33,18 +33,16 @@ subprojects {
     dependencies {
         implementation("org.slf4j:slf4j-api")
         implementation("jakarta.validation:jakarta.validation-api")
-
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
+        implementation(rootProject.libs.kotlinx.coroutines.core)
+        implementation(rootProject.libs.kotlinx.coroutines.jdk8)
 
         testImplementation(rootProject.libs.kotest.runner.junit5)
         testImplementation(rootProject.libs.kotest.assertions.core)
         testImplementation(rootProject.libs.mockk)
         testImplementation(rootProject.libs.springmockk)
-        implementation(rootProject.libs.kotlinx.coroutines.core)
-        implementation(rootProject.libs.kotlinx.coroutines.jdk8)
         testImplementation(rootProject.libs.kotlinx.coroutines.test)
-
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     }
