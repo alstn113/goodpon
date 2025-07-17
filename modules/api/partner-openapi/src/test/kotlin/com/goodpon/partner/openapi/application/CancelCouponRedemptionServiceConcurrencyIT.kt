@@ -11,10 +11,7 @@ import com.goodpon.partner.application.coupon.service.IssueCouponService
 import com.goodpon.partner.application.coupon.service.RedeemCouponService
 import com.goodpon.partner.application.coupon.service.exception.UserCouponAlreadyCanceledException
 import com.goodpon.partner.openapi.support.AbstractIntegrationTest
-import com.goodpon.partner.openapi.support.accessor.TestCouponHistoryAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateStatsAccessor
-import com.goodpon.partner.openapi.support.accessor.TestUserCouponAccessor
+import com.goodpon.partner.openapi.support.accessor.*
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.coroutineScope
@@ -27,6 +24,7 @@ class CancelCouponRedemptionServiceConcurrencyIT(
     private val cancelCouponRedemptionService: CancelCouponRedemptionService,
     private val issueCouponService: IssueCouponService,
     private val redeemCouponService: RedeemCouponService,
+    private val testMerchantAccessor: TestMerchantAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testCouponHistoryAccessor: TestCouponHistoryAccessor,
@@ -36,7 +34,9 @@ class CancelCouponRedemptionServiceConcurrencyIT(
     @Test
     fun `동시에 쿠폰 사용 취소 요청을 여러번 보내도 하나의 취소만 처리된다`(): Unit = runBlocking {
         // given
-        val (merchantId: Long, couponTemplateId: Long) = testCouponTemplateAccessor.save(
+        val (merchantId) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(
+            merchantId = merchantId,
             minOrderAmount = 10000,
             discountType = CouponDiscountType.FIXED_AMOUNT,
             discountValue = 2000

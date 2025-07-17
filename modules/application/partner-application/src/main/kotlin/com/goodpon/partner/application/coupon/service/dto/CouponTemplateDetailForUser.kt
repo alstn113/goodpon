@@ -3,6 +3,7 @@ package com.goodpon.partner.application.coupon.service.dto
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
+import com.goodpon.partner.application.coupon.port.`in`.dto.CouponIssuanceStatus
 import java.time.LocalDateTime
 
 data class CouponTemplateDetailForUser(
@@ -23,8 +24,7 @@ data class CouponTemplateDetailForUser(
     val maxRedeemCount: Long?,
     val currentIssueCount: Long,
     val currentRedeemCount: Long,
-    val alreadyIssued: Boolean?, // 사용자별 발급 여부
-    val isIssuable: Boolean, // 발급 수 제한 시 발급 가능 여부 체크
+    val issuanceStatus: CouponIssuanceStatus,
 )
 
 data class CouponTemplateDetail(
@@ -47,28 +47,26 @@ data class CouponTemplateDetail(
     val redeemCount: Long,
 ) {
 
-    fun forUser(
-        alreadyIssued: Boolean? = null,
-        isIssuable: Boolean = true,
-    ): CouponTemplateDetailForUser = CouponTemplateDetailForUser(
-        id = id,
-        name = name,
-        description = description,
-        discountType = discountType,
-        discountValue = discountValue,
-        maxDiscountAmount = maxDiscountAmount,
-        minOrderAmount = minOrderAmount,
-        status = status,
-        validityDays = validityDays,
-        absoluteExpiresAt = absoluteExpiresAt,
-        issueStartAt = issueStartAt,
-        issueEndAt = issueEndAt,
-        limitType = limitType,
-        maxIssueCount = maxIssueCount,
-        maxRedeemCount = maxRedeemCount,
-        currentIssueCount = issueCount,
-        currentRedeemCount = redeemCount,
-        alreadyIssued = alreadyIssued,
-        isIssuable = isIssuable
-    )
+    fun forUser(issuanceStatus: CouponIssuanceStatus): CouponTemplateDetailForUser {
+        return CouponTemplateDetailForUser(
+            id = id,
+            name = name,
+            description = description,
+            discountType = discountType,
+            discountValue = discountValue,
+            maxDiscountAmount = maxDiscountAmount,
+            minOrderAmount = minOrderAmount,
+            status = status,
+            validityDays = validityDays,
+            absoluteExpiresAt = absoluteExpiresAt,
+            issueStartAt = issueStartAt,
+            issueEndAt = issueEndAt,
+            limitType = limitType,
+            maxIssueCount = maxIssueCount,
+            maxRedeemCount = maxRedeemCount,
+            currentIssueCount = issueCount,
+            currentRedeemCount = redeemCount,
+            issuanceStatus = issuanceStatus
+        )
+    }
 }

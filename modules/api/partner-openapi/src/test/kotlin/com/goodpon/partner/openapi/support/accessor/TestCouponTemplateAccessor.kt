@@ -3,8 +3,8 @@ package com.goodpon.partner.openapi.support.accessor
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
-import com.goodpon.domain.merchant.MerchantAccountRole
-import com.goodpon.infra.db.jpa.entity.*
+import com.goodpon.infra.db.jpa.entity.CouponTemplateEntity
+import com.goodpon.infra.db.jpa.entity.CouponTemplateStatsEntity
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -16,7 +16,9 @@ class TestCouponTemplateAccessor(
 ) {
 
     @Transactional
-    fun save(
+    fun createCouponTemplate(
+        merchantId: Long,
+        name: String = "테스트 쿠폰 템플릿",
         minOrderAmount: Int? = 15000,
         discountType: CouponDiscountType = CouponDiscountType.FIXED_AMOUNT,
         discountValue: Int = 2000,
@@ -29,34 +31,10 @@ class TestCouponTemplateAccessor(
         maxIssueCount: Long? = 10,
         maxRedeemCount: Long? = null,
         status: CouponTemplateStatus = CouponTemplateStatus.ISSUABLE,
-    ): Pair<Long, Long> {
-        val now = LocalDateTime.now()
-
-        val accountEntity = AccountEntity(
-            email = "test@goodpon.site",
-            password = "hashedPassword",
-            name = "테스트 계정",
-            verified = true,
-            verifiedAt = now,
-        )
-        entityManager.persist(accountEntity)
-
-        val merchant = MerchantEntity(
-            name = "테스트 상점",
-            clientId = "test-client-id",
-        )
-        entityManager.persist(merchant)
-
-        val merchantAccount = MerchantAccountEntity(
-            merchant = merchant,
-            accountId = accountEntity.id,
-            role = MerchantAccountRole.OWNER
-        )
-        entityManager.persist(merchantAccount)
-
+    ): Long {
         val couponTemplate = CouponTemplateEntity(
-            merchantId = merchant.id,
-            name = "테스트 쿠폰 템플릿",
+            merchantId = merchantId,
+            name = name,
             description = "테스트 쿠폰 템플릿 설명",
             minOrderAmount = minOrderAmount,
             discountType = discountType,
@@ -80,6 +58,6 @@ class TestCouponTemplateAccessor(
         )
         entityManager.persist(couponTemplateStats)
 
-        return Pair(merchant.id, couponTemplate.id)
+        return couponTemplate.id
     }
 }

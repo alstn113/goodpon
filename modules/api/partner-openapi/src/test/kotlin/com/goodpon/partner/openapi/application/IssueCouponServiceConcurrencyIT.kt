@@ -6,10 +6,7 @@ import com.goodpon.partner.application.coupon.port.`in`.dto.IssueCouponCommand
 import com.goodpon.partner.application.coupon.service.IssueCouponService
 import com.goodpon.partner.application.coupon.service.exception.UserCouponAlreadyIssuedException
 import com.goodpon.partner.openapi.support.AbstractIntegrationTest
-import com.goodpon.partner.openapi.support.accessor.TestCouponHistoryAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateStatsAccessor
-import com.goodpon.partner.openapi.support.accessor.TestUserCouponAccessor
+import com.goodpon.partner.openapi.support.accessor.*
 import io.kotest.common.runBlocking
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -22,6 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class IssueCouponServiceConcurrencyIT(
     private val issueCouponService: IssueCouponService,
+    private val testMerchantAccessor: TestMerchantAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,
     private val testCouponTemplateStatsAccessor: TestCouponTemplateStatsAccessor,
@@ -31,7 +29,9 @@ class IssueCouponServiceConcurrencyIT(
     @Test
     fun `여러 사용자가 동시에 쿠폰 발급 시 발급 제한을 초과하지 않는다`(): Unit = runBlocking {
         val maxIssueCount = 10L
-        val (merchantId: Long, couponTemplateId: Long) = testCouponTemplateAccessor.save(
+        val (merchantId) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(
+            merchantId = merchantId,
             limitType = CouponLimitPolicyType.ISSUE_COUNT,
             maxIssueCount = maxIssueCount,
             maxRedeemCount = null,
@@ -77,7 +77,8 @@ class IssueCouponServiceConcurrencyIT(
 
     @Test
     fun `동일한 사용자가 동일한 쿠폰을 동시에 발급 시 하나만 발급된다`(): Unit = runBlocking {
-        val (merchantId: Long, couponTemplateId: Long) = testCouponTemplateAccessor.save()
+        val (merchantId) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(merchantId = merchantId)
         val userId = "user-unique"
         val concurrentRequests = 5
 

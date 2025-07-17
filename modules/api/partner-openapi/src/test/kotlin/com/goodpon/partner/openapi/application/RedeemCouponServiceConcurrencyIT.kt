@@ -10,10 +10,7 @@ import com.goodpon.partner.application.coupon.port.`in`.dto.RedeemCouponCommand
 import com.goodpon.partner.application.coupon.service.IssueCouponService
 import com.goodpon.partner.application.coupon.service.RedeemCouponService
 import com.goodpon.partner.openapi.support.AbstractIntegrationTest
-import com.goodpon.partner.openapi.support.accessor.TestCouponHistoryAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateStatsAccessor
-import com.goodpon.partner.openapi.support.accessor.TestUserCouponAccessor
+import com.goodpon.partner.openapi.support.accessor.*
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.*
@@ -23,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger
 class RedeemCouponServiceConcurrencyIT(
     private val redeemCouponService: RedeemCouponService,
     private val issueCouponService: IssueCouponService,
+    private val testMerchantAccessor: TestMerchantAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testCouponHistoryAccessor: TestCouponHistoryAccessor,
@@ -34,7 +32,9 @@ class RedeemCouponServiceConcurrencyIT(
         // given
         val issueCount = 10L
         val maxRedeemCount = 5L
-        val (merchantId: Long, couponTemplateId: Long) = testCouponTemplateAccessor.save(
+        val (merchantId) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(
+            merchantId = merchantId,
             limitType = CouponLimitPolicyType.REDEEM_COUNT,
             maxRedeemCount = maxRedeemCount,
             maxIssueCount = null,
@@ -100,7 +100,9 @@ class RedeemCouponServiceConcurrencyIT(
     @Test
     fun `동일한 사용자가 동일한 쿠폰을 동시에 사용 시 하나만 사용된다`(): Unit = runBlocking {
         // given
-        val (merchantId: Long, couponTemplateId: Long) = testCouponTemplateAccessor.save(
+        val (merchantId) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(
+            merchantId = merchantId,
             limitType = CouponLimitPolicyType.REDEEM_COUNT,
             maxRedeemCount = 10L,
             maxIssueCount = null,

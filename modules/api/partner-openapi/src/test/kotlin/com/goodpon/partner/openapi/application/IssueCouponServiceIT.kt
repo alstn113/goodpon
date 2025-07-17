@@ -5,16 +5,14 @@ import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.partner.application.coupon.port.`in`.dto.IssueCouponCommand
 import com.goodpon.partner.application.coupon.service.IssueCouponService
 import com.goodpon.partner.openapi.support.AbstractIntegrationTest
-import com.goodpon.partner.openapi.support.accessor.TestCouponHistoryAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateStatsAccessor
-import com.goodpon.partner.openapi.support.accessor.TestUserCouponAccessor
+import com.goodpon.partner.openapi.support.accessor.*
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 class IssueCouponServiceIT(
     private val issueCouponService: IssueCouponService,
+    private val testMerchantAccessor: TestMerchantAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,
     private val testCouponTemplateStatsAccessor: TestCouponTemplateStatsAccessor,
@@ -24,7 +22,8 @@ class IssueCouponServiceIT(
     @Test
     fun `쿠폰을 발급할 수 있다`() {
         // given
-        val (merchantId: Long, couponTemplateId: Long) = testCouponTemplateAccessor.save()
+        val (merchantId) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(merchantId = merchantId)
         val userId = "unique-user-id"
 
         val command = IssueCouponCommand(

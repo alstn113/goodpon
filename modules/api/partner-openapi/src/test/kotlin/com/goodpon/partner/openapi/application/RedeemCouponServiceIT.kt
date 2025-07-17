@@ -8,10 +8,7 @@ import com.goodpon.partner.application.coupon.port.`in`.dto.RedeemCouponCommand
 import com.goodpon.partner.application.coupon.service.IssueCouponService
 import com.goodpon.partner.application.coupon.service.RedeemCouponService
 import com.goodpon.partner.openapi.support.AbstractIntegrationTest
-import com.goodpon.partner.openapi.support.accessor.TestCouponHistoryAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateStatsAccessor
-import com.goodpon.partner.openapi.support.accessor.TestUserCouponAccessor
+import com.goodpon.partner.openapi.support.accessor.*
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -19,6 +16,7 @@ import org.junit.jupiter.api.Test
 class RedeemCouponServiceIT(
     private val redeemCouponService: RedeemCouponService,
     private val issueCouponService: IssueCouponService,
+    private val testMerchantAccessor: TestMerchantAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testCouponHistoryAccessor: TestCouponHistoryAccessor,
@@ -29,7 +27,9 @@ class RedeemCouponServiceIT(
     fun `쿠폰을 사용할 수 있다`() {
         // given
         val discountAmount = 2000
-        val (merchantId: Long, couponTemplateId: Long) = testCouponTemplateAccessor.save(
+        val (merchantId) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(
+            merchantId = merchantId,
             minOrderAmount = 10000,
             discountType = CouponDiscountType.FIXED_AMOUNT,
             discountValue = discountAmount

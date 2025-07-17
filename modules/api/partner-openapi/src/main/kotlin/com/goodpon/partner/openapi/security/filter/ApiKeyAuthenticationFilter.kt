@@ -47,8 +47,7 @@ class ApiKeyAuthenticationFilter(
 
     private fun authenticateMerchant(clientId: String, clientSecret: String) {
         try {
-            val merchantInfo =
-                authenticateMerchantService.authenticateMerchant(clientId = clientId, clientSecret = clientSecret)
+            val merchantInfo = authenticateMerchantService.authenticateMerchant(clientId, clientSecret)
             val authentication = ApiKeyAuthenticationToken.of(merchantInfo.id)
             SecurityContextHolder.getContext().authentication = authentication
         } catch (e: MerchantNotFoundException) {

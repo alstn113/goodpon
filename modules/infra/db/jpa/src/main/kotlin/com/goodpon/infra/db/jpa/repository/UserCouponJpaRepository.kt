@@ -53,7 +53,9 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
         WHERE userCoupon.userId = :userId 
             AND userCoupon.status = :userCouponStatus
             AND couponTemplate.merchantId = :merchantId
-        ORDER BY userCoupon.expiresAt ASC
+        ORDER BY 
+            userCoupon.expiresAt ASC,
+            userCoupon.issuedAt DESC
         """
     )
     fun findUserCouponsByUserIdAndMerchantId(
@@ -102,7 +104,8 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
                     OR couponTemplate.minOrderAmount <= :orderAmount 
                 THEN 1 ELSE 0 
             END DESC,
-            userCoupon.expiresAt ASC
+            userCoupon.expiresAt ASC,
+            userCoupon.issuedAt DESC
         """
     )
     fun findAvailableUserCouponsForOrderAmount(

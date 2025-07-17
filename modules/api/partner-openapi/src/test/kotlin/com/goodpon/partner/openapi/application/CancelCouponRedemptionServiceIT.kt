@@ -10,10 +10,7 @@ import com.goodpon.partner.application.coupon.service.CancelCouponRedemptionServ
 import com.goodpon.partner.application.coupon.service.IssueCouponService
 import com.goodpon.partner.application.coupon.service.RedeemCouponService
 import com.goodpon.partner.openapi.support.AbstractIntegrationTest
-import com.goodpon.partner.openapi.support.accessor.TestCouponHistoryAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateAccessor
-import com.goodpon.partner.openapi.support.accessor.TestCouponTemplateStatsAccessor
-import com.goodpon.partner.openapi.support.accessor.TestUserCouponAccessor
+import com.goodpon.partner.openapi.support.accessor.*
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -22,6 +19,7 @@ class CancelCouponRedemptionServiceIT(
     private val cancelCouponRedemptionService: CancelCouponRedemptionService,
     private val issueCouponService: IssueCouponService,
     private val redeemCouponService: RedeemCouponService,
+    private val testMerchantAccessor: TestMerchantAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testCouponHistoryAccessor: TestCouponHistoryAccessor,
@@ -33,7 +31,9 @@ class CancelCouponRedemptionServiceIT(
         // given
 
         // - 쿠폰 템플릿 생성
-        val (merchantId: Long, couponTemplateId: Long) = testCouponTemplateAccessor.save(
+        val (merchantId) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(
+            merchantId = merchantId,
             minOrderAmount = 10000,
             discountType = CouponDiscountType.FIXED_AMOUNT,
             discountValue = 2000
