@@ -2,6 +2,7 @@ package com.goodpon.infra.db.jpa.repository
 
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.infra.db.jpa.entity.UserCouponEntity
+import com.goodpon.infra.db.jpa.repository.dto.AvailableUserCouponViewDto
 import com.goodpon.infra.db.jpa.repository.dto.UserCouponViewDto
 import jakarta.persistence.LockModeType
 import org.springframework.data.jpa.repository.JpaRepository
@@ -12,7 +13,7 @@ import java.time.LocalDateTime
 interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT ic FROM UserCouponEntity ic WHERE ic.id = :id")
+    @Query("SELECT userCoupon FROM UserCouponEntity userCoupon WHERE userCoupon.id = :id")
     fun findByIdForUpdate(id: String): UserCouponEntity?
 
     fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean
@@ -38,21 +39,76 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
             couponTemplate.limitType,
             couponTemplate.maxIssueCount,
             couponTemplate.maxRedeemCount,
-            (couponTemplate.maxRedeemCount IS NULL OR (couponTemplateStats.redeemCount < couponTemplate.maxRedeemCount))
+            CASE 
+                WHEN couponTemplate.maxRedeemCount IS NULL 
+                    OR couponTemplateStats.redeemCount < couponTemplate.maxRedeemCount 
+                THEN true ELSE false 
+            END
         )
         FROM UserCouponEntity userCoupon
-        JOIN CouponTemplateEntity couponTemplate
-            ON userCoupon.couponTemplateId = couponTemplate.id
-        LEFT JOIN CouponTemplateStatsEntity couponTemplateStats
-            ON couponTemplate.id = couponTemplateStats.couponTemplateId
+            JOIN CouponTemplateEntity couponTemplate
+                ON userCoupon.couponTemplateId = couponTemplate.id
+            LEFT JOIN CouponTemplateStatsEntity couponTemplateStats
+                ON couponTemplate.id = couponTemplateStats.couponTemplateId
         WHERE userCoupon.userId = :userId 
             AND userCoupon.status = :userCouponStatus
             AND couponTemplate.merchantId = :merchantId
+        ORDER BY userCoupon.expiresAt ASC
         """
     )
-    fun findIssuedUserCouponsByUserId(
+    fun findUserCouponsByUserIdAndMerchantId(
         userId: String,
         merchantId: Long,
         userCouponStatus: UserCouponStatus = UserCouponStatus.ISSUED,
     ): List<UserCouponViewDto>
+
+    @Query(
+        """
+        SELECT new com.goodpon.infra.db.jpa.repository.dto.AvailableUserCouponViewDto(
+            userCoupon.id,
+            userCoupon.couponTemplateId,
+            couponTemplate.name,
+            couponTemplate.description,
+            couponTemplate.discountType,
+            couponTemplate.discountValue,
+            couponTemplate.maxDiscountAmount,
+            couponTemplate.minOrderAmount,
+            userCoupon.issuedAt,
+            userCoupon.expiresAt,
+            couponTemplate.limitType,
+            couponTemplate.maxIssueCount,
+            couponTemplate.maxRedeemCount,
+            CASE 
+                WHEN couponTemplate.minOrderAmount IS NULL 
+                    OR couponTemplate.minOrderAmount <= :orderAmount 
+                THEN true ELSE false 
+            END
+        )
+        FROM UserCouponEntity userCoupon
+            JOIN CouponTemplateEntity couponTemplate
+                ON userCoupon.couponTemplateId = couponTemplate.id
+            LEFT JOIN CouponTemplateStatsEntity couponTemplateStats
+                ON couponTemplate.id = couponTemplateStats.couponTemplateId
+        WHERE userCoupon.userId = :userId 
+            AND userCoupon.status = :userCouponStatus
+            AND couponTemplate.merchantId = :merchantId
+            AND (
+                couponTemplate.maxRedeemCount IS NULL 
+                OR couponTemplateStats.redeemCount < couponTemplate.maxRedeemCount
+            )
+        ORDER BY 
+            CASE 
+                WHEN couponTemplate.minOrderAmount IS NULL 
+                    OR couponTemplate.minOrderAmount <= :orderAmount 
+                THEN 1 ELSE 0 
+            END DESC,
+            userCoupon.expiresAt ASC
+        """
+    )
+    fun findAvailableUserCouponsForOrderAmount(
+        userId: String,
+        merchantId: Long,
+        orderAmount: Int,
+        userCouponStatus: UserCouponStatus = UserCouponStatus.ISSUED,
+    ): List<AvailableUserCouponViewDto>
 }

@@ -93,6 +93,7 @@ interface CouponTemplateJpaRepository : JpaRepository<CouponTemplateEntity, Long
         LEFT JOIN CouponTemplateStatsEntity stats
             ON stats.couponTemplateId = couponTemplate.id
         WHERE couponTemplate.id = :couponTemplateId AND couponTemplate.merchantId = :merchantId
+        ORDER BY couponTemplate.createdAt DESC
         """
     )
     fun findByIdAndMerchantIdWithStats(couponTemplateId: Long, merchantId: Long): CouponTemplateDetailDto?

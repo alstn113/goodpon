@@ -4,6 +4,7 @@ import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.infra.db.jpa.entity.UserCouponEntity
 import com.goodpon.infra.db.jpa.repository.UserCouponJpaRepository
+import com.goodpon.infra.db.jpa.repository.dto.AvailableUserCouponViewDto
 import com.goodpon.infra.db.jpa.repository.dto.UserCouponViewDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -56,7 +57,20 @@ class UserCouponCoreRepository(
     }
 
     @Transactional(readOnly = true)
-    fun findIssuedUserCouponsByUserId(userId: String, merchantId: Long): List<UserCouponViewDto> {
-        return userCouponJpaRepository.findIssuedUserCouponsByUserId(userId = userId, merchantId = merchantId)
+    fun findUserCouponsByUserIdAndMerchantId(userId: String, merchantId: Long): List<UserCouponViewDto> {
+        return userCouponJpaRepository.findUserCouponsByUserIdAndMerchantId(userId = userId, merchantId = merchantId)
+    }
+
+    @Transactional(readOnly = true)
+    fun findAvailableUserCouponsForOrderAmount(
+        userId: String,
+        merchantId: Long,
+        orderAmount: Int,
+    ): List<AvailableUserCouponViewDto> {
+        return userCouponJpaRepository.findAvailableUserCouponsForOrderAmount(
+            userId = userId,
+            merchantId = merchantId,
+            orderAmount = orderAmount,
+        )
     }
 }

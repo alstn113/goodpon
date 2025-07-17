@@ -17,11 +17,10 @@ data class AvailableUserCouponView(
     val discountValue: Int,
     val maxDiscountAmount: Int?,
     val minOrderAmount: Int?,
-    val discountAmount: Int, // 주문 금액에 따른 할인 금액 계산
     val issuedAt: LocalDateTime,
     val expiresAt: LocalDateTime?,
     val limitType: CouponLimitPolicyType,
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
-    val isRedeemable: Boolean, // 쿠폰 사용 제한 수에 따른 사용 가능 여부
+    val isMinOrderAmountReached: Boolean,
 )

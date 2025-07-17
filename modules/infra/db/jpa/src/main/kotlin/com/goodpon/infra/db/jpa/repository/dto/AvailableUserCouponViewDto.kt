@@ -13,11 +13,10 @@ data class AvailableUserCouponViewDto(
     val discountValue: Int,
     val maxDiscountAmount: Int?,
     val minOrderAmount: Int?,
-    val discountAmount: Int,
     val issuedAt: LocalDateTime,
     val expiresAt: LocalDateTime?,
     val limitType: CouponLimitPolicyType,
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
-    val isRedeemable: Boolean,
+    val isMinOrderAmountReached: Boolean,
 )
