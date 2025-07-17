@@ -1,12 +1,15 @@
 package com.goodpon.partner.openapi.advice
 
 import com.goodpon.domain.BaseException
-import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuanceLimitExceededException
-import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuancePeriodException
-import com.goodpon.domain.coupon.template.exception.CouponTemplateStatusNotIssuableException
+import com.goodpon.domain.coupon.template.exception.*
+import com.goodpon.domain.coupon.user.exception.UserCouponAlreadyRedeemedException
+import com.goodpon.domain.coupon.user.exception.UserCouponExpiredException
+import com.goodpon.domain.coupon.user.exception.UserCouponRedeemNotAllowedException
 import com.goodpon.partner.application.coupon.port.out.exception.CouponTemplateNotFoundException
 import com.goodpon.partner.application.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.partner.application.coupon.service.exception.UserCouponAlreadyIssuedException
+import com.goodpon.partner.application.coupon.service.exception.UserCouponNotFoundException
+import com.goodpon.partner.application.coupon.service.exception.UserCouponNotOwnedByUserException
 import com.goodpon.partner.openapi.response.ApiResponse
 import com.goodpon.partner.openapi.response.ErrorType
 import org.slf4j.LoggerFactory
@@ -33,6 +36,18 @@ class PartnerOpenApiControllerAdvice {
             is CouponTemplateIssuancePeriodException -> ErrorType.COUPON_NOT_ISSUABLE_PERIOD
             is CouponTemplateStatusNotIssuableException -> ErrorType.COUPON_TEMPLATE_NOT_ISSUABLE
             is CouponTemplateIssuanceLimitExceededException -> ErrorType.COUPON_TEMPLATE_MAX_ISSUE_COUNT_EXCEEDED
+
+            // redeem coupon
+            is UserCouponNotFoundException -> ErrorType.USER_COUPON_NOT_FOUND
+            is UserCouponNotOwnedByUserException -> ErrorType.USER_COUPON_NOT_OWNED_BY_USER
+            is CouponTemplateStatusNotRedeemableException,
+            is UserCouponRedeemNotAllowedException,
+                -> ErrorType.COUPON_NOT_REDEEMABLE
+
+            is CouponTemplateRedemptionLimitExceededException -> ErrorType.COUPON_TEMPLATE_MAX_REDEEM_COUNT_EXCEEDED
+            is CouponTemplateRedemptionConditionNotSatisfiedException -> ErrorType.COUPON_TEMPLATE_REDEEM_CONDITION_NOT_MET
+            is UserCouponAlreadyRedeemedException -> ErrorType.USER_COUPON_ALREADY_REDEEMED
+            is UserCouponExpiredException -> ErrorType.USER_COUPON_EXPIRED
 
             else -> ErrorType.INTERNAL_SERVER_ERROR
         }
