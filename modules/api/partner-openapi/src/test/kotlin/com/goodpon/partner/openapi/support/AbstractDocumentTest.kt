@@ -5,6 +5,7 @@ import com.epages.restdocs.apispec.ResourceDocumentation.headerWithName
 import com.epages.restdocs.apispec.ResourceDocumentation.resource
 import com.epages.restdocs.apispec.ResourceSnippetParameters
 import com.goodpon.partner.openapi.security.ApiKeyHeader
+import io.mockk.every
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.restdocs.RestDocumentationContextProvider
@@ -29,6 +30,8 @@ abstract class AbstractDocumentTest : AbstractWebTest() {
         webApplicationContext: WebApplicationContext,
         restDocumentation: RestDocumentationContextProvider,
     ) {
+        every { traceIdProvider.getTraceId() } returns "68789ad83ec2af0079caa706809cd332"
+
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
             .apply<DefaultMockMvcBuilder>(MockMvcRestDocumentation.documentationConfiguration(restDocumentation))
             .alwaysDo<DefaultMockMvcBuilder>(MockMvcResultHandlers.print())

@@ -5,6 +5,7 @@ import com.goodpon.partner.openapi.response.TraceIdProvider
 import org.springframework.core.MethodParameter
 import org.springframework.core.annotation.Order
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
@@ -20,7 +21,7 @@ class TraceIdResponseAdvice(
     override fun supports(
         returnType: MethodParameter,
         converterType: Class<out HttpMessageConverter<*>>,
-    ): Boolean = returnType.parameterType == ApiResponse::class.java
+    ): Boolean = true
 
     override fun beforeBodyWrite(
         body: Any?,
@@ -30,12 +31,25 @@ class TraceIdResponseAdvice(
         request: ServerHttpRequest,
         response: ServerHttpResponse,
     ): Any? {
-        println("여기여기")
-        if (body is ApiResponse<*>) {
-            println("여기여기2")
-            val traceId = tracerIdProvider.getTraceId()
-            return body.copy(traceId = traceId)
+        when (body) {
+            is ApiResponse<*> -> {
+                val traceId = tracerIdProvider.getTraceId()
+                return body.copy(traceId = traceId)
+            }
+
+            is ResponseEntity<*> -> {
+                val responseBody = body.body
+                if (responseBody is ApiResponse<*>) {
+                    val traceId = tracerIdProvider.getTraceId()
+                    val newBody = responseBody.copy(traceId = traceId)
+
+                    return ResponseEntity.status(body.statusCode)
+                        .headers(body.headers)
+                        .body(newBody)
+                }
+            }
         }
+
         return body
     }
 }
