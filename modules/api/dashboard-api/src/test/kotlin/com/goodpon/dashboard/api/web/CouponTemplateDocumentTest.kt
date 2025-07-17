@@ -151,6 +151,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .pathParameters(parameterWithName("merchantId").description("쿠폰 템플릿을 생성할 상점 ID"))
                 .requestSchema(Schema("CreateCouponTemplateRequest"))
                 .requestFields(*createCouponTemplateRequestFields().toTypedArray())
+                .responseSchema(Schema("ApiResponse<Unit>"))
                 .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
@@ -190,6 +191,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                 .pathParameters(parameterWithName("merchantId").description("쿠폰 템플릿을 생성할 상점 ID"))
                 .requestSchema(Schema("CreateCouponTemplateRequest"))
                 .requestFields(*createCouponTemplateRequestFields().toTypedArray())
+                .responseSchema(Schema("ApiResponse<Unit>"))
                 .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
@@ -417,6 +419,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
+                .responseSchema(Schema("ApiResponse<Unit>"))
                 .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
@@ -456,6 +459,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
+                .responseSchema(Schema("ApiResponse<Unit>"))
                 .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
@@ -495,6 +499,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
+                .responseSchema(Schema("ApiResponse<Unit>"))
                 .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
@@ -534,6 +539,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
+                .responseSchema(Schema("ApiResponse<Unit>"))
                 .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )
@@ -575,6 +581,7 @@ class CouponTemplateDocumentTest : AbstractDocumentTest() {
                     parameterWithName("merchantId").description("쿠폰 템플릿이 있는 상점 ID"),
                     parameterWithName("couponTemplateId").description("발행할 쿠폰 템플릿 ID")
                 )
+                .responseSchema(Schema("ApiResponse<Unit>"))
                 .responseFields(*commonFailureResponseFields().toTypedArray())
                 .build()
         )

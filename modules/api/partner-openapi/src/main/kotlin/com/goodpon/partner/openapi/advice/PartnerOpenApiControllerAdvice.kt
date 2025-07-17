@@ -1,6 +1,12 @@
 package com.goodpon.partner.openapi.advice
 
 import com.goodpon.domain.BaseException
+import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuanceLimitExceededException
+import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuancePeriodException
+import com.goodpon.domain.coupon.template.exception.CouponTemplateStatusNotIssuableException
+import com.goodpon.partner.application.coupon.port.out.exception.CouponTemplateNotFoundException
+import com.goodpon.partner.application.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
+import com.goodpon.partner.application.coupon.service.exception.UserCouponAlreadyIssuedException
 import com.goodpon.partner.openapi.response.ApiResponse
 import com.goodpon.partner.openapi.response.ErrorType
 import org.slf4j.LoggerFactory
@@ -20,6 +26,14 @@ class PartnerOpenApiControllerAdvice {
         log.warn("BaseException : {}", e.message, e)
 
         val errorType = when (e) {
+            // issue coupon
+            is CouponTemplateNotFoundException -> ErrorType.COUPON_TEMPLATE_NOT_FOUND
+            is CouponTemplateNotOwnedByMerchantException -> ErrorType.COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT
+            is UserCouponAlreadyIssuedException -> ErrorType.COUPON_ALREADY_ISSUED
+            is CouponTemplateIssuancePeriodException -> ErrorType.COUPON_NOT_ISSUABLE_PERIOD
+            is CouponTemplateStatusNotIssuableException -> ErrorType.COUPON_TEMPLATE_NOT_ISSUABLE
+            is CouponTemplateIssuanceLimitExceededException -> ErrorType.COUPON_TEMPLATE_MAX_ISSUE_COUNT_EXCEEDED
+
             else -> ErrorType.INTERNAL_SERVER_ERROR
         }
 
