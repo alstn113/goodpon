@@ -6,10 +6,7 @@ import com.goodpon.domain.coupon.user.exception.UserCouponAlreadyRedeemedExcepti
 import com.goodpon.domain.coupon.user.exception.UserCouponExpiredException
 import com.goodpon.domain.coupon.user.exception.UserCouponRedeemNotAllowedException
 import com.goodpon.partner.application.coupon.port.out.exception.CouponTemplateNotFoundException
-import com.goodpon.partner.application.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
-import com.goodpon.partner.application.coupon.service.exception.UserCouponAlreadyIssuedException
-import com.goodpon.partner.application.coupon.service.exception.UserCouponNotFoundException
-import com.goodpon.partner.application.coupon.service.exception.UserCouponNotOwnedByUserException
+import com.goodpon.partner.application.coupon.service.exception.*
 import com.goodpon.partner.openapi.response.ApiResponse
 import com.goodpon.partner.openapi.response.ErrorType
 import org.slf4j.LoggerFactory
@@ -29,25 +26,32 @@ class PartnerOpenApiControllerAdvice {
         log.warn("BaseException : {}", e.message, e)
 
         val errorType = when (e) {
-            // issue coupon
+            // coupon template
+            is CouponTemplateIssuanceLimitExceededException -> ErrorType.COUPON_TEMPLATE_MAX_ISSUE_COUNT_EXCEEDED
+            is CouponTemplateIssuancePeriodException -> ErrorType.COUPON_NOT_ISSUABLE_PERIOD
             is CouponTemplateNotFoundException -> ErrorType.COUPON_TEMPLATE_NOT_FOUND
             is CouponTemplateNotOwnedByMerchantException -> ErrorType.COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT
-            is UserCouponAlreadyIssuedException -> ErrorType.COUPON_ALREADY_ISSUED
-            is CouponTemplateIssuancePeriodException -> ErrorType.COUPON_NOT_ISSUABLE_PERIOD
             is CouponTemplateStatusNotIssuableException -> ErrorType.COUPON_TEMPLATE_NOT_ISSUABLE
-            is CouponTemplateIssuanceLimitExceededException -> ErrorType.COUPON_TEMPLATE_MAX_ISSUE_COUNT_EXCEEDED
 
-            // redeem coupon
+            // user coupon
+            is UserCouponAlreadyIssuedException -> ErrorType.COUPON_ALREADY_ISSUED
             is UserCouponNotFoundException -> ErrorType.USER_COUPON_NOT_FOUND
             is UserCouponNotOwnedByUserException -> ErrorType.USER_COUPON_NOT_OWNED_BY_USER
+
+            // redeem
+            is CouponTemplateRedemptionConditionNotSatisfiedException -> ErrorType.COUPON_TEMPLATE_REDEEM_CONDITION_NOT_MET
+            is CouponTemplateRedemptionLimitExceededException -> ErrorType.COUPON_TEMPLATE_MAX_REDEEM_COUNT_EXCEEDED
             is CouponTemplateStatusNotRedeemableException,
             is UserCouponRedeemNotAllowedException,
                 -> ErrorType.COUPON_NOT_REDEEMABLE
 
-            is CouponTemplateRedemptionLimitExceededException -> ErrorType.COUPON_TEMPLATE_MAX_REDEEM_COUNT_EXCEEDED
-            is CouponTemplateRedemptionConditionNotSatisfiedException -> ErrorType.COUPON_TEMPLATE_REDEEM_CONDITION_NOT_MET
             is UserCouponAlreadyRedeemedException -> ErrorType.USER_COUPON_ALREADY_REDEEMED
             is UserCouponExpiredException -> ErrorType.USER_COUPON_EXPIRED
+
+            // cancel redemption
+            is UserCouponAlreadyCanceledException -> ErrorType.USER_COUPON_ALREADY_CANCELLED
+            is UserCouponCancelRedemptionNotAllowedException -> ErrorType.USER_COUPON_CANCEL_NOT_ALLOWED
+            is CouponOrderIdMismatchException -> ErrorType.USER_COUPON_CANCEL_ORDER_ID_MISMATCH
 
             else -> ErrorType.INTERNAL_SERVER_ERROR
         }

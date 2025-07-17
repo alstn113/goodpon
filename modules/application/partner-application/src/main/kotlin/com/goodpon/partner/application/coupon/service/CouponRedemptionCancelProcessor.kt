@@ -4,9 +4,9 @@ import com.goodpon.domain.coupon.history.CouponActionType
 import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.partner.application.coupon.service.accessor.CouponHistoryAccessor
 import com.goodpon.partner.application.coupon.service.accessor.UserCouponAccessor
-import com.goodpon.partner.application.coupon.service.exception.CouponHistoryLastActionTypeNotRedeemException
 import com.goodpon.partner.application.coupon.service.exception.CouponOrderIdMismatchException
 import com.goodpon.partner.application.coupon.service.exception.UserCouponAlreadyCanceledException
+import com.goodpon.partner.application.coupon.service.exception.UserCouponCancelRedemptionNotAllowedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -32,13 +32,16 @@ class CouponRedemptionCancelProcessor(
     }
 
     private fun validateRedeemHistory(userCoupon: UserCoupon, orderId: String) {
-        if (!userCoupon.isRedeemed()) {
+        val lastHistory = couponHistoryAccessor.findLastCouponHistory(userCoupon.id)
+            ?: throw IllegalStateException("쿠폰은 존재하지만 쿠폰 내역이 존재하지 않습니다. userCouponId=${userCoupon.id}")
+
+        if (lastHistory.actionType == CouponActionType.CANCEL_REDEMPTION) {
             throw UserCouponAlreadyCanceledException()
         }
 
-        val lastHistory = couponHistoryAccessor.findLastCouponHistory(userCoupon.id)
-            ?.takeIf { it.actionType == CouponActionType.REDEEM }
-            ?: throw CouponHistoryLastActionTypeNotRedeemException()
+        if (!userCoupon.isRedeemed() || lastHistory.actionType != CouponActionType.REDEEM) {
+            throw UserCouponCancelRedemptionNotAllowedException()
+        }
 
         if (lastHistory.orderId != orderId) {
             throw CouponOrderIdMismatchException()

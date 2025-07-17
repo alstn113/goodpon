@@ -2,6 +2,7 @@ package com.goodpon.partner.openapi.web.coupon
 
 import com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName
 import com.epages.restdocs.apispec.ResourceSnippetParameters
+import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder
 import com.epages.restdocs.apispec.Schema
 import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuanceLimitExceededException
 import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuancePeriodException
@@ -20,6 +21,7 @@ import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder // MockHttpServletRequestBuilder import 추가
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.LocalDateTime
@@ -43,13 +45,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         every { issueCouponUseCase(any()) } returns issueCouponResult
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/coupon-templates/{couponTemplateId}/issue", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createIssueCouponRequestBuilder(1L))
 
         result.andExpectAll(
             status().isOk,
@@ -83,13 +79,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 발급 - 실패 - 존재하지 않는 쿠폰 템플릿`() {
         every { issueCouponUseCase(any()) } throws CouponTemplateNotFoundException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/coupon-templates/{couponTemplateId}/issue", 999L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createIssueCouponRequestBuilder(999L))
 
         result.andExpectAll(
             status().isNotFound,
@@ -101,15 +91,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 발급 - 실패 - 존재하지 않는 쿠폰 템플릿",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
-                .requestSchema(Schema("IssueCouponRequest"))
-                .requestFields(*issueCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -118,13 +100,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 발급 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님`() {
         every { issueCouponUseCase(any()) } throws CouponTemplateNotOwnedByMerchantException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/coupon-templates/{couponTemplateId}/issue", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createIssueCouponRequestBuilder(1L))
 
         result.andExpectAll(
             status().isForbidden,
@@ -136,15 +112,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 발급 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
-                .requestSchema(Schema("IssueCouponRequest"))
-                .requestFields(*issueCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -153,13 +121,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 발급 - 실패 - 사용자가 이미 발급한 쿠폰`() {
         every { issueCouponUseCase(any()) } throws UserCouponAlreadyIssuedException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/coupon-templates/{couponTemplateId}/issue", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createIssueCouponRequestBuilder(1L))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -171,15 +133,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 발급 - 실패 - 사용자가 이미 발급한 쿠폰",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
-                .requestSchema(Schema("IssueCouponRequest"))
-                .requestFields(*issueCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -188,13 +142,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 발급 - 실패 - 발급할 수 있는 기간이 아님`() {
         every { issueCouponUseCase(any()) } throws CouponTemplateIssuancePeriodException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/coupon-templates/{couponTemplateId}/issue", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createIssueCouponRequestBuilder(1L))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -206,15 +154,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 발급 - 실패 - 발급할 수 있는 기간이 아님",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
-                .requestSchema(Schema("IssueCouponRequest"))
-                .requestFields(*issueCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -223,13 +163,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 발급 - 실패 - 발급할 수 있는 상태가 아님`() {
         every { issueCouponUseCase(any()) } throws CouponTemplateStatusNotIssuableException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/coupon-templates/{couponTemplateId}/issue", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createIssueCouponRequestBuilder(1L))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -241,15 +175,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 발급 - 실패 - 발급할 수 있는 상태가 아님",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
-                .requestSchema(Schema("IssueCouponRequest"))
-                .requestFields(*issueCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -258,13 +184,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 발급 - 실패 - 최대 발급 수량 초과`() {
         every { issueCouponUseCase(any()) } throws CouponTemplateIssuanceLimitExceededException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/coupon-templates/{couponTemplateId}/issue", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createIssueCouponRequestBuilder(1L))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -276,16 +196,27 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 발급 - 실패 - 최대 발급 수량 초과",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
-                .requestSchema(Schema("IssueCouponRequest"))
-                .requestFields(*issueCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
+    }
+
+    private fun createIssueCouponRequestBuilder(couponTemplateId: Long): MockHttpServletRequestBuilder {
+        return RestDocumentationRequestBuilders
+            .post("/v1/coupon-templates/{couponTemplateId}/issue", couponTemplateId)
+            .withApiKeyHeaders()
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request))
+    }
+
+    private fun commonFailureSnippetParamsBuilder(): ResourceSnippetParametersBuilder {
+        return ResourceSnippetParameters.builder()
+            .tag("Coupon")
+            .requestHeaders(apiKeyHeaderFields())
+            .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
+            .requestSchema(Schema("IssueCouponRequest"))
+            .requestFields(*issueCouponRequestFields().toTypedArray())
+            .responseSchema(Schema("ApiResponse<Unit>"))
+            .responseFields(*commonFailureResponseFields().toTypedArray())
     }
 
     private fun issueCouponRequestFields() = listOf(

@@ -2,6 +2,7 @@ package com.goodpon.partner.openapi.web.coupon
 
 import com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName
 import com.epages.restdocs.apispec.ResourceSnippetParameters
+import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder
 import com.epages.restdocs.apispec.Schema
 import com.goodpon.domain.coupon.template.exception.CouponTemplateRedemptionConditionNotSatisfiedException
 import com.goodpon.domain.coupon.template.exception.CouponTemplateRedemptionLimitExceededException
@@ -24,16 +25,17 @@ import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.LocalDateTime
 
 class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
-    val userCouponId = "8f3b95144877a0dcbaad2b321380"
-    val orderId = "a3d2bd95142487cb8f3b7a0a1380"
-    val userId = "2bd98f3b7a8a3d7c51424b0a1380"
-    val request = RedeemCouponRequest(
+    private val userCouponId = "8f3b95144877a0dcbaad2b321380"
+    private val orderId = "a3d2bd95142487cb8f3b7a0a1380"
+    private val userId = "2bd98f3b7a8a3d7c51424b0a1380"
+    private val request = RedeemCouponRequest(
         userId = userId,
         orderAmount = 15000,
         orderId = orderId
@@ -53,13 +55,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         every { redeemCouponUseCase(any()) } returns redeemCouponResult
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isOk,
@@ -95,13 +91,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 존재하지 않는 사용자 쿠폰`() {
         every { redeemCouponUseCase(any()) } throws UserCouponNotFoundException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isNotFound,
@@ -113,15 +103,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 사용 - 실패 - 존재하지 않는 사용자 쿠폰",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
-                .requestSchema(Schema("RedeemCouponRequest"))
-                .requestFields(*redeemCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -130,13 +112,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 존재하지 않는 쿠폰 템플릿`() {
         every { redeemCouponUseCase(any()) } throws CouponTemplateNotFoundException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isNotFound,
@@ -148,15 +124,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 사용 - 실패 - 존재하지 않는 쿠폰 템플릿",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
-                .requestSchema(Schema("RedeemCouponRequest"))
-                .requestFields(*redeemCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -165,13 +133,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님`() {
         every { redeemCouponUseCase(any()) } throws CouponTemplateNotOwnedByMerchantException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isForbidden,
@@ -183,15 +145,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 사용 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
-                .requestSchema(Schema("RedeemCouponRequest"))
-                .requestFields(*redeemCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -200,13 +154,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 사용자가 소유한 쿠폰이 아님`() {
         every { redeemCouponUseCase(any()) } throws UserCouponNotOwnedByUserException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isForbidden,
@@ -218,15 +166,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 사용 - 실패 - 사용자가 소유한 쿠폰이 아님",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
-                .requestSchema(Schema("RedeemCouponRequest"))
-                .requestFields(*redeemCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -235,13 +175,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 쿠폰을 사용할 수 있는 상태가 아님`() {
         every { redeemCouponUseCase(any()) } throws CouponTemplateStatusNotRedeemableException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -253,15 +187,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 사용 - 실패 - 쿠폰을 사용할 수 있는 상태가 아님",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
-                .requestSchema(Schema("RedeemCouponRequest"))
-                .requestFields(*redeemCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -270,13 +196,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 최대 사용 수량 초과`() {
         every { redeemCouponUseCase(any()) } throws CouponTemplateRedemptionLimitExceededException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -288,15 +208,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 사용 - 실패 - 최대 사용 수량 초과",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
-                .requestSchema(Schema("RedeemCouponRequest"))
-                .requestFields(*redeemCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -305,13 +217,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 사용 조건을 만족하지 못함`() {
         every { redeemCouponUseCase(any()) } throws CouponTemplateRedemptionConditionNotSatisfiedException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -323,15 +229,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 사용 - 실패 - 사용 조건을 만족하지 못함",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
-                .requestSchema(Schema("RedeemCouponRequest"))
-                .requestFields(*redeemCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -340,13 +238,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 이미 사용한 쿠폰`() {
         every { redeemCouponUseCase(any()) } throws UserCouponAlreadyRedeemedException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -358,15 +250,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 사용 - 실패 - 이미 사용한 쿠폰",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
-                .requestSchema(Schema("RedeemCouponRequest"))
-                .requestFields(*redeemCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
     }
 
@@ -375,13 +259,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 쿠폰이 발급된 상태가 아님`() {
         every { redeemCouponUseCase(any()) } throws UserCouponRedeemNotAllowedException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -390,6 +268,11 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
             jsonPath("$.error.code").value("COUPON_NOT_REDEEMABLE"),
             jsonPath("$.error.message").value("해당 쿠폰을 사용할 수 있는 상태가 아닙니다.")
         )
+
+        result.andDocument(
+            "쿠폰 사용 - 실패 - 쿠폰이 발급된 상태가 아님",
+            commonFailureSnippetParamsBuilder().build()
+        )
     }
 
     @Test
@@ -397,13 +280,7 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
     fun `쿠폰 사용 - 실패 - 만료된 쿠폰`() {
         every { redeemCouponUseCase(any()) } throws UserCouponExpiredException()
 
-        val result = mockMvc.perform(
-            RestDocumentationRequestBuilders
-                .post("/v1/user-coupons/{userCouponId}/redeem", 1L)
-                .withApiKeyHeaders()
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
+        val result = mockMvc.perform(createRedeemCouponRequestBuilder(userCouponId))
 
         result.andExpectAll(
             status().isBadRequest,
@@ -415,16 +292,29 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andDocument(
             "쿠폰 사용 - 실패 - 만료된 쿠폰",
-            ResourceSnippetParameters.builder()
-                .tag("Coupon")
-                .requestHeaders(apiKeyHeaderFields())
-                .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
-                .requestSchema(Schema("RedeemCouponRequest"))
-                .requestFields(*redeemCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<Unit>"))
-                .responseFields(*commonFailureResponseFields().toTypedArray())
-                .build()
+            commonFailureSnippetParamsBuilder().build()
         )
+    }
+
+    private fun createRedeemCouponRequestBuilder(userCouponId: String): MockHttpServletRequestBuilder {
+        return RestDocumentationRequestBuilders
+            .post("/v1/user-coupons/{userCouponId}/redeem", userCouponId)
+            .withApiKeyHeaders()
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request))
+    }
+
+    private fun commonFailureSnippetParamsBuilder(): ResourceSnippetParametersBuilder {
+        return ResourceSnippetParameters.builder()
+            .tag("Coupon")
+            .summary("쿠폰 사용")
+            .description("쿠폰 사용 API")
+            .requestHeaders(apiKeyHeaderFields())
+            .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
+            .requestSchema(Schema("RedeemCouponRequest"))
+            .requestFields(*redeemCouponRequestFields().toTypedArray())
+            .responseSchema(Schema("ApiResponse<Unit>"))
+            .responseFields(*commonFailureResponseFields().toTypedArray())
     }
 
     private fun redeemCouponRequestFields() = listOf(
