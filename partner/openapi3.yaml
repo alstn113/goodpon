@@ -6,9 +6,1042 @@ info:
 servers:
 - url: http://localhost:8081
 tags: []
-paths: {}
+paths:
+  /v1/user-coupons:
+    get:
+      tags:
+      - Coupon
+      summary: 사용자가 보유한 쿠폰 목록 조회
+      description: 사용자가 보유한 쿠폰 목록 조회 API
+      operationId: 사용자가 보유한 쿠폰 목록 조회 - 성공
+      parameters:
+      - name: userId
+        in: query
+        description: 고객사의 고유 사용자 ID
+        required: true
+        schema:
+          type: string
+      - name: X-Goodpon-Client-Id
+        in: header
+        description: API 클라이언트 ID
+        required: true
+        schema:
+          type: string
+        example: "{client-id}"
+      - name: X-Goodpon-Client-Secret
+        in: header
+        description: API 클라이언트 Secret
+        required: true
+        schema:
+          type: string
+        example: "{client-secret}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<UserCouponsView>'
+              examples:
+                사용자가 보유한 쿠폰 목록 조회 - 성공:
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\"\
+                    \ : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\"\
+                    ,\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\"\
+                    \ : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠\
+                    폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"\
+                    discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n\
+                    \      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-17T13:49:12.938106597\"\
+                    ,\n      \"expiresAt\" : \"2025-08-16T13:49:12.938119952\",\n\
+                    \      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\"\
+                    \ : 1000,\n      \"maxRedeemCount\" : null,\n      \"isRedeemable\"\
+                    \ : true\n    } ]\n  },\n  \"error\" : null,\n  \"traceId\" :\
+                    \ \"68789ad83ec2af0079caa706809cd332\"\n}"
+  /v1/coupon-templates/{couponTemplateId}:
+    get:
+      tags:
+      - Coupon
+      summary: 사용자에 따른 쿠폰 템플릿 상세 조회
+      description: 사용자에 따른 쿠폰 템플릿 상세 조회 API
+      operationId: '사용자에 따른 쿠폰 템플릿 상세 조회 - '
+      parameters:
+      - name: couponTemplateId
+        in: path
+        description: 쿠폰 템플릿 ID
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: query
+        description: "고객사의 고유 사용자 ID, 비로그인 사용자 시 미지정"
+        required: false
+        schema:
+          type: string
+      - name: X-Goodpon-Client-Id
+        in: header
+        description: API 클라이언트 ID
+        required: true
+        schema:
+          type: string
+        example: "{client-id}"
+      - name: X-Goodpon-Client-Secret
+        in: header
+        description: API 클라이언트 Secret
+        required: true
+        schema:
+          type: string
+        example: "{client-secret}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<CouponTemplateDetailForUser>'
+              examples:
+                사용자에 따른 쿠폰 템플릿 상세 조회 - 성공:
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\"\
+                    \ : 1,\n    \"name\" : \"테스트 쿠폰\",\n    \"description\" : \"테스\
+                    트 쿠폰 설명\",\n    \"discountType\" : \"FIXED_AMOUNT\",\n    \"discountValue\"\
+                    \ : 1000,\n    \"maxDiscountAmount\" : null,\n    \"minOrderAmount\"\
+                    \ : 15000,\n    \"status\" : \"ISSUABLE\",\n    \"validityDays\"\
+                    \ : 30,\n    \"absoluteExpiresAt\" : \"2025-08-16T13:49:12.858745311\"\
+                    ,\n    \"issueStartAt\" : \"2025-07-17T13:49:12.858769917\",\n\
+                    \    \"issueEndAt\" : \"2025-07-27T13:49:12.858778464\",\n   \
+                    \ \"limitType\" : \"ISSUE_COUNT\",\n    \"maxIssueCount\" : 1000,\n\
+                    \    \"maxRedeemCount\" : null,\n    \"currentIssueCount\" : 200,\n\
+                    \    \"currentRedeemCount\" : 100,\n    \"issuanceStatus\" : \"\
+                    AVAILABLE\"\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+        "404":
+          description: "404"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                사용자에 따른 쿠폰 템플릿 상세 조회 - 실패 - 존재하지 않는 쿠폰 템플릿:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_FOUND\",\n    \"message\"\
+                    \ : \"존재하지 않는 쿠폰 템플릿입니다.\",\n    \"data\" : null\n  },\n  \"traceId\"\
+                    \ : \"68789ad83ec2af0079caa706809cd332\"\n}"
+  /v1/user-coupons/available:
+    get:
+      tags:
+      - Coupon
+      summary: 사용자의 사용 가능한 쿠폰 목록 조회
+      description: 사용자의 사용 가능한 쿠폰 목록 조회 API
+      operationId: 사용자의 사용 가능한 쿠폰 목록 조회 - 성공
+      parameters:
+      - name: userId
+        in: query
+        description: 고객사의 고유 사용자 ID
+        required: true
+        schema:
+          type: string
+      - name: orderAmount
+        in: query
+        description: 주문 금액
+        required: true
+        schema:
+          type: string
+      - name: X-Goodpon-Client-Id
+        in: header
+        description: API 클라이언트 ID
+        required: true
+        schema:
+          type: string
+        example: "{client-id}"
+      - name: X-Goodpon-Client-Secret
+        in: header
+        description: API 클라이언트 Secret
+        required: true
+        schema:
+          type: string
+        example: "{client-secret}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<AvailableUserCouponsView>'
+              examples:
+                사용자의 사용 가능한 쿠폰 목록 조회 - 성공:
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\"\
+                    \ : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\"\
+                    ,\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\"\
+                    \ : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠\
+                    폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"\
+                    discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n\
+                    \      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-17T13:49:12.439757911\"\
+                    ,\n      \"expiresAt\" : \"2025-08-16T13:49:12.43977848\",\n \
+                    \     \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\"\
+                    \ : 1000,\n      \"maxRedeemCount\" : null,\n      \"isMinOrderAmountReached\"\
+                    \ : true\n    } ]\n  },\n  \"error\" : null,\n  \"traceId\" :\
+                    \ \"68789ad83ec2af0079caa706809cd332\"\n}"
+  /v1/coupon-templates/{couponTemplateId}/issue:
+    post:
+      tags:
+      - Coupon
+      summary: 쿠폰 발급
+      description: 쿠폰 발급 API
+      operationId: '쿠폰 발급 - '
+      parameters:
+      - name: couponTemplateId
+        in: path
+        description: 쿠폰 템플릿 ID
+        required: true
+        schema:
+          type: string
+      - name: X-Goodpon-Client-Id
+        in: header
+        description: API 클라이언트 ID
+        required: true
+        schema:
+          type: string
+        example: "{client-id}"
+      - name: X-Goodpon-Client-Secret
+        in: header
+        description: API 클라이언트 Secret
+        required: true
+        schema:
+          type: string
+        example: "{client-secret}"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueCouponRequest'
+            examples:
+              쿠폰 발급 - 실패 - 사용자가 이미 발급한 쿠폰:
+                value: "{\n  \"userId\" : \"partner-unique-user-id\"\n}"
+              쿠폰 발급 - 실패 - 최대 발급 수량 초과:
+                value: "{\n  \"userId\" : \"partner-unique-user-id\"\n}"
+              쿠폰 발급 - 실패 - 발급할 수 있는 상태가 아님:
+                value: "{\n  \"userId\" : \"partner-unique-user-id\"\n}"
+              쿠폰 발급 - 실패 - 발급할 수 있는 기간이 아님:
+                value: "{\n  \"userId\" : \"partner-unique-user-id\"\n}"
+              쿠폰 발급 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님:
+                value: "{\n  \"userId\" : \"partner-unique-user-id\"\n}"
+              쿠폰 발급 - 실패 - 존재하지 않는 쿠폰 템플릿:
+                value: "{\n  \"userId\" : \"partner-unique-user-id\"\n}"
+              쿠폰 발급 - 성공:
+                value: "{\n  \"userId\" : \"partner-unique-user-id\"\n}"
+      responses:
+        "400":
+          description: "400"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                쿠폰 발급 - 실패 - 사용자가 이미 발급한 쿠폰:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_ALREADY_ISSUED\",\n    \"message\"\
+                    \ : \"사용자가 이미 발급한 쿠폰입니다.\",\n    \"data\" : null\n  },\n  \"traceId\"\
+                    \ : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                쿠폰 발급 - 실패 - 최대 발급 수량 초과:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_MAX_ISSUE_COUNT_EXCEEDED\"\
+                    ,\n    \"message\" : \"쿠폰 템플릿의 최대 발급 수량을 초과했습니다.\",\n    \"data\"\
+                    \ : null\n  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+                쿠폰 발급 - 실패 - 발급할 수 있는 상태가 아님:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_ISSUABLE\",\n    \"\
+                    message\" : \"해당 쿠폰을 발급할 수 있는 상태가 아닙니다.\",\n    \"data\" : null\n\
+                    \  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                쿠폰 발급 - 실패 - 발급할 수 있는 기간이 아님:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_NOT_ISSUABLE_PERIOD\",\n    \"\
+                    message\" : \"쿠폰을 발급할 수 있는 기간이 아닙니다.\",\n    \"data\" : null\n\
+                    \  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+        "403":
+          description: "403"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                쿠폰 발급 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT\"\
+                    ,\n    \"message\" : \"해당 쿠폰 템플릿은 현재 상점에서 소유하고 있지 않습니다.\",\n \
+                    \   \"data\" : null\n  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+        "404":
+          description: "404"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                쿠폰 발급 - 실패 - 존재하지 않는 쿠폰 템플릿:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_FOUND\",\n    \"message\"\
+                    \ : \"존재하지 않는 쿠폰 템플릿입니다.\",\n    \"data\" : null\n  },\n  \"traceId\"\
+                    \ : \"68789ad83ec2af0079caa706809cd332\"\n}"
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<IssueCouponResult>'
+              examples:
+                쿠폰 발급 - 성공:
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\"\
+                    \ : \"8f3b95144877a0dcbaad2b321380\",\n    \"userId\" : \"partner-unique-user-id\"\
+                    ,\n    \"couponTemplateId\" : 1,\n    \"couponTemplateName\" :\
+                    \ \"테스트 쿠폰\",\n    \"issuedAt\" : \"2025-07-17T13:49:13.368155893\"\
+                    ,\n    \"expiresAt\" : \"2025-08-16T13:49:13.368170992\"\n  },\n\
+                    \  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+  /v1/user-coupons/{userCouponId}/cancel:
+    post:
+      tags:
+      - Coupon
+      summary: 쿠폰 사용 취소
+      description: 쿠폰 사용 취소 API
+      operationId: '쿠폰 사용 취소 - '
+      parameters:
+      - name: userCouponId
+        in: path
+        description: 사용을 취소할 쿠폰의 ID
+        required: true
+        schema:
+          type: string
+      - name: X-Goodpon-Client-Id
+        in: header
+        description: API 클라이언트 ID
+        required: true
+        schema:
+          type: string
+        example: "{client-id}"
+      - name: X-Goodpon-Client-Secret
+        in: header
+        description: API 클라이언트 Secret
+        required: true
+        schema:
+          type: string
+        example: "{client-secret}"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelCouponRedemptionRequest'
+            examples:
+              쿠폰 사용 취소 - 실패 - 이미 취소된 쿠폰:
+                value: "{\n  \"cancelReason\" : \"결제 취소\",\n  \"orderId\" : \"b321838044d2aa8f3b95177a0dcb\"\
+                  \n}"
+              쿠폰 사용 취소 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님:
+                value: "{\n  \"cancelReason\" : \"결제 취소\",\n  \"orderId\" : \"b321838044d2aa8f3b95177a0dcb\"\
+                  \n}"
+              쿠폰 사용 취소 - 실패 - 쿠폰을 사용했던 주문과 일치하지 않음:
+                value: "{\n  \"cancelReason\" : \"결제 취소\",\n  \"orderId\" : \"b321838044d2aa8f3b95177a0dcb\"\
+                  \n}"
+              쿠폰 사용 취소 - 실패 - 존재하지 않는 사용자 쿠폰:
+                value: "{\n  \"cancelReason\" : \"결제 취소\",\n  \"orderId\" : \"b321838044d2aa8f3b95177a0dcb\"\
+                  \n}"
+              쿠폰 사용 취소 - 성공:
+                value: "{\n  \"cancelReason\" : \"결제 취소\",\n  \"orderId\" : \"b321838044d2aa8f3b95177a0dcb\"\
+                  \n}"
+              쿠폰 사용 취소 - 실패 - 사용 취소할 수 없는 상태:
+                value: "{\n  \"cancelReason\" : \"결제 취소\",\n  \"orderId\" : \"b321838044d2aa8f3b95177a0dcb\"\
+                  \n}"
+              쿠폰 사용 취소 - 실패 - 존재하지 않는 쿠폰 템플릿:
+                value: "{\n  \"cancelReason\" : \"결제 취소\",\n  \"orderId\" : \"b321838044d2aa8f3b95177a0dcb\"\
+                  \n}"
+      responses:
+        "400":
+          description: "400"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                쿠폰 사용 취소 - 실패 - 이미 취소된 쿠폰:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"USER_COUPON_ALREADY_CANCELLED\",\n   \
+                    \ \"message\" : \"해당 쿠폰은 이미 취소된 쿠폰입니다.\",\n    \"data\" : null\n\
+                    \  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                쿠폰 사용 취소 - 실패 - 쿠폰을 사용했던 주문과 일치하지 않음:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"USER_COUPON_CANCEL_ORDER_ID_MISMATCH\"\
+                    ,\n    \"message\" : \"쿠폰 사용 취소 시 쿠폰을 사용했던 주문 ID와 동일해야 합니다.\"\
+                    ,\n    \"data\" : null\n  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+                쿠폰 사용 취소 - 실패 - 사용 취소할 수 없는 상태:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"USER_COUPON_CANCEL_NOT_ALLOWED\",\n  \
+                    \  \"message\" : \"해당 쿠폰은 사용 취소할 수 없는 상태입니다.\",\n    \"data\"\
+                    \ : null\n  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+        "403":
+          description: "403"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                쿠폰 사용 취소 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT\"\
+                    ,\n    \"message\" : \"해당 쿠폰 템플릿은 현재 상점에서 소유하고 있지 않습니다.\",\n \
+                    \   \"data\" : null\n  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+        "404":
+          description: "404"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                쿠폰 사용 취소 - 실패 - 존재하지 않는 사용자 쿠폰:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"USER_COUPON_NOT_FOUND\",\n    \"message\"\
+                    \ : \"존재하지 않는 쿠폰입니다.\",\n    \"data\" : null\n  },\n  \"traceId\"\
+                    \ : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                쿠폰 사용 취소 - 실패 - 존재하지 않는 쿠폰 템플릿:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_FOUND\",\n    \"message\"\
+                    \ : \"존재하지 않는 쿠폰 템플릿입니다.\",\n    \"data\" : null\n  },\n  \"traceId\"\
+                    \ : \"68789ad83ec2af0079caa706809cd332\"\n}"
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<CancelCouponRedemptionResult>'
+              examples:
+                쿠폰 사용 취소 - 성공:
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\"\
+                    \ : \"8f3b95144877a0dcbaad2b321380\",\n    \"status\" : \"ISSUED\"\
+                    ,\n    \"canceledAt\" : \"2025-07-17T13:49:12.357336783\",\n \
+                    \   \"cancelReason\" : \"결제 취소\"\n  },\n  \"error\" : null,\n\
+                    \  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+  /v1/user-coupons/{userCouponId}/redeem:
+    post:
+      tags:
+      - Coupon
+      summary: 쿠폰 사용
+      description: 쿠폰 사용 API
+      operationId: '쿠폰 사용 - '
+      parameters:
+      - name: userCouponId
+        in: path
+        description: 사용할 쿠폰의 ID
+        required: true
+        schema:
+          type: string
+      - name: X-Goodpon-Client-Id
+        in: header
+        description: API 클라이언트 ID
+        required: true
+        schema:
+          type: string
+        example: "{client-id}"
+      - name: X-Goodpon-Client-Secret
+        in: header
+        description: API 클라이언트 Secret
+        required: true
+        schema:
+          type: string
+        example: "{client-secret}"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RedeemCouponRequest'
+            examples:
+              쿠폰 사용 - 실패 - 최대 사용 수량 초과:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 실패 - 사용자가 소유한 쿠폰이 아님:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 실패 - 존재하지 않는 쿠폰 템플릿:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 실패 - 쿠폰이 발급된 상태가 아님:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 실패 - 만료된 쿠폰:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 성공:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 실패 - 쿠폰을 사용할 수 있는 상태가 아님:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 실패 - 존재하지 않는 사용자 쿠폰:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 실패 - 사용 조건을 만족하지 못함:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+              쿠폰 사용 - 실패 - 이미 사용한 쿠폰:
+                value: "{\n  \"userId\" : \"2bd98f3b7a8a3d7c51424b0a1380\",\n  \"\
+                  orderAmount\" : 15000,\n  \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                  \n}"
+      responses:
+        "400":
+          description: "400"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                쿠폰 사용 - 실패 - 최대 사용 수량 초과:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_MAX_REDEEM_COUNT_EXCEEDED\"\
+                    ,\n    \"message\" : \"쿠폰 템플릿의 최대 사용 수량을 초과했습니다.\",\n    \"data\"\
+                    \ : null\n  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+                쿠폰 사용 - 실패 - 쿠폰이 발급된 상태가 아님:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_NOT_REDEEMABLE\",\n    \"message\"\
+                    \ : \"해당 쿠폰을 사용할 수 있는 상태가 아닙니다.\",\n    \"data\" : null\n  },\n\
+                    \  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                쿠폰 사용 - 실패 - 만료된 쿠폰:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"USER_COUPON_EXPIRED\",\n    \"message\"\
+                    \ : \"해당 쿠폰은 만료된 쿠폰입니다.\",\n    \"data\" : null\n  },\n  \"traceId\"\
+                    \ : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                쿠폰 사용 - 실패 - 쿠폰을 사용할 수 있는 상태가 아님:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_NOT_REDEEMABLE\",\n    \"message\"\
+                    \ : \"해당 쿠폰을 사용할 수 있는 상태가 아닙니다.\",\n    \"data\" : null\n  },\n\
+                    \  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                쿠폰 사용 - 실패 - 사용 조건을 만족하지 못함:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_REDEEM_CONDITION_NOT_MET\"\
+                    ,\n    \"message\" : \"쿠폰 사용 조건을 충족하지 못했습니다.\",\n    \"data\"\
+                    \ : null\n  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+                쿠폰 사용 - 실패 - 이미 사용한 쿠폰:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"USER_COUPON_ALREADY_REDEEMED\",\n    \"\
+                    message\" : \"해당 쿠폰은 이미 사용된 쿠폰입니다.\",\n    \"data\" : null\n \
+                    \ },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+        "403":
+          description: "403"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                쿠폰 사용 - 실패 - 상점이 소유한 쿠폰 템플릿이 아님:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT\"\
+                    ,\n    \"message\" : \"해당 쿠폰 템플릿은 현재 상점에서 소유하고 있지 않습니다.\",\n \
+                    \   \"data\" : null\n  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+                쿠폰 사용 - 실패 - 사용자가 소유한 쿠폰이 아님:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"USER_COUPON_NOT_OWNED_BY_USER\",\n   \
+                    \ \"message\" : \"해당 쿠폰은 사용자가 소유한 쿠폰이 아닙니다.\",\n    \"data\" :\
+                    \ null\n  },\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
+        "404":
+          description: "404"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<Unit>'
+              examples:
+                쿠폰 사용 - 실패 - 존재하지 않는 쿠폰 템플릿:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"COUPON_TEMPLATE_NOT_FOUND\",\n    \"message\"\
+                    \ : \"존재하지 않는 쿠폰 템플릿입니다.\",\n    \"data\" : null\n  },\n  \"traceId\"\
+                    \ : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                쿠폰 사용 - 실패 - 존재하지 않는 사용자 쿠폰:
+                  value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\"\
+                    \ : {\n    \"code\" : \"USER_COUPON_NOT_FOUND\",\n    \"message\"\
+                    \ : \"존재하지 않는 쿠폰입니다.\",\n    \"data\" : null\n  },\n  \"traceId\"\
+                    \ : \"68789ad83ec2af0079caa706809cd332\"\n}"
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse<RedeemCouponResult>'
+              examples:
+                쿠폰 사용 - 성공:
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\"\
+                    \ : \"8f3b95144877a0dcbaad2b321380\",\n    \"discountAmount\"\
+                    \ : 2000,\n    \"originalPrice\" : 15000,\n    \"finalPrice\"\
+                    \ : 13000,\n    \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
+                    ,\n    \"redeemedAt\" : \"2025-07-17T13:49:13.757262542\"\n  },\n\
+                    \  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
+                    \n}"
 components:
-  schemas: {}
+  schemas:
+    ApiResponse<Unit>:
+      title: ApiResponse<Unit>
+      required:
+      - data
+      - error
+      - result
+      - traceId
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        traceId:
+          type: string
+          description: 오류 추적 ID
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: string
+              description: 오류 코드
+            message:
+              type: string
+              description: 오류 메시지
+          description: 오류 정보
+    ApiResponse<CancelCouponRedemptionResult>:
+      title: ApiResponse<CancelCouponRedemptionResult>
+      required:
+      - data
+      - error
+      - result
+      - traceId
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        traceId:
+          type: string
+          description: 요청 추적 ID
+        data:
+          required:
+          - cancelReason
+          - canceledAt
+          - status
+          - userCouponId
+          type: object
+          properties:
+            canceledAt:
+              type: string
+              description: 쿠폰 사용 취소 시각
+            userCouponId:
+              type: string
+              description: 사용 취소된 쿠폰의 ID
+            cancelReason:
+              type: string
+              description: 쿠폰 사용 취소 사유
+            status:
+              type: string
+              description: 쿠폰의 현재 상태
+          description: 응답 데이터
+    ApiResponse<UserCouponsView>:
+      title: ApiResponse<UserCouponsView>
+      required:
+      - data
+      - error
+      - result
+      - traceId
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        traceId:
+          type: string
+          description: 요청 추적 ID
+        data:
+          required:
+          - coupons
+          type: object
+          properties:
+            coupons:
+              type: array
+              description: 사용자가 보유한 쿠폰 목록
+              items:
+                required:
+                - couponTemplateDescription
+                - couponTemplateId
+                - couponTemplateName
+                - discountType
+                - discountValue
+                - expiresAt
+                - isRedeemable
+                - issuedAt
+                - limitType
+                - minOrderAmount
+                - userCouponId
+                type: object
+                properties:
+                  maxIssueCount:
+                    type: number
+                    description: 최대 발급 수량
+                    nullable: true
+                  couponTemplateName:
+                    type: string
+                    description: 쿠폰 템플릿 이름
+                  couponTemplateId:
+                    type: number
+                    description: 쿠폰 템플릿 ID
+                  userCouponId:
+                    type: string
+                    description: 사용자 쿠폰 ID
+                  limitType:
+                    type: string
+                    description: 쿠폰 제한 정책 유형
+                  expiresAt:
+                    type: string
+                    description: 만료 일시
+                  maxRedeemCount:
+                    type: number
+                    description: 최대 사용 수량
+                    nullable: true
+                  isRedeemable:
+                    type: boolean
+                    description: 쿠폰 사용 수량 제한에 따른 사용 가능 여부
+                  couponTemplateDescription:
+                    type: string
+                    description: 쿠폰 템플릿 설명
+                  minOrderAmount:
+                    type: number
+                    description: 최소 주문 금액
+                  maxDiscountAmount:
+                    type: number
+                    description: 최대 할인 금액
+                    nullable: true
+                  discountType:
+                    type: string
+                    description: 할인 유형
+                  issuedAt:
+                    type: string
+                    description: 발급 일시
+                  discountValue:
+                    type: number
+                    description: 할인 금액
+          description: 응답 데이터
+    ApiResponse<IssueCouponResult>:
+      title: ApiResponse<IssueCouponResult>
+      required:
+      - data
+      - error
+      - result
+      - traceId
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        traceId:
+          type: string
+          description: 요청 추적 ID
+        data:
+          required:
+          - couponTemplateId
+          - couponTemplateName
+          - issuedAt
+          - userCouponId
+          - userId
+          type: object
+          properties:
+            couponTemplateName:
+              type: string
+              description: 쿠폰 템플릿 이름
+            couponTemplateId:
+              type: number
+              description: 쿠폰 템플릿 ID
+            issuedAt:
+              type: string
+              description: 쿠폰 발급 시간
+            userCouponId:
+              type: string
+              description: 발급된 쿠폰의 고유 ID
+            userId:
+              type: string
+              description: 고객사의 고유 사용자 ID
+            expiresAt:
+              type: string
+              description: 쿠폰 만료 시간
+              nullable: true
+          description: 응답 데이터
+    ApiResponse<AvailableUserCouponsView>:
+      title: ApiResponse<AvailableUserCouponsView>
+      required:
+      - data
+      - error
+      - result
+      - traceId
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        traceId:
+          type: string
+          description: 요청 추적 ID
+        data:
+          required:
+          - coupons
+          type: object
+          properties:
+            coupons:
+              type: array
+              description: 사용자가 보유한 쿠폰 목록
+              items:
+                required:
+                - couponTemplateDescription
+                - couponTemplateId
+                - couponTemplateName
+                - discountType
+                - discountValue
+                - expiresAt
+                - isMinOrderAmountReached
+                - issuedAt
+                - limitType
+                - minOrderAmount
+                - userCouponId
+                type: object
+                properties:
+                  maxIssueCount:
+                    type: number
+                    description: 최대 발급 수량
+                    nullable: true
+                  couponTemplateName:
+                    type: string
+                    description: 쿠폰 템플릿 이름
+                  couponTemplateId:
+                    type: number
+                    description: 쿠폰 템플릿 ID
+                  userCouponId:
+                    type: string
+                    description: 사용자 쿠폰 ID
+                  limitType:
+                    type: string
+                    description: 쿠폰 제한 정책 유형
+                  expiresAt:
+                    type: string
+                    description: 만료 일시
+                  maxRedeemCount:
+                    type: number
+                    description: 최대 사용 수량
+                    nullable: true
+                  couponTemplateDescription:
+                    type: string
+                    description: 쿠폰 템플릿 설명
+                  minOrderAmount:
+                    type: number
+                    description: 최소 주문 금액
+                  maxDiscountAmount:
+                    type: number
+                    description: 최대 할인 금액
+                    nullable: true
+                  isMinOrderAmountReached:
+                    type: boolean
+                    description: 최소 주문 금액 도달 여부
+                  discountType:
+                    type: string
+                    description: 할인 유형
+                  issuedAt:
+                    type: string
+                    description: 발급 일시
+                  discountValue:
+                    type: number
+                    description: 할인 금액
+          description: 응답 데이터
+    CancelCouponRedemptionRequest:
+      title: CancelCouponRedemptionRequest
+      required:
+      - cancelReason
+      - orderId
+      type: object
+      properties:
+        orderId:
+          type: string
+          description: 고유한 주문 ID
+        cancelReason:
+          type: string
+          description: 쿠폰 사용 취소 사유
+    ApiResponse<CouponTemplateDetailForUser>:
+      title: ApiResponse<CouponTemplateDetailForUser>
+      required:
+      - data
+      - error
+      - result
+      - traceId
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        traceId:
+          type: string
+          description: 요청 추적 ID
+        data:
+          required:
+          - absoluteExpiresAt
+          - currentIssueCount
+          - currentRedeemCount
+          - description
+          - discountType
+          - discountValue
+          - id
+          - issuanceStatus
+          - issueEndAt
+          - issueStartAt
+          - limitType
+          - minOrderAmount
+          - name
+          - status
+          - validityDays
+          type: object
+          properties:
+            maxIssueCount:
+              type: number
+              description: 최대 발급 수량
+              nullable: true
+            issueEndAt:
+              type: string
+              description: 발급 종료 일시
+            issueStartAt:
+              type: string
+              description: 발급 시작 일시
+            currentIssueCount:
+              type: number
+              description: 현재 발급된 쿠폰 수량
+            description:
+              type: string
+              description: 쿠폰 템플릿 설명
+            absoluteExpiresAt:
+              type: string
+              description: 절대 만료 일시
+            limitType:
+              type: string
+              description: 쿠폰 제한 정책 유형
+            maxRedeemCount:
+              type: number
+              description: 최대 사용 수량
+              nullable: true
+            currentRedeemCount:
+              type: number
+              description: 현재 사용된 쿠폰 수량
+            issuanceStatus:
+              type: string
+              description: "쿠폰 발급 가능 여부 (AVAILABLE, PERIOD_NOT_STARTED, PERIOD_ENDED,\
+                \ MAX_REDEEM_COUNT_EXCEEDED, MAX_ISSUE_COUNT_EXCEEDED, ALREADY_ISSUED_BY_USER)"
+            minOrderAmount:
+              type: number
+              description: 최소 주문 금액
+            maxDiscountAmount:
+              type: number
+              description: 최대 할인 금액
+              nullable: true
+            name:
+              type: string
+              description: 쿠폰 템플릿 이름
+            discountType:
+              type: string
+              description: 할인 유형
+            id:
+              type: number
+              description: 쿠폰 템플릿 ID
+            discountValue:
+              type: number
+              description: 할인 금액
+            validityDays:
+              type: number
+              description: 유효 기간(일)
+            status:
+              type: string
+              description: 쿠폰 템플릿 상태
+          description: 응답 데이터
+    IssueCouponRequest:
+      title: IssueCouponRequest
+      required:
+      - userId
+      type: object
+      properties:
+        userId:
+          type: string
+          description: 고객사의 고유 사용자 ID
+    ApiResponse<RedeemCouponResult>:
+      title: ApiResponse<RedeemCouponResult>
+      required:
+      - data
+      - error
+      - result
+      - traceId
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        traceId:
+          type: string
+          description: 요청 추적 ID
+        data:
+          required:
+          - discountAmount
+          - finalPrice
+          - orderId
+          - originalPrice
+          - redeemedAt
+          - userCouponId
+          type: object
+          properties:
+            originalPrice:
+              type: number
+              description: 원래 가격
+            orderId:
+              type: string
+              description: 주문 ID
+            redeemedAt:
+              type: string
+              description: 쿠폰 사용 시각
+            finalPrice:
+              type: number
+              description: 할인 적용 후 최종 가격
+            discountAmount:
+              type: number
+              description: 할인 금액
+            userCouponId:
+              type: string
+              description: 사용된 쿠폰의 ID
+          description: 응답 데이터
+    RedeemCouponRequest:
+      title: RedeemCouponRequest
+      required:
+      - orderAmount
+      - orderId
+      - userId
+      type: object
+      properties:
+        orderAmount:
+          type: number
+          description: 주문 금액
+        orderId:
+          type: string
+          description: 고유한 주문 ID
+        userId:
+          type: string
+          description: 고유한 사용자 ID
 # @formatter:off
   securitySchemes:
     clientId:
