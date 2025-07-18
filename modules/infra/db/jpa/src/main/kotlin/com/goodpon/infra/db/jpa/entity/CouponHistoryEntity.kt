@@ -9,9 +9,10 @@ import java.time.LocalDateTime
 @Table(name = "coupon_histories")
 class CouponHistoryEntity(
     @Id
+    @Column(columnDefinition = "BINARY(16)")
     val id: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "BINARY(16)")
     val userCouponId: String,
 
     @Column(nullable = false)

@@ -11,7 +11,7 @@ class MerchantEntity(
     @Column(nullable = false)
     val name: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(35)")
     val clientId: String,
 ) : AuditableEntity() {
 

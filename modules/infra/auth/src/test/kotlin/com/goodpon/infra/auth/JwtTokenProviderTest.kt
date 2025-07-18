@@ -15,7 +15,7 @@ import java.util.*
 class JwtTokenProviderTest : DescribeSpec({
 
     val testSecretKey = "thisisalongsecretkeyforjwttokenproviderfortestingpurpose"
-    val testExpirationTime = 1000L // 1초
+    val testExpirationTime = 24 * 60 * 60 * 1000L // 1일
     val properties = JwtTokenProperties(
         JwtTokenProperties.AccessToken(
             secretKey = testSecretKey,

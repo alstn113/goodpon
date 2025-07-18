@@ -11,7 +11,7 @@ class MerchantClientSecretEntity(
     @JoinColumn(name = "merchant_id", nullable = false)
     var merchant: MerchantEntity? = null,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(35)")
     val secret: String,
 
     @Column
