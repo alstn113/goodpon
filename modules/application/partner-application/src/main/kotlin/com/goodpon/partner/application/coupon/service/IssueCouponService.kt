@@ -13,7 +13,6 @@ import com.goodpon.partner.application.coupon.service.exception.CouponTemplateNo
 import com.goodpon.partner.application.coupon.service.exception.UserCouponAlreadyIssuedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Clock
 import java.time.LocalDateTime
 
 @Service
@@ -22,12 +21,11 @@ class IssueCouponService(
     private val couponTemplateStatsAccessor: CouponTemplateStatsAccessor,
     private val couponHistoryAccessor: CouponHistoryAccessor,
     private val userCouponAccessor: UserCouponAccessor,
-    private val clock: Clock,
 ) : IssueCouponUseCase {
 
     @Transactional
     override fun invoke(command: IssueCouponCommand): IssueCouponResult {
-        val now = LocalDateTime.now(clock)
+        val now = LocalDateTime.now()
 
         val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId)
         val couponTemplate = couponTemplateAccessor.readById(command.couponTemplateId)

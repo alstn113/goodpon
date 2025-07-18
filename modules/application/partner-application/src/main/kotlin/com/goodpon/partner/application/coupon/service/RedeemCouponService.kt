@@ -14,7 +14,6 @@ import com.goodpon.partner.application.coupon.service.exception.CouponTemplateNo
 import com.goodpon.partner.application.coupon.service.exception.UserCouponNotOwnedByUserException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Clock
 import java.time.LocalDateTime
 
 @Service
@@ -23,12 +22,11 @@ class RedeemCouponService(
     private val couponTemplateStatsAccessor: CouponTemplateStatsAccessor,
     private val userCouponAccessor: UserCouponAccessor,
     private val couponHistoryAccessor: CouponHistoryAccessor,
-    private val clock: Clock,
 ) : RedeemCouponUseCase {
 
     @Transactional
     override fun invoke(command: RedeemCouponCommand): RedeemCouponResult {
-        val now = LocalDateTime.now(clock)
+        val now = LocalDateTime.now()
 
         val userCoupon = userCouponAccessor.readByIdForUpdate(command.userCouponId)
         val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)

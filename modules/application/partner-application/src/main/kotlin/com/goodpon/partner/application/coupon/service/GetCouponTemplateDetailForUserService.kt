@@ -16,12 +16,11 @@ import java.time.LocalDateTime
 class GetCouponTemplateDetailForUserService(
     private val couponTemplateRepository: CouponTemplateRepository,
     private val userCouponRepository: UserCouponRepository,
-    private val clock: Clock,
 ) : GetCouponTemplateDetailForUserUseCase {
 
     @Transactional(readOnly = true)
     override fun invoke(query: GetCouponTemplateDetailForUserQuery): CouponTemplateDetailForUser {
-        val now = LocalDateTime.now(clock)
+        val now = LocalDateTime.now()
 
         val detail = couponTemplateRepository.findCouponTemplateDetail(
             couponTemplateId = query.couponTemplateId,
