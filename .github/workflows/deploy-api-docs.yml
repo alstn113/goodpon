@@ -31,19 +31,13 @@ jobs:
         uses: mikefarah/yq@master
         with:
           cmd: |
-            yq eval-all '. as $item ireduce ({}; . * $item)' \
-                ${{ env.DASHBOARD_OPENAPI_GENERATED_FILE }} \
-                ${{ env.DASHBOARD_API_DOCS_DIR }}/openapi3-options.yaml \
-                -o ${{ env.DASHBOARD_OPENAPI_GENERATED_FILE }}
+            yq eval-all --inplace '. as $item ireduce ({}; . * $item)' ${{ env.DASHBOARD_OPENAPI_GENERATED_FILE }} ${{ env.DASHBOARD_API_DOCS_DIR }}/openapi3-options.yaml
 
       - name: Merge OpenAPI Options
         uses: mikefarah/yq@master
         with:
           cmd: |
-            yq eval-all '. as $item ireduce ({}; . * $item)' 
-                ${{ env.PARTNER_OPENAPI_GENERATED_FILE }} \
-                ${{ env.PARTNER_API_DOCS_DIR }}/openapi3-options.yaml \
-                -o ${{ env.PARTNER_OPENAPI_GENERATED_FILE }}
+            yq eval-all --inplace '. as $item ireduce ({}; . * $item)' ${{ env.PARTNER_OPENAPI_GENERATED_FILE }} ${{ env.PARTNER_API_DOCS_DIR }}/openapi3-options.yaml
 
       - name: Prepare API Docs Directory
         run: |
