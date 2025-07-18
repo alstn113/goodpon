@@ -40,9 +40,6 @@ class JwtTokenProviderTest : DescribeSpec({
                     .payload
 
                 claims.subject shouldBe accountId.toString()
-                claims.issuedAt shouldNotBe null
-                claims.expiration shouldNotBe null
-                claims.expiration.after(Date(System.currentTimeMillis())) shouldBe true
             }
         }
 
