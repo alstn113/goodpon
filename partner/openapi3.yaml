@@ -50,8 +50,8 @@ paths:
                     \ : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠\
                     폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"\
                     discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n\
-                    \      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-17T13:49:12.938106597\"\
-                    ,\n      \"expiresAt\" : \"2025-08-16T13:49:12.938119952\",\n\
+                    \      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-18T06:33:24.007721668\"\
+                    ,\n      \"expiresAt\" : \"2025-08-17T06:33:24.007728712\",\n\
                     \      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\"\
                     \ : 1000,\n      \"maxRedeemCount\" : null,\n      \"isRedeemable\"\
                     \ : true\n    } ]\n  },\n  \"error\" : null,\n  \"traceId\" :\
@@ -104,9 +104,9 @@ paths:
                     트 쿠폰 설명\",\n    \"discountType\" : \"FIXED_AMOUNT\",\n    \"discountValue\"\
                     \ : 1000,\n    \"maxDiscountAmount\" : null,\n    \"minOrderAmount\"\
                     \ : 15000,\n    \"status\" : \"ISSUABLE\",\n    \"validityDays\"\
-                    \ : 30,\n    \"absoluteExpiresAt\" : \"2025-08-16T13:49:12.858745311\"\
-                    ,\n    \"issueStartAt\" : \"2025-07-17T13:49:12.858769917\",\n\
-                    \    \"issueEndAt\" : \"2025-07-27T13:49:12.858778464\",\n   \
+                    \ : 30,\n    \"absoluteExpiresAt\" : \"2025-08-17T06:33:23.92733129\"\
+                    ,\n    \"issueStartAt\" : \"2025-07-18T06:33:23.92734695\",\n\
+                    \    \"issueEndAt\" : \"2025-07-28T06:33:23.927353943\",\n   \
                     \ \"limitType\" : \"ISSUE_COUNT\",\n    \"maxIssueCount\" : 1000,\n\
                     \    \"maxRedeemCount\" : null,\n    \"currentIssueCount\" : 200,\n\
                     \    \"currentRedeemCount\" : 100,\n    \"issuanceStatus\" : \"\
@@ -173,9 +173,9 @@ paths:
                     \ : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠\
                     폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"\
                     discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n\
-                    \      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-17T13:49:12.439757911\"\
-                    ,\n      \"expiresAt\" : \"2025-08-16T13:49:12.43977848\",\n \
-                    \     \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\"\
+                    \      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-18T06:33:23.566638633\"\
+                    ,\n      \"expiresAt\" : \"2025-08-17T06:33:23.566652729\",\n\
+                    \      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\"\
                     \ : 1000,\n      \"maxRedeemCount\" : null,\n      \"isMinOrderAmountReached\"\
                     \ : true\n    } ]\n  },\n  \"error\" : null,\n  \"traceId\" :\
                     \ \"68789ad83ec2af0079caa706809cd332\"\n}"
@@ -292,8 +292,8 @@ paths:
                   value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\"\
                     \ : \"8f3b95144877a0dcbaad2b321380\",\n    \"userId\" : \"partner-unique-user-id\"\
                     ,\n    \"couponTemplateId\" : 1,\n    \"couponTemplateName\" :\
-                    \ \"테스트 쿠폰\",\n    \"issuedAt\" : \"2025-07-17T13:49:13.368155893\"\
-                    ,\n    \"expiresAt\" : \"2025-08-16T13:49:13.368170992\"\n  },\n\
+                    \ \"테스트 쿠폰\",\n    \"issuedAt\" : \"2025-07-18T06:33:24.380032796\"\
+                    ,\n    \"expiresAt\" : \"2025-08-17T06:33:24.380048245\"\n  },\n\
                     \  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
                     \n}"
   /v1/user-coupons/{userCouponId}/cancel:
@@ -416,7 +416,7 @@ paths:
                 쿠폰 사용 취소 - 성공:
                   value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\"\
                     \ : \"8f3b95144877a0dcbaad2b321380\",\n    \"status\" : \"ISSUED\"\
-                    ,\n    \"canceledAt\" : \"2025-07-17T13:49:12.357336783\",\n \
+                    ,\n    \"canceledAt\" : \"2025-07-18T06:33:23.491755063\",\n \
                     \   \"cancelReason\" : \"결제 취소\"\n  },\n  \"error\" : null,\n\
                     \  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
   /v1/user-coupons/{userCouponId}/redeem:
@@ -585,7 +585,7 @@ paths:
                     \ : \"8f3b95144877a0dcbaad2b321380\",\n    \"discountAmount\"\
                     \ : 2000,\n    \"originalPrice\" : 15000,\n    \"finalPrice\"\
                     \ : 13000,\n    \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\"\
-                    ,\n    \"redeemedAt\" : \"2025-07-17T13:49:13.757262542\"\n  },\n\
+                    ,\n    \"redeemedAt\" : \"2025-07-18T06:33:24.69710407\"\n  },\n\
                     \  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\
                     \n}"
 components:
@@ -972,15 +972,6 @@ components:
               type: string
               description: 쿠폰 템플릿 상태
           description: 응답 데이터
-    IssueCouponRequest:
-      title: IssueCouponRequest
-      required:
-      - userId
-      type: object
-      properties:
-        userId:
-          type: string
-          description: 고객사의 고유 사용자 ID
     ApiResponse<RedeemCouponResult>:
       title: ApiResponse<RedeemCouponResult>
       required:
@@ -1025,6 +1016,15 @@ components:
               type: string
               description: 사용된 쿠폰의 ID
           description: 응답 데이터
+    IssueCouponRequest:
+      title: IssueCouponRequest
+      required:
+      - userId
+      type: object
+      properties:
+        userId:
+          type: string
+          description: 고객사의 고유 사용자 ID
     RedeemCouponRequest:
       title: RedeemCouponRequest
       required:
