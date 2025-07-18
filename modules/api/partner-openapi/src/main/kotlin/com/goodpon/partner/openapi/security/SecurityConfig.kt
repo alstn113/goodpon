@@ -1,6 +1,6 @@
 package com.goodpon.partner.openapi.security
 
-import com.goodpon.partner.application.merchant.service.AuthenticateMerchantService
+import com.goodpon.partner.application.merchant.port.`in`.AuthenticateMerchantUseCase
 import com.goodpon.partner.openapi.security.filter.ApiKeyAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val authenticateMerchantService: AuthenticateMerchantService,
+    private val authenticateMerchantUseCase: AuthenticateMerchantUseCase,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val accessDeniedHandler: AccessDeniedHandler,
 ) {
@@ -26,7 +26,7 @@ class SecurityConfig(
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         val apiKeyAuthenticationFilter = ApiKeyAuthenticationFilter(
-            authenticateMerchantService = authenticateMerchantService,
+            authenticateMerchantUseCase = authenticateMerchantUseCase,
             authenticationEntryPoint = authenticationEntryPoint,
         )
 

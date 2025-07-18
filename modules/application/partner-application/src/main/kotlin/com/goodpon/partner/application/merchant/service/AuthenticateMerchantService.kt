@@ -13,16 +13,13 @@ class AuthenticateMerchantService(
 ) : AuthenticateMerchantUseCase {
 
     @Transactional(readOnly = true)
-    override fun authenticateMerchant(clientId: String, clientSecret: String): MerchantInfo {
+    override fun invoke(clientId: String, clientSecret: String): MerchantInfo {
         val merchant = merchantAccessor.readByClientId(clientId)
 
         if (!merchant.isValidClientSecret(clientSecret)) {
             throw MerchantClientSecretMismatchException()
         }
 
-        return MerchantInfo(
-            id = merchant.id,
-            name = merchant.name,
-        )
+        return MerchantInfo(id = merchant.id, name = merchant.name)
     }
 }

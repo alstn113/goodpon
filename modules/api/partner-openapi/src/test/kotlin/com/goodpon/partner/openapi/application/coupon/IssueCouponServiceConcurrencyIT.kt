@@ -1,4 +1,4 @@
-package com.goodpon.partner.openapi.application
+package com.goodpon.partner.openapi.application.coupon
 
 import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuanceLimitExceededException
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType

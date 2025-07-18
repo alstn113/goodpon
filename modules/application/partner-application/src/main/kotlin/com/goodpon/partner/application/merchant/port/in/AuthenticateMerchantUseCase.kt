@@ -2,7 +2,7 @@ package com.goodpon.partner.application.merchant.port.`in`
 
 import com.goodpon.partner.application.merchant.port.`in`.dto.MerchantInfo
 
-interface AuthenticateMerchantUseCase {
+fun interface AuthenticateMerchantUseCase {
 
-    fun authenticateMerchant(clientId: String, clientSecret: String): MerchantInfo?
+    operator fun invoke(clientId: String, clientSecret: String): MerchantInfo
 }
