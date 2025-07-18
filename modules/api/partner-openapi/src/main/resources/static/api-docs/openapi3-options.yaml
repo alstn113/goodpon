@@ -1,0 +1,29 @@
+info:
+  description: |
+    ### 인증 방식 (Authentication)
+
+    API 호출 시 다음과 같이 HTTP 헤더에 클라이언트 인증 정보를 포함해야 합니다.
+    - `X-Goodpon-Client-Id`: 발급받은 상점 클라이언트 ID
+    - `X-Goodpon-Client-Secret`: 발급받은 상점 클라이언트 시크릿
+    
+    ### 응답에 Trace ID 포함
+
+    모든 API 응답에는 `traceId` 필드가 포함되어 있습니다. 이 필드는 요청을 추적하는 데 사용되며, 문제 발생 시 디버깅에 도움이 됩니다.
+
+components:
+  securitySchemes:
+    clientId:
+      type: apiKey
+      name: X-Goodpon-Client-Id
+      in: header
+      description: "상점 클라이언트 ID를 나타내는 HTTP 헤더"
+
+    clientSecret:
+      type: apiKey
+      name: X-Goodpon-Client-Secret
+      in: header
+      description: "상점 클라이언트 시크릿을 나타내는 HTTP 헤더"
+
+security:
+  - clientId: [ ]
+  - clientSecret: [ ]

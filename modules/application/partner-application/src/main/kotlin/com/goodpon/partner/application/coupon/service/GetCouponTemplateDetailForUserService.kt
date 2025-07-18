@@ -9,7 +9,6 @@ import com.goodpon.partner.application.coupon.port.out.exception.CouponTemplateN
 import com.goodpon.partner.application.coupon.service.dto.CouponTemplateDetailForUser
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Clock
 import java.time.LocalDateTime
 
 @Service

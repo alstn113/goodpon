@@ -3,6 +3,13 @@ name: Build & Deploy API Docs
 on:
   workflow_dispatch:
 
+env:
+  DASHBOARD_OPENAPI_GENERATED_FILE: modules/api/dashboard-api/build/api-spec/openapi3.yaml
+  DASHBOARD_API_DOCS_DIR: modules/api/dashboard-api/build/resources/main/static/api-docs
+
+  PARTNER_OPENAPI_GENERATED_FILE: modules/api/partner-openapi/build/api-spec/openapi3.yaml
+  PARTNER_API_DOCS_DIR: modules/api/partner-openapi/build/resources/main/static/api-docs
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -17,19 +24,33 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Build All (Run Tests Too)
+      - name: Build
         run: ./gradlew clean build
 
-      - name: Copy API Docs
+      - name: Merge OpenAPI Options
+        uses: mikefarah/yq@master
+        with:
+          cmd: |
+            yq eval-all '. as $item ireduce ({}; . * $item)' \
+                '${{ env.DASHBOARD_OPENAPI_GENERATED_FILE }}' \
+                '${{ env.DASHBOARD_API_DOCS_DIR }}/openapi3-options.yaml' \
+                -o '${{ env.DASHBOARD_OPENAPI_GENERATED_FILE }}'
+            
+            yq eval-all '. as $item ireduce ({}; . * $item)' \
+                '${{ env.PARTNER_OPENAPI_GENERATED_FILE }}' \
+                '${{ env.PARTNER_API_DOCS_DIR }}/openapi3-options.yaml' \
+                -o '${{ env.PARTNER_OPENAPI_GENERATED_FILE }}'
+
+      - name: Prepare API Docs Directory
         run: |
           mkdir -p api-docs/dashboard
           mkdir -p api-docs/partner
 
-          cp modules/api/dashboard-api/build/resources/main/static/api-docs/index.html api-docs/dashboard/
-          cp modules/api/dashboard-api/build/resources/main/static/api-docs/openapi3.yaml api-docs/dashboard/
+          cp '${{ env.DASHBOARD_API_DOCS_DIR }}/index.html' api-docs/dashboard/
+          cp '${{ env.PARTNER_OPENAPI_GENERATED_FILE }}' api-docs/dashboard/
           
-          cp modules/api/partner-openapi/build/resources/main/static/api-docs/index.html api-docs/partner/
-          cp modules/api/partner-openapi/build/resources/main/static/api-docs/openapi3.yaml api-docs/partner/
+          cp '${{ env.PARTNER_API_DOCS_DIR }}/index.html' api-docs/partner/
+          cp '${{ env.PARTNER_OPENAPI_GENERATED_FILE }}' api-docs/partner/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

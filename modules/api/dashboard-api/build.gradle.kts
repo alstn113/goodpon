@@ -38,37 +38,8 @@ openapi3 {
     format = "yaml"
 }
 
-tasks.resolveMainClassName {
-    dependsOn(copyOpenapiToSwagger)
-}
-
-val copyOpenapiToSwagger = tasks.register("copyOpenapiToSwagger") {
-    group = "documentation"
-    description = "Copy OpenAPI YAML to Swagger directory with security options"
-
-    dependsOn("openapi3")
-
-    doLast {
-        val openapiSourceFile = file("build/api-spec/openapi3.yaml")
-        val swaggerOptionsFile = file("build/resources/main/static/api-docs/swagger-options.yml")
-
-        if (swaggerOptionsFile.exists() && openapiSourceFile.exists()) {
-            openapiSourceFile.appendText(swaggerOptionsFile.readText(Charsets.UTF_8))
-        }
-
-        copy {
-            from(openapiSourceFile)
-            into("build/resources/main/static/api-docs")
-        }
-
-        delete(swaggerOptionsFile)
-    }
-}
-
 tasks.bootJar {
     enabled = true
-
-    dependsOn(copyOpenapiToSwagger)
 }
 
 tasks.jar {
