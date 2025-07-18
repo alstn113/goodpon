@@ -22,6 +22,9 @@ class CouponHistoryEntity(
     @Column
     val orderId: String?,
 
+    @Column
+    val reason: String?,
+
     @Column(nullable = false)
     val recordedAt: LocalDateTime,
 ) : AuditableEntity() {
@@ -34,6 +37,7 @@ class CouponHistoryEntity(
             userCouponId = userCouponId,
             actionType = actionType,
             orderId = orderId,
+            reason = reason,
             recordedAt = recordedAt
         )
     }
@@ -45,6 +49,7 @@ class CouponHistoryEntity(
                 userCouponId = couponHistory.userCouponId,
                 actionType = couponHistory.actionType,
                 orderId = couponHistory.orderId,
+                reason = couponHistory.reason,
                 recordedAt = couponHistory.recordedAt
             )
         }

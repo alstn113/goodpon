@@ -98,8 +98,9 @@ CREATE TABLE IF NOT EXISTS coupon_histories
 (
     id             VARCHAR(32)  NOT NULL,
     user_coupon_id VARCHAR(255) NOT NULL,
-    order_id       VARCHAR(255),
     action_type    VARCHAR(30)  NOT NULL,
+    order_id       VARCHAR(255),
+    reason         VARCHAR(255),
     recorded_at    DATETIME(6)  NOT NULL,
     created_at     DATETIME(6)  NOT NULL,
     updated_at     DATETIME(6)  NOT NULL,

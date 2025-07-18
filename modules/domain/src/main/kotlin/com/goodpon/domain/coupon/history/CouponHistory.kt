@@ -8,7 +8,7 @@ data class CouponHistory private constructor(
     val userCouponId: String,
     val actionType: CouponActionType,
     val orderId: String?,
-    val reason: String? = null,
+    val reason: String?,
     val recordedAt: LocalDateTime,
 ) {
 
@@ -88,6 +88,7 @@ data class CouponHistory private constructor(
             userCouponId: String,
             actionType: CouponActionType,
             orderId: String?,
+            reason: String?,
             recordedAt: LocalDateTime,
         ): CouponHistory {
             return CouponHistory(
@@ -95,6 +96,7 @@ data class CouponHistory private constructor(
                 userCouponId = userCouponId,
                 actionType = actionType,
                 orderId = orderId,
+                reason = reason,
                 recordedAt = recordedAt
             )
         }

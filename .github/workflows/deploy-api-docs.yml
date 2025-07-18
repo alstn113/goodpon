@@ -45,7 +45,7 @@ jobs:
           mkdir -p api-docs/partner
 
           cp ${{ env.DASHBOARD_API_DOCS_DIR }}/index.html api-docs/dashboard/
-          cp ${{ env.PARTNER_OPENAPI_GENERATED_FILE }} api-docs/dashboard/
+          cp ${{ env.DASHBOARD_OPENAPI_GENERATED_FILE }} api-docs/dashboard/
           
           cp ${{ env.PARTNER_API_DOCS_DIR }}/index.html api-docs/partner/
           cp ${{ env.PARTNER_OPENAPI_GENERATED_FILE }} api-docs/partner/
