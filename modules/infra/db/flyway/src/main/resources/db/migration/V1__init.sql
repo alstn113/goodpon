@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS merchants
 (
     id         BIGINT       NOT NULL AUTO_INCREMENT,
     name       VARCHAR(255) NOT NULL,
-    client_id  VARCHAR(35) NOT NULL,
+    client_id  VARCHAR(35)  NOT NULL,
     created_at DATETIME(6)  NOT NULL,
     updated_at DATETIME(6)  NOT NULL,
     PRIMARY KEY (id)
@@ -38,12 +38,12 @@ ALTER TABLE merchant_accounts
 
 CREATE TABLE IF NOT EXISTS merchant_client_secrets
 (
-    id          BIGINT       NOT NULL AUTO_INCREMENT,
-    merchant_id BIGINT       NOT NULL,
+    id          BIGINT      NOT NULL AUTO_INCREMENT,
+    merchant_id BIGINT      NOT NULL,
     secret      VARCHAR(35) NOT NULL,
     expired_at  DATETIME(6),
-    created_at  DATETIME(6)  NOT NULL,
-    updated_at  DATETIME(6)  NOT NULL,
+    created_at  DATETIME(6) NOT NULL,
+    updated_at  DATETIME(6) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
 
@@ -82,8 +82,8 @@ CREATE TABLE IF NOT EXISTS coupon_template_stats
 
 CREATE TABLE IF NOT EXISTS user_coupons
 (
-    id                 BINARY(16) NOT NULL,
-    user_id            BINARY(16) NOT NULL,
+    id                 VARCHAR(32)  NOT NULL,
+    user_id            VARCHAR(255) NOT NULL,
     coupon_template_id BIGINT       NOT NULL,
     status             VARCHAR(30)  NOT NULL,
     expires_at         DATETIME(6),
@@ -96,8 +96,8 @@ CREATE TABLE IF NOT EXISTS user_coupons
 
 CREATE TABLE IF NOT EXISTS coupon_histories
 (
-    id             BINARY(16) NOT NULL,
-    user_coupon_id BINARY(16) NOT NULL,
+    id             VARCHAR(32)  NOT NULL,
+    user_coupon_id VARCHAR(255) NOT NULL,
     order_id       VARCHAR(255),
     action_type    VARCHAR(30)  NOT NULL,
     recorded_at    DATETIME(6)  NOT NULL,

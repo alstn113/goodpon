@@ -17,13 +17,13 @@ import java.time.LocalDateTime
 )
 class UserCouponEntity(
     @Id
-    @Column(columnDefinition = "BINARY(16)")
+    @Column(columnDefinition = "VARCHAR(32)")
     val id: String,
 
     @Column(nullable = false)
     val couponTemplateId: Long,
 
-    @Column(nullable = false, columnDefinition = "BINARY(16)")
+    @Column(nullable = false)
     val userId: String,
 
     @Column(nullable = false)
