@@ -19,9 +19,9 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(libs.epage.restdocs.mockmvc)
     testImplementation(libs.rest.assured)
-    testImplementation(testFixtures(project(":modules:infra:db:jpa")))
     // 생성 후 조회 로직이 없는 것들을 테스트하기 위해 의존함. 코드 레벨에서 의존성을 분리했음.
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation(testFixtures(project(":modules:infra:db:jpa")))
 }
 
 openapi3 {
@@ -34,6 +34,8 @@ openapi3 {
 
 tasks.bootJar {
     enabled = true
+
+    dependsOn("openapi3")
 }
 
 tasks.jar {

@@ -27,7 +27,6 @@ dependencies {
     testImplementation(libs.rest.assured)
     testImplementation(testFixtures(project(":modules:infra:db:jpa")))
     testImplementation(testFixtures(project(":modules:infra:redis")))
-
 }
 
 openapi3 {
@@ -40,6 +39,8 @@ openapi3 {
 
 tasks.bootJar {
     enabled = true
+
+    dependsOn("openapi3")
 }
 
 tasks.jar {
