@@ -12,6 +12,7 @@ import com.goodpon.domain.account.Account
 import com.goodpon.domain.merchant.Merchant
 import com.goodpon.domain.merchant.MerchantAccount
 import com.goodpon.domain.merchant.MerchantClientSecret
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
@@ -65,7 +66,7 @@ class CouponHistoryE2eTest(
             ),
         )
 
-        errorDetails shouldBe expectedErrorDetails
+        errorDetails shouldContainExactlyInAnyOrder expectedErrorDetails
     }
 
     private fun `쿠폰 내역 조회`(
