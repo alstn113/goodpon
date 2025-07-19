@@ -9,7 +9,6 @@ import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummarie
 import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
 import io.mockk.every
 import org.junit.jupiter.api.Test
-import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath

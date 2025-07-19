@@ -16,7 +16,6 @@ import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import io.mockk.every
 import org.junit.jupiter.api.Test
-import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath

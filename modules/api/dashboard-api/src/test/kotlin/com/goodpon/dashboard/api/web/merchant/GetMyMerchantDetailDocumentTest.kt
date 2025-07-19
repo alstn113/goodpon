@@ -11,7 +11,6 @@ import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
 import com.goodpon.domain.merchant.MerchantAccountRole
 import io.mockk.every
 import org.junit.jupiter.api.Test
-import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders
 import org.springframework.restdocs.payload.JsonFieldType
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath

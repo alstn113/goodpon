@@ -23,7 +23,7 @@ class CouponTemplateController(
     private val publishCouponTemplateUseCase: PublishCouponTemplateUseCase,
     private val getMerchantCouponTemplates: GetMerchantCouponTemplatesUseCase,
     private val getMerchantCouponTemplateDetail: GetMerchantCouponTemplateDetailUseCase,
-    private val getCouponHistoriesUseCase: GetCouponHistoriesUseCase
+    private val getCouponHistoriesUseCase: GetCouponHistoriesUseCase,
 ) {
 
     @PostMapping("/v1/merchants/{merchantId}/coupon-templates")

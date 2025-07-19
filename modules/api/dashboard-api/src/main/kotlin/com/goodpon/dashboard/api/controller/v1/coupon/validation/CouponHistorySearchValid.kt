@@ -10,5 +10,5 @@ import kotlin.reflect.KClass
 annotation class CouponHistorySearchValid(
     val message: String = "쿠폰 내역 검색 요청이 유효하지 않습니다.",
     val groups: Array<KClass<*>> = [],
-    val payload: Array<KClass<out Payload>> = []
+    val payload: Array<KClass<out Payload>> = [],
 )
