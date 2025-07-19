@@ -1,3 +1,8 @@
+# 테이블 이름: 복수형 ex) Comments
+# 외래키 제약조건 이름: fk_테이블이름_컬럼이름1
+# 유니크 제약조건 이름: uq_테이블이름_컬럼이름1_컬럼이름2
+# 인덱스 이름: idx_테이블이름_컬럼이름1_컬럼이름2
+
 CREATE TABLE IF NOT EXISTS accounts
 (
     id          BIGINT       NOT NULL AUTO_INCREMENT,
@@ -33,7 +38,7 @@ CREATE TABLE IF NOT EXISTS merchant_accounts
 ) ENGINE = INNODB;
 
 ALTER TABLE merchant_accounts
-    ADD CONSTRAINT fk_merchant_accounts_account_id_XXXX
+    ADD CONSTRAINT fk_merchant_accounts_account_id
         FOREIGN KEY (account_id) REFERENCES accounts (id);
 
 CREATE TABLE IF NOT EXISTS merchant_client_secrets
@@ -46,6 +51,10 @@ CREATE TABLE IF NOT EXISTS merchant_client_secrets
     updated_at  DATETIME(6) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
+
+ALTER TABLE merchant_client_secrets
+    ADD CONSTRAINT fk_merchant_client_secrets_merchant_id
+        FOREIGN KEY (merchant_id) REFERENCES merchants (id);
 
 CREATE TABLE IF NOT EXISTS coupon_templates
 (
@@ -80,6 +89,10 @@ CREATE TABLE IF NOT EXISTS coupon_template_stats
     PRIMARY KEY (coupon_template_id)
 ) ENGINE = INNODB;
 
+ALTER TABLE coupon_template_stats
+    ADD CONSTRAINT fk_coupon_template_stats_coupon_template_id
+        FOREIGN KEY (coupon_template_id) REFERENCES coupon_templates (id);
+
 CREATE TABLE IF NOT EXISTS user_coupons
 (
     id                 VARCHAR(32)  NOT NULL,
@@ -94,6 +107,10 @@ CREATE TABLE IF NOT EXISTS user_coupons
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
 
+ALTER TABLE user_coupons
+    ADD CONSTRAINT fk_user_coupons_coupon_template_id
+        FOREIGN KEY (coupon_template_id) REFERENCES coupon_templates (id);
+
 CREATE TABLE IF NOT EXISTS coupon_histories
 (
     id             VARCHAR(32)  NOT NULL,
@@ -106,3 +123,7 @@ CREATE TABLE IF NOT EXISTS coupon_histories
     updated_at     DATETIME(6)  NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
+
+ALTER TABLE coupon_histories
+    ADD CONSTRAINT fk_coupon_histories_user_coupon_id
+        FOREIGN KEY (user_coupon_id) REFERENCES user_coupons (id);
