@@ -35,7 +35,6 @@ class GetAccountInfoDocumentTest : AbstractDocumentTest() {
             RestDocumentationRequestBuilders
                 .get("/v1/accounts")
                 .withAuthHeader()
-                .contentType(MediaType.APPLICATION_JSON)
         )
 
         // then

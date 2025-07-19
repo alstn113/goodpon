@@ -18,6 +18,7 @@ import com.goodpon.domain.coupon.template.exception.creation.CouponTemplateValid
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
@@ -71,6 +72,18 @@ class DashboardApiControllerAdvice {
         }
 
         val response = ApiResponse.error(ErrorType.COUPON_TEMPLATE_VALIDATION_FAILED, errorDetails)
+        return ResponseEntity(response, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ApiResponse<Unit>> {
+        log.warn("MethodArgumentNotValidException : {}", e.message, e)
+
+        val errorDetails = e.bindingResult.fieldErrors.map { error ->
+            ApiErrorDetail(field = error.field, message = error.defaultMessage ?: "유효하지 않은 값입니다.")
+        }
+
+        val response = ApiResponse.error(ErrorType.BAD_REQUEST, errorDetails)
         return ResponseEntity(response, HttpStatus.BAD_REQUEST)
     }
 

@@ -62,7 +62,6 @@ class GetMerchantCouponTemplateDetailDocumentTest : AbstractDocumentTest() {
             RestDocumentationRequestBuilders
                 .get("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}", 1L, 1L)
                 .withAuthHeader()
-                .contentType(MediaType.APPLICATION_JSON)
         )
 
         // then
@@ -107,7 +106,6 @@ class GetMerchantCouponTemplateDetailDocumentTest : AbstractDocumentTest() {
             RestDocumentationRequestBuilders
                 .get("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}", 1L, 1L)
                 .withAuthHeader()
-                .contentType(MediaType.APPLICATION_JSON)
         )
 
         // then
@@ -148,7 +146,6 @@ class GetMerchantCouponTemplateDetailDocumentTest : AbstractDocumentTest() {
             RestDocumentationRequestBuilders
                 .get("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}", 1L, 1L)
                 .withAuthHeader()
-                .contentType(MediaType.APPLICATION_JSON)
         )
 
         // then
@@ -189,7 +186,6 @@ class GetMerchantCouponTemplateDetailDocumentTest : AbstractDocumentTest() {
             RestDocumentationRequestBuilders
                 .get("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}", 1L, 1L)
                 .withAuthHeader()
-                .contentType(MediaType.APPLICATION_JSON)
         )
 
         // then
@@ -230,7 +226,6 @@ class GetMerchantCouponTemplateDetailDocumentTest : AbstractDocumentTest() {
             RestDocumentationRequestBuilders
                 .get("/v1/merchants/{merchantId}/coupon-templates/{couponTemplateId}", 1L, 1L)
                 .withAuthHeader()
-                .contentType(MediaType.APPLICATION_JSON)
         )
 
         // then

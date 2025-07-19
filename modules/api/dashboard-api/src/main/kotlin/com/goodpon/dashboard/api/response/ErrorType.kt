@@ -8,6 +8,7 @@ enum class ErrorType(
 ) {
     // common
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내 오류가 발생했습니다."),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
     // security
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),

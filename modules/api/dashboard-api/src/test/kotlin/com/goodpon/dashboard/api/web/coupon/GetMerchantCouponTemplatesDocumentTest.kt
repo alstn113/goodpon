@@ -57,7 +57,6 @@ class GetMerchantCouponTemplatesDocumentTest : AbstractDocumentTest() {
             RestDocumentationRequestBuilders
                 .get("/v1/merchants/{merchantId}/coupon-templates", 1L)
                 .withAuthHeader()
-                .contentType(MediaType.APPLICATION_JSON)
         )
 
         // then

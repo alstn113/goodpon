@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring) apply false
-    alias(libs.plugins.kotlin.jpa) apply false
     alias(libs.plugins.spring.boot) apply false
     alias(libs.plugins.spring.dependency.management)
 }
@@ -26,7 +25,6 @@ allprojects {
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
-    apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
 

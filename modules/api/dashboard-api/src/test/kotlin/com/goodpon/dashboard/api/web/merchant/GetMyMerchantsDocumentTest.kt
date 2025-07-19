@@ -45,7 +45,6 @@ class GetMyMerchantsDocumentTest : AbstractDocumentTest() {
             RestDocumentationRequestBuilders
                 .get("/v1/merchants")
                 .withAuthHeader()
-                .contentType(MediaType.APPLICATION_JSON)
         )
 
         // then
