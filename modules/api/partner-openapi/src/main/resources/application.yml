@@ -1,4 +1,4 @@
-spring.application.name: "partner-openapi"
+spring.application.name: partner-openapi
 spring.profiles.active: local
 
 spring:
