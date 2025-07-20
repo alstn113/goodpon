@@ -13,6 +13,8 @@ epage-restdocs = "0.19.4"
 coroutines = "1.9.0"
 flyway = "11.10.1"
 rest-assured = "5.5.5"
+querydsl = "7.0"
+ksp = "1.9.25-1.0.20"
 
 [plugins]
 
@@ -22,6 +24,7 @@ kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
 epage-restdocs = { id = "com.epages.restdocs-api-spec", version.ref = "epage-restdocs" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [libraries]
 
@@ -55,3 +58,8 @@ rest-assured = { module = "io.rest-assured:rest-assured", version.ref = "rest-as
 # flyway
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway" }
+
+# querydsl
+querydsl-jpa = { module = "io.github.openfeign.querydsl:querydsl-jpa", version.ref = "querydsl" }
+querydsl-apt = { module = "io.github.openfeign.querydsl:querydsl-apt", version.ref = "querydsl" }
+querydsl-ksp-codegen = { module = "io.github.openfeign.querydsl:querydsl-ksp-codegen", version.ref = "querydsl" }

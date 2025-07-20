@@ -1,10 +1,8 @@
 plugins {
     alias(libs.plugins.kotlin.jpa)
+    alias(libs.plugins.ksp)
     id("java-test-fixtures")
-    id("com.google.devtools.ksp") version "1.9.25-1.0.20" // for querydsl
 }
-
-val querydslVersion by extra("7.0")
 
 dependencies {
     implementation(project(":modules:domain"))
@@ -15,9 +13,9 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
 
-    implementation("io.github.openfeign.querydsl:querydsl-jpa:${querydslVersion}")
-    annotationProcessor("io.github.openfeign.querydsl:querydsl-apt:${querydslVersion}:jpa")
-    ksp("io.github.openfeign.querydsl:querydsl-ksp-codegen:${querydslVersion}")
+    implementation(libs.querydsl.jpa)
+    annotationProcessor(libs.querydsl.apt)
+    ksp(libs.querydsl.ksp.codegen)
 
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.mysql)
