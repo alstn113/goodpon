@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS accounts
     email       VARCHAR(255) NOT NULL,
     name        VARCHAR(255) NOT NULL,
     password    VARCHAR(255) NOT NULL,
-    verified    BIT          NOT NULL,
+    verified    BIT      NOT NULL,
     verified_at DATETIME(6),
     created_at  DATETIME(6)  NOT NULL,
     updated_at  DATETIME(6)  NOT NULL,
@@ -113,14 +113,14 @@ ALTER TABLE user_coupons
 
 CREATE TABLE IF NOT EXISTS coupon_histories
 (
-    id             VARCHAR(32)  NOT NULL,
-    user_coupon_id VARCHAR(255) NOT NULL,
-    action_type    VARCHAR(30)  NOT NULL,
+    id             VARCHAR(32) NOT NULL,
+    user_coupon_id VARCHAR(32) NOT NULL,
+    action_type    VARCHAR(30) NOT NULL,
     order_id       VARCHAR(255),
     reason         VARCHAR(255),
-    recorded_at    DATETIME(6)  NOT NULL,
-    created_at     DATETIME(6)  NOT NULL,
-    updated_at     DATETIME(6)  NOT NULL,
+    recorded_at    DATETIME(6) NOT NULL,
+    created_at     DATETIME(6) NOT NULL,
+    updated_at     DATETIME(6) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
 
