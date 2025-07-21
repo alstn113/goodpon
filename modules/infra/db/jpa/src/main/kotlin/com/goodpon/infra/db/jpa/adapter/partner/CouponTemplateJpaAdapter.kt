@@ -1,9 +1,9 @@
 package com.goodpon.infra.db.jpa.adapter.partner
 
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateRepository
+import com.goodpon.application.partner.coupon.service.dto.CouponTemplateDetail
 import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.infra.db.jpa.core.CouponTemplateCoreRepository
-import com.goodpon.partner.application.coupon.port.out.CouponTemplateRepository
-import com.goodpon.partner.application.coupon.service.dto.CouponTemplateDetail
 import org.springframework.stereotype.Repository
 
 @Repository("partnerCouponTemplateJpaAdapter")

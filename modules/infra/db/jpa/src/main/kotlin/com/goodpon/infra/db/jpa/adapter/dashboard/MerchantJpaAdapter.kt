@@ -1,9 +1,9 @@
 package com.goodpon.infra.db.jpa.adapter.dashboard
 
-import com.goodpon.dashboard.application.merchant.port.out.MerchantRepository
-import com.goodpon.dashboard.application.merchant.port.out.exception.MerchantNotFoundException
-import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantDetail
-import com.goodpon.dashboard.application.merchant.service.dto.MyMerchantSummary
+import com.goodpon.application.dashboard.merchant.port.out.MerchantRepository
+import com.goodpon.application.dashboard.merchant.port.out.exception.MerchantNotFoundException
+import com.goodpon.application.dashboard.merchant.service.dto.MyMerchantDetail
+import com.goodpon.application.dashboard.merchant.service.dto.MyMerchantSummary
 import com.goodpon.domain.merchant.Merchant
 import com.goodpon.infra.db.jpa.core.MerchantCoreRepository
 import jakarta.persistence.EntityNotFoundException

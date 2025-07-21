@@ -1,7 +1,7 @@
 package com.goodpon.infra.db.jpa.adapter.dashboard
 
-import com.goodpon.dashboard.application.account.port.out.AccountRepository
-import com.goodpon.dashboard.application.account.port.out.exception.AccountNotFoundException
+import com.goodpon.application.dashboard.account.port.out.AccountRepository
+import com.goodpon.application.dashboard.account.port.out.exception.AccountNotFoundException
 import com.goodpon.domain.account.Account
 import com.goodpon.infra.db.jpa.core.AccountCoreRepository
 import jakarta.persistence.EntityNotFoundException

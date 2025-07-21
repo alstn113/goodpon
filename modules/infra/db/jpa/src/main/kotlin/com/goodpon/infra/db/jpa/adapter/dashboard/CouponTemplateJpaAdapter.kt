@@ -1,9 +1,9 @@
 package com.goodpon.infra.db.jpa.adapter.dashboard
 
-import com.goodpon.dashboard.application.coupon.port.out.CouponTemplateRepository
-import com.goodpon.dashboard.application.coupon.port.out.exception.CouponTemplateNotFoundException
-import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateDetail
-import com.goodpon.dashboard.application.coupon.service.dto.CouponTemplateSummary
+import com.goodpon.application.dashboard.coupon.port.out.CouponTemplateRepository
+import com.goodpon.application.dashboard.coupon.port.out.exception.CouponTemplateNotFoundException
+import com.goodpon.application.dashboard.coupon.service.dto.CouponTemplateDetail
+import com.goodpon.application.dashboard.coupon.service.dto.CouponTemplateSummary
 import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.infra.db.jpa.core.CouponTemplateCoreRepository

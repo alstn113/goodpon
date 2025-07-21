@@ -1,9 +1,9 @@
 package com.goodpon.infra.db.jpa.adapter.dashboard
 
-import com.goodpon.dashboard.application.coupon.port.out.CouponHistoryRepository
-import com.goodpon.dashboard.application.coupon.service.dto.CouponHistoryQueryResult
-import com.goodpon.dashboard.application.coupon.service.dto.CouponHistorySummary
-import com.goodpon.dashboard.application.coupon.service.dto.GetCouponHistoriesQuery
+import com.goodpon.application.dashboard.coupon.port.out.CouponHistoryRepository
+import com.goodpon.application.dashboard.coupon.service.dto.CouponHistoryQueryResult
+import com.goodpon.application.dashboard.coupon.service.dto.CouponHistorySummary
+import com.goodpon.application.dashboard.coupon.service.dto.GetCouponHistoriesQuery
 import com.goodpon.domain.coupon.history.CouponHistory
 import com.goodpon.infra.db.jpa.core.CouponHistoryCoreRepository
 import com.goodpon.infra.db.jpa.repository.dto.CouponHistoryQueryDto

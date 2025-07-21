@@ -1,9 +1,9 @@
 package com.goodpon.infra.auth
 
-import com.goodpon.dashboard.application.auth.port.out.TokenProvider
-import com.goodpon.dashboard.application.auth.port.out.exception.BlankTokenException
-import com.goodpon.dashboard.application.auth.port.out.exception.InvalidTokenException
-import com.goodpon.dashboard.application.auth.port.out.exception.TokenExpiredException
+import com.goodpon.application.dashboard.auth.port.out.TokenProvider
+import com.goodpon.application.dashboard.auth.port.out.exception.BlankTokenException
+import com.goodpon.application.dashboard.auth.port.out.exception.InvalidTokenException
+import com.goodpon.application.dashboard.auth.port.out.exception.TokenExpiredException
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.context.properties.EnableConfigurationProperties

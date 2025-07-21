@@ -1,7 +1,7 @@
 package com.goodpon.infra.redis
 
-import com.goodpon.dashboard.application.auth.port.out.EmailVerificationCache
-import com.goodpon.dashboard.application.auth.port.out.dto.EmailVerificationDto
+import com.goodpon.application.dashboard.auth.port.out.EmailVerificationCache
+import com.goodpon.application.dashboard.auth.port.out.dto.EmailVerificationDto
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration

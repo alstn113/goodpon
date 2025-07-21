@@ -1,8 +1,8 @@
 package com.goodpon.infra.db.jpa.adapter.partner
 
+import com.goodpon.application.partner.merchant.port.out.MerchantRepository
 import com.goodpon.domain.merchant.Merchant
 import com.goodpon.infra.db.jpa.core.MerchantCoreRepository
-import com.goodpon.partner.application.merchant.port.out.MerchantRepository
 import org.springframework.stereotype.Repository
 
 @Repository("partnerMerchantJpaAdapter")

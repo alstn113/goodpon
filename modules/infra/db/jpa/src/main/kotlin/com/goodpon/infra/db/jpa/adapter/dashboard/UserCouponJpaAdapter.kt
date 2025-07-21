@@ -1,6 +1,6 @@
 package com.goodpon.infra.db.jpa.adapter.dashboard
 
-import com.goodpon.dashboard.application.coupon.port.out.UserCouponRepository
+import com.goodpon.application.dashboard.coupon.port.out.UserCouponRepository
 import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.infra.db.jpa.core.UserCouponCoreRepository
