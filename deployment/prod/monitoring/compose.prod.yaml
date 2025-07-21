@@ -8,7 +8,7 @@ services:
       - ./loki:/etc/loki
       - loki-data:/loki
     command:
-      - --config.file=/etc/loki/loki-config.yml
+      - '--config.file=/etc/loki/loki.yml'
     networks:
       - monitoring-network
     restart:
@@ -23,8 +23,8 @@ services:
       - ./prometheus:/etc/prometheus
       - prometheus-data:/prometheus
     command:
-      - --web.enable-remote-write-receiver
-      - --config.file=/etc/prometheus/prometheus-config.yml
+      - '--web.enable-remote-write-receiver'
+      - '--config.file=/etc/prometheus/prometheus.yml'
     networks:
       - monitoring-network
     restart:

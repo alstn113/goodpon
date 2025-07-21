@@ -2,9 +2,6 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
-web:
-  enable_remote_write: true
-
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
