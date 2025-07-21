@@ -22,8 +22,6 @@ spring:
   h2:
     console:
       enabled: true
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
 
 ---
 spring.config.activate.on-profile: test
