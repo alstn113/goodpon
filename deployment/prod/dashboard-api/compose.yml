@@ -1,0 +1,33 @@
+services:
+  dashboard-api:
+    build:
+      context: ../../../modules/api/dashboard-api
+      dockerfile: Dockerfile
+    container_name: dashboard-api
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  alloy:
+    image: alloy:latest
+    container_name: alloy
+    volumes:
+      - ./alloy:/etc/alloy
+      - /var/lib/docker/containers:/var/lib/docker/containers
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - --config.file=/etc/alloy/alloy-config.alloy
+    networks:
+      - app-network
+    restart: always
+    environment:
+      LOKI_URL: http://loki:3100/loki/api/v1/push
+    depends_on:
+      dashboard-api:
+        condition: service_started
+
+networks:
+  app-network:
+    driver: bridge

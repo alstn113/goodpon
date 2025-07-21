@@ -1,15 +1,10 @@
-# 테이블 이름: 복수형 ex) Comments
-# 외래키 제약조건 이름: fk_테이블이름_컬럼이름1
-# 유니크 제약조건 이름: uq_테이블이름_컬럼이름1_컬럼이름2
-# 인덱스 이름: idx_테이블이름_컬럼이름1_컬럼이름2
-
 CREATE TABLE IF NOT EXISTS accounts
 (
     id          BIGINT       NOT NULL AUTO_INCREMENT,
     email       VARCHAR(255) NOT NULL,
     name        VARCHAR(255) NOT NULL,
     password    VARCHAR(255) NOT NULL,
-    verified    BIT      NOT NULL,
+    verified    BOOLEAN      NOT NULL,
     verified_at DATETIME(6),
     created_at  DATETIME(6)  NOT NULL,
     updated_at  DATETIME(6)  NOT NULL,

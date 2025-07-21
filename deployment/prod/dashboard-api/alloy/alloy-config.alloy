@@ -1,0 +1,52 @@
+prometheus.exporter.unix "local_system" { }
+
+prometheus.scrape "scrape_metrics" {
+  targets         = prometheus.exporter.unix.local_system.targets
+  forward_to      = [prometheus.relabel.filter_metrics.receiver]
+  scrape_interval = "10s"
+}
+
+prometheus.relabel "filter_metrics" {
+  rule {
+    action        = "drop"
+    source_labels = ["env"]
+    regex         = "dev"
+  }
+
+  forward_to = [prometheus.remote_write.metrics_service.receiver]
+}
+
+prometheus.remote_write "metrics_service" {
+    endpoint {
+        url = "http://localhost:9090/api/v1/write"
+    }
+}
+
+local.file_match "local_files_to_monitor" {
+  path_targets = [{"__path__" = "/var/log/*.log"}]
+  sync_period = "5s"
+}
+
+loki.source.file "log_file_scraper" {
+  targets = local.file_match.local_files_to_monitor.targets
+  forward_to = [loki.process.filter_logs.receiver]
+  tail_from_end = true
+}
+
+loki.process "filter_logs" {
+  input = loki.source.file.log_file_scraper.rules_output
+
+  stage.drop {
+    source = ""
+    expression   = ".*Connection closed by authenticating user root"
+    drop_counter_reason = "noisy_root_connection"
+  }
+
+  forward_to = [loki.write.grafana_loki.receiver]
+}
+
+loki.write "grafana_loki" {
+  endpoint {
+    url = "http://localhost:3100/loki/api/v1/push"
+  }
+}
