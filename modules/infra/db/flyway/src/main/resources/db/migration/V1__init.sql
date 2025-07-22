@@ -1,7 +1,12 @@
+# 테이블 이름 규칙: 복수형 ex) accounts
+# 외래키 제약 조건 이름 규칙: fk_{테이블명}_{컬럼명} ex) fk_merchant_accounts_account_id
+# 인덱스 이름 규칙: idx_{테이블명}_{컬럼명1} ex) idx_merchant_accounts_account_id
+# 유니크 제약 조건 이름 규칙: uq_{테이블명}_{컬럼명1} ex) uq_merchant_accounts_account_id
+
 CREATE TABLE IF NOT EXISTS accounts
 (
     id          BIGINT       NOT NULL AUTO_INCREMENT,
-    email       VARCHAR(255) NOT NULL,
+    email       VARCHAR(255) NOT NULL UNIQUE,
     name        VARCHAR(255) NOT NULL,
     password    VARCHAR(255) NOT NULL,
     verified    BOOLEAN      NOT NULL,
@@ -15,7 +20,7 @@ CREATE TABLE IF NOT EXISTS merchants
 (
     id         BIGINT       NOT NULL AUTO_INCREMENT,
     name       VARCHAR(255) NOT NULL,
-    client_id  VARCHAR(35)  NOT NULL,
+    client_id  VARCHAR(35)  NOT NULL UNIQUE,
     created_at DATETIME(6)  NOT NULL,
     updated_at DATETIME(6)  NOT NULL,
     PRIMARY KEY (id)
@@ -35,6 +40,10 @@ CREATE TABLE IF NOT EXISTS merchant_accounts
 ALTER TABLE merchant_accounts
     ADD CONSTRAINT fk_merchant_accounts_account_id
         FOREIGN KEY (account_id) REFERENCES accounts (id);
+
+ALTER TABLE merchant_accounts
+    ADD CONSTRAINT fk_merchant_accounts_merchant_id
+        FOREIGN KEY (merchant_id) REFERENCES merchants (id);
 
 CREATE TABLE IF NOT EXISTS merchant_client_secrets
 (
@@ -73,6 +82,10 @@ CREATE TABLE IF NOT EXISTS coupon_templates
     updated_at          DATETIME(6)  NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
+
+ALTER TABLE coupon_templates
+    ADD CONSTRAINT fk_coupon_templates_merchant_id
+        FOREIGN KEY (merchant_id) REFERENCES merchants (id);
 
 CREATE TABLE IF NOT EXISTS coupon_template_stats
 (
