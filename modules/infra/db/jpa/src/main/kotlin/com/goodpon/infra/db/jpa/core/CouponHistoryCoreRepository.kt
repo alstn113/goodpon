@@ -87,7 +87,7 @@ class CouponHistoryCoreRepository(
 
     private fun eqUserId(userId: String?): BooleanExpression? {
         return userId?.let {
-            couponHistoryEntity.userCouponId.eq(it)
+            userCouponEntity.userId.eq(it)
         }
     }
 
@@ -99,7 +99,7 @@ class CouponHistoryCoreRepository(
 
     private fun eqCouponTemplateId(couponTemplateId: Long?): BooleanExpression? {
         return couponTemplateId?.let {
-            couponHistoryEntity.userCouponId.eq(it.toString())
+            couponTemplateEntity.id.eq(it)
         }
     }
 
