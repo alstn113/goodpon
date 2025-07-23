@@ -25,6 +25,23 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--web.enable-remote-write-receiver'
+      - '--enable-feature=exemplar-storage'
+      - '--enable-feature=native-histograms'
+    networks:
+      - monitoring-network
+    restart:
+      unless-stopped
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    ports:
+      - "3200:3200"
+      - "4317:4317"
+    volumes:
+      - ./tempo:/etc/tempo
+    command:
+      - '--config.file=/etc/tempo/tempo.yml'
     networks:
       - monitoring-network
     restart:
