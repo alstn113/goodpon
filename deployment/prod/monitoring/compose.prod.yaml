@@ -1,4 +1,41 @@
 services:
+  dashboard-api:
+    build:
+      context: ../../../modules/api/dashboard-api
+      dockerfile: Dockerfile
+    container_name: dashboard-api
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      OTEL_SERVICE_NAME: dashboard-api
+      OTEL_RESOURCE_ATTRIBUTES: service.instance.id=dashboard-api
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://alloy:4317"
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+      OTEL_METRIC_EXPORT_INTERVAL: 30000 # default 60초 -> 30초로 변경
+      OTEL_TRACES_SAMPLER: parentbased_traceidratio
+      OTEL_TRACES_SAMPLER_ARG: 1 # 개발은 1(100%), 운영은 0.1(10%)
+    restart: unless-stopped
+    networks:
+      - monitoring-network
+
+  alloy:
+    image: grafana/alloy:latest
+    container_name: alloy
+    ports:
+      - '4317:4317'
+      - '12345:12345'
+    volumes:
+      - ./alloy/:/etc/alloy/
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    networks:
+      - monitoring-network
+    command: >
+      run --server.http.listen-addr=0.0.0.0:12345
+          --storage.path=/var/lib/alloy/data
+          /etc/alloy/config.alloy
+
   loki:
     image: grafana/loki:latest
     container_name: loki
@@ -37,7 +74,7 @@ services:
     container_name: tempo
     ports:
       - "3200:3200"
-      - "4317:4317"
+      - "4321:4317"
     volumes:
       - ./tempo:/etc/tempo
     command:

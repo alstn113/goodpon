@@ -40,23 +40,20 @@ otelcol.exporter.loki "default" {
 
 otelcol.exporter.otlp "default" {
   client {
-    endpoint = "http://host.docker.internal:4319"
+    endpoint = "http://tempo:4321"
 
-    tls {
-        insecure             = true
-        insecure_skip_verify = true
-    }
+    tls { insecure = true }
   }
 }
 
 prometheus.remote_write "default" {
   endpoint {
-    url = "http://host.docker.internal:9090/api/v1/write"
+    url = "http://prometheus:9090/api/v1/write"
   }
 }
 
 loki.write "default" {
   endpoint {
-    url = "http://host.docker.internal:3100/loki/api/v1/push"
+    url = "http://loki:3100/loki/api/v1/push"
   }
 }

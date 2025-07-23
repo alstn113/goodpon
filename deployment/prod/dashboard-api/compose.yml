@@ -10,7 +10,7 @@ services:
       SPRING_PROFILES_ACTIVE: local
       OTEL_SERVICE_NAME: dashboard-api
       OTEL_RESOURCE_ATTRIBUTES: service.instance.id=dashboard-api
-      OTEL_EXPORTER_OTLP_ENDPOINT: "http://alloy:4319"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://alloy:4317"
       OTEL_EXPORTER_OTLP_PROTOCOL: grpc
       OTEL_METRIC_EXPORT_INTERVAL: 30000 # default 60초 -> 30초로 변경
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
@@ -23,7 +23,7 @@ services:
     image: grafana/alloy:latest
     container_name: alloy
     ports:
-      - '4319:4319'
+      - '4317:4317'
       - '12345:12345'
     volumes:
       - ./alloy/:/etc/alloy/
