@@ -9,6 +9,14 @@ spring:
 ---
 spring.config.activate.on-profile: local
 
+spring:
+  data:
+    redis:
+      host: host.docker.internal
+      port: 6379
+      ssl:
+        enabled: false
+
 ---
 spring.config.activate.on-profile: prod
 

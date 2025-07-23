@@ -14,15 +14,9 @@ spring:
 ---
 spring.config.activate.on-profile: local
 
-
 server.port: 8080
 
 client-host: http://localhost:5173
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus
 
 ---
 spring.config.activate.on-profile: test

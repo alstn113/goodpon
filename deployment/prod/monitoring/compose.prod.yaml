@@ -23,8 +23,8 @@ services:
       - ./prometheus:/etc/prometheus
       - prometheus-data:/prometheus
     command:
-      - '--web.enable-remote-write-receiver'
       - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-remote-write-receiver'
     networks:
       - monitoring-network
     restart:

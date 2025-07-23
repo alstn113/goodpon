@@ -29,7 +29,6 @@ class SecurityConfig(
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         val tokenAllowListPatterns = listOf(
-            "/actuator/prometheus",
             "/v1/accounts/sign-up",
             "/v1/auth/login",
             "/v1/auth/verify",

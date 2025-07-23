@@ -1,54 +1,46 @@
-/********************************************
- * Metrics
- ********************************************/
+livedebugging {
+  enabled = true
+}
 
-prometheus.exporter.self "default" {}
+logging {
+  level  = "info"
+  format = "logfmt"
+}
 
-prometheus.scrape "services" {
-  targets = [
-    { __address__ = "dashboard-api:8080", __metrics_path__ = "/actuator/prometheus", job = "services/spring-boot" },
-  ]
+otelcol.receiver.otlp "default" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
 
-  scrape_interval = "5s"
-  scrape_timeout  = "5s"
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
 
-  forward_to = [prometheus.remote_write.default.receiver]
+  output {
+    metrics = [otelcol.processor.batch.default.input]
+    logs    = [otelcol.processor.batch.default.input]
+  }
+}
+
+otelcol.processor.batch "default" {
+  output {
+    metrics = [otelcol.exporter.prometheus.default.input]
+    logs    = [otelcol.exporter.loki.default.input]
+  }
+}
+
+otelcol.exporter.prometheus "default" {
+    forward_to = [prometheus.remote_write.default.receiver]
+}
+
+otelcol.exporter.loki "default" {
+  forward_to = [loki.write.default.receiver]
 }
 
 prometheus.remote_write "default" {
   endpoint {
     url = "http://host.docker.internal:9090/api/v1/write"
   }
-}
-
-/********************************************
- * Logging
- ********************************************/
-
-logging {
-  level = "info"
-  format = "logfmt"
-}
-
-discovery.docker "docker" {
-  host = "unix:///var/run/docker.sock"
-}
-
-discovery.relabel "docker_relabel" {
-  targets = discovery.docker.docker.targets
-
-  rule {
-    source_labels = ["__meta_docker_container_name"]
-    regex         = "/(.*)"
-    target_label  = "service_name"
-  }
-}
-
-loki.source.docker "docker_logs" {
-  host       = "unix:///var/run/docker.sock"
-  targets    = discovery.relabel.docker_relabel.output
-  labels     = { platform = "docker" }
-  forward_to = [loki.write.default.receiver]
 }
 
 loki.write "default" {
