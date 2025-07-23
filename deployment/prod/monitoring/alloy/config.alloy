@@ -20,8 +20,8 @@ otelcol.receiver.otlp "default" {
 
 otelcol.processor.batch "default" {
   send_batch_max_size = 1000
-  send_batch_size = 100
-  timeout = "10s"
+  send_batch_size = 250
+  timeout = "5s"
 
   output {
     metrics = [otelcol.exporter.prometheus.default.input]
