@@ -6,7 +6,6 @@ spring:
     import:
       - infra-db-jpa.yml
       - infra-db-flyway.yml
-      - logging.yml
 
 ---
 spring.config.activate.on-profile: local

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %clr(%d{HH:mm:ss.SSS}){faint}|%clr(${level:-%5p})|%32X{traceId:-},%16X{spanId:-}|%clr(%-40.40logger{39}){cyan}%clr(|){faint}%m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}
+            </pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <springProfile name="local,test">
+        <logger name="com.goodpon.api" level="DEBUG"/>
+        <logger name="org.springframework" level="INFO"/>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="local-dev">
+        <logger name="com.goodpon.api" level="INFO"/>
+        <logger name="com.goodpon.infra" level="DEBUG"/>
+        <logger name="org.springframework" level="WARN"/>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!--  운영환경은 OTLP 전송만, 콘솔 출력은 없음 -->
+    <springProfile name="prod">
+        <logger name="com.goodpon.api" level="INFO"/>
+        <logger name="org.springframework" level="WARN"/>
+
+        <root level="INFO">
+            <appender name="DISCARD" class="ch.qos.logback.core.NOPAppender"/>
+        </root>
+    </springProfile>
+</configuration>
