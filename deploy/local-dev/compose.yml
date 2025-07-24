@@ -34,10 +34,50 @@ services:
     image: grafana/alloy:latest
     container_name: dashboard-api-alloy
     ports:
-      - '4317:4317'
       - '12345:12345'
     volumes:
       - ./dashboard-api/alloy/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    command: >
+      run --server.http.listen-addr=0.0.0.0:12345
+          --storage.path=/var/lib/alloy/data
+          /etc/alloy/config.alloy
+
+  partner-openapi:
+    image: goodpon/partner-openapi:latest
+    container_name: partner-openapi
+    ports:
+      - '8081:8080'
+    environment:
+      SPRING_PROFILES_ACTIVE: local-dev
+      # DB 설정
+      DB_URL: ${DB_URL}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      # OpenTelemetry 설정
+      OTEL_SERVICE_NAME: partner-openapi
+      OTEL_RESOURCE_ATTRIBUTES: service.instance.id=partner-openapi
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://partner-openapi-alloy:4317"
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+      OTEL_METRIC_EXPORT_INTERVAL: 30000
+      OTEL_TRACES_SAMPLER: parentbased_traceidratio
+      OTEL_TRACES_SAMPLER_ARG: 1
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  partner-openapi-alloy:
+    image: grafana/alloy:latest
+    container_name: partner-openapi-alloy
+    ports:
+      - '12346:12345'
+    volumes:
+      - ./partner-openapi/alloy/config.alloy:/etc/alloy/config.alloy
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     command: >
@@ -117,7 +157,6 @@ services:
     container_name: tempo
     ports:
       - "3200:3200"
-      - "4321:4317"
     volumes:
       - ./monitoring/tempo:/etc/tempo
     command:

@@ -1,25 +1,33 @@
 spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: validate
     properties:
-      hibernate.default_batch_fetch_size: 100
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        default_batch_fetch_size: 100
         format_sql: true
         show_sql: true
         highlight_sql: true
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 ---
 spring.config.activate.on-profile: local
 
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   datasource:
-    url: jdbc:mysql://localhost:3306/goodpon?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useUnicode=true&character_set_server=utf8mb4
-    username: appuser
-    password: apppassword
+    url: jdbc:h2:mem:local;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
 ---
 spring.config.activate.on-profile: test
@@ -30,14 +38,18 @@ logging:
     org.springframework.orm.transaction: debug
     org.hibernate.orm.jdbc.bind: trace
 
+
 ---
-spring.config.activate.on-profile: prod
+spring.config.activate.on-profile: "local-dev, prod"
 
 spring:
+  flyway:
+    enabled: false
   datasource:
-    url: jdbc:mysql://${DB_CORE_URL}
-    username: ${DB_CORE_USERNAME}
-    password: ${DB_CORE_PASSWORD}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
       hibernate:

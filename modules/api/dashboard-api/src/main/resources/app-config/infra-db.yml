@@ -8,8 +8,9 @@ spring:
     hibernate:
       ddl-auto: validate
     properties:
-      hibernate.default_batch_fetch_size: 100
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        default_batch_fetch_size: 100
         format_sql: true
         show_sql: true
         highlight_sql: true
@@ -27,10 +28,6 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
 
 ---
 spring.config.activate.on-profile: test
@@ -50,6 +47,7 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
       hibernate:

@@ -1,16 +1,10 @@
 spring.application.name: partner-openapi
 spring.profiles.active: local
 
-spring:
-  config:
-    import:
-      - infra-db-jpa.yml
-      - infra-db-flyway.yml
+spring.config.import:
+  - classpath:app-config/infra-db.yml
 
 ---
 spring.config.activate.on-profile: local
 
 server.port: 8081
-
----
-spring.config.activate.on-profile: prod
