@@ -1,8 +1,13 @@
 plugins {
     alias(libs.plugins.epage.restdocs)
+    alias(libs.plugins.jib)
 }
 
+val agent: Configuration = configurations.create("agent")
+
 dependencies {
+    agent("io.opentelemetry.javaagent:opentelemetry-javaagent:2.18.1")
+
     runtimeOnly(project(":modules:infra:db:jpa"))
     runtimeOnly(project(":modules:infra:db:flyway"))
     runtimeOnly(project(":modules:infra:aws:ses"))
@@ -37,10 +42,56 @@ openapi3 {
     format = "yaml"
 }
 
+val copyAgent = tasks.register<Copy>("copyAgent") {
+    group = "build"
+    description = "Copies the OpenTelemetry Java agent to the build directory."
+
+    from(agent.singleFile)
+    into(layout.buildDirectory.dir("agent"))
+    rename("opentelemetry-javaagent-.*\\.jar", "opentelemetry-javaagent.jar")
+}
+
+jib {
+    from {
+        image = "eclipse-temurin:21-jdk"
+        platforms {
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+        }
+    }
+
+    to {
+        image = "goodpon/dashboard-api"
+    }
+
+    extraDirectories {
+        paths {
+            path {
+                setFrom(layout.buildDirectory.dir("agent"))
+                into = "/otelagent"
+            }
+        }
+    }
+
+    container {
+        jvmFlags = listOf(
+            "-javaagent:/otelagent/opentelemetry-javaagent.jar"
+        )
+    }
+}
+
+tasks.jibDockerBuild.configure {
+    dependsOn(copyAgent)
+}
+
 tasks.bootJar {
     enabled = true
+    archiveFileName = "app.jar"
 
     dependsOn("openapi3")
+    dependsOn(copyAgent)
 }
 
 tasks.jar {
