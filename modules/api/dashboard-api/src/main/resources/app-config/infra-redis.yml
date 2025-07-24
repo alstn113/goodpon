@@ -12,13 +12,13 @@ spring.config.activate.on-profile: local
 spring:
   data:
     redis:
-      host: host.docker.internal
+      host: localhost
       port: 6379
       ssl:
         enabled: false
 
 ---
-spring.config.activate.on-profile: prod
+spring.config.activate.on-profile: "local-dev, prod"
 
 spring:
   data:
@@ -26,4 +26,4 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       ssl:
-        enabled: true
+        enabled: ${REDIS_SSL_ENABLED}

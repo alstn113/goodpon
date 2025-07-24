@@ -1,25 +1,14 @@
 spring.application.name: dashboard-api
 spring.profiles.active: local
 
-spring:
-  config:
-    import:
-      - infra-db-jpa.yml
-      - infra-db-flyway.yml
-      - infra-redis.yml
-      - infra-aws-ses.yml
-      - infra-auth.yml
-      - logging.yml
-
----
-spring.config.activate.on-profile: local
+spring.config.import:
+  - classpath:app-config/infra-db.yml
+  - classpath:app-config/infra-redis.yml
+  - classpath:app-config/infra-aws-ses.yml
+  - classpath:app-config/infra-auth.yml
+  - logging.yml
 
 server.port: 8080
-
-client-host: http://localhost:5173
-
----
-spring.config.activate.on-profile: test
 
 client-host: http://localhost:5173
 
@@ -27,4 +16,3 @@ client-host: http://localhost:5173
 spring.config.activate.on-profile: prod
 
 client-host: ${CLIENT_HOST}
-

@@ -45,7 +45,7 @@ services:
       - ./loki:/etc/loki
       - loki-data:/loki
     command:
-      - '--config.file=/etc/loki/loki.yml'
+      - '--app-config.file=/etc/loki/loki.yml'
     networks:
       - monitoring-network
     restart:
@@ -60,7 +60,7 @@ services:
       - ./prometheus:/etc/prometheus
       - prometheus-data:/prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--app-config.file=/etc/prometheus/prometheus.yml'
       - '--web.enable-remote-write-receiver'
       - '--enable-feature=exemplar-storage'
       - '--enable-feature=native-histograms'
@@ -78,7 +78,7 @@ services:
     volumes:
       - ./tempo:/etc/tempo
     command:
-      - '--config.file=/etc/tempo/tempo.yml'
+      - '--app-config.file=/etc/tempo/tempo.yml'
     networks:
       - monitoring-network
     restart:

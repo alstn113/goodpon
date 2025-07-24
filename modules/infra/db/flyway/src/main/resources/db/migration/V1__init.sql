@@ -1,8 +1,3 @@
-# 테이블 이름 규칙: 복수형 ex) accounts
-# 외래키 제약 조건 이름 규칙: fk_{테이블명}_{컬럼명} ex) fk_merchant_accounts_account_id
-# 인덱스 이름 규칙: idx_{테이블명}_{컬럼명1} ex) idx_merchant_accounts_account_id
-# 유니크 제약 조건 이름 규칙: uq_{테이블명}_{컬럼명1} ex) uq_merchant_accounts_account_id
-
 CREATE TABLE IF NOT EXISTS accounts
 (
     id          BIGINT       NOT NULL AUTO_INCREMENT,

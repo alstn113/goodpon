@@ -1,11 +1,8 @@
 security:
   jwt:
     access-token:
-      secret-key: abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz
+      secret-key: secret-key-12345-secret-key-12345-secret-key-12345-secret-key-12345
       expiration-time: 86400000 # 1 day
-
----
-spring.config.activate.on-profile: local
 
 ---
 spring.config.activate.on-profile: prod

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 @Component
-@Profile("local", "test")
+@Profile("!prod")
 class FakeVerificationEmailSender : VerificationEmailSender {
 
     private val log = LoggerFactory.getLogger(javaClass)

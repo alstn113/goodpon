@@ -12,12 +12,9 @@ ALTER TABLE user_coupons
 ALTER TABLE user_coupons
     ADD INDEX idx_user_coupons_user_id_status (user_id, status);
 
--- 쿠폰의 마지막 쿠폰 내역 조회 최적화
 ALTER TABLE coupon_histories
     ADD INDEX idx_coupon_histories_user_coupon_id_recorded_at (user_coupon_id, recorded_at DESC);
--- findCouponHistories 날짜 필터링, 정렬 최적화
 ALTER TABLE coupon_histories
     ADD INDEX idx_coupon_histories_recorded_at_id (recorded_at, id);
--- findCouponHistories order_id 필터링 최적화
 ALTER TABLE coupon_histories
     ADD INDEX idx_coupon_histories_order_id (order_id);
