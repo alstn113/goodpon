@@ -92,9 +92,15 @@ interface CouponTemplateJpaRepository : JpaRepository<CouponTemplateEntity, Long
         FROM CouponTemplateEntity couponTemplate
         LEFT JOIN CouponTemplateStatsEntity stats
             ON stats.couponTemplateId = couponTemplate.id
-        WHERE couponTemplate.id = :couponTemplateId AND couponTemplate.merchantId = :merchantId
+        WHERE couponTemplate.id = :couponTemplateId 
+            AND couponTemplate.merchantId = :merchantId
+            AND couponTemplate.status = :couponStatus
         ORDER BY couponTemplate.createdAt DESC
         """
     )
-    fun findByIdAndMerchantIdWithStats(couponTemplateId: Long, merchantId: Long): CouponTemplateDetailDto?
+    fun findByIdAndMerchantIdWithStats(
+        couponTemplateId: Long,
+        merchantId: Long,
+        couponStatus: CouponTemplateStatus = CouponTemplateStatus.ISSUABLE,
+    ): CouponTemplateDetailDto?
 }
