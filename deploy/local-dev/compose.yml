@@ -23,6 +23,7 @@ services:
       OTEL_METRIC_EXPORT_INTERVAL: 30000 # default 60초 -> 30초로 변경
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
       OTEL_TRACES_SAMPLER_ARG: 1 # 개발은 1(100%), 운영은 0.1(10%)
+      OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true # Micrometer 사용
     restart: unless-stopped
     depends_on:
       mysql:
@@ -64,6 +65,7 @@ services:
       OTEL_METRIC_EXPORT_INTERVAL: 30000
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
       OTEL_TRACES_SAMPLER_ARG: 1
+      OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true
     restart: unless-stopped
     depends_on:
       mysql:
