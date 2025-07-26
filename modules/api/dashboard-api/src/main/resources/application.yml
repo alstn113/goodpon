@@ -1,6 +1,11 @@
 spring.application.name: dashboard-api
 spring.profiles.active: local
 
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
 spring.config.import:
   - classpath:app-config/infra-db.yml
   - classpath:app-config/infra-redis.yml
