@@ -101,6 +101,8 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
       - ./infra/mysql/init:/docker-entrypoint-initdb.d
+      - ./infra/mysql/config:/etc/mysql/conf.d
+      - ./infra/mysql/logs:/var/log/mysql
     restart: unless-stopped
     command:
       - --character-set-server=utf8mb4
