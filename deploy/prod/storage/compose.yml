@@ -1,0 +1,83 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: Asia/Seoul
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/config:/etc/mysql/conf.d
+      - ./mysql/logs:/var/log/mysql
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-P", "3306", "-uroot", "-p${DB_ROOT_PASSWORD}" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    networks:
+      - mysql-network
+
+  mysql-exporter:
+    image: prom/mysqld-exporter
+    container_name: mysql-exporter
+    ports:
+      - "9104:9104"
+    volumes:
+      - ./exporter/mysql/.my.cnf:/.my.cnf
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mysql-network
+
+  redis:
+    image: valkey/valkey:8.0.1
+    container_name: redis
+    volumes:
+      - redis-data:/data
+    ports:
+      - '6379:6379'
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "valkey-cli", "ping" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - redis-network
+
+  redis-exporter:
+    image: oliver006/redis_exporter
+    container_name: redis-exporter
+    ports:
+      - "9121:9121"
+    environment:
+      REDIS_ADDR: redis:6379
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - redis-network
+
+volumes:
+  mysql-data:
+  redis-data:
+
+networks:
+  mysql-network:
+    driver: bridge
+  redis-network:
+    driver: bridge

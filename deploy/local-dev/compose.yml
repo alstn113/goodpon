@@ -1,6 +1,6 @@
 services:
   dashboard-api:
-    image: goodpon/dashboard-api:latest
+    image: goodpon/dashboard-api
     container_name: dashboard-api
     ports:
       - '8080:8080'
@@ -32,7 +32,7 @@ services:
         condition: service_healthy
 
   dashboard-api-alloy:
-    image: grafana/alloy:latest
+    image: grafana/alloy
     container_name: dashboard-api-alloy
     ports:
       - '12345:12345'
@@ -46,7 +46,7 @@ services:
           /etc/alloy/config.alloy
 
   partner-openapi:
-    image: goodpon/partner-openapi:latest
+    image: goodpon/partner-openapi
     container_name: partner-openapi
     ports:
       - '8081:8080'
@@ -74,7 +74,7 @@ services:
         condition: service_healthy
 
   partner-openapi-alloy:
-    image: grafana/alloy:latest
+    image: grafana/alloy
     container_name: partner-openapi-alloy
     ports:
       - '12346:12345'
@@ -100,9 +100,9 @@ services:
       - '3306:3306'
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./infra/mysql/init:/docker-entrypoint-initdb.d
-      - ./infra/mysql/config:/etc/mysql/conf.d
-      - ./infra/mysql/logs:/var/log/mysql
+      - ./storage/mysql/init:/docker-entrypoint-initdb.d
+      - ./storage/mysql/config:/etc/mysql/conf.d
+      - ./storage/mysql/logs:/var/log/mysql
     restart: unless-stopped
     command:
       - --character-set-server=utf8mb4
@@ -114,13 +114,13 @@ services:
       retries: 10
       start_period: 10s
 
-  mysql_exporter:
+  mysql-exporter:
     image: prom/mysqld-exporter
-    container_name: mysql_exporter
+    container_name: mysql-exporter
     ports:
       - "9104:9104"
     volumes:
-      - ./monitoring/prometheus/exporter/mysql/.my.cnf:/.my.cnf
+      - ./storage/exporter/mysql/.my.cnf:/.my.cnf
     depends_on:
       mysql:
         condition: service_healthy
@@ -153,7 +153,7 @@ services:
     restart: unless-stopped
 
   loki:
-    image: grafana/loki:latest
+    image: grafana/loki
     container_name: loki
     ports:
       - "3100:3100"
@@ -165,8 +165,35 @@ services:
     restart:
       unless-stopped
 
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - loki
+    restart:
+      unless-stopped
+
+  tempo:
+    image: grafana/tempo
+    container_name: tempo
+    ports:
+      - "3200:3200"
+    volumes:
+      - ./monitoring/tempo:/etc/tempo
+      - tempo-data:/var/tempo
+    command:
+      - '--config.file=/etc/tempo/tempo.yml'
+    restart:
+      unless-stopped
+
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus
     container_name: prometheus
     ports:
       - "9090:9090"
@@ -181,35 +208,10 @@ services:
     restart:
       unless-stopped
 
-  tempo:
-    image: grafana/tempo:latest
-    container_name: tempo
-    ports:
-      - "3200:3200"
-    volumes:
-      - ./monitoring/tempo:/etc/tempo
-    command:
-      - '--config.file=/etc/tempo/tempo.yml'
-    restart:
-      unless-stopped
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
-      - grafana-data:/var/lib/grafana
-    depends_on:
-      - prometheus
-      - loki
-    restart:
-      unless-stopped
-
 volumes:
   mysql-data:
   redis-data:
-  prometheus-data:
-  grafana-data:
   loki-data:
+  grafana-data:
+  tempo-data:
+  prometheus-data:
