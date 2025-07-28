@@ -86,6 +86,10 @@ tasks.jibDockerBuild.configure {
     dependsOn(copyAgent)
 }
 
+tasks.jib.configure {
+    dependsOn(copyAgent)
+}
+
 tasks.bootJar {
     enabled = true
     archiveFileName = "app.jar"
