@@ -7,6 +7,8 @@ jobs:
   build-image:
     name: Build Docker Image
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
 
     env:
       REGISTRY: ghcr.io
