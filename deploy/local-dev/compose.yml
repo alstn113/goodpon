@@ -1,5 +1,8 @@
 services:
   dashboard-api:
+    build:
+      context: ../../modules/api/dashboard-api
+      dockerfile: Dockerfile
     image: goodpon/dashboard-api
     container_name: dashboard-api
     ports:
@@ -46,6 +49,9 @@ services:
           /etc/alloy/config.alloy
 
   partner-openapi:
+    build:
+      context: ../../modules/api/partner-openapi
+      dockerfile: Dockerfile
     image: goodpon/partner-openapi
     container_name: partner-openapi
     ports:

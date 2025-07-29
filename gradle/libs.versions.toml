@@ -15,7 +15,6 @@ flyway = "11.10.3"
 rest-assured = "5.5.5"
 querydsl = "7.0"
 ksp = "1.9.25-1.0.20"
-jib = "3.4.5"
 
 [plugins]
 
@@ -26,7 +25,6 @@ spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
 epage-restdocs = { id = "com.epages.restdocs-api-spec", version.ref = "epage-restdocs" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
 
 [libraries]
 
