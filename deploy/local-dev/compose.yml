@@ -17,7 +17,6 @@ services:
       # Redis 설정
       REDIS_HOST: ${REDIS_HOST}
       REDIS_PORT: ${REDIS_PORT}
-      REDIS_SSL_ENABLED: ${REDIS_SSL_ENABLED}
       # OpenTelemetry 설정
       OTEL_SERVICE_NAME: dashboard-api
       OTEL_RESOURCE_ATTRIBUTES: service.instance.id=dashboard-api

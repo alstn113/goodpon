@@ -1,0 +1,38 @@
+services:
+  dashboard-api:
+    image: ${DOCKER_IMAGE}
+    container_name: dashboard-api
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      # DB 설정
+      DB_URL: ${DB_URL}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      # Redis 설정
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      # 기타
+      JWT_ACCESS_TOKEN_SECRET_KEY: ${JWT_ACCESS_TOKEN_SECRET_KEY}
+      CLIENT_HOST: ${CLIENT_HOST}
+      AWS_SES_REGION: ${AWS_SES_REGION}
+      AWS_SES_ACCESS_KEY_ID: ${AWS_SES_ACCESS_KEY_ID}
+      AWS_SES_SECRET_ACCESS_KEY: ${AWS_SES_SECRET_ACCESS_KEY}
+      # OpenTelemetry 설정
+      OTEL_SERVICE_NAME: dashboard-api
+      OTEL_RESOURCE_ATTRIBUTES: service.instance.id=dashboard-api
+      OTEL_EXPORTER_OTLP_ENDPOINT: 'http://dashboard-api-alloy:4317'
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+      OTEL_METRIC_EXPORT_INTERVAL: 30000
+      OTEL_TRACES_SAMPLER: parentbased_traceidratio
+      OTEL_TRACES_SAMPLER_ARG: 0.1
+      OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true
+    restart: unless-stopped
+    networks:
+      - dashboard-network
+
+networks:
+  dashboard-network:
+    external: true

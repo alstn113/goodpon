@@ -37,7 +37,6 @@ class RedisConfig(
             port = properties.port
         }
         val clientConfigBuilder = LettuceClientConfiguration.builder()
-        if (properties.ssl.enabled) clientConfigBuilder.useSsl()
         return LettuceConnectionFactory(configuration, clientConfigBuilder.build())
     }
 

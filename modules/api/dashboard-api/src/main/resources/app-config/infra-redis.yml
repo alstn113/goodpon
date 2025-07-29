@@ -3,8 +3,6 @@ spring:
     redis:
       host: localhost
       port: 6379
-      ssl:
-        enabled: false
 
 ---
 spring.config.activate.on-profile: local
@@ -14,8 +12,6 @@ spring:
     redis:
       host: localhost
       port: 6379
-      ssl:
-        enabled: false
 
 ---
 spring.config.activate.on-profile: "local-dev, prod"
@@ -25,5 +21,3 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
-      ssl:
-        enabled: ${REDIS_SSL_ENABLED}

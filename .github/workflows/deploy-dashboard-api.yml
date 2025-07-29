@@ -8,7 +8,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}/dashboard-api
 
 jobs:
-  build-image:
+  build:
     name: Build
     runs-on: ubuntu-latest
 
@@ -30,7 +30,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean bootJar # 임시
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -47,52 +47,52 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           platforms: linux/arm64
 
+  deploy:
+    name: Deploy
+    runs-on: [self-hosted, dashboard-api]
+    needs: build
 
-#  deploy:
-#    name: Deploy to Production Server
-#    runs-on: [ self-hosted, dashboard-api ]
-#    needs: build-image
-#
-#    env:
-#      REGISTRY: ghcr.io
-#      IMAGE_NAME: goodpon/dashboard-api
-#      TARGET_DIR: /dashboard-api
-#
-#    steps:
-#      - name: Checkout Repository
-#        uses: actions/checkout@v4
-#
-#      - name: Set environment variables from secrets
-#        env:
-#          SECRET_CONTEXT: ${{ toJson(secrets) }}
-#        run: |
-#          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-#          to_envs() {
-#            jq -r "( . // {} ) | to_entries[] | \"\(.key)<<$EOF\n\(.value)\n$EOF\n\""
-#          }
-#          echo "$SECRETS_CONTEXT" | to_envs >> $GITHUB_ENV
-#
-#      - name: Generate .env from .env.example
-#        run: |
-#          envsubst < .env.example > .env
-#          echo ".env file created:"
-#          cat .env
-#
-#      - name: Copy compose.yml and config.alloy
-#        run: |
-#          mkdir -p ${{ env.TARGET_DIR }}
-#          cp -r deploy/prod/dashboard-api/* ${{ env.TARGET_DIR }}
-#
-#      - name: Login to the Container registry
-#        uses: docker/login-action@v3
-#        with:
-#          registry: ${{ env.REGISTRY }}
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#
-#      - name: Pull and run Docker containers
-#        working-directory: ${{ env.TARGET_DIR }}
-#        run: |
-#          docker compose pull
-#          docker compose down --remove-orphans
-#          docker compose up -d
+    defaults:
+      run:
+        working-directory: ./deploy/prod/dashboard-api
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Login to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set environment variables from secrets
+        env:
+          SECRET_CONTEXT: ${{ toJson(secrets) }}
+        run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          to_envs() {
+            jq -r "( . // {} ) | to_entries[] | \"\(.key)<<$EOF\n\(.value)\n$EOF\n\""
+          }
+          echo "$SECRET_CONTEXT" | to_envs >> $GITHUB_ENV
+
+      - name: Generate .env from .env.example
+        run: |
+          envsubst < .env.example > .env
+          echo ".env file created:"
+          cat .env
+
+      - name: Deploy with Docker Compose
+        env:
+          DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        run: |
+          docker compose down
+          docker compose pull
+          docker compose up -d
+        
+      - name: Docker remove unused images
+        run: docker image prune -af
+
+      - name: Check running containers
+        run: docker ps -a

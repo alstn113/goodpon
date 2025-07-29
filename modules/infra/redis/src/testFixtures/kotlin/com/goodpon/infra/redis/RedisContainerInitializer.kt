@@ -20,7 +20,6 @@ class RedisContainerInitializer : ApplicationContextInitializer<ConfigurableAppl
         val properties: Map<String, String> = mapOf(
             "spring.data.redis.host" to REDIS.host,
             "spring.data.redis.port" to REDIS.firstMappedPort.toString(),
-            "spring.data.redis.ssl.enabled" to false.toString()
         )
 
         TestPropertyValues.of(properties).applyTo(context)
