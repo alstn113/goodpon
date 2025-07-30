@@ -11,6 +11,7 @@ import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNo
 import com.goodpon.application.partner.coupon.service.exception.UserCouponAlreadyIssuedException
 import com.goodpon.domain.coupon.service.CouponIssuer
 import com.goodpon.domain.coupon.template.CouponTemplate
+import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuanceLimitExceededException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -31,17 +32,14 @@ class IssueCouponService(
         validateCouponTemplateOwnership(couponTemplate, command.merchantId)
         validateAlreadyIssued(command.userId, command.couponTemplateId)
 
-        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId)
-
-        val userCoupon = CouponIssuer.issue(
-            couponTemplate = couponTemplate,
-            userId = command.userId,
-            currentIssueCount = stats.issueCount,
-            issueAt = now
-        )
+        val userCoupon = CouponIssuer.issue(couponTemplate = couponTemplate, userId = command.userId, issueAt = now)
         val savedUserCoupon = userCouponAccessor.createUserCoupon(userCoupon)
-
         couponHistoryAccessor.recordIssued(userCouponId = savedUserCoupon.id, recordedAt = now)
+
+        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId)
+        couponTemplate.maxIssueCount()?.let {
+            if (stats.issueCount >= it) throw CouponTemplateIssuanceLimitExceededException()
+        }
         couponTemplateStatsAccessor.incrementIssueCount(stats)
 
         return IssueCouponResult(

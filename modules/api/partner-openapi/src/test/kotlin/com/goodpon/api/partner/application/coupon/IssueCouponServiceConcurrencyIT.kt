@@ -4,7 +4,6 @@ import com.goodpon.api.partner.support.AbstractIntegrationTest
 import com.goodpon.api.partner.support.accessor.*
 import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponCommand
 import com.goodpon.application.partner.coupon.service.IssueCouponService
-import com.goodpon.application.partner.coupon.service.exception.UserCouponAlreadyIssuedException
 import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuanceLimitExceededException
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import io.kotest.common.runBlocking

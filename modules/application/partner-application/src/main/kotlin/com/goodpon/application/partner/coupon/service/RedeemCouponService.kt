@@ -11,6 +11,7 @@ import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNo
 import com.goodpon.application.partner.coupon.service.exception.UserCouponNotOwnedByUserException
 import com.goodpon.domain.coupon.service.CouponRedeemer
 import com.goodpon.domain.coupon.template.CouponTemplate
+import com.goodpon.domain.coupon.template.exception.CouponTemplateRedemptionLimitExceededException
 import com.goodpon.domain.coupon.user.UserCoupon
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -29,7 +30,6 @@ class RedeemCouponService(
         val now = LocalDateTime.now()
 
         val userCoupon = userCouponAccessor.readByIdForUpdate(command.userCouponId)
-        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         val couponTemplate = couponTemplateAccessor.readById(userCoupon.couponTemplateId)
 
         validateCouponTemplateOwnership(couponTemplate, command.merchantId)
@@ -38,17 +38,20 @@ class RedeemCouponService(
         val result = CouponRedeemer.redeem(
             couponTemplate = couponTemplate,
             userCoupon = userCoupon,
-            currentRedeemCount = stats.redeemCount,
             orderAmount = command.orderAmount,
             redeemAt = now
         )
         val redeemedCoupon = userCouponAccessor.update(result.redeemedCoupon)
-
         couponHistoryAccessor.recordRedeemed(
             userCouponId = redeemedCoupon.id,
             recordedAt = now,
             orderId = command.orderId
         )
+
+        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
+        couponTemplate.maxRedeemCount()?.let {
+            if (stats.redeemCount >= it) throw CouponTemplateRedemptionLimitExceededException()
+        }
         couponTemplateStatsAccessor.incrementRedeemCount(stats)
 
         return RedeemCouponResult(

@@ -25,7 +25,6 @@ class CancelCouponRedemptionService(
         val now = LocalDateTime.now()
 
         val userCoupon = userCouponAccessor.readByIdForUpdate(command.userCouponId)
-        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         val couponTemplate = couponTemplateAccessor.readById(userCoupon.couponTemplateId)
 
         validateCouponTemplateOwnership(couponTemplate, command.merchantId)
@@ -36,6 +35,8 @@ class CancelCouponRedemptionService(
             cancelReason = command.cancelReason,
             cancelAt = now
         )
+
+        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
         couponTemplateStatsAccessor.decrementRedeemCount(stats)
 
         return CancelCouponRedemptionResult(

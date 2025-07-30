@@ -60,7 +60,7 @@ class CouponTemplateTest : DescribeSpec({
             val cannotIssueAt = LocalDateTime.of(2025, 7, 2, 12, 30)
 
             shouldThrow<CouponTemplateIssuancePeriodException> {
-                template.validateIssue(currentIssuedCount = 0, issueAt = cannotIssueAt)
+                template.validateIssue(issueAt = cannotIssueAt)
             }
         }
 
@@ -73,21 +73,8 @@ class CouponTemplateTest : DescribeSpec({
                 val template = createCouponTemplate(status = status)
 
                 shouldThrow<CouponTemplateStatusNotIssuableException> {
-                    template.validateIssue(currentIssuedCount = 0, issueAt = issueAt)
+                    template.validateIssue(issueAt = issueAt)
                 }
-            }
-        }
-
-        it("발급 한도를 초과하면 예외를 발생시킨다.") {
-            val maxIssueCount = 10L
-            val template = createCouponTemplate(
-                limitType = CouponLimitPolicyType.ISSUE_COUNT,
-                maxIssueCount = maxIssueCount,
-            )
-
-            val currentIssuedCount = maxIssueCount + 1
-            shouldThrow<CouponTemplateIssuanceLimitExceededException> {
-                template.validateIssue(currentIssuedCount = currentIssuedCount, issueAt = issueAt)
             }
         }
     }
@@ -99,21 +86,7 @@ class CouponTemplateTest : DescribeSpec({
             )
 
             shouldThrow<CouponTemplateStatusNotRedeemableException> {
-                template.validateRedeem(currentRedeemedCount = 0, orderAmount = 5000)
-            }
-        }
-
-        it("쿠폰 사용 한도를 초과하면 예외를 발생시킨다.") {
-            val maxRedeemCount = 5L
-            val template = createCouponTemplate(
-                limitType = CouponLimitPolicyType.REDEEM_COUNT,
-                maxIssueCount = null,
-                maxRedeemCount = maxRedeemCount,
-            )
-
-            val currentRedeemedCount = maxRedeemCount + 1
-            shouldThrow<CouponTemplateRedemptionLimitExceededException> {
-                template.validateRedeem(currentRedeemedCount = currentRedeemedCount, orderAmount = 5000)
+                template.validateRedeem(orderAmount = 5000)
             }
         }
 
@@ -124,7 +97,7 @@ class CouponTemplateTest : DescribeSpec({
             val template = createCouponTemplate(minOrderAmount = minOrderAmount)
 
             shouldThrow<CouponTemplateRedemptionConditionNotSatisfiedException> {
-                template.validateRedeem(currentRedeemedCount = 0, orderAmount = orderAmount)
+                template.validateRedeem(orderAmount = orderAmount)
             }
         }
     }

@@ -8,11 +8,10 @@ object CouponIssuer {
 
     fun issue(
         couponTemplate: CouponTemplate,
-        currentIssueCount: Long,
         userId: String,
         issueAt: LocalDateTime,
     ): UserCoupon {
-        couponTemplate.validateIssue(currentIssuedCount = currentIssueCount, issueAt = issueAt)
+        couponTemplate.validateIssue(issueAt = issueAt)
 
         val expiresAt = couponTemplate.calculateExpiresAt(issueAt.toLocalDate())
 

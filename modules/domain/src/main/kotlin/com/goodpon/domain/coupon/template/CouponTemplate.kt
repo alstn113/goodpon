@@ -17,24 +17,18 @@ data class CouponTemplate(
     val status: CouponTemplateStatus,
 ) {
 
-    fun validateIssue(currentIssuedCount: Long, issueAt: LocalDateTime) {
+    fun validateIssue(issueAt: LocalDateTime) {
         if (!period.isIssuable(issueAt)) {
             throw CouponTemplateIssuancePeriodException()
         }
         if (status.isNotIssuable()) {
             throw CouponTemplateStatusNotIssuableException()
         }
-        if (!limitPolicy.canIssue(currentIssuedCount)) {
-            throw CouponTemplateIssuanceLimitExceededException()
-        }
     }
 
-    fun validateRedeem(currentRedeemedCount: Long, orderAmount: Int) {
+    fun validateRedeem(orderAmount: Int) {
         if (status.isNotRedeemable()) {
             throw CouponTemplateStatusNotRedeemableException()
-        }
-        if (!limitPolicy.canRedeem(currentRedeemedCount)) {
-            throw CouponTemplateRedemptionLimitExceededException()
         }
         if (!redemptionCondition.isSatisfiedBy(orderAmount)) {
             throw CouponTemplateRedemptionConditionNotSatisfiedException()
@@ -65,5 +59,17 @@ data class CouponTemplate(
             throw CouponTemplateExpirationNotAllowedException()
         }
         return this.copy(status = CouponTemplateStatus.EXPIRED)
+    }
+
+    fun absoluteExpiresAt(): LocalDateTime? {
+        return period.absoluteExpiresAt
+    }
+
+    fun maxIssueCount(): Long? {
+        return limitPolicy.maxIssueCount
+    }
+
+    fun maxRedeemCount(): Long? {
+        return limitPolicy.maxRedeemCount
     }
 }

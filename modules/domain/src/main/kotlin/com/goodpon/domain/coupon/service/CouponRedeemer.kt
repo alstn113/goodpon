@@ -9,11 +9,10 @@ object CouponRedeemer {
     fun redeem(
         couponTemplate: CouponTemplate,
         userCoupon: UserCoupon,
-        currentRedeemCount: Long,
         orderAmount: Int,
         redeemAt: LocalDateTime,
     ): CouponRedemptionResult {
-        couponTemplate.validateRedeem(currentRedeemedCount = currentRedeemCount, orderAmount = orderAmount)
+        couponTemplate.validateRedeem(orderAmount = orderAmount)
 
         val redeemedCoupon = userCoupon.redeem(redeemAt = redeemAt)
 
