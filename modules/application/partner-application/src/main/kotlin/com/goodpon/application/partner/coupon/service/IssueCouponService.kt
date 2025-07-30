@@ -3,9 +3,9 @@ package com.goodpon.application.partner.coupon.service
 import com.goodpon.application.partner.coupon.port.`in`.IssueCouponUseCase
 import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponCommand
 import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponResult
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.accessor.CouponHistoryAccessor
 import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateAccessor
-import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateStatsAccessor
 import com.goodpon.application.partner.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.application.partner.coupon.service.exception.UserCouponAlreadyIssuedException
@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 @Service
 class IssueCouponService(
     private val couponTemplateAccessor: CouponTemplateAccessor,
-    private val couponTemplateStatsAccessor: CouponTemplateStatsAccessor,
+    private val couponTemplateStatsCache: CouponTemplateStatsCache,
     private val couponHistoryAccessor: CouponHistoryAccessor,
     private val userCouponAccessor: UserCouponAccessor,
 ) : IssueCouponUseCase {
@@ -36,11 +36,13 @@ class IssueCouponService(
         val savedUserCoupon = userCouponAccessor.createUserCoupon(userCoupon)
         couponHistoryAccessor.recordIssued(userCouponId = savedUserCoupon.id, recordedAt = now)
 
-        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId)
-        couponTemplate.maxIssueCount()?.let {
-            if (stats.issueCount >= it) throw CouponTemplateIssuanceLimitExceededException()
+        val incremented = couponTemplateStatsCache.incrementIssueCount(
+            couponTemplateId = couponTemplate.id,
+            limit = couponTemplate.maxIssueCount(),
+        )
+        if (!incremented) {
+            throw CouponTemplateIssuanceLimitExceededException()
         }
-        couponTemplateStatsAccessor.incrementIssueCount(stats)
 
         return IssueCouponResult(
             userCouponId = savedUserCoupon.id,

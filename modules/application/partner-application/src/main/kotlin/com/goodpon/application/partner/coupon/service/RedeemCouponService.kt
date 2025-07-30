@@ -3,6 +3,7 @@ package com.goodpon.application.partner.coupon.service
 import com.goodpon.application.partner.coupon.port.`in`.RedeemCouponUseCase
 import com.goodpon.application.partner.coupon.port.`in`.dto.RedeemCouponCommand
 import com.goodpon.application.partner.coupon.port.`in`.dto.RedeemCouponResult
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.accessor.CouponHistoryAccessor
 import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateAccessor
 import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateStatsAccessor
@@ -20,7 +21,7 @@ import java.time.LocalDateTime
 @Service
 class RedeemCouponService(
     private val couponTemplateAccessor: CouponTemplateAccessor,
-    private val couponTemplateStatsAccessor: CouponTemplateStatsAccessor,
+    private val couponTemplateStatsCache: CouponTemplateStatsCache,
     private val userCouponAccessor: UserCouponAccessor,
     private val couponHistoryAccessor: CouponHistoryAccessor,
 ) : RedeemCouponUseCase {
@@ -48,11 +49,13 @@ class RedeemCouponService(
             orderId = command.orderId
         )
 
-        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
-        couponTemplate.maxRedeemCount()?.let {
-            if (stats.redeemCount >= it) throw CouponTemplateRedemptionLimitExceededException()
+        val incremented = couponTemplateStatsCache.incrementRedeemCount(
+            couponTemplateId = couponTemplate.id,
+            limit = couponTemplate.maxRedeemCount(),
+        )
+        if (!incremented) {
+            throw CouponTemplateRedemptionLimitExceededException()
         }
-        couponTemplateStatsAccessor.incrementRedeemCount(stats)
 
         return RedeemCouponResult(
             userCouponId = redeemedCoupon.id,
