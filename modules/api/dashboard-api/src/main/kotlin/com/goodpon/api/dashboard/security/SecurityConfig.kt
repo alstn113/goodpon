@@ -7,6 +7,7 @@ import com.goodpon.application.dashboard.account.port.`in`.GetAccountInfoUseCase
 import com.goodpon.application.dashboard.auth.port.out.TokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -33,7 +34,6 @@ class SecurityConfig(
             "/v1/auth/login",
             "/v1/auth/verify",
             "/v1/auth/verify/resend",
-            "/api-docs/**",
         )
         val verifiedAllowListPatterns = tokenAllowListPatterns + listOf(
             "/v1/accounts",
@@ -73,17 +73,29 @@ class SecurityConfig(
     }
 
     @Bean
+    @Profile("!prod")
     fun corsConfigurationSource(): CorsConfigurationSource {
-        val corsConfiguration = CorsConfiguration().apply {
-            allowedOrigins = listOf("http://localhost:5173")
-            allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
-            allowedHeaders = listOf("*")
-            allowCredentials = true
-        }
-
-        val configurationSource = UrlBasedCorsConfigurationSource().apply {
+        val corsConfiguration = baseCorsConfiguration(listOf("*"))
+        return UrlBasedCorsConfigurationSource().apply {
             registerCorsConfiguration("/**", corsConfiguration)
         }
-        return configurationSource
+    }
+
+    @Bean
+    @Profile("prod")
+    fun prodCorsConfigurationSource(): CorsConfigurationSource {
+        val corsConfiguration = baseCorsConfiguration(
+            listOf("https://alstn113.github.io", "https://www.goodpon.site")
+        )
+        return UrlBasedCorsConfigurationSource().apply {
+            registerCorsConfiguration("/**", corsConfiguration)
+        }
+    }
+
+    fun baseCorsConfiguration(allowedOrigins: List<String>): CorsConfiguration = CorsConfiguration().apply {
+        this.allowedOrigins = allowedOrigins
+        allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        allowedHeaders = listOf("*")
+        allowCredentials = true
     }
 }
