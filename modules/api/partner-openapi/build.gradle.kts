@@ -25,7 +25,7 @@ dependencies {
 }
 
 openapi3 {
-    this.setServer("http://localhost:8081")
+    this.setServer("https://api.goodpon.site")
     title = "Goodpon Partner OpenAPI"
     description = "Goodpon Partner OpenAPI Documentation"
     version = "1.0.0"
