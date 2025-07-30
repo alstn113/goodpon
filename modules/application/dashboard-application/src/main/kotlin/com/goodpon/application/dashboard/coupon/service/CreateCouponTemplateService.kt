@@ -34,7 +34,7 @@ class CreateCouponTemplateService(
         couponTemplateStatsAccessor.save(couponTemplateStats) // DB
         couponTemplateStatsPort.initializeStats( // Cache
             couponTemplateId = savedCouponTemplate.id,
-            expiresAt = savedCouponTemplate.getAbsoluteExpiresAt()
+            expiresAt = savedCouponTemplate.absoluteExpiresAt()
         )
 
         return CouponTemplateMapper.toCreateCouponTemplateResult(savedCouponTemplate)
