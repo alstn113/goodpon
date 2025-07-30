@@ -5,6 +5,7 @@ plugins {
 dependencies {
     runtimeOnly(project(":modules:infra:db:jpa"))
     runtimeOnly(project(":modules:infra:db:flyway"))
+    runtimeOnly(project(":modules:infra:db:redis"))
 
     implementation(project(":modules:domain"))
     implementation(project(":modules:application:partner-application"))
