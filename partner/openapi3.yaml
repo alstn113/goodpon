@@ -13,7 +13,7 @@ info:
     모든 API 응답에는 `traceId` 필드가 포함되어 있습니다. 이 필드는 요청을 추적하는 데 사용되며, 문제 발생 시 디버깅에 도움이 됩니다.
   version: 1.0.0
 servers:
-  - url: http://localhost:8081
+  - url: https://api.goodpon.site
 tags: []
 paths:
   /v1/user-coupons:
@@ -53,7 +53,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<UserCouponsView>'
               examples:
                 사용자가 보유한 쿠폰 목록 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\" : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-22T02:15:54.353188581\",\n      \"expiresAt\" : \"2025-08-21T02:15:54.353199682\",\n      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\" : 1000,\n      \"maxRedeemCount\" : null,\n      \"isRedeemable\" : true\n    } ]\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\" : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-30T07:09:45.11872164\",\n      \"expiresAt\" : \"2025-08-29T07:09:45.118733803\",\n      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\" : 1000,\n      \"maxRedeemCount\" : null,\n      \"isRedeemable\" : true\n    } ]\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
   /v1/coupon-templates/{couponTemplateId}:
     get:
       tags:
@@ -97,7 +97,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<CouponTemplateDetailForUser>'
               examples:
                 사용자에 따른 쿠폰 템플릿 상세 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\" : 1,\n    \"name\" : \"테스트 쿠폰\",\n    \"description\" : \"테스트 쿠폰 설명\",\n    \"discountType\" : \"FIXED_AMOUNT\",\n    \"discountValue\" : 1000,\n    \"maxDiscountAmount\" : null,\n    \"minOrderAmount\" : 15000,\n    \"status\" : \"ISSUABLE\",\n    \"validityDays\" : 30,\n    \"absoluteExpiresAt\" : \"2025-08-21T02:15:54.278066051\",\n    \"issueStartAt\" : \"2025-07-22T02:15:54.278079817\",\n    \"issueEndAt\" : \"2025-08-01T02:15:54.278085768\",\n    \"limitType\" : \"ISSUE_COUNT\",\n    \"maxIssueCount\" : 1000,\n    \"maxRedeemCount\" : null,\n    \"currentIssueCount\" : 200,\n    \"currentRedeemCount\" : 100,\n    \"issuanceStatus\" : \"AVAILABLE\"\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\" : 1,\n    \"name\" : \"테스트 쿠폰\",\n    \"description\" : \"테스트 쿠폰 설명\",\n    \"discountType\" : \"FIXED_AMOUNT\",\n    \"discountValue\" : 1000,\n    \"maxDiscountAmount\" : null,\n    \"minOrderAmount\" : 15000,\n    \"status\" : \"ISSUABLE\",\n    \"validityDays\" : 30,\n    \"absoluteExpiresAt\" : \"2025-08-29T07:09:45.048076617\",\n    \"issueStartAt\" : \"2025-07-30T07:09:45.048097606\",\n    \"issueEndAt\" : \"2025-08-09T07:09:45.048103668\",\n    \"limitType\" : \"ISSUE_COUNT\",\n    \"maxIssueCount\" : 1000,\n    \"maxRedeemCount\" : null,\n    \"currentIssueCount\" : 200,\n    \"currentRedeemCount\" : 100,\n    \"issuanceStatus\" : \"AVAILABLE\"\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
         "404":
           description: "404"
           content:
@@ -150,7 +150,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<AvailableUserCouponsView>'
               examples:
                 사용자의 사용 가능한 쿠폰 목록 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\" : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-22T02:15:53.931089364\",\n      \"expiresAt\" : \"2025-08-21T02:15:53.931106346\",\n      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\" : 1000,\n      \"maxRedeemCount\" : null,\n      \"isMinOrderAmountReached\" : true\n    } ]\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\" : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-07-30T07:09:44.678341362\",\n      \"expiresAt\" : \"2025-08-29T07:09:44.678357974\",\n      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\" : 1000,\n      \"maxRedeemCount\" : null,\n      \"isMinOrderAmountReached\" : true\n    } ]\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
   /v1/coupon-templates/{couponTemplateId}/issue:
     post:
       tags:
@@ -241,7 +241,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<IssueCouponResult>'
               examples:
                 쿠폰 발급 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"userId\" : \"partner-unique-user-id\",\n    \"couponTemplateId\" : 1,\n    \"couponTemplateName\" : \"테스트 쿠폰\",\n    \"issuedAt\" : \"2025-07-22T02:15:54.728142398\",\n    \"expiresAt\" : \"2025-08-21T02:15:54.728151526\"\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"userId\" : \"partner-unique-user-id\",\n    \"couponTemplateId\" : 1,\n    \"couponTemplateName\" : \"테스트 쿠폰\",\n    \"issuedAt\" : \"2025-07-30T07:09:45.489354702\",\n    \"expiresAt\" : \"2025-08-29T07:09:45.489367887\"\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
   /v1/user-coupons/{userCouponId}/cancel:
     post:
       tags:
@@ -332,7 +332,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<CancelCouponRedemptionResult>'
               examples:
                 쿠폰 사용 취소 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"status\" : \"ISSUED\",\n    \"canceledAt\" : \"2025-07-22T02:15:53.853132653\",\n    \"cancelReason\" : \"결제 취소\"\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"status\" : \"ISSUED\",\n    \"canceledAt\" : \"2025-07-30T07:09:44.598074578\",\n    \"cancelReason\" : \"결제 취소\"\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
   /v1/user-coupons/{userCouponId}/redeem:
     post:
       tags:
@@ -439,7 +439,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<RedeemCouponResult>'
               examples:
                 쿠폰 사용 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"discountAmount\" : 2000,\n    \"originalPrice\" : 15000,\n    \"finalPrice\" : 13000,\n    \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\",\n    \"redeemedAt\" : \"2025-07-22T02:15:55.028156902\"\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"discountAmount\" : 2000,\n    \"originalPrice\" : 15000,\n    \"finalPrice\" : 13000,\n    \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\",\n    \"redeemedAt\" : \"2025-07-30T07:09:45.787020463\"\n  },\n  \"error\" : null,\n  \"traceId\" : \"68789ad83ec2af0079caa706809cd332\"\n}"
 components:
   schemas:
     ApiResponse<Unit>:
