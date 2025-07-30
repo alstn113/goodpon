@@ -49,36 +49,47 @@ class CouponTemplateStatsRedisCacheAdapter(
     override fun getStats(couponTemplateId: Long): Pair<Long, Long> {
         val key = buildKey(couponTemplateId)
         val entries = stringRedisTemplate.opsForHash<String, String>().entries(key)
-
-        val issueCount = entries[ISSUE_COUNT_KEY]?.toLongOrNull() ?: 0L
-        val redeemCount = entries[REDEEM_COUNT_KEY]?.toLongOrNull() ?: 0L
-
-        return Pair(issueCount, redeemCount)
+        return parseStats(entries[ISSUE_COUNT_KEY], entries[REDEEM_COUNT_KEY])
     }
 
     override fun getMultipleStats(couponTemplateIds: List<Long>): Map<Long, Pair<Long, Long>> {
-        val results = stringRedisTemplate.executePipelined { connection ->
+        val keys = couponTemplateIds.map { buildKey(it) }
+        val results = pipelineForStats(keys)
+        return couponTemplateIds.mapIndexed { i, id ->
+            id to parseStats(results.getOrNull(i * 2), results.getOrNull(i * 2 + 1))
+        }.toMap()
+    }
+
+    override fun readAllStats(): Map<Long, Pair<Long, Long>> {
+        val keys = stringRedisTemplate.keys("$COUPON_TEMPLATE_STATS_KEY_PREFIX*")
+        if (keys.isEmpty()) return emptyMap()
+
+        val results = pipelineForStats(keys.toList())
+
+        return keys.mapIndexed { i, key ->
+            val couponTemplateId = key.removePrefix(COUPON_TEMPLATE_STATS_KEY_PREFIX).toLong()
+            val issueCount = results.getOrNull(i * 2)
+            val redeemCount = results.getOrNull(i * 2 + 1)
+
+            couponTemplateId to parseStats(issueCount, redeemCount)
+        }.toMap()
+    }
+
+    private fun parseStats(issueRaw: Any?, redeemRaw: Any?): Pair<Long, Long> {
+        val issueCount = (issueRaw as? String)?.toLongOrNull() ?: 0L
+        val redeemCount = (redeemRaw as? String)?.toLongOrNull() ?: 0L
+        return Pair(issueCount, redeemCount)
+    }
+
+    private fun pipelineForStats(keys: List<String>): List<Any?> {
+        return stringRedisTemplate.executePipelined { connection ->
             val stringCon = connection as StringRedisConnection
-            couponTemplateIds.forEach { id ->
-                val key = buildKey(id)
+            keys.forEach { key ->
                 stringCon.hGet(key, ISSUE_COUNT_KEY)
                 stringCon.hGet(key, REDEEM_COUNT_KEY)
             }
             null
         }
-
-        val statsMap = mutableMapOf<Long, Pair<Long, Long>>()
-        couponTemplateIds.forEachIndexed { i, id ->
-            val issueRaw = results.getOrNull(i * 2)
-            val redeemRaw = results.getOrNull(i * 2 + 1)
-
-            val issueCount = (issueRaw as? String)?.toLongOrNull() ?: 0L
-            val redeemCount = (redeemRaw as? String)?.toLongOrNull() ?: 0L
-
-            statsMap[id] = issueCount to redeemCount
-        }
-
-        return statsMap
     }
 
     private fun executeIncrementWithLimitCheck(

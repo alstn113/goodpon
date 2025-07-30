@@ -39,7 +39,6 @@ class RedeemCouponServiceTest : DescribeSpec({
             orderId = "unique-order-id"
         )
         val userCoupon = mockk<UserCoupon>()
-        val stats = mockk<CouponTemplateStats>()
         val couponTemplate = mockk<CouponTemplate>()
 
         beforeTest {

@@ -196,4 +196,23 @@ class CouponTemplateStatsRedisCacheAdapterIT(
         statsMap[2L] shouldBe Pair(0L, 1L)
         statsMap[3L] shouldBe Pair(1L, 1L)
     }
+
+    @Test
+    fun `존재하는 모든 쿠폰 템플릿의 통계 정보를 조회할 수 있다`() {
+        // given
+        val couponTemplateIds = listOf(1L, 2L, 3L)
+        couponTemplateIds.forEach { couponTemplateStatsRedisCacheAdapter.initializeStats(it, null) }
+
+        couponTemplateStatsRedisCacheAdapter.incrementIssueCount(2L, null)
+        couponTemplateStatsRedisCacheAdapter.incrementRedeemCount(3L, null)
+
+        // when
+        val statsMap = couponTemplateStatsRedisCacheAdapter.readAllStats()
+
+        // then
+        statsMap.size shouldBe 3
+        statsMap[1L] shouldBe Pair(0L, 0L)
+        statsMap[2L] shouldBe Pair(1L, 0L)
+        statsMap[3L] shouldBe Pair(0L, 1L)
+    }
 }

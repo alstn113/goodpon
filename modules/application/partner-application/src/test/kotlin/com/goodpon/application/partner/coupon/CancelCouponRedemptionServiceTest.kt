@@ -37,7 +37,6 @@ class CancelCouponRedemptionServiceTest : DescribeSpec({
         )
 
         val userCoupon = mockk<UserCoupon>()
-        val stats = mockk<CouponTemplateStats>()
         val couponTemplate = mockk<CouponTemplate>()
 
         beforeTest {
