@@ -27,11 +27,11 @@ class IssueCouponService(
     override fun invoke(command: IssueCouponCommand): IssueCouponResult {
         val now = LocalDateTime.now()
 
-        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId)
         val couponTemplate = couponTemplateAccessor.readById(command.couponTemplateId)
-
         validateCouponTemplateOwnership(couponTemplate, command.merchantId)
         validateAlreadyIssued(command.userId, command.couponTemplateId)
+
+        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId)
 
         val userCoupon = CouponIssuer.issue(
             couponTemplate = couponTemplate,

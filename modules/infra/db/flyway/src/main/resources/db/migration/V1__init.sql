@@ -114,6 +114,10 @@ ALTER TABLE user_coupons
     ADD CONSTRAINT fk_user_coupons_coupon_template_id
         FOREIGN KEY (coupon_template_id) REFERENCES coupon_templates (id);
 
+ALTER TABLE user_coupons
+    ADD CONSTRAINT uq_user_coupons_user_id_coupon_template_id
+        UNIQUE (user_id, coupon_template_id);
+
 CREATE TABLE IF NOT EXISTS coupon_histories
 (
     id             VARCHAR(32) NOT NULL,

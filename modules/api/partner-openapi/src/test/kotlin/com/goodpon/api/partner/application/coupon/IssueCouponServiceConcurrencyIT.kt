@@ -96,7 +96,7 @@ class IssueCouponServiceConcurrencyIT(
                         )
                         issueCouponService(command)
                         successCount.incrementAndGet()
-                    } catch (e: UserCouponAlreadyIssuedException) {
+                    } catch (e: Exception) {
                         failureCount.incrementAndGet()
                     }
                 }

@@ -6,7 +6,13 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "user_coupons")
+@Table(
+    name = "user_coupons",
+    uniqueConstraints = [UniqueConstraint(
+        name = "uk_user_coupons_user_id_coupon_template_id",
+        columnNames = ["user_id", "coupon_template_id"]
+    )]
+)
 class UserCouponEntity(
     @Id
     @Column(columnDefinition = "VARCHAR(32)")
