@@ -1,10 +1,14 @@
 package com.goodpon.api.partner.application.coupon
 
 import com.goodpon.api.partner.support.AbstractIntegrationTest
-import com.goodpon.api.partner.support.accessor.*
+import com.goodpon.api.partner.support.accessor.TestCouponHistoryAccessor
+import com.goodpon.api.partner.support.accessor.TestCouponTemplateAccessor
+import com.goodpon.api.partner.support.accessor.TestMerchantAccessor
+import com.goodpon.api.partner.support.accessor.TestUserCouponAccessor
 import com.goodpon.application.partner.coupon.port.`in`.dto.CancelCouponRedemptionCommand
 import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponCommand
 import com.goodpon.application.partner.coupon.port.`in`.dto.RedeemCouponCommand
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.CancelCouponRedemptionService
 import com.goodpon.application.partner.coupon.service.IssueCouponService
 import com.goodpon.application.partner.coupon.service.RedeemCouponService
@@ -28,7 +32,7 @@ class CancelCouponRedemptionServiceConcurrencyIT(
     private val testUserCouponAccessor: TestUserCouponAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testCouponHistoryAccessor: TestCouponHistoryAccessor,
-    private val testCouponTemplateStatsAccessor: TestCouponTemplateStatsAccessor,
+    private val couponTemplateStatsCache: CouponTemplateStatsCache,
 ) : AbstractIntegrationTest() {
 
     @Test
@@ -97,10 +101,10 @@ class CancelCouponRedemptionServiceConcurrencyIT(
         foundUserCouponEntity.shouldNotBeNull()
         foundUserCouponEntity.status shouldBe UserCouponStatus.ISSUED
 
-        val foundStatsEntity = testCouponTemplateStatsAccessor.findById(couponTemplateId)
-        foundStatsEntity.shouldNotBeNull()
-        foundStatsEntity.issueCount shouldBe 1
-        foundStatsEntity.redeemCount shouldBe 0
+        couponTemplateStatsCache.getStats(couponTemplateId).let {
+            it.first shouldBe 1L
+            it.second shouldBe 0L
+        }
 
         val foundCouponHistoryEntities = testCouponHistoryAccessor.findByUserCouponId(redeemCouponResult.userCouponId)
         foundCouponHistoryEntities.shouldNotBeNull()

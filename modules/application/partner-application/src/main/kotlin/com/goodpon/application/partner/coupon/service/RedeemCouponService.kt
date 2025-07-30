@@ -6,7 +6,6 @@ import com.goodpon.application.partner.coupon.port.`in`.dto.RedeemCouponResult
 import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.accessor.CouponHistoryAccessor
 import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateAccessor
-import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateStatsAccessor
 import com.goodpon.application.partner.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.application.partner.coupon.service.exception.UserCouponNotOwnedByUserException

@@ -5,6 +5,7 @@ import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.infra.db.jpa.entity.CouponTemplateEntity
 import com.goodpon.infra.db.jpa.repository.CouponTemplateJpaRepository
 import com.goodpon.infra.db.jpa.repository.dto.CouponTemplateDetailDto
+import com.goodpon.infra.db.jpa.repository.dto.CouponTemplateDetailWithStatsDto
 import com.goodpon.infra.db.jpa.repository.dto.CouponTemplateSummaryDto
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
@@ -62,12 +63,12 @@ class CouponTemplateCoreRepository(
     }
 
     @Transactional(readOnly = true)
-    fun findByIdWithStats(couponTemplateId: Long): CouponTemplateDetailDto? {
+    fun findByIdWithStats(couponTemplateId: Long): CouponTemplateDetailWithStatsDto? {
         return couponTemplateJpaRepository.findByIdWithStats(couponTemplateId)
     }
 
     @Transactional(readOnly = true)
-    fun findByIdAndMerchantIdWithStats(couponTemplateId: Long, merchantId: Long): CouponTemplateDetailDto? {
-        return couponTemplateJpaRepository.findByIdAndMerchantIdWithStats(couponTemplateId, merchantId)
+    fun findDetailById(couponTemplateId: Long, merchantId: Long): CouponTemplateDetailDto? {
+        return couponTemplateJpaRepository.findDetailById(couponTemplateId, merchantId)
     }
 }

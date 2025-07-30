@@ -3,6 +3,7 @@ package com.goodpon.application.partner.coupon
 import com.goodpon.application.partner.coupon.port.`in`.dto.CouponIssuanceStatus
 import com.goodpon.application.partner.coupon.port.`in`.dto.GetCouponTemplateDetailForUserQuery
 import com.goodpon.application.partner.coupon.port.out.CouponTemplateRepository
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.port.out.UserCouponRepository
 import com.goodpon.application.partner.coupon.port.out.exception.CouponTemplateNotFoundException
 import com.goodpon.application.partner.coupon.service.GetCouponTemplateDetailForUserService
@@ -21,11 +22,12 @@ class GetCouponTemplateDetailForUserServiceTest : DescribeSpec({
 
     val couponTemplateRepository = mockk<CouponTemplateRepository>()
     val userCouponRepository = mockk<UserCouponRepository>()
-
+    val couponTemplateStatsCache = mockk<CouponTemplateStatsCache>()
 
     val getCouponTemplateDetailForUserService = GetCouponTemplateDetailForUserService(
         couponTemplateRepository = couponTemplateRepository,
         userCouponRepository = userCouponRepository,
+        couponTemplateStatsCache = couponTemplateStatsCache
     )
 
     describe("GetCouponTemplateDetailForUserService") {
@@ -62,8 +64,6 @@ class GetCouponTemplateDetailForUserServiceTest : DescribeSpec({
                 limitType = CouponLimitPolicyType.ISSUE_COUNT,
                 maxIssueCount = 100L,
                 maxRedeemCount = null,
-                issueCount = 50L,
-                redeemCount = 30L,
             )
             beforeTest {
                 every {
@@ -78,6 +78,9 @@ class GetCouponTemplateDetailForUserServiceTest : DescribeSpec({
                 every {
                     couponTemplateRepository.findCouponTemplateDetail(query.couponTemplateId, query.merchantId)
                 } returns detail.copy(issueStartAt = LocalDateTime.now().plusDays(1))
+                every {
+                    couponTemplateStatsCache.getStats(query.couponTemplateId)
+                } returns Pair(0L, 0L)
 
                 val result = getCouponTemplateDetailForUserService(query)
 
@@ -88,6 +91,9 @@ class GetCouponTemplateDetailForUserServiceTest : DescribeSpec({
                 every {
                     couponTemplateRepository.findCouponTemplateDetail(query.couponTemplateId, query.merchantId)
                 } returns detail.copy(issueEndAt = LocalDateTime.now().minusDays(1))
+                every {
+                    couponTemplateStatsCache.getStats(query.couponTemplateId)
+                } returns Pair(0L, 0L)
 
                 val result = getCouponTemplateDetailForUserService(query)
 
@@ -98,6 +104,9 @@ class GetCouponTemplateDetailForUserServiceTest : DescribeSpec({
                 every {
                     userCouponRepository.existsByUserIdAndCouponTemplateId(query.userId!!, query.couponTemplateId)
                 } returns true
+                every {
+                    couponTemplateStatsCache.getStats(query.couponTemplateId)
+                } returns Pair(0L, 0L)
 
                 val result = getCouponTemplateDetailForUserService(query)
 
@@ -110,9 +119,11 @@ class GetCouponTemplateDetailForUserServiceTest : DescribeSpec({
                 } returns detail.copy(
                     limitType = CouponLimitPolicyType.ISSUE_COUNT,
                     maxIssueCount = 100L,
-                    issueCount = 100L,
                     maxRedeemCount = null,
                 )
+                every {
+                    couponTemplateStatsCache.getStats(query.couponTemplateId)
+                } returns Pair(100L, 0L)
 
                 val result = getCouponTemplateDetailForUserService(query)
 
@@ -125,9 +136,11 @@ class GetCouponTemplateDetailForUserServiceTest : DescribeSpec({
                 } returns detail.copy(
                     limitType = CouponLimitPolicyType.REDEEM_COUNT,
                     maxRedeemCount = 100L,
-                    redeemCount = 100L,
                     maxIssueCount = null
                 )
+                every {
+                    couponTemplateStatsCache.getStats(query.couponTemplateId)
+                } returns Pair(100L, 100L)
 
                 val result = getCouponTemplateDetailForUserService(query)
 
@@ -135,6 +148,10 @@ class GetCouponTemplateDetailForUserServiceTest : DescribeSpec({
             }
 
             it("사용자에 따른 쿠폰 템플릿 상세 정보를 반환한다.") {
+                every {
+                    couponTemplateStatsCache.getStats(query.couponTemplateId)
+                } returns Pair(0L, 0L)
+
                 val result = getCouponTemplateDetailForUserService(query)
 
                 result.issuanceStatus shouldBe CouponIssuanceStatus.AVAILABLE

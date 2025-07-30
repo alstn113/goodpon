@@ -1,10 +1,10 @@
 package com.goodpon.application.partner.coupon
 
 import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponCommand
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.IssueCouponService
 import com.goodpon.application.partner.coupon.service.accessor.CouponHistoryAccessor
 import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateAccessor
-import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateStatsAccessor
 import com.goodpon.application.partner.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.application.partner.coupon.service.exception.UserCouponAlreadyIssuedException
@@ -17,13 +17,13 @@ import io.mockk.mockk
 class IssueCouponServiceTest : DescribeSpec({
 
     val couponTemplateAccessor = mockk<CouponTemplateAccessor>()
-    val couponTemplateStatsAccessor = mockk<CouponTemplateStatsAccessor>()
+    val couponTemplateStatsCache = mockk<CouponTemplateStatsCache>()
     val couponHistoryAccessor = mockk<CouponHistoryAccessor>()
     val userCouponAccessor = mockk<UserCouponAccessor>()
 
     val issueCouponService = IssueCouponService(
         couponTemplateAccessor = couponTemplateAccessor,
-        couponTemplateStatsAccessor = couponTemplateStatsAccessor,
+        couponTemplateStatsCache = couponTemplateStatsCache,
         couponHistoryAccessor = couponHistoryAccessor,
         userCouponAccessor = userCouponAccessor,
     )
@@ -37,7 +37,6 @@ class IssueCouponServiceTest : DescribeSpec({
         )
 
         it("상점이 소유하지 않은 쿠폰 템플릿인 경우 예외를 던진다") {
-            every { couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId) } returns mockk()
             val couponTemplate = mockk<CouponTemplate>()
             every { couponTemplateAccessor.readById(command.couponTemplateId) } returns couponTemplate
             every { couponTemplate.isOwnedBy(command.merchantId) } returns false
@@ -48,7 +47,6 @@ class IssueCouponServiceTest : DescribeSpec({
         }
 
         it("사용자가 이미 발급받은 쿠폰인 경우 예외를 던진다") {
-            every { couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(command.couponTemplateId) } returns mockk()
             val couponTemplate = mockk<CouponTemplate>()
             every { couponTemplateAccessor.readById(command.couponTemplateId) } returns couponTemplate
             every { couponTemplate.isOwnedBy(command.merchantId) } returns true

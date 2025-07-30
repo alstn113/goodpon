@@ -1,34 +1,32 @@
 package com.goodpon.infra.redis.coupon
 
+import org.springframework.data.redis.connection.StringRedisConnection
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.core.script.RedisScript
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
-import com.goodpon.application.dashboard.coupon.port.out.CouponTemplateStatsPort as Dashboard_CouponTemplateStatsPort
+import com.goodpon.application.dashboard.coupon.port.out.CouponTemplateStatsCache as Dashboard_CouponTemplateStatsPort
 import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache as Partner_CouponTemplateStatsPort
 
 @Component
-class CouponTemplateStatsRedisCachePort(
-    private val redisTemplate: RedisTemplate<String, Any>,
+class CouponTemplateStatsRedisCacheAdapter(
+    private val stringRedisTemplate: RedisTemplate<String, String>,
 ) : Dashboard_CouponTemplateStatsPort, Partner_CouponTemplateStatsPort {
 
     override fun initializeStats(couponTemplateId: Long, expiresAt: LocalDateTime?) {
         val key = buildKey(couponTemplateId)
-        redisTemplate.opsForHash<String, String>().putAll(
+        stringRedisTemplate.opsForHash<String, String>().putAll(
             key,
-            mapOf(
-                ISSUE_COUNT_KEY to "0",
-                REDEEM_COUNT_KEY to "0",
-            )
+            mapOf(ISSUE_COUNT_KEY to "0", REDEEM_COUNT_KEY to "0")
         )
 
         expiresAt?.let {
             val expirationWithGracePeriod = expiresAt.plusDays(1) // 만료 후 1일 유예 기간 포함
             val zoneId = ZoneId.of("UTC")
             val instant = expirationWithGracePeriod.atZone(zoneId).toInstant()
-            redisTemplate.expireAt(key, Date.from(instant))
+            stringRedisTemplate.expireAt(key, Date.from(instant))
         }
     }
 
@@ -46,6 +44,41 @@ class CouponTemplateStatsRedisCachePort(
 
     override fun cancelRedeem(couponTemplateId: Long): Boolean {
         return executeDecrement(couponTemplateId, REDEEM_COUNT_KEY)
+    }
+
+    override fun getStats(couponTemplateId: Long): Pair<Long, Long> {
+        val key = buildKey(couponTemplateId)
+        val entries = stringRedisTemplate.opsForHash<String, String>().entries(key)
+
+        val issueCount = entries[ISSUE_COUNT_KEY]?.toLongOrNull() ?: 0L
+        val redeemCount = entries[REDEEM_COUNT_KEY]?.toLongOrNull() ?: 0L
+
+        return Pair(issueCount, redeemCount)
+    }
+
+    override fun getMultipleStats(couponTemplateIds: List<Long>): Map<Long, Pair<Long, Long>> {
+        val results = stringRedisTemplate.executePipelined { connection ->
+            val stringCon = connection as StringRedisConnection
+            couponTemplateIds.forEach { id ->
+                val key = buildKey(id)
+                stringCon.hGet(key, ISSUE_COUNT_KEY)
+                stringCon.hGet(key, REDEEM_COUNT_KEY)
+            }
+            null
+        }
+
+        val statsMap = mutableMapOf<Long, Pair<Long, Long>>()
+        couponTemplateIds.forEachIndexed { i, id ->
+            val issueRaw = results.getOrNull(i * 2)
+            val redeemRaw = results.getOrNull(i * 2 + 1)
+
+            val issueCount = (issueRaw as? String)?.toLongOrNull() ?: 0L
+            val redeemCount = (redeemRaw as? String)?.toLongOrNull() ?: 0L
+
+            statsMap[id] = issueCount to redeemCount
+        }
+
+        return statsMap
     }
 
     private fun executeIncrementWithLimitCheck(
@@ -79,7 +112,7 @@ class CouponTemplateStatsRedisCachePort(
         )
         val key = buildKey(couponTemplateId)
         val limitArg = limit?.toString() ?: ""
-        return when (val result = redisTemplate.execute(script, listOf(key), field, limitArg)) {
+        return when (val result = stringRedisTemplate.execute(script, listOf(key), field, limitArg)) {
             1L -> true
             0L -> false
             -1L -> throw IllegalStateException("쿠폰 템플릿 $couponTemplateId 의 통계 정보가 존재하지 않습니다.")
@@ -103,7 +136,7 @@ class CouponTemplateStatsRedisCachePort(
             """.trimIndent(), Long::class.java
         )
         val key = buildKey(couponTemplateId)
-        return when (val result = redisTemplate.execute(script, listOf(key), field)) {
+        return when (val result = stringRedisTemplate.execute(script, listOf(key), field)) {
             1L -> true
             0L -> false
             -1L -> throw IllegalStateException("쿠폰 템플릿 $couponTemplateId 의 통계 정보가 존재하지 않습니다.")

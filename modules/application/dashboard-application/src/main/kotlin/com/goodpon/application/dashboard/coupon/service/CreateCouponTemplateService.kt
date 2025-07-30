@@ -3,7 +3,7 @@ package com.goodpon.application.dashboard.coupon.service
 import com.goodpon.application.dashboard.coupon.port.`in`.CreateCouponTemplateUseCase
 import com.goodpon.application.dashboard.coupon.port.`in`.dto.CreateCouponTemplateCommand
 import com.goodpon.application.dashboard.coupon.port.`in`.dto.CreateCouponTemplateResult
-import com.goodpon.application.dashboard.coupon.port.out.CouponTemplateStatsPort
+import com.goodpon.application.dashboard.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.dashboard.coupon.service.accessor.CouponTemplateAccessor
 import com.goodpon.application.dashboard.coupon.service.accessor.CouponTemplateStatsAccessor
 import com.goodpon.application.dashboard.coupon.service.exception.NoMerchantAccessPermissionException
@@ -17,7 +17,7 @@ class CreateCouponTemplateService(
     private val couponTemplateAccessor: CouponTemplateAccessor,
     private val merchantAccessor: MerchantAccessor,
     private val couponTemplateStatsAccessor: CouponTemplateStatsAccessor,
-    private val couponTemplateStatsPort: CouponTemplateStatsPort,
+    private val couponTemplateStatsCache: CouponTemplateStatsCache,
 ) : CreateCouponTemplateUseCase {
 
     @Transactional
@@ -32,7 +32,7 @@ class CreateCouponTemplateService(
 
         val couponTemplateStats = CouponTemplateStats.create(savedCouponTemplate.id)
         couponTemplateStatsAccessor.save(couponTemplateStats) // DB
-        couponTemplateStatsPort.initializeStats( // Cache
+        couponTemplateStatsCache.initializeStats( // Cache
             couponTemplateId = savedCouponTemplate.id,
             expiresAt = savedCouponTemplate.absoluteExpiresAt()
         )

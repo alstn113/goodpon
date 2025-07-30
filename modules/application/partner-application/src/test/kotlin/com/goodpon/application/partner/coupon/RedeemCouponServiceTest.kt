@@ -1,10 +1,10 @@
 package com.goodpon.application.partner.coupon
 
 import com.goodpon.application.partner.coupon.port.`in`.dto.RedeemCouponCommand
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.RedeemCouponService
 import com.goodpon.application.partner.coupon.service.accessor.CouponHistoryAccessor
 import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateAccessor
-import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateStatsAccessor
 import com.goodpon.application.partner.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.application.partner.coupon.service.exception.UserCouponNotOwnedByUserException
@@ -19,13 +19,13 @@ import io.mockk.mockk
 class RedeemCouponServiceTest : DescribeSpec({
 
     val couponTemplateAccessor = mockk<CouponTemplateAccessor>()
-    val couponTemplateStatsAccessor = mockk<CouponTemplateStatsAccessor>()
+    val couponTemplateStatsCache = mockk<CouponTemplateStatsCache>()
     val userCouponAccessor = mockk<UserCouponAccessor>()
     val couponHistoryAccessor = mockk<CouponHistoryAccessor>()
 
     val redeemCouponService = RedeemCouponService(
         couponTemplateAccessor = couponTemplateAccessor,
-        couponTemplateStatsAccessor = couponTemplateStatsAccessor,
+        couponTemplateStatsCache = couponTemplateStatsCache,
         userCouponAccessor = userCouponAccessor,
         couponHistoryAccessor = couponHistoryAccessor
     )
@@ -45,7 +45,6 @@ class RedeemCouponServiceTest : DescribeSpec({
         beforeTest {
             every { userCouponAccessor.readByIdForUpdate(any()) } returns userCoupon
             every { userCoupon.couponTemplateId } returns 1L
-            every { couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(any()) } returns stats
             every { couponTemplateAccessor.readById(any()) } returns couponTemplate
         }
 

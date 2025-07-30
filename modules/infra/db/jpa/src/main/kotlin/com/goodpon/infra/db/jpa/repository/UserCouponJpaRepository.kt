@@ -3,7 +3,7 @@ package com.goodpon.infra.db.jpa.repository
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.infra.db.jpa.entity.UserCouponEntity
 import com.goodpon.infra.db.jpa.repository.dto.AvailableUserCouponViewDto
-import com.goodpon.infra.db.jpa.repository.dto.UserCouponViewDto
+import com.goodpon.infra.db.jpa.repository.dto.UserCouponSummaryDto
 import jakarta.persistence.LockModeType
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Lock
@@ -25,7 +25,7 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
 
     @Query(
         """
-        SELECT new com.goodpon.infra.db.jpa.repository.dto.UserCouponViewDto(
+        SELECT new com.goodpon.infra.db.jpa.repository.dto.UserCouponSummaryDto(
             userCoupon.id,
             userCoupon.couponTemplateId,
             couponTemplate.name,
@@ -38,36 +38,24 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
             userCoupon.expiresAt,
             couponTemplate.limitType,
             couponTemplate.maxIssueCount,
-            couponTemplate.maxRedeemCount,
-            CASE 
-                WHEN couponTemplate.maxRedeemCount IS NULL 
-                    OR couponTemplateStats.redeemCount < couponTemplate.maxRedeemCount 
-                THEN true ELSE false 
-            END
+            couponTemplate.maxRedeemCount
         )
         FROM UserCouponEntity userCoupon
             JOIN CouponTemplateEntity couponTemplate
                 ON userCoupon.couponTemplateId = couponTemplate.id
-            LEFT JOIN CouponTemplateStatsEntity couponTemplateStats
-                ON couponTemplate.id = couponTemplateStats.couponTemplateId
         WHERE userCoupon.userId = :userId 
             AND userCoupon.status = :userCouponStatus
             AND couponTemplate.merchantId = :merchantId
         ORDER BY 
-            CASE 
-                WHEN couponTemplate.maxRedeemCount IS NULL 
-                    OR couponTemplateStats.redeemCount < couponTemplate.maxRedeemCount 
-                THEN 1 ELSE 0
-            END DESC,
             userCoupon.expiresAt ASC,
             userCoupon.issuedAt DESC
         """
     )
-    fun findUserCouponsByUserIdAndMerchantId(
+    fun findUserCouponSummaries(
         userId: String,
         merchantId: Long,
         userCouponStatus: UserCouponStatus = UserCouponStatus.ISSUED,
-    ): List<UserCouponViewDto>
+    ): List<UserCouponSummaryDto>
 
     @Query(
         """
@@ -94,15 +82,9 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
         FROM UserCouponEntity userCoupon
             JOIN CouponTemplateEntity couponTemplate
                 ON userCoupon.couponTemplateId = couponTemplate.id
-            LEFT JOIN CouponTemplateStatsEntity couponTemplateStats
-                ON couponTemplate.id = couponTemplateStats.couponTemplateId
         WHERE userCoupon.userId = :userId 
             AND userCoupon.status = :userCouponStatus
             AND couponTemplate.merchantId = :merchantId
-            AND (
-                couponTemplate.maxRedeemCount IS NULL 
-                OR couponTemplateStats.redeemCount < couponTemplate.maxRedeemCount
-            )
         ORDER BY 
             CASE 
                 WHEN couponTemplate.minOrderAmount IS NULL 

@@ -1,8 +1,12 @@
 package com.goodpon.api.partner.application.coupon
 
 import com.goodpon.api.partner.support.AbstractIntegrationTest
-import com.goodpon.api.partner.support.accessor.*
+import com.goodpon.api.partner.support.accessor.TestCouponHistoryAccessor
+import com.goodpon.api.partner.support.accessor.TestCouponTemplateAccessor
+import com.goodpon.api.partner.support.accessor.TestMerchantAccessor
+import com.goodpon.api.partner.support.accessor.TestUserCouponAccessor
 import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponCommand
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.IssueCouponService
 import com.goodpon.domain.coupon.history.CouponActionType
 import com.goodpon.domain.coupon.user.UserCouponStatus
@@ -15,8 +19,8 @@ class IssueCouponServiceIT(
     private val testMerchantAccessor: TestMerchantAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,
-    private val testCouponTemplateStatsAccessor: TestCouponTemplateStatsAccessor,
     private val testCouponHistoryAccessor: TestCouponHistoryAccessor,
+    private val couponTemplateStatsCache: CouponTemplateStatsCache,
 ) : AbstractIntegrationTest() {
 
     @Test
@@ -45,10 +49,10 @@ class IssueCouponServiceIT(
         foundUserCouponEntity.couponTemplateId shouldBe couponTemplateId
         foundUserCouponEntity.status shouldBe UserCouponStatus.ISSUED
 
-        val foundCouponTemplateStatsEntity = testCouponTemplateStatsAccessor.findById(couponTemplateId)
-        foundCouponTemplateStatsEntity.shouldNotBeNull()
-        foundCouponTemplateStatsEntity.issueCount shouldBe 1
-        foundCouponTemplateStatsEntity.redeemCount shouldBe 0
+        couponTemplateStatsCache.getStats(couponTemplateId).let {
+            it.first shouldBe 1L
+            it.second shouldBe 0L
+        }
 
         val foundCouponHistoryEntities = testCouponHistoryAccessor.findByUserCouponId(result.userCouponId)
         foundCouponHistoryEntities.shouldNotBeNull()
