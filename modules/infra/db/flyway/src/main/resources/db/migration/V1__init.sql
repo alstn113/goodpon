@@ -78,10 +78,6 @@ CREATE TABLE IF NOT EXISTS coupon_templates
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
 
-ALTER TABLE coupon_templates
-    ADD CONSTRAINT fk_coupon_templates_merchant_id
-        FOREIGN KEY (merchant_id) REFERENCES merchants (id);
-
 CREATE TABLE IF NOT EXISTS coupon_template_stats
 (
     coupon_template_id BIGINT      NOT NULL,
@@ -91,10 +87,6 @@ CREATE TABLE IF NOT EXISTS coupon_template_stats
     updated_at         DATETIME(6) NOT NULL,
     PRIMARY KEY (coupon_template_id)
 ) ENGINE = INNODB;
-
-ALTER TABLE coupon_template_stats
-    ADD CONSTRAINT fk_coupon_template_stats_coupon_template_id
-        FOREIGN KEY (coupon_template_id) REFERENCES coupon_templates (id);
 
 CREATE TABLE IF NOT EXISTS user_coupons
 (
@@ -109,10 +101,6 @@ CREATE TABLE IF NOT EXISTS user_coupons
     updated_at         DATETIME(6)  NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
-
-ALTER TABLE user_coupons
-    ADD CONSTRAINT fk_user_coupons_coupon_template_id
-        FOREIGN KEY (coupon_template_id) REFERENCES coupon_templates (id);
 
 ALTER TABLE user_coupons
     ADD CONSTRAINT uq_user_coupons_user_id_coupon_template_id
@@ -130,7 +118,3 @@ CREATE TABLE IF NOT EXISTS coupon_histories
     updated_at     DATETIME(6) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
-
-ALTER TABLE coupon_histories
-    ADD CONSTRAINT fk_coupon_histories_user_coupon_id
-        FOREIGN KEY (user_coupon_id) REFERENCES user_coupons (id);
