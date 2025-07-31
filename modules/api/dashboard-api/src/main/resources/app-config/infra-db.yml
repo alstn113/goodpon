@@ -82,8 +82,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: dashboard-api-pool
-      maximum-pool-size: 10
-      minimum-idle: 10
+      maximum-pool-size: 5
+      minimum-idle: 5
       idle-timeout: 0
       max-lifetime: 12000000 # 20 minutes
       connection-timeout: 30000 # 30 seconds
