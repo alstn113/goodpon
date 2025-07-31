@@ -3,8 +3,8 @@ package com.goodpon.application.partner.coupon.service
 import com.goodpon.application.partner.coupon.port.`in`.CancelCouponRedemptionUseCase
 import com.goodpon.application.partner.coupon.port.`in`.dto.CancelCouponRedemptionCommand
 import com.goodpon.application.partner.coupon.port.`in`.dto.CancelCouponRedemptionResult
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateAccessor
-import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateStatsAccessor
 import com.goodpon.application.partner.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.domain.coupon.template.CouponTemplate
@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 @Service
 class CancelCouponRedemptionService(
     private val couponTemplateAccessor: CouponTemplateAccessor,
-    private val couponTemplateStatsAccessor: CouponTemplateStatsAccessor,
+    private val couponTemplateStatsCache: CouponTemplateStatsCache,
     private val userCouponAccessor: UserCouponAccessor,
     private val couponRedemptionCancelProcessor: CouponRedemptionCancelProcessor,
 ) : CancelCouponRedemptionUseCase {
@@ -35,9 +35,7 @@ class CancelCouponRedemptionService(
             cancelReason = command.cancelReason,
             cancelAt = now
         )
-
-        val stats = couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(userCoupon.couponTemplateId)
-        couponTemplateStatsAccessor.decrementRedeemCount(stats)
+        couponTemplateStatsCache.cancelRedeem(userCoupon.couponTemplateId)
 
         return CancelCouponRedemptionResult(
             userCouponId = canceledCoupon.id,

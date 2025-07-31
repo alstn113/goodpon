@@ -9,7 +9,7 @@ import com.goodpon.application.partner.coupon.port.`in`.dto.GetAvailableUserCoup
 import com.goodpon.application.partner.coupon.port.`in`.dto.GetCouponTemplateDetailForUserQuery
 import com.goodpon.application.partner.coupon.service.dto.AvailableUserCouponsView
 import com.goodpon.application.partner.coupon.service.dto.CouponTemplateDetailForUser
-import com.goodpon.application.partner.coupon.service.dto.UserCouponsView
+import com.goodpon.application.partner.coupon.service.dto.UserCouponList
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -28,7 +28,7 @@ class CouponQueryController(
     fun getUserCoupons(
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
         @RequestParam userId: String,
-    ): ResponseEntity<ApiResponse<UserCouponsView>> {
+    ): ResponseEntity<ApiResponse<UserCouponList>> {
         val view = getUserCouponsUseCase(merchantId = merchantPrincipal.merchantId, userId = userId)
 
         return ResponseEntity.ok(ApiResponse.success(view))

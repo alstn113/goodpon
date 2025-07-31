@@ -1,9 +1,13 @@
 package com.goodpon.api.partner.application.coupon
 
 import com.goodpon.api.partner.support.AbstractIntegrationTest
-import com.goodpon.api.partner.support.accessor.*
+import com.goodpon.api.partner.support.accessor.TestCouponHistoryAccessor
+import com.goodpon.api.partner.support.accessor.TestCouponTemplateAccessor
+import com.goodpon.api.partner.support.accessor.TestMerchantAccessor
+import com.goodpon.api.partner.support.accessor.TestUserCouponAccessor
 import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponCommand
 import com.goodpon.application.partner.coupon.port.`in`.dto.RedeemCouponCommand
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.IssueCouponService
 import com.goodpon.application.partner.coupon.service.RedeemCouponService
 import com.goodpon.domain.coupon.history.CouponActionType
@@ -24,7 +28,7 @@ class RedeemCouponServiceConcurrencyIT(
     private val testUserCouponAccessor: TestUserCouponAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testCouponHistoryAccessor: TestCouponHistoryAccessor,
-    private val testCouponTemplateStatsAccessor: TestCouponTemplateStatsAccessor,
+    private val couponTemplateStatsCache: CouponTemplateStatsCache,
 ) : AbstractIntegrationTest() {
 
     @Test
@@ -86,10 +90,10 @@ class RedeemCouponServiceConcurrencyIT(
         foundUserCouponEntities.count { it.status == UserCouponStatus.REDEEMED } shouldBe maxRedeemCount
         foundUserCouponEntities.count { it.status == UserCouponStatus.ISSUED } shouldBe issueCount - maxRedeemCount
 
-        val foundStatsEntity = testCouponTemplateStatsAccessor.findById(couponTemplateId)
-        foundStatsEntity.shouldNotBeNull()
-        foundStatsEntity.issueCount shouldBe issueCount
-        foundStatsEntity.redeemCount shouldBe maxRedeemCount
+        couponTemplateStatsCache.getStats(couponTemplateId).let {
+            it.first shouldBe issueCount
+            it.second shouldBe maxRedeemCount
+        }
 
         val foundHistoryEntities = testCouponHistoryAccessor.findAll()
         foundHistoryEntities.size shouldBe issueCount + maxRedeemCount
@@ -150,8 +154,6 @@ class RedeemCouponServiceConcurrencyIT(
         foundUserCouponEntity.shouldNotBeNull()
         foundUserCouponEntity.status shouldBe UserCouponStatus.REDEEMED
 
-        val foundStatsEntity = testCouponTemplateStatsAccessor.findById(couponTemplateId)
-        foundStatsEntity.shouldNotBeNull()
-        foundStatsEntity.redeemCount shouldBe 1
+        couponTemplateStatsCache.getStats(couponTemplateId).second shouldBe 1L
     }
 }

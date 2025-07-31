@@ -43,11 +43,13 @@ data class CouponTemplateDetail(
     val limitType: CouponLimitPolicyType,
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
-    val issueCount: Long,
-    val redeemCount: Long,
 ) {
 
-    fun forUser(issuanceStatus: CouponIssuanceStatus): CouponTemplateDetailForUser {
+    fun forUser(
+        issuanceStatus: CouponIssuanceStatus,
+        currentIssueCount: Long,
+        currentRedeemCount: Long,
+    ): CouponTemplateDetailForUser {
         return CouponTemplateDetailForUser(
             id = id,
             name = name,
@@ -64,8 +66,8 @@ data class CouponTemplateDetail(
             limitType = limitType,
             maxIssueCount = maxIssueCount,
             maxRedeemCount = maxRedeemCount,
-            currentIssueCount = issueCount,
-            currentRedeemCount = redeemCount,
+            currentIssueCount = currentIssueCount,
+            currentRedeemCount = currentRedeemCount,
             issuanceStatus = issuanceStatus
         )
     }

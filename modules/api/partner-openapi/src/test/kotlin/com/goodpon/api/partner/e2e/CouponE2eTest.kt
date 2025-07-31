@@ -12,7 +12,7 @@ import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponResult
 import com.goodpon.application.partner.coupon.port.`in`.dto.RedeemCouponResult
 import com.goodpon.application.partner.coupon.service.dto.AvailableUserCouponsView
 import com.goodpon.application.partner.coupon.service.dto.CouponTemplateDetailForUser
-import com.goodpon.application.partner.coupon.service.dto.UserCouponsView
+import com.goodpon.application.partner.coupon.service.dto.UserCouponList
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import com.goodpon.domain.coupon.user.UserCouponStatus
@@ -185,7 +185,7 @@ class CouponE2eTest(
             clientSecret = clientSecret,
             userId = emmaUserId
         ).apply { statusCode() shouldBe 200 }
-            .toApiResponse<UserCouponsView>()
+            .toApiResponse<UserCouponList>()
             .apply {
                 val coupons = this.coupons
                 coupons.size shouldBe 2
@@ -272,7 +272,7 @@ class CouponE2eTest(
             clientSecret = clientSecret,
             userId = emmaUserId
         ).apply { statusCode() shouldBe 200 }
-            .toApiResponse<UserCouponsView>()
+            .toApiResponse<UserCouponList>()
             .apply {
                 val coupons = this.coupons
                 coupons.size shouldBe 1
@@ -286,7 +286,7 @@ class CouponE2eTest(
             clientSecret = clientSecret,
             userId = stellaUserId
         ).apply { statusCode() shouldBe 200 }
-            .toApiResponse<UserCouponsView>()
+            .toApiResponse<UserCouponList>()
             .apply {
                 val coupons = this.coupons
                 coupons.size shouldBe 1

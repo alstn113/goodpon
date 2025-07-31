@@ -24,7 +24,7 @@ class UserCouponAccessor(
 
     @Transactional
     fun createUserCoupon(userCoupon: UserCoupon): UserCoupon {
-        return userCouponRepository.save(userCoupon)
+        return userCouponRepository.saveAndFlush(userCoupon)
     }
 
     @Transactional

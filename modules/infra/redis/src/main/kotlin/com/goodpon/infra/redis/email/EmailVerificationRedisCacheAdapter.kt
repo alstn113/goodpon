@@ -1,4 +1,4 @@
-package com.goodpon.infra.redis
+package com.goodpon.infra.redis.email
 
 import com.goodpon.application.dashboard.auth.port.out.EmailVerificationCache
 import com.goodpon.application.dashboard.auth.port.out.dto.EmailVerificationDto

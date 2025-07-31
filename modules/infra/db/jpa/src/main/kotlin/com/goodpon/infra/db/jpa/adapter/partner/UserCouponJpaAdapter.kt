@@ -2,7 +2,7 @@ package com.goodpon.infra.db.jpa.adapter.partner
 
 import com.goodpon.application.partner.coupon.port.out.UserCouponRepository
 import com.goodpon.application.partner.coupon.service.dto.AvailableUserCouponView
-import com.goodpon.application.partner.coupon.service.dto.UserCouponView
+import com.goodpon.application.partner.coupon.service.dto.UserCouponSummary
 import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.infra.db.jpa.core.UserCouponCoreRepository
 import org.springframework.stereotype.Repository
@@ -16,6 +16,10 @@ class UserCouponJpaAdapter(
         return userCouponCoreRepository.save(userCoupon)
     }
 
+    override fun saveAndFlush(userCoupon: UserCoupon): UserCoupon {
+        return userCouponCoreRepository.saveAndFlush(userCoupon)
+    }
+
     override fun findByIdForUpdate(id: String): UserCoupon? {
         return userCouponCoreRepository.findByIdForUpdate(id)
     }
@@ -24,10 +28,10 @@ class UserCouponJpaAdapter(
         return userCouponCoreRepository.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)
     }
 
-    override fun findUserCouponsView(userId: String, merchantId: Long): List<UserCouponView> {
-        return userCouponCoreRepository.findUserCouponsByUserIdAndMerchantId(userId = userId, merchantId = merchantId)
+    override fun findUserCouponSummaries(userId: String, merchantId: Long): List<UserCouponSummary> {
+        return userCouponCoreRepository.findUserCouponSummaries(userId = userId, merchantId = merchantId)
             .map {
-                UserCouponView(
+                UserCouponSummary(
                     userCouponId = it.userCouponId,
                     couponTemplateId = it.couponTemplateId,
                     couponTemplateName = it.couponTemplateName,
@@ -41,7 +45,6 @@ class UserCouponJpaAdapter(
                     limitType = it.limitType,
                     maxIssueCount = it.maxIssueCount,
                     maxRedeemCount = it.maxRedeemCount,
-                    isRedeemable = it.isRedeemable,
                 )
             }
     }

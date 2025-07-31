@@ -7,6 +7,8 @@ import com.goodpon.api.partner.response.ErrorMessage
 import com.goodpon.api.partner.security.ApiKeyHeader
 import com.goodpon.infra.db.jpa.MySQLContainerInitializer
 import com.goodpon.infra.db.jpa.MySQLDataCleanupExtension
+import com.goodpon.infra.redis.RedisContainerInitializer
+import com.goodpon.infra.redis.RedisDataCleanupExtension
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.builder.ResponseSpecBuilder
@@ -26,8 +28,16 @@ import org.springframework.test.context.TestConstructor
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@ContextConfiguration(initializers = [MySQLContainerInitializer::class])
-@ExtendWith(MySQLDataCleanupExtension::class)
+@ContextConfiguration(
+    initializers = [
+        MySQLContainerInitializer::class,
+        RedisContainerInitializer::class
+    ]
+)
+@ExtendWith(
+    MySQLDataCleanupExtension::class,
+    RedisDataCleanupExtension::class
+)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 abstract class AbstractEndToEndTest {
 

@@ -26,6 +26,8 @@ class RedisConfig(
         return RedisTemplate<String, Any>().apply {
             keySerializer = StringRedisSerializer()
             valueSerializer = GenericJackson2JsonRedisSerializer(redisObjectMapper())
+            hashKeySerializer = StringRedisSerializer()
+            hashValueSerializer = StringRedisSerializer()
             connectionFactory = lettuceConnectionFactory()
         }
     }

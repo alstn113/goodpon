@@ -1,10 +1,10 @@
 package com.goodpon.application.partner.coupon
 
 import com.goodpon.application.partner.coupon.port.`in`.dto.CancelCouponRedemptionCommand
+import com.goodpon.application.partner.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.partner.coupon.service.CancelCouponRedemptionService
 import com.goodpon.application.partner.coupon.service.CouponRedemptionCancelProcessor
 import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateAccessor
-import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateStatsAccessor
 import com.goodpon.application.partner.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.domain.coupon.stats.CouponTemplateStats
@@ -18,12 +18,12 @@ import io.mockk.mockk
 class CancelCouponRedemptionServiceTest : DescribeSpec({
 
     val couponTemplateAccessor = mockk<CouponTemplateAccessor>()
-    val couponTemplateStatsAccessor = mockk<CouponTemplateStatsAccessor>()
+    val couponTemplateStatsCache = mockk<CouponTemplateStatsCache>()
     val userCouponAccessor = mockk<UserCouponAccessor>()
     val couponRedemptionCancelProcessor = mockk<CouponRedemptionCancelProcessor>()
     val cancelCouponRedemptionService = CancelCouponRedemptionService(
         couponTemplateAccessor = couponTemplateAccessor,
-        couponTemplateStatsAccessor = couponTemplateStatsAccessor,
+        couponTemplateStatsCache = couponTemplateStatsCache,
         userCouponAccessor = userCouponAccessor,
         couponRedemptionCancelProcessor = couponRedemptionCancelProcessor
     )
@@ -37,13 +37,11 @@ class CancelCouponRedemptionServiceTest : DescribeSpec({
         )
 
         val userCoupon = mockk<UserCoupon>()
-        val stats = mockk<CouponTemplateStats>()
         val couponTemplate = mockk<CouponTemplate>()
 
         beforeTest {
             every { userCouponAccessor.readByIdForUpdate(any()) } returns userCoupon
             every { userCoupon.couponTemplateId } returns 1L
-            every { couponTemplateStatsAccessor.readByCouponTemplateIdForUpdate(any()) } returns stats
             every { couponTemplateAccessor.readById(any()) } returns couponTemplate
         }
 

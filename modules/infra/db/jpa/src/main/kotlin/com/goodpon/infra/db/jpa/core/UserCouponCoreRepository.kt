@@ -5,7 +5,7 @@ import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.infra.db.jpa.entity.UserCouponEntity
 import com.goodpon.infra.db.jpa.repository.UserCouponJpaRepository
 import com.goodpon.infra.db.jpa.repository.dto.AvailableUserCouponViewDto
-import com.goodpon.infra.db.jpa.repository.dto.UserCouponViewDto
+import com.goodpon.infra.db.jpa.repository.dto.UserCouponSummaryDto
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -28,6 +28,13 @@ class UserCouponCoreRepository(
         entity.update(userCoupon)
         val savedEntity = userCouponJpaRepository.save(entity)
         return savedEntity.toDomain()
+    }
+
+    @Transactional
+    fun saveAndFlush(userCoupon: UserCoupon): UserCoupon {
+        val saved = save(userCoupon)
+        userCouponJpaRepository.flush()
+        return saved
     }
 
     @Transactional
@@ -57,8 +64,8 @@ class UserCouponCoreRepository(
     }
 
     @Transactional(readOnly = true)
-    fun findUserCouponsByUserIdAndMerchantId(userId: String, merchantId: Long): List<UserCouponViewDto> {
-        return userCouponJpaRepository.findUserCouponsByUserIdAndMerchantId(userId = userId, merchantId = merchantId)
+    fun findUserCouponSummaries(userId: String, merchantId: Long): List<UserCouponSummaryDto> {
+        return userCouponJpaRepository.findUserCouponSummaries(userId = userId, merchantId = merchantId)
     }
 
     @Transactional(readOnly = true)

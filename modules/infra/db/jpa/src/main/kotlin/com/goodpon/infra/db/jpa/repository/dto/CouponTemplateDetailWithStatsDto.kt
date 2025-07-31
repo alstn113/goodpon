@@ -5,7 +5,7 @@ import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import java.time.LocalDateTime
 
-data class CouponTemplateDetailDto(
+data class CouponTemplateDetailWithStatsDto(
     val id: Long,
     val merchantId: Long,
     val name: String,
@@ -22,5 +22,7 @@ data class CouponTemplateDetailDto(
     val limitType: CouponLimitPolicyType,
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
+    val issueCount: Long,
+    val redeemCount: Long,
     val createdAt: LocalDateTime,
 )

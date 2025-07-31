@@ -13,4 +13,8 @@ class CouponTemplateStatsJpaAdapter(
     override fun save(couponTemplateStats: CouponTemplateStats): CouponTemplateStats {
         return couponTemplateStatsCoreRepository.save(couponTemplateStats)
     }
+
+    override fun batchUpdateCouponTemplateStats(statsUpdates: Map<Long, Pair<Long, Long>>) {
+        couponTemplateStatsCoreRepository.batchUpdateCouponTemplateStats(statsUpdates)
+    }
 }

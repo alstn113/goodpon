@@ -14,4 +14,9 @@ class CouponTemplateStatsAccessor(
     fun save(couponTemplateStats: CouponTemplateStats): CouponTemplateStats {
         return couponTemplateStatsRepository.save(couponTemplateStats)
     }
+
+    @Transactional
+    fun batchUpdateCouponTemplateStats(statsUpdates: Map<Long, Pair<Long, Long>>) {
+        couponTemplateStatsRepository.batchUpdateCouponTemplateStats(statsUpdates)
+    }
 }

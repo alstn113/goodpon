@@ -6,8 +6,8 @@ import com.epages.restdocs.apispec.Schema
 import com.goodpon.api.partner.response.ResultType
 import com.goodpon.api.partner.support.AbstractDocumentTest
 import com.goodpon.api.partner.support.WithMockMerchant
-import com.goodpon.application.partner.coupon.service.dto.UserCouponView
-import com.goodpon.application.partner.coupon.service.dto.UserCouponsView
+import com.goodpon.application.partner.coupon.service.dto.UserCouponList
+import com.goodpon.application.partner.coupon.service.dto.UserCouponWithRedeemable
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import io.mockk.every
@@ -25,9 +25,9 @@ class GetUserCouponsDocumentTest : AbstractDocumentTest() {
     @WithMockMerchant
     fun `사용자가 보유한 쿠폰 목록 조회 - 성공`() {
         val userId = "44321b95877380a0dcbd2b18f3aa"
-        val userCouponsView = UserCouponsView(
+        val userCouponList = UserCouponList(
             coupons = listOf(
-                UserCouponView(
+                UserCouponWithRedeemable(
                     userCouponId = "8f3b95144877a0dcbaad2b321380",
                     couponTemplateId = 1L,
                     couponTemplateName = "테스트 쿠폰",
@@ -46,7 +46,7 @@ class GetUserCouponsDocumentTest : AbstractDocumentTest() {
             )
         )
 
-        every { getUserCouponsUseCase(any(), any()) } returns userCouponsView
+        every { getUserCouponsUseCase(any(), any()) } returns userCouponList
 
         val result = mockMvc.perform(
             RestDocumentationRequestBuilders

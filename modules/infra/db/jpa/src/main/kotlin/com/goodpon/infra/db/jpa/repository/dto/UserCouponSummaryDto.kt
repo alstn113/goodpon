@@ -4,7 +4,7 @@ import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import java.time.LocalDateTime
 
-data class UserCouponViewDto(
+data class UserCouponSummaryDto(
     val userCouponId: String,
     val couponTemplateId: Long,
     val couponTemplateName: String,
@@ -18,5 +18,4 @@ data class UserCouponViewDto(
     val limitType: CouponLimitPolicyType,
     val maxIssueCount: Long?,
     val maxRedeemCount: Long?,
-    val isRedeemable: Boolean,
 )

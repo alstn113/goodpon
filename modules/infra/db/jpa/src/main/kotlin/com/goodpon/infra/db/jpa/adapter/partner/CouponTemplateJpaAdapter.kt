@@ -16,7 +16,7 @@ class CouponTemplateJpaAdapter(
     }
 
     override fun findCouponTemplateDetail(couponTemplateId: Long, merchantId: Long): CouponTemplateDetail? {
-        val dto = couponTemplateCoreRepository.findByIdAndMerchantIdWithStats(
+        val dto = couponTemplateCoreRepository.findDetailById(
             couponTemplateId = couponTemplateId,
             merchantId = merchantId
         ) ?: return null
@@ -37,8 +37,6 @@ class CouponTemplateJpaAdapter(
             limitType = dto.limitType,
             maxIssueCount = dto.maxIssueCount,
             maxRedeemCount = dto.maxRedeemCount,
-            issueCount = dto.issueCount,
-            redeemCount = dto.redeemCount,
         )
     }
 }

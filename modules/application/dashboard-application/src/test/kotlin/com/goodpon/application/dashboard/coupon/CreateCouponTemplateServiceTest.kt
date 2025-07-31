@@ -1,6 +1,7 @@
 package com.goodpon.application.dashboard.coupon
 
 import com.goodpon.application.dashboard.coupon.port.`in`.dto.CreateCouponTemplateCommand
+import com.goodpon.application.dashboard.coupon.port.out.CouponTemplateStatsCache
 import com.goodpon.application.dashboard.coupon.service.CreateCouponTemplateService
 import com.goodpon.application.dashboard.coupon.service.accessor.CouponTemplateAccessor
 import com.goodpon.application.dashboard.coupon.service.accessor.CouponTemplateStatsAccessor
@@ -26,10 +27,12 @@ class CreateCouponTemplateServiceTest : DescribeSpec({
     val couponTemplateAccessor = mockk<CouponTemplateAccessor>()
     val merchantAccessor = mockk<MerchantAccessor>()
     val couponTemplateStatsAccessor = mockk<CouponTemplateStatsAccessor>(relaxed = true)
+    val couponTemplateStatsCache = mockk<CouponTemplateStatsCache>(relaxed = true)
     val createCouponTemplateService = CreateCouponTemplateService(
         couponTemplateAccessor,
         merchantAccessor,
-        couponTemplateStatsAccessor
+        couponTemplateStatsAccessor,
+        couponTemplateStatsCache
     )
 
     beforeEach {
