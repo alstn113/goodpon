@@ -102,9 +102,9 @@ CREATE TABLE IF NOT EXISTS user_coupons
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
 
-ALTER TABLE user_coupons
-    ADD CONSTRAINT uq_user_coupons_user_id_coupon_template_id
-        UNIQUE (user_id, coupon_template_id);
+# ALTER TABLE user_coupons
+#     ADD CONSTRAINT uq_user_coupons_user_id_coupon_template_id
+#         UNIQUE (user_id, coupon_template_id);
 
 CREATE TABLE IF NOT EXISTS coupon_histories
 (
