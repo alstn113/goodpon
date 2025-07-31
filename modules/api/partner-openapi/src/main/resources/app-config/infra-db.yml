@@ -74,7 +74,7 @@ spring:
 spring.config.activate.on-profile: prod
 
 spring:
-  jpa.properties.hibernate.connection.provider_disables_autocommit: true
+#  jpa.properties.hibernate.connection.provider_disables_autocommit: true
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -82,11 +82,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: partner-openapi-pool
-      maximum-pool-size: 10
-      minimum-idle: 10
-      idle-timeout: 0
-      max-lifetime: 12000000 # 20 minutes
-      connection-timeout: 30000 # 30 seconds
-      validation-timeout: 5000 # 5 seconds
-      leak-detection-threshold: 2000 # 2 seconds
-      auto-commit: false
+#      maximum-pool-size: 10
+#      minimum-idle: 10
+#      idle-timeout: 0
+#      max-lifetime: 12000000 # 20 minutes
+#      connection-timeout: 30000 # 30 seconds
+#      validation-timeout: 5000 # 5 seconds
+#      leak-detection-threshold: 2000 # 2 seconds
+#      auto-commit: false
