@@ -60,6 +60,9 @@ services:
       DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      # Redis 설정
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
       # OpenTelemetry 설정
       OTEL_SERVICE_NAME: partner-openapi
       OTEL_RESOURCE_ATTRIBUTES: service.instance.id=partner-openapi
