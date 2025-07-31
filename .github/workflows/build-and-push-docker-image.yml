@@ -31,7 +31,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build all modules
-        run: ./gradlew clean build
+        run: ./gradlew clean bootJar --no-daemon
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
