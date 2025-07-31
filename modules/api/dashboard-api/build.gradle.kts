@@ -39,8 +39,6 @@ openapi3 {
 
 tasks.bootJar {
     enabled = true
-
-    dependsOn("openapi3")
 }
 
 tasks.jar {
