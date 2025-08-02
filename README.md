@@ -45,9 +45,34 @@ Goodpon은 `Dashboard API`와 `Partner OpenAPI`로 서버가 분리되어 있습
 
 ## 프로젝트 API 명세서
 
-- ### [Dashboard API 명세서](https://alstn113.github.io/goodpon/dashboard/)
-- ### [Partner OpenAPI 명세서](https://alstn113.github.io/goodpon/partner/)
+### [Dashboard API 명세서](https://alstn113.github.io/goodpon/dashboard/)
 
+- 고객사 관리자가 상점을 관리하고, 쿠폰 템플릿 등을 생성, 발행, 관리할 수 있는 관리자 시스템의 API 명세서입니다.
+- Bearer 토큰 기반 인증하며, API 호출 시 아래 헤더를 포함해야 합니다.
+- 이메일 인증 이후 계정이 활성화되어, 대시보드 서비스를 사용할 수 있습니다.
+
+```http
+Authorization: Bearer {access_token}
+```
+
+
+### [Partner OpenAPI 명세서](https://alstn113.github.io/goodpon/partner/)
+
+- 고객사의 커머스 서비스와 연동되어 고객사의 사용자가 쿠폰을 발급받고, 보유 쿠폰을 조회하며, 주문/결제 시 쿠폰을 사용하여 할인 혜택을 적용받을 수 있도록 지원하는 API 명세서입니다.
+- 클라이언트 키 기반 인증, API 호출 시 아래 헤더를 포함해야 합니다.
+
+```http
+X-Goodpon-Client-Id: {발급받은 상점 클라이언트 ID}
+X-Goodpon-Client-Secret: {발급받은 상점 클라이언트 시크릿}
+```
+
+- 모든 응답에는 `traceId`가 포함되어 있어, 문제 발생 시, 해당 `traceId`를 통해 로그를 추적할 수 있습니다.
+
+```json
+{
+  "traceId": "782f0c5251017e93f1f2280f8fa8295f"
+}
+```
 ## 모니터링 시스템 구조
 
 애플리케이션의 관측성을 확보하기 위해 OpenTelemetry 기반의 모니터링 스택을 구축하였습니다. JVM 런타임 시점에 함께 실행되는 OpenTelemetry Java Agent를 통해 코드 수정 없이 애플리케이션의 메트릭, 로그, 트레이스를 자동 수집합니다. 수집된 데이터는 Prometheus(메트릭), Loki(로그), Tempo(트레이스)로 전달되며, Grafana를 통해 통합 대시보드로 시각화됩니다. 이를 통해 애플리케이션의 상태를 실시간으로 효과적으로 모니터링할 수 있습니다.
