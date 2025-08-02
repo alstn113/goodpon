@@ -58,7 +58,7 @@ Authorization: Bearer {access_token}
 
 ### [Partner OpenAPI 명세서](https://alstn113.github.io/goodpon/partner/)
 
-- 고객사의 커머스 서비스와 연동되어 고객사의 사용자가 쿠폰을 발급받고, 보유 쿠폰을 조회하며, 주문/결제 시 쿠폰을 사용하여 할인 혜택을 적용받을 수 있도록 지원하는 API 명세서입니다.
+- 고객사의 커머스 서비스와 연동되어 고객사의 사용자가 쿠폰을 발급, 조회, 사용할 수 있도록 지원하는 API 명세서입니다.
 - 클라이언트 키 기반 인증, API 호출 시 아래 헤더를 포함해야 합니다.
 
 ```http
