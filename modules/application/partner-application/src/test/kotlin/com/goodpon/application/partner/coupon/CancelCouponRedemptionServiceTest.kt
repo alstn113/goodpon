@@ -7,7 +7,6 @@ import com.goodpon.application.partner.coupon.service.CouponRedemptionCancelProc
 import com.goodpon.application.partner.coupon.service.accessor.CouponTemplateAccessor
 import com.goodpon.application.partner.coupon.service.accessor.UserCouponAccessor
 import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
-import com.goodpon.domain.coupon.stats.CouponTemplateStats
 import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.user.UserCoupon
 import io.kotest.assertions.throwables.shouldThrow

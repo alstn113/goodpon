@@ -65,6 +65,10 @@ abstract class AbstractEndToEndTest {
             .header(ApiKeyHeader.CLIENT_SECRET.headerName, clientSecret)
     }
 
+    fun RequestSpecification.withIdempotencyKey(idempotencyKey: String): RequestSpecification {
+        return this.header("Idempotency-Key", idempotencyKey)
+    }
+
     final inline fun <reified T> Response.toApiResponse(): T {
         val response: ApiResponse<T> = objectMapper.readValue(
             this.asString(),

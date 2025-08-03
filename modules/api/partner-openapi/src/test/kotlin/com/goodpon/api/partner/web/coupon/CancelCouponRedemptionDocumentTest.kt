@@ -51,7 +51,6 @@ class CancelCouponRedemptionDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isOk,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.SUCCESS.name),
             jsonPath("$.error").value(null),
             jsonPath("$.data.userCouponId").value(userCouponId),
@@ -66,12 +65,13 @@ class CancelCouponRedemptionDocumentTest : AbstractDocumentTest() {
                 .tag("Coupon")
                 .summary("쿠폰 사용 취소")
                 .description("쿠폰 사용 취소 API")
-                .requestHeaders(apiKeyHeaderFields())
+                .requestHeaders(postHeaderFields())
                 .pathParameters(parameterWithName("userCouponId").description("사용을 취소할 쿠폰의 ID"))
                 .requestSchema(Schema("CancelCouponRedemptionRequest"))
                 .requestFields(*cancelCouponRedemptionRequestFields().toTypedArray())
                 .responseSchema(Schema("ApiResponse<CancelCouponRedemptionResult>"))
                 .responseFields(*cancelCouponRedemptionResultFields().toTypedArray())
+                .responseHeaders(*postResponseHeaderFields().toTypedArray())
                 .build()
         )
     }
@@ -85,7 +85,6 @@ class CancelCouponRedemptionDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isNotFound,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("USER_COUPON_NOT_FOUND"),
             jsonPath("$.error.message").value("존재하지 않는 쿠폰입니다.")
@@ -106,7 +105,6 @@ class CancelCouponRedemptionDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isNotFound,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_NOT_FOUND"),
             jsonPath("$.error.message").value("존재하지 않는 쿠폰 템플릿입니다.")
@@ -127,7 +125,6 @@ class CancelCouponRedemptionDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isForbidden,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT"),
             jsonPath("$.error.message").value("해당 쿠폰 템플릿은 현재 상점에서 소유하고 있지 않습니다.")
@@ -148,7 +145,6 @@ class CancelCouponRedemptionDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("USER_COUPON_ALREADY_CANCELLED"),
             jsonPath("$.error.message").value("해당 쿠폰은 이미 취소된 쿠폰입니다.")
@@ -169,7 +165,6 @@ class CancelCouponRedemptionDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("USER_COUPON_CANCEL_NOT_ALLOWED"),
             jsonPath("$.error.message").value("해당 쿠폰은 사용 취소할 수 없는 상태입니다.")
@@ -190,7 +185,6 @@ class CancelCouponRedemptionDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("USER_COUPON_CANCEL_ORDER_ID_MISMATCH"),
             jsonPath("$.error.message").value("쿠폰 사용 취소 시 쿠폰을 사용했던 주문 ID와 동일해야 합니다.")
@@ -213,12 +207,13 @@ class CancelCouponRedemptionDocumentTest : AbstractDocumentTest() {
     private fun commonFailureSnippetsParamsBuilder(): ResourceSnippetParametersBuilder {
         return ResourceSnippetParameters.builder()
             .tag("Coupon")
-            .requestHeaders(apiKeyHeaderFields())
+            .requestHeaders(postHeaderFields())
             .pathParameters(parameterWithName("userCouponId").description("사용을 취소할 쿠폰의 ID"))
             .requestSchema(Schema("CancelCouponRedemptionRequest"))
             .requestFields(*cancelCouponRedemptionRequestFields().toTypedArray())
             .responseSchema(Schema("ApiResponse<Unit>"))
             .responseFields(*commonFailureResponseFields().toTypedArray())
+            .responseHeaders(*postResponseHeaderFields().toTypedArray())
     }
 
     private fun cancelCouponRedemptionRequestFields() = listOf(

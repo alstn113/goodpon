@@ -59,7 +59,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isOk,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.SUCCESS.name),
             jsonPath("$.error").value(null),
             jsonPath("$.data.userCouponId").value(redeemCouponResult.userCouponId),
@@ -76,12 +75,13 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
                 .tag("Coupon")
                 .summary("쿠폰 사용")
                 .description("쿠폰 사용 API")
-                .requestHeaders(apiKeyHeaderFields())
+                .requestHeaders(postHeaderFields())
                 .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
                 .requestSchema(Schema("RedeemCouponRequest"))
                 .requestFields(*redeemCouponRequestFields().toTypedArray())
                 .responseSchema(Schema("ApiResponse<RedeemCouponResult>"))
                 .responseFields(*redeemCouponResultFields().toTypedArray())
+                .responseHeaders(*postResponseHeaderFields().toTypedArray())
                 .build()
         )
     }
@@ -95,7 +95,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isNotFound,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("USER_COUPON_NOT_FOUND"),
             jsonPath("$.error.message").value("존재하지 않는 쿠폰입니다.")
@@ -116,7 +115,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isNotFound,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_NOT_FOUND"),
             jsonPath("$.error.message").value("존재하지 않는 쿠폰 템플릿입니다.")
@@ -137,7 +135,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isForbidden,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT"),
             jsonPath("$.error.message").value("해당 쿠폰 템플릿은 현재 상점에서 소유하고 있지 않습니다.")
@@ -158,7 +155,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isForbidden,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("USER_COUPON_NOT_OWNED_BY_USER"),
             jsonPath("$.error.message").value("해당 쿠폰은 사용자가 소유한 쿠폰이 아닙니다.")
@@ -179,7 +175,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_NOT_REDEEMABLE"),
             jsonPath("$.error.message").value("해당 쿠폰을 사용할 수 있는 상태가 아닙니다.")
@@ -200,7 +195,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_MAX_REDEEM_COUNT_EXCEEDED"),
             jsonPath("$.error.message").value("쿠폰 템플릿의 최대 사용 수량을 초과했습니다.")
@@ -221,7 +215,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_REDEEM_CONDITION_NOT_MET"),
             jsonPath("$.error.message").value("쿠폰 사용 조건을 충족하지 못했습니다.")
@@ -242,7 +235,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("USER_COUPON_ALREADY_REDEEMED"),
             jsonPath("$.error.message").value("해당 쿠폰은 이미 사용된 쿠폰입니다.")
@@ -263,7 +255,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_NOT_REDEEMABLE"),
             jsonPath("$.error.message").value("해당 쿠폰을 사용할 수 있는 상태가 아닙니다.")
@@ -284,7 +275,6 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("USER_COUPON_EXPIRED"),
             jsonPath("$.error.message").value("해당 쿠폰은 만료된 쿠폰입니다.")
@@ -309,12 +299,13 @@ class RedeemCouponDocumentTest : AbstractDocumentTest() {
             .tag("Coupon")
             .summary("쿠폰 사용")
             .description("쿠폰 사용 API")
-            .requestHeaders(apiKeyHeaderFields())
+            .requestHeaders(postHeaderFields())
             .pathParameters(parameterWithName("userCouponId").description("사용할 쿠폰의 ID"))
             .requestSchema(Schema("RedeemCouponRequest"))
             .requestFields(*redeemCouponRequestFields().toTypedArray())
             .responseSchema(Schema("ApiResponse<Unit>"))
             .responseFields(*commonFailureResponseFields().toTypedArray())
+            .responseHeaders(*postResponseHeaderFields().toTypedArray())
     }
 
     private fun redeemCouponRequestFields() = listOf(

@@ -3,6 +3,7 @@ package com.goodpon.api.partner.controller.v1
 import com.goodpon.api.partner.controller.v1.request.CancelCouponRedemptionRequest
 import com.goodpon.api.partner.controller.v1.request.IssueCouponRequest
 import com.goodpon.api.partner.controller.v1.request.RedeemCouponRequest
+import com.goodpon.api.partner.interceptor.Idempotent
 import com.goodpon.api.partner.response.ApiResponse
 import com.goodpon.api.partner.security.MerchantPrincipal
 import com.goodpon.application.partner.coupon.port.`in`.CancelCouponRedemptionUseCase
@@ -25,6 +26,7 @@ class CouponController(
     private val cancelCouponRedemptionUseCase: CancelCouponRedemptionUseCase,
 ) {
 
+    @Idempotent
     @PostMapping("/v1/coupon-templates/{couponTemplateId}/issue")
     fun issueCoupon(
         @PathVariable couponTemplateId: Long,
@@ -40,6 +42,7 @@ class CouponController(
         return ResponseEntity.ok(ApiResponse.success(result))
     }
 
+    @Idempotent
     @PostMapping("/v1/user-coupons/{userCouponId}/redeem")
     fun redeemCoupon(
         @PathVariable userCouponId: String,
@@ -52,6 +55,7 @@ class CouponController(
         return ResponseEntity.ok(ApiResponse.success(result))
     }
 
+    @Idempotent
     @PostMapping("/v1/user-coupons/{userCouponId}/cancel")
     fun cancelCouponRedemption(
         @PathVariable userCouponId: String,

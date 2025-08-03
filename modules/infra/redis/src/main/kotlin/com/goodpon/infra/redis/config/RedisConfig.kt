@@ -12,6 +12,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
@@ -33,6 +34,13 @@ class RedisConfig(
     }
 
     @Bean
+    fun stringRedisTemplate(): StringRedisTemplate {
+        return StringRedisTemplate().apply {
+            connectionFactory = lettuceConnectionFactory()
+        }
+    }
+
+    @Bean
     fun lettuceConnectionFactory(): LettuceConnectionFactory {
         val configuration = RedisStandaloneConfiguration().apply {
             hostName = properties.host
@@ -42,7 +50,7 @@ class RedisConfig(
         return LettuceConnectionFactory(configuration, clientConfigBuilder.build())
     }
 
-    private fun redisObjectMapper(): ObjectMapper {
+    fun redisObjectMapper(): ObjectMapper {
         val validator = BasicPolymorphicTypeValidator.builder()
             .allowIfBaseType(Any::class.java)
             .build()

@@ -9,6 +9,11 @@ enum class ErrorType(
     // common
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내 오류가 발생했습니다."),
 
+    // idempotency
+    INVALID_IDEMPOTENCY_KEY(HttpStatus.BAD_REQUEST, "멱등키는 300자 이하여야 합니다."),
+    IDEMPOTENT_REQUEST_PROCESSING(HttpStatus.CONFLICT, "이전 먹등 요청이 아직 처리 중입니다. 잠시 후 다시 시도해주세요."),
+    IDEMPOTENT_REQUEST_PAYLOAD_MISMATCH(HttpStatus.UNPROCESSABLE_ENTITY, "재시도된 요청의 본문이 처음 요청과 다릅니다. 멱등키를 새로 생성해주세요."),
+
     // security
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "인증 정보가 유효하지 않습니다. Client ID와 Client Secret을 확인해주세요."),

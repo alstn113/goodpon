@@ -59,7 +59,6 @@ class GetAvailableUserCouponsDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isOk,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.SUCCESS.name),
             jsonPath("$.error").value(null),
             jsonPath("$.data.coupons").isArray,
@@ -78,6 +77,7 @@ class GetAvailableUserCouponsDocumentTest : AbstractDocumentTest() {
                 )
                 .responseSchema(Schema("ApiResponse<AvailableUserCouponsView>"))
                 .responseFields(*getAvailableUserCouponsResultFields().toTypedArray())
+                .responseHeaders(*commonResponseHeaderFields().toTypedArray())
                 .build()
         )
     }

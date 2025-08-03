@@ -70,4 +70,12 @@ class TestCouponTemplateAccessor(
 
         return couponTemplate.id
     }
+
+    @Transactional(readOnly = true)
+    fun countUserCoupons(couponTemplateId: Long): Long {
+        return entityManager.createQuery(
+            "SELECT COUNT(uc) FROM UserCouponEntity uc WHERE uc.couponTemplateId = :couponTemplateId",
+            Long::class.java
+        ).setParameter("couponTemplateId", couponTemplateId).singleResult ?: 0L
+    }
 }
