@@ -1,4 +1,4 @@
-package com.goodpon.api.partner.idempotency
+package com.goodpon.api.partner.interceptor
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)

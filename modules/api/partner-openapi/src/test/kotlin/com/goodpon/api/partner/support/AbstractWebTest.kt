@@ -1,13 +1,16 @@
 package com.goodpon.api.partner.support
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.goodpon.api.partner.config.WebConfig
 import com.goodpon.api.partner.controller.v1.CouponController
 import com.goodpon.api.partner.controller.v1.CouponQueryController
-import com.goodpon.api.partner.response.TraceIdProvider
+import com.goodpon.api.partner.interceptor.IdempotencyInterceptor
+import com.goodpon.api.partner.interceptor.TraceIdProvider
 import com.goodpon.application.partner.coupon.port.`in`.*
 import com.ninjasquad.springmockk.MockkBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
 
 @WebMvcTest(
@@ -16,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc
         CouponQueryController::class
     ],
 )
+@Import(WebConfig::class)
 abstract class AbstractWebTest {
 
     @Autowired
@@ -26,6 +30,9 @@ abstract class AbstractWebTest {
 
     @MockkBean
     protected lateinit var traceIdProvider: TraceIdProvider
+
+    @MockkBean
+    protected lateinit var idempotencyInterceptor: IdempotencyInterceptor
 
     // Coupon Controller
     @MockkBean

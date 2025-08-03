@@ -57,7 +57,6 @@ class GetUserCouponsDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isOk,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.SUCCESS.name),
             jsonPath("$.error").value(null),
             jsonPath("$.data.coupons").isArray,
@@ -73,6 +72,7 @@ class GetUserCouponsDocumentTest : AbstractDocumentTest() {
                 .queryParameters(parameterWithName("userId").description("고객사의 고유 사용자 ID"))
                 .responseSchema(Schema("ApiResponse<UserCouponsView>"))
                 .responseFields(*getUserCouponsResultFields().toTypedArray())
+                .responseHeaders(*commonResponseHeaderFields().toTypedArray())
                 .build()
         )
     }

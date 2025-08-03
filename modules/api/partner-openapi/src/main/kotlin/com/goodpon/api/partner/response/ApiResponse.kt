@@ -4,7 +4,6 @@ data class ApiResponse<T> private constructor(
     val result: ResultType,
     val data: T? = null,
     val error: ErrorMessage? = null,
-    val traceId: String? = null, // filter 에서 자동으로 주입
 ) {
 
     companion object {
@@ -15,11 +14,10 @@ data class ApiResponse<T> private constructor(
             )
         }
 
-        fun error(error: ErrorType, errorData: Any? = null, traceId: String? = null): ApiResponse<Unit> {
+        fun error(error: ErrorType, errorData: Any? = null): ApiResponse<Unit> {
             return ApiResponse(
                 result = ResultType.ERROR,
                 error = ErrorMessage(error, errorData),
-                traceId = traceId
             )
         }
     }

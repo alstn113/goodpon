@@ -3,7 +3,6 @@ package com.goodpon.api.partner.security.exception
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.api.partner.response.ApiResponse
 import com.goodpon.api.partner.response.ErrorType
-import com.goodpon.api.partner.response.TraceIdProvider
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.MediaType
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component
 @Component
 class ApiKeyAccessDeniedHandler(
     private val objectMapper: ObjectMapper,
-    private val tracerIdProvider: TraceIdProvider,
 ) : AccessDeniedHandler {
 
     override fun handle(
@@ -26,10 +24,7 @@ class ApiKeyAccessDeniedHandler(
         response.characterEncoding = "UTF-8"
         response.status = HttpServletResponse.SC_FORBIDDEN
 
-        val errorResponse = ApiResponse.error(
-            error = ErrorType.FORBIDDEN,
-            traceId = tracerIdProvider.getTraceId()
-        )
+        val errorResponse = ApiResponse.error(ErrorType.FORBIDDEN)
         val body = objectMapper.writeValueAsString(errorResponse)
 
         response.writer.write(body)

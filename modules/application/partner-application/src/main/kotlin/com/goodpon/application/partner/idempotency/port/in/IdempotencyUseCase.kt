@@ -10,4 +10,6 @@ interface IdempotencyUseCase {
     fun markAsProcessing(key: String, requestHash: String)
 
     fun markAsCompleted(key: String, response: IdempotencyResponse)
+
+    fun clearProcessing(key: String)
 }

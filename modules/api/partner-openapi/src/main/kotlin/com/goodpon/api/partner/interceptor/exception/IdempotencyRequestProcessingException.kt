@@ -1,4 +1,4 @@
-package com.goodpon.api.partner.idempotency.exception
+package com.goodpon.api.partner.interceptor.exception
 
 import com.goodpon.domain.BaseException
 

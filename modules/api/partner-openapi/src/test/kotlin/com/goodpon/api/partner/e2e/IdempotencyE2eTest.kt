@@ -9,6 +9,7 @@ import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponResult
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import io.restassured.response.Response
@@ -30,7 +31,10 @@ class IdempotencyE2eTest(
             clientSecret = clientSecret,
             userId = userId,
             couponTemplateId = couponTemplateId
-        ).apply { statusCode() shouldBe 200 }
+        ).apply {
+            statusCode() shouldBe 200
+            headers().get("Idempotency-Key") shouldBe null
+        }
             .toApiResponse<IssueCouponResult>()
             .apply { this.couponTemplateId shouldBe couponTemplateId }
     }
@@ -43,30 +47,35 @@ class IdempotencyE2eTest(
         val idempotencyKey = "unique-idempotency-key"
 
         // 첫 번째 요청
-        `쿠폰 발급 요청`(
+        val traceId1 = `쿠폰 발급 요청`(
             clientId = clientId,
             clientSecret = clientSecret,
             idempotencyKey = idempotencyKey,
             userId = userId,
             couponTemplateId = couponTemplateId
-        ).apply { statusCode() shouldBe 200 }
-            .toApiResponse<IssueCouponResult>()
-            .apply { this.couponTemplateId shouldBe couponTemplateId }
+        ).apply {
+            statusCode() shouldBe 200
+            headers().get("Idempotency-Key").value shouldBe idempotencyKey
+        }.header("X-Goodpon-Trace-Id")
 
         // 두 번째 요청 - 동일한 멱등 키 사용
-        `쿠폰 발급 요청`(
+        val traceId2 = `쿠폰 발급 요청`(
             clientId = clientId,
             clientSecret = clientSecret,
             idempotencyKey = idempotencyKey,
             userId = userId,
             couponTemplateId = couponTemplateId
-        ).apply { statusCode() shouldBe 200 }
-            .toApiResponse<IssueCouponResult>()
-            .apply { this.couponTemplateId shouldBe couponTemplateId }
+        ).apply {
+            statusCode() shouldBe 200
+            headers().get("Idempotency-Key").value shouldBe idempotencyKey
+        }.header("X-Goodpon-Trace-Id")
+
+        traceId1 shouldNotBe traceId2
+        testCouponTemplateAccessor.countUserCoupons(couponTemplateId) shouldBe 1
     }
 
     @Test
-    fun `실패한 응답`() {
+    fun `동일한 멱등키로 실패 응답을 받는 경우 동일한 응답을 받을 수 있다`() {
         val (merchantId, clientId, clientSecret) = testMerchantAccessor.createMerchant()
         val couponTemplateId = createCouponTemplate(merchantId)
         val userId = "unique-user-id"
@@ -84,7 +93,7 @@ class IdempotencyE2eTest(
             clientId = clientId,
             clientSecret = clientSecret,
             idempotencyKey = idempotencyKey,
-            userCouponId = "invalid-user-coupon-id", // 존재하지 않는 쿠폰 ID
+            userCouponId = "invalid-user-coupon-id",
             userId = userId,
             orderAmount = 15000,
             orderId = "order-id-123"
@@ -94,7 +103,7 @@ class IdempotencyE2eTest(
             clientId = clientId,
             clientSecret = clientSecret,
             idempotencyKey = idempotencyKey,
-            userCouponId = "invalid-user-coupon-id", // 존재하지 않는 쿠폰 ID
+            userCouponId = "invalid-user-coupon-id",
             userId = userId,
             orderAmount = 15000,
             orderId = "order-id-123"
@@ -102,7 +111,7 @@ class IdempotencyE2eTest(
     }
 
     @Test
-    fun `다른 요청 값`() {
+    fun `동일한 멱등키를 사용할 때 이전 요청과 다른 Request Body를 보내는 경우 예외를 던진다`() {
         val (merchantId, clientId, clientSecret) = testMerchantAccessor.createMerchant()
         val couponTemplateId = createCouponTemplate(merchantId)
         val userId = "unique-user-id"
@@ -136,10 +145,12 @@ class IdempotencyE2eTest(
             orderAmount = 20000,
             orderId = "unique-order-id-456" // 다른 주문 ID
         ).apply { statusCode() shouldBe 422 }
+            .toApiErrorResponse<Unit>()
+            .apply { code shouldBe "IDEMPOTENT_REQUEST_PAYLOAD_MISMATCH" }
     }
 
     @Test
-    fun `멱등키 너무 길다`() {
+    fun `멱등키의 길이가 300자를 초과하는 경우 예외를 던진다`() {
         val (merchantId, clientId, clientSecret) = testMerchantAccessor.createMerchant()
         val couponTemplateId = createCouponTemplate(merchantId)
         val userId = "unique-user-id"
@@ -152,6 +163,8 @@ class IdempotencyE2eTest(
             userId = userId,
             couponTemplateId = couponTemplateId
         ).apply { statusCode() shouldBe 400 }
+            .toApiErrorResponse<Unit>()
+            .apply { code shouldBe "INVALID_IDEMPOTENCY_KEY" }
     }
 
     private fun `쿠폰 발급 요청`(

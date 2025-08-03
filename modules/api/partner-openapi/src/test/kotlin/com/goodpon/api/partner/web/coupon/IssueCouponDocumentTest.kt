@@ -49,7 +49,6 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isOk,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.SUCCESS.name),
             jsonPath("$.error").value(null),
             jsonPath("$.data.userCouponId").value(issueCouponResult.userCouponId),
@@ -64,12 +63,13 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
                 .tag("Coupon")
                 .summary("쿠폰 발급")
                 .description("쿠폰 발급 API")
-                .requestHeaders(apiKeyHeaderFields())
+                .requestHeaders(postHeaderFields())
                 .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
                 .requestSchema(Schema("IssueCouponRequest"))
                 .requestFields(*issueCouponRequestFields().toTypedArray())
                 .responseSchema(Schema("ApiResponse<IssueCouponResult>"))
                 .responseFields(*issueCouponResultFields().toTypedArray())
+                .responseHeaders(*postResponseHeaderFields().toTypedArray())
                 .build()
         )
     }
@@ -83,7 +83,6 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isNotFound,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_NOT_FOUND"),
             jsonPath("$.error.message").value("존재하지 않는 쿠폰 템플릿입니다.")
@@ -104,7 +103,6 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isForbidden,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_NOT_OWNED_BY_MERCHANT"),
             jsonPath("$.error.message").value("해당 쿠폰 템플릿은 현재 상점에서 소유하고 있지 않습니다.")
@@ -125,7 +123,6 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_ALREADY_ISSUED"),
             jsonPath("$.error.message").value("사용자가 이미 발급한 쿠폰입니다.")
@@ -146,7 +143,6 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_NOT_ISSUABLE_PERIOD"),
             jsonPath("$.error.message").value("쿠폰을 발급할 수 있는 기간이 아닙니다.")
@@ -167,7 +163,6 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_NOT_ISSUABLE"),
             jsonPath("$.error.message").value("해당 쿠폰을 발급할 수 있는 상태가 아닙니다.")
@@ -188,7 +183,6 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
 
         result.andExpectAll(
             status().isBadRequest,
-            jsonPath("$.traceId").exists(),
             jsonPath("$.result").value(ResultType.ERROR.name),
             jsonPath("$.error.code").value("COUPON_TEMPLATE_MAX_ISSUE_COUNT_EXCEEDED"),
             jsonPath("$.error.message").value("쿠폰 템플릿의 최대 발급 수량을 초과했습니다.")
@@ -211,12 +205,13 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
     private fun commonFailureSnippetParamsBuilder(): ResourceSnippetParametersBuilder {
         return ResourceSnippetParameters.builder()
             .tag("Coupon")
-            .requestHeaders(apiKeyHeaderFields())
+            .requestHeaders(postHeaderFields())
             .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
             .requestSchema(Schema("IssueCouponRequest"))
             .requestFields(*issueCouponRequestFields().toTypedArray())
             .responseSchema(Schema("ApiResponse<Unit>"))
             .responseFields(*commonFailureResponseFields().toTypedArray())
+            .responseHeaders(*postResponseHeaderFields().toTypedArray())
     }
 
     private fun issueCouponRequestFields() = listOf(

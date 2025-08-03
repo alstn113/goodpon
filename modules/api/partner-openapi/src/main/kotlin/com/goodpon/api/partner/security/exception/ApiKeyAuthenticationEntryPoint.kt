@@ -3,7 +3,6 @@ package com.goodpon.api.partner.security.exception
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.api.partner.response.ApiResponse
 import com.goodpon.api.partner.response.ErrorType
-import com.goodpon.api.partner.response.TraceIdProvider
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component
 @Component
 class ApiKeyAuthenticationEntryPoint(
     private val objectMapper: ObjectMapper,
-    private val traceIdProvider: TraceIdProvider,
 ) : AuthenticationEntryPoint {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -38,10 +36,7 @@ class ApiKeyAuthenticationEntryPoint(
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.characterEncoding = "UTF-8"
 
-        val errorResponse = ApiResponse.error(
-            error = errorType,
-            traceId = traceIdProvider.getTraceId()
-        )
+        val errorResponse = ApiResponse.error(errorType)
         val body = objectMapper.writeValueAsString(errorResponse)
 
         response.writer.write(body)

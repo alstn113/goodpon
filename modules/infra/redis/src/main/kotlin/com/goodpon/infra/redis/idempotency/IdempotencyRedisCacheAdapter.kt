@@ -47,8 +47,12 @@ class IdempotencyRedisCacheAdapter(
         redisTemplate.opsForValue().set(key, objectMapper.writeValueAsString(updated), TTL_COMPLETED)
     }
 
+    override fun clearProcessing(key: String) {
+        redisTemplate.delete(key)
+    }
+
     companion object {
-        private val TTL_PROCESSING: Duration = Duration.ofHours(1)
+        private val TTL_PROCESSING: Duration = Duration.ofMinutes(10)
         private val TTL_COMPLETED: Duration = Duration.ofHours(24)
     }
 }

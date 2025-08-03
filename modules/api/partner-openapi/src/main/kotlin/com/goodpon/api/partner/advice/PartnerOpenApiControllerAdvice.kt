@@ -1,8 +1,8 @@
 package com.goodpon.api.partner.advice
 
-import com.goodpon.api.partner.idempotency.exception.IdempotencyRequestPayloadMismatchException
-import com.goodpon.api.partner.idempotency.exception.IdempotencyRequestProcessingException
-import com.goodpon.api.partner.idempotency.exception.InvalidIdempotencyKeyException
+import com.goodpon.api.partner.interceptor.exception.IdempotencyRequestPayloadMismatchException
+import com.goodpon.api.partner.interceptor.exception.IdempotencyRequestProcessingException
+import com.goodpon.api.partner.interceptor.exception.InvalidIdempotencyKeyException
 import com.goodpon.api.partner.response.ApiResponse
 import com.goodpon.api.partner.response.ErrorType
 import com.goodpon.application.partner.coupon.port.out.exception.CouponTemplateNotFoundException
@@ -13,12 +13,10 @@ import com.goodpon.domain.coupon.user.exception.UserCouponAlreadyRedeemedExcepti
 import com.goodpon.domain.coupon.user.exception.UserCouponExpiredException
 import com.goodpon.domain.coupon.user.exception.UserCouponRedeemNotAllowedException
 import org.slf4j.LoggerFactory
-import org.springframework.core.annotation.Order
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@Order(1)
 @RestControllerAdvice(basePackages = ["com.goodpon.api.partner"])
 class PartnerOpenApiControllerAdvice {
 

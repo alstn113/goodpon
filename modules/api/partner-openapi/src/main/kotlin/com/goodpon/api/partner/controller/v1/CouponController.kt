@@ -3,7 +3,7 @@ package com.goodpon.api.partner.controller.v1
 import com.goodpon.api.partner.controller.v1.request.CancelCouponRedemptionRequest
 import com.goodpon.api.partner.controller.v1.request.IssueCouponRequest
 import com.goodpon.api.partner.controller.v1.request.RedeemCouponRequest
-import com.goodpon.api.partner.idempotency.Idempotent
+import com.goodpon.api.partner.interceptor.Idempotent
 import com.goodpon.api.partner.response.ApiResponse
 import com.goodpon.api.partner.security.MerchantPrincipal
 import com.goodpon.application.partner.coupon.port.`in`.CancelCouponRedemptionUseCase

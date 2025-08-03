@@ -20,4 +20,8 @@ class IdempotencyService(
     override fun markAsCompleted(key: String, response: IdempotencyResponse) {
         idempotencyCachePort.markAsCompleted(key = key, response = response);
     }
+
+    override fun clearProcessing(key: String) {
+        idempotencyCachePort.clearProcessing(key = key)
+    }
 }

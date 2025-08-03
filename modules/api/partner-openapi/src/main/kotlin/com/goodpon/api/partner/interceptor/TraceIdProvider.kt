@@ -1,4 +1,4 @@
-package com.goodpon.api.partner.response
+package com.goodpon.api.partner.interceptor
 
 import io.micrometer.tracing.Tracer
 import org.springframework.stereotype.Component
