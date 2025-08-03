@@ -84,7 +84,7 @@ Goodpon은 `Dashboard API`와 `Partner OpenAPI`로 서버가 분리되어 있습
   }
   ```
 
-#### 멱등성(Idempotency) 구현
+#### 멱등키(Idempotency Key) 헤더
 
 쿠폰 발급, 사용, 사용 취소 등 POST 요청 시 중복 요청을 방지하기 위해 멱등성을 지원합니다. `Idempotency-Key` 헤더를 사용하면 동일한 요청을 여러 번 보내도 같은 결과를 반환합니다.
 
