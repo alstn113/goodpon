@@ -1,6 +1,7 @@
 package com.goodpon.api.partner.security
 
 import com.goodpon.api.partner.security.filter.ApiKeyAuthenticationFilter
+import com.goodpon.api.partner.security.filter.CachingBodyFilter
 import com.goodpon.application.partner.merchant.port.`in`.AuthenticateMerchantUseCase
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -29,6 +30,7 @@ class SecurityConfig(
             authenticateMerchantUseCase = authenticateMerchantUseCase,
             authenticationEntryPoint = authenticationEntryPoint,
         )
+        val cachingBodyFilter = CachingBodyFilter()
 
         http
             .httpBasic { it.disable() }
@@ -45,6 +47,7 @@ class SecurityConfig(
                 it.accessDeniedHandler(accessDeniedHandler)
             }
             .addFilterAfter(apiKeyAuthenticationFilter, ExceptionTranslationFilter::class.java)
+            .addFilterAfter(cachingBodyFilter, ApiKeyAuthenticationFilter::class.java)
 
         return http.build()
     }

@@ -1,18 +1,12 @@
 package com.goodpon.infra.redis.idempotency
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.application.partner.idempotency.service.IdempotencyCheckResult
-import com.goodpon.application.partner.idempotency.service.IdempotencyStatus
-import com.goodpon.application.partner.idempotency.service.IdempotencyValue
 import com.goodpon.infra.redis.support.AbstractIntegrationTest
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
-import org.springframework.data.redis.core.StringRedisTemplate
 
 class IdempotencyRedisCacheAdapterIT(
-    private val stringRedisTemplate: StringRedisTemplate,
     private val idempotencyRedisCacheAdapter: IdempotencyRedisCacheAdapter,
-    private val objectMapper: ObjectMapper,
 ) : AbstractIntegrationTest() {
 
     @Test
@@ -38,12 +32,8 @@ class IdempotencyRedisCacheAdapterIT(
         idempotencyRedisCacheAdapter.saveProcessing(key, requestHash)
 
         // then
-        val raw = stringRedisTemplate.opsForValue().get(key)
-        val stored = objectMapper.readValue(raw, IdempotencyValue::class.java)
-
-        stored.requestHash shouldBe requestHash
-        stored.status shouldBe IdempotencyStatus.PROCESSING
-        stored.result shouldBe null
+        val checkResult = idempotencyRedisCacheAdapter.check(key, requestHash)
+        checkResult shouldBe IdempotencyCheckResult.Processing
     }
 
     @Test
@@ -58,42 +48,8 @@ class IdempotencyRedisCacheAdapterIT(
         idempotencyRedisCacheAdapter.saveCompleted(key, result)
 
         // then
-        val raw = stringRedisTemplate.opsForValue().get(key)
-        val stored = objectMapper.readValue(raw, IdempotencyValue::class.java)
-
-        stored.requestHash shouldBe requestHash
-        stored.status shouldBe IdempotencyStatus.COMPLETED
-        stored.result shouldBe result
-    }
-
-    @Test
-    fun `처리 중인 멱등 요청 조회 시 Processing을 반환한다`() {
-        // given
-        val key = "unique-key"
-        val requestHash = "request-body-hash"
-        idempotencyRedisCacheAdapter.saveProcessing(key, requestHash)
-
-        // when
-        val result = idempotencyRedisCacheAdapter.check(key, requestHash)
-
-        // then
-        result shouldBe IdempotencyCheckResult.Processing
-    }
-
-    @Test
-    fun `완료된 멱등 요청 조회 시 Completed를 반환한다`() {
-        // given
-        val key = "unique-key"
-        val requestHash = "request-body-hash"
-        idempotencyRedisCacheAdapter.saveProcessing(key, requestHash)
-
-        // when
-        val resultData = "result-data"
-        idempotencyRedisCacheAdapter.saveCompleted(key, resultData)
-
-        // then
-        val result = idempotencyRedisCacheAdapter.check(key, requestHash)
-        result shouldBe IdempotencyCheckResult.Completed(resultData)
+        val checkResult = idempotencyRedisCacheAdapter.check(key, requestHash)
+        checkResult shouldBe IdempotencyCheckResult.Completed(result)
     }
 
     @Test

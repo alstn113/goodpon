@@ -1,6 +1,7 @@
 package com.goodpon.application.partner.idempotency.port.out
 
 import com.goodpon.application.partner.idempotency.service.IdempotencyCheckResult
+import com.goodpon.application.partner.idempotency.service.IdempotencyResponse
 
 interface IdempotencyCachePort {
 
@@ -8,5 +9,5 @@ interface IdempotencyCachePort {
 
     fun saveProcessing(key: String, requestHash: String)
 
-    fun saveCompleted(key: String, result: Any)
+    fun saveCompleted(key: String, response: IdempotencyResponse)
 }

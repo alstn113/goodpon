@@ -17,7 +17,7 @@ class IdempotencyService(
         idempotencyCachePort.saveProcessing(key = key, requestHash = requestHash)
     }
 
-    override fun saveCompleted(key: String, result: Any) {
-        idempotencyCachePort.saveCompleted(key = key, result = result)
+    override fun saveCompleted(key: String, response: IdempotencyResponse) {
+        idempotencyCachePort.saveCompleted(key = key, response = response);
     }
 }

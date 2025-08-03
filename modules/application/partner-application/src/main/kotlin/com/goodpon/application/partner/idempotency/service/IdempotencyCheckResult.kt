@@ -5,5 +5,5 @@ sealed class IdempotencyCheckResult {
     data object NotExists : IdempotencyCheckResult()
     data object Processing : IdempotencyCheckResult()
     data object Conflict : IdempotencyCheckResult()
-    data class Completed(val result: Any) : IdempotencyCheckResult()
+    data class Completed(val response: IdempotencyResponse) : IdempotencyCheckResult()
 }

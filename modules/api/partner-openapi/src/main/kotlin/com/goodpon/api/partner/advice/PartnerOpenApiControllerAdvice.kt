@@ -1,5 +1,8 @@
 package com.goodpon.api.partner.advice
 
+import com.goodpon.api.partner.idempotency.exception.IdempotencyRequestPayloadMismatchException
+import com.goodpon.api.partner.idempotency.exception.IdempotencyRequestProcessingException
+import com.goodpon.api.partner.idempotency.exception.InvalidIdempotencyKeyException
 import com.goodpon.api.partner.response.ApiResponse
 import com.goodpon.api.partner.response.ErrorType
 import com.goodpon.application.partner.coupon.port.out.exception.CouponTemplateNotFoundException
@@ -26,6 +29,11 @@ class PartnerOpenApiControllerAdvice {
         log.warn("BaseException : {}", e.message, e)
 
         val errorType = when (e) {
+            // idempotency
+            is InvalidIdempotencyKeyException -> ErrorType.INVALID_IDEMPOTENCY_KEY
+            is IdempotencyRequestProcessingException -> ErrorType.IDEMPOTENT_REQUEST_PROCESSING
+            is IdempotencyRequestPayloadMismatchException -> ErrorType.IDEMPOTENT_REQUEST_PAYLOAD_MISMATCH
+
             // coupon template
             is CouponTemplateIssuanceLimitExceededException -> ErrorType.COUPON_TEMPLATE_MAX_ISSUE_COUNT_EXCEEDED
             is CouponTemplateIssuancePeriodException -> ErrorType.COUPON_NOT_ISSUABLE_PERIOD

@@ -1,6 +1,7 @@
 package com.goodpon.api.partner.e2e
 
 import com.goodpon.api.partner.controller.v1.request.IssueCouponRequest
+import com.goodpon.api.partner.controller.v1.request.RedeemCouponRequest
 import com.goodpon.api.partner.support.AbstractEndToEndTest
 import com.goodpon.api.partner.support.accessor.TestCouponTemplateAccessor
 import com.goodpon.api.partner.support.accessor.TestMerchantAccessor
@@ -64,6 +65,95 @@ class IdempotencyE2eTest(
             .apply { this.couponTemplateId shouldBe couponTemplateId }
     }
 
+    @Test
+    fun `실패한 응답`() {
+        val (merchantId, clientId, clientSecret) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = createCouponTemplate(merchantId)
+        val userId = "unique-user-id"
+        val idempotencyKey = "unique-idempotency-key"
+
+        `쿠폰 발급 요청`(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            idempotencyKey = idempotencyKey,
+            userId = userId,
+            couponTemplateId = couponTemplateId
+        )
+
+        `쿠폰 사용 요청`(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            idempotencyKey = idempotencyKey,
+            userCouponId = "invalid-user-coupon-id", // 존재하지 않는 쿠폰 ID
+            userId = userId,
+            orderAmount = 15000,
+            orderId = "order-id-123"
+        ).apply { statusCode() shouldBe 404 }
+
+        `쿠폰 사용 요청`(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            idempotencyKey = idempotencyKey,
+            userCouponId = "invalid-user-coupon-id", // 존재하지 않는 쿠폰 ID
+            userId = userId,
+            orderAmount = 15000,
+            orderId = "order-id-123"
+        ).apply { statusCode() shouldBe 404 }
+    }
+
+    @Test
+    fun `다른 요청 값`() {
+        val (merchantId, clientId, clientSecret) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = createCouponTemplate(merchantId)
+        val userId = "unique-user-id"
+        val idempotencyKey = "unique-idempotency-key"
+
+        val userCouponId = `쿠폰 발급 요청`(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            idempotencyKey = idempotencyKey,
+            userId = userId,
+            couponTemplateId = couponTemplateId
+        ).toApiResponse<IssueCouponResult>()
+            .userCouponId
+
+        `쿠폰 사용 요청`(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            idempotencyKey = idempotencyKey,
+            userCouponId = userCouponId,
+            userId = userId,
+            orderAmount = 30000,
+            orderId = "order-id-123"
+        ).apply { statusCode() shouldBe 200 }
+
+        `쿠폰 사용 요청`(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            idempotencyKey = idempotencyKey,
+            userCouponId = userCouponId,
+            userId = userId,
+            orderAmount = 20000,
+            orderId = "unique-order-id-456" // 다른 주문 ID
+        ).apply { statusCode() shouldBe 500 }
+    }
+
+    @Test
+    fun `멱등키 너무 길다`() {
+        val (merchantId, clientId, clientSecret) = testMerchantAccessor.createMerchant()
+        val couponTemplateId = createCouponTemplate(merchantId)
+        val userId = "unique-user-id"
+        val idempotencyKey = "a".repeat(301)
+
+        `쿠폰 발급 요청`(
+            clientId = clientId,
+            clientSecret = clientSecret,
+            idempotencyKey = idempotencyKey,
+            userId = userId,
+            couponTemplateId = couponTemplateId
+        )
+    }
+
     private fun `쿠폰 발급 요청`(
         clientId: String,
         clientSecret: String,
@@ -80,6 +170,30 @@ class IdempotencyE2eTest(
             .body(request)
             .`when`()
             .post("/v1/coupon-templates/${couponTemplateId}/issue")
+    }
+
+    private fun `쿠폰 사용 요청`(
+        clientId: String,
+        clientSecret: String,
+        idempotencyKey: String? = null,
+        userCouponId: String,
+        userId: String,
+        orderAmount: Int,
+        orderId: String,
+    ): Response {
+        val request = RedeemCouponRequest(
+            userId = userId,
+            orderAmount = orderAmount,
+            orderId = orderId
+        )
+
+        return given()
+            .withApiKeyHeaders(clientId = clientId, clientSecret = clientSecret)
+            .apply { idempotencyKey?.let { withIdempotencyKey(it) } }
+            .contentType(ContentType.JSON)
+            .body(request)
+            .`when`()
+            .post("/v1/user-coupons/${userCouponId}/redeem")
     }
 
     private fun createCouponTemplate(merchantId: Long): Long {
