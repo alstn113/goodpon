@@ -1,6 +1,6 @@
-package com.goodpon.infra.redis
+package com.goodpon.infra.redis.coupon
 
-import com.goodpon.infra.redis.coupon.CouponTemplateStatsRedisCacheAdapter
+import com.goodpon.infra.redis.support.AbstractIntegrationTest
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.data.redis.core.RedisTemplate

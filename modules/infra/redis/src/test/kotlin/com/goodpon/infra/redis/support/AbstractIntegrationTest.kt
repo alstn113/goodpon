@@ -1,5 +1,7 @@
-package com.goodpon.infra.redis
+package com.goodpon.infra.redis.support
 
+import com.goodpon.infra.redis.RedisContainerInitializer
+import com.goodpon.infra.redis.RedisDataCleanupExtension
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
