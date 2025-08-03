@@ -60,7 +60,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<MyMerchantSummaries>'
               examples:
                 내 상점 목록 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"merchants\" : [ {\n      \"id\" : 2,\n      \"name\" : \"두번째 상점\",\n      \"createdAt\" : \"2025-07-30T07:10:28.0055126\"\n    }, {\n      \"id\" : 1,\n      \"name\" : \"첫번째 상점\",\n      \"createdAt\" : \"2025-07-29T07:10:28.005521166\"\n    } ]\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"merchants\" : [ {\n      \"id\" : 2,\n      \"name\" : \"두번째 상점\",\n      \"createdAt\" : \"2025-08-03T17:04:46.249387264\"\n    }, {\n      \"id\" : 1,\n      \"name\" : \"첫번째 상점\",\n      \"createdAt\" : \"2025-08-02T17:04:46.249398235\"\n    } ]\n  },\n  \"error\" : null\n}"
     post:
       tags:
         - Merchant
@@ -261,7 +261,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<MyMerchantDetail>'
               examples:
                 상점 상세 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\" : 1,\n    \"name\" : \"테스트 상점\",\n    \"clientId\" : \"ck_dd144f3b95144877a0dcbaad2b321380\",\n    \"merchantAccounts\" : [ {\n      \"merchantAccountId\" : 1,\n      \"accountId\" : 1,\n      \"email\" : \"test@goodpon.site\",\n      \"name\" : \"테스트 사용자\",\n      \"role\" : \"OWNER\",\n      \"createdAt\" : \"2025-07-30T07:10:27.872059283\"\n    } ],\n    \"clientSecrets\" : [ {\n      \"merchantClientSecretId\" : 1,\n      \"secret\" : \"sk_8f3b95144877a0dcbaad2b321380\",\n      \"createdAt\" : \"2025-07-30T07:10:27.872078179\",\n      \"expiredAt\" : null\n    } ],\n    \"createdAt\" : \"2025-07-30T07:10:27.872081645\",\n    \"updatedAt\" : \"2025-07-30T07:10:27.872082808\"\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\" : 1,\n    \"name\" : \"테스트 상점\",\n    \"clientId\" : \"ck_dd144f3b95144877a0dcbaad2b321380\",\n    \"merchantAccounts\" : [ {\n      \"merchantAccountId\" : 1,\n      \"accountId\" : 1,\n      \"email\" : \"test@goodpon.site\",\n      \"name\" : \"테스트 사용자\",\n      \"role\" : \"OWNER\",\n      \"createdAt\" : \"2025-08-03T17:04:46.098599169\"\n    } ],\n    \"clientSecrets\" : [ {\n      \"merchantClientSecretId\" : 1,\n      \"secret\" : \"sk_8f3b95144877a0dcbaad2b321380\",\n      \"createdAt\" : \"2025-08-03T17:04:46.098628904\",\n      \"expiredAt\" : null\n    } ],\n    \"createdAt\" : \"2025-08-03T17:04:46.098632521\",\n    \"updatedAt\" : \"2025-08-03T17:04:46.098633543\"\n  },\n  \"error\" : null\n}"
         "404":
           description: "404"
           content:
@@ -417,7 +417,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<CouponHistoryQueryResult>'
               examples:
                 쿠폰 내역 목록 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"content\" : [ {\n      \"historyId\" : \"14bdd144f3b95ad23213804877a0dcba\",\n      \"actionType\" : \"ISSUE\",\n      \"recordedAt\" : \"2025-07-30T07:10:27.085121346\",\n      \"orderId\" : \"your-unique-order-id\",\n      \"reason\" : null,\n      \"userCouponId\" : \"213804877a0dcba14bdd144f3b95ad23\",\n      \"userId\" : \"your-unique-user-id\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"여름 할인 쿠폰\"\n    } ],\n    \"size\" : 20,\n    \"hasMore\" : true,\n    \"nextCursor\" : \"dd144f3b95144877a0dcbaad2b321380\"\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"content\" : [ {\n      \"historyId\" : \"14bdd144f3b95ad23213804877a0dcba\",\n      \"actionType\" : \"ISSUE\",\n      \"recordedAt\" : \"2025-08-03T17:04:45.173095751\",\n      \"orderId\" : \"your-unique-order-id\",\n      \"reason\" : null,\n      \"userCouponId\" : \"213804877a0dcba14bdd144f3b95ad23\",\n      \"userId\" : \"your-unique-user-id\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"여름 할인 쿠폰\"\n    } ],\n    \"size\" : 20,\n    \"hasMore\" : true,\n    \"nextCursor\" : \"dd144f3b95144877a0dcbaad2b321380\"\n  },\n  \"error\" : null\n}"
   /v1/merchants/{merchantId}/coupon-templates:
     get:
       tags:
@@ -498,7 +498,7 @@ paths:
               쿠폰 템플릿 생성 - 성공:
                 value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰 설명\",\n  \"minOrderAmount\" : 10000,\n  \"discountType\" : \"FIXED_AMOUNT\",\n  \"discountValue\" : 1000,\n  \"maxDiscountAmount\" : null,\n  \"issueStartDate\" : \"2025-07-13\",\n  \"issueEndDate\" : \"2025-07-20\",\n  \"validityDays\" : 30,\n  \"absoluteExpiryDate\" : \"2025-08-20\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\" : 2000,\n  \"maxRedeemCount\" : null\n}"
               쿠폰 템플릿 생성 - 실패 - 유효하지 않은 요청 데이터:
-                value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰 설명\",\n  \"minOrderAmount\" : 0,\n  \"discountType\" : \"PERCENTAGE\",\n  \"discountValue\" : 105,\n  \"maxDiscountAmount\" : 5000,\n  \"issueStartDate\" : \"2025-08-04\",\n  \"issueEndDate\" : \"2025-08-02\",\n  \"validityDays\" : 3,\n  \"absoluteExpiryDate\" : \"2025-07-22\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\" : 100,\n  \"maxRedeemCount\" : 200\n}"
+                value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰 설명\",\n  \"minOrderAmount\" : 0,\n  \"discountType\" : \"PERCENTAGE\",\n  \"discountValue\" : 105,\n  \"maxDiscountAmount\" : 5000,\n  \"issueStartDate\" : \"2025-08-08\",\n  \"issueEndDate\" : \"2025-08-06\",\n  \"validityDays\" : 3,\n  \"absoluteExpiryDate\" : \"2025-07-26\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\" : 100,\n  \"maxRedeemCount\" : 200\n}"
               쿠폰 템플릿 생성 - 실패 - 존재하지 않는 상점:
                 value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰 설명\",\n  \"minOrderAmount\" : 10000,\n  \"discountType\" : \"FIXED_AMOUNT\",\n  \"discountValue\" : 1000,\n  \"maxDiscountAmount\" : null,\n  \"issueStartDate\" : \"2025-07-13\",\n  \"issueEndDate\" : \"2025-07-20\",\n  \"validityDays\" : 30,\n  \"absoluteExpiryDate\" : \"2025-08-20\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\" : 2000,\n  \"maxRedeemCount\" : null\n}"
       responses:
@@ -717,6 +717,45 @@ components:
         email:
           type: string
           description: 계정 이메일
+    ApiResponse<Unit>:
+      title: ApiResponse<Unit>
+      required:
+        - data
+        - error
+        - result
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        error:
+          required:
+            - code
+            - message
+          type: object
+          properties:
+            code:
+              type: string
+              description: 오류 코드
+            data:
+              type: array
+              description: 오류 데이터
+              items:
+                required:
+                  - field
+                  - message
+                type: object
+                properties:
+                  field:
+                    type: string
+                    description: 오류가 발생한 필드
+                  message:
+                    type: string
+                    description: 오류 메시지
+            message:
+              type: string
+              description: 오류 메시지
+          description: 오류 정보
     ApiResponse<CouponHistoryQueryResult>:
       title: ApiResponse<CouponHistoryQueryResult>
       required:
@@ -787,45 +826,6 @@ components:
                     type: string
                     description: 사용자 ID
           description: 응답 데이터
-    ApiResponse<Unit>:
-      title: ApiResponse<Unit>
-      required:
-        - data
-        - error
-        - result
-      type: object
-      properties:
-        result:
-          type: string
-          description: 요청 결과 (SUCCESS/ERROR)
-        error:
-          required:
-            - code
-            - message
-          type: object
-          properties:
-            code:
-              type: string
-              description: 오류 코드
-            data:
-              type: array
-              description: 오류 데이터
-              items:
-                required:
-                  - field
-                  - message
-                type: object
-                properties:
-                  field:
-                    type: string
-                    description: 오류가 발생한 필드
-                  message:
-                    type: string
-                    description: 오류 메시지
-            message:
-              type: string
-              description: 오류 메시지
-          description: 오류 정보
     ApiResponse<CreateCouponTemplateResult>:
       title: ApiResponse<CreateCouponTemplateResult>
       required:
@@ -948,6 +948,29 @@ components:
         name:
           type: string
           description: 상점 이름
+    v1-merchants-merchantId-coupon-templates-couponTemplateId-1196333992:
+      required:
+        - data
+        - error
+        - result
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        error:
+          required:
+            - code
+            - message
+          type: object
+          properties:
+            code:
+              type: string
+              description: 오류 코드
+            message:
+              type: string
+              description: 오류 메시지
+          description: 오류 정보
     CreateCouponTemplateRequest:
       title: CreateCouponTemplateRequest
       required:
@@ -1005,29 +1028,6 @@ components:
           type: number
           description: 쿠폰 유효 기간 (일 단위)
           nullable: true
-    v1-merchants-merchantId-coupon-templates-couponTemplateId-1196333992:
-      required:
-        - data
-        - error
-        - result
-      type: object
-      properties:
-        result:
-          type: string
-          description: 요청 결과 (SUCCESS/ERROR)
-        error:
-          required:
-            - code
-            - message
-          type: object
-          properties:
-            code:
-              type: string
-              description: 오류 코드
-            message:
-              type: string
-              description: 오류 메시지
-          description: 오류 정보
     ApiResponse<PublishCouponTemplateResult>:
       title: ApiResponse<PublishCouponTemplateResult>
       required:
