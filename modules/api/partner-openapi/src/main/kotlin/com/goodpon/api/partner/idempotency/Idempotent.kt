@@ -1,4 +1,5 @@
 package com.goodpon.api.partner.idempotency
 
-class Idempotency {
-}
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Idempotent
