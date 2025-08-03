@@ -12,6 +12,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
@@ -22,12 +23,19 @@ class RedisConfig(
 ) {
 
     @Bean
-    fun redisTemplate(): RedisTemplate<String, Any> {
+    fun redisTemplate(objectMapper: ObjectMapper): RedisTemplate<String, Any> {
         return RedisTemplate<String, Any>().apply {
             keySerializer = StringRedisSerializer()
-            valueSerializer = GenericJackson2JsonRedisSerializer(redisObjectMapper())
+            valueSerializer = GenericJackson2JsonRedisSerializer(objectMapper)
             hashKeySerializer = StringRedisSerializer()
             hashValueSerializer = StringRedisSerializer()
+            connectionFactory = lettuceConnectionFactory()
+        }
+    }
+
+    @Bean
+    fun stringRedisTemplate(): StringRedisTemplate {
+        return StringRedisTemplate().apply {
             connectionFactory = lettuceConnectionFactory()
         }
     }
@@ -42,7 +50,8 @@ class RedisConfig(
         return LettuceConnectionFactory(configuration, clientConfigBuilder.build())
     }
 
-    private fun redisObjectMapper(): ObjectMapper {
+    @Bean
+    fun redisObjectMapper(): ObjectMapper {
         val validator = BasicPolymorphicTypeValidator.builder()
             .allowIfBaseType(Any::class.java)
             .build()
