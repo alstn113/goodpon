@@ -73,7 +73,7 @@ Goodpon은 `Dashboard API`와 `Partner OpenAPI`로 서버가 분리되어 있습
   X-Goodpon-Client-Secret: {발급받은 상점 클라이언트 시크릿} ex) sk_e062595751014b2294712d4476b822f1
   ```
 
-### 공통 헤더
+#### 공통 헤더
 
 모든 응답 헤더에는 `X-Goodpon-Trace-Id`가 포함됩니다. 이 고유한 식별자는 문제가 발생했을 때 디버깅 및 기술 지원에 활용할 수 있습니다.
 
@@ -84,7 +84,7 @@ Goodpon은 `Dashboard API`와 `Partner OpenAPI`로 서버가 분리되어 있습
   }
   ```
 
-### 멱등성(Idempotency) 구현
+#### 멱등성(Idempotency) 구현
 
 쿠폰 발급, 사용, 사용 취소 등 POST 요청 시 중복 요청을 방지하기 위해 멱등성을 지원합니다. `Idempotency-Key` 헤더를 사용하면 동일한 요청을 여러 번 보내도 같은 결과를 반환합니다.
 
