@@ -23,10 +23,10 @@ class RedisConfig(
 ) {
 
     @Bean
-    fun redisTemplate(objectMapper: ObjectMapper): RedisTemplate<String, Any> {
+    fun redisTemplate(): RedisTemplate<String, Any> {
         return RedisTemplate<String, Any>().apply {
             keySerializer = StringRedisSerializer()
-            valueSerializer = GenericJackson2JsonRedisSerializer(objectMapper)
+            valueSerializer = GenericJackson2JsonRedisSerializer(redisObjectMapper())
             hashKeySerializer = StringRedisSerializer()
             hashValueSerializer = StringRedisSerializer()
             connectionFactory = lettuceConnectionFactory()
@@ -50,7 +50,6 @@ class RedisConfig(
         return LettuceConnectionFactory(configuration, clientConfigBuilder.build())
     }
 
-    @Bean
     fun redisObjectMapper(): ObjectMapper {
         val validator = BasicPolymorphicTypeValidator.builder()
             .allowIfBaseType(Any::class.java)

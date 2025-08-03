@@ -1,10 +1,10 @@
 package com.goodpon.infra.redis.idempotency
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.application.partner.idempotency.port.out.IdempotencyCachePort
 import com.goodpon.application.partner.idempotency.service.IdempotencyCheckResult
 import com.goodpon.application.partner.idempotency.service.IdempotencyStatus
 import com.goodpon.application.partner.idempotency.service.IdempotencyValue
+import com.goodpon.infra.redis.config.RedisConfig
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration
@@ -12,8 +12,10 @@ import java.time.Duration
 @Component
 class IdempotencyRedisCacheAdapter(
     private val redisTemplate: StringRedisTemplate,
-    private val objectMapper: ObjectMapper,
+    private val redisConfig: RedisConfig,
 ) : IdempotencyCachePort {
+
+    private val objectMapper = redisConfig.redisObjectMapper()
 
     override fun check(key: String, requestHash: String): IdempotencyCheckResult {
         val raw = redisTemplate.opsForValue().get(key)
