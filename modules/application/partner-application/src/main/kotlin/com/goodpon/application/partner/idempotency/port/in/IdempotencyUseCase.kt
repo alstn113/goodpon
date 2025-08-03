@@ -5,9 +5,9 @@ import com.goodpon.application.partner.idempotency.service.IdempotencyResponse
 
 interface IdempotencyUseCase {
 
-    fun check(key: String, requestHash: String): IdempotencyCheckResult
+    fun validateKey(key: String, requestHash: String): IdempotencyCheckResult
 
-    fun saveProcessing(key: String, requestHash: String)
+    fun markAsProcessing(key: String, requestHash: String)
 
-    fun saveCompleted(key: String, response: IdempotencyResponse)
+    fun markAsCompleted(key: String, response: IdempotencyResponse)
 }

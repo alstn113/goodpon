@@ -1,6 +1,7 @@
 package com.goodpon.infra.redis.idempotency
 
 import com.goodpon.application.partner.idempotency.service.IdempotencyCheckResult
+import com.goodpon.application.partner.idempotency.service.IdempotencyResponse
 import com.goodpon.infra.redis.support.AbstractIntegrationTest
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -16,10 +17,10 @@ class IdempotencyRedisCacheAdapterIT(
         val requestHash = "request-body-hash"
 
         // when
-        val result = idempotencyRedisCacheAdapter.check(key, requestHash)
+        val result = idempotencyRedisCacheAdapter.validateKey(key, requestHash)
 
         // then
-        result shouldBe IdempotencyCheckResult.NotExists
+        result shouldBe IdempotencyCheckResult.NotFound
     }
 
     @Test
@@ -29,10 +30,10 @@ class IdempotencyRedisCacheAdapterIT(
         val requestHash = "request-body-hash"
 
         // when
-        idempotencyRedisCacheAdapter.saveProcessing(key, requestHash)
+        idempotencyRedisCacheAdapter.markAsProcessing(key, requestHash)
 
         // then
-        val checkResult = idempotencyRedisCacheAdapter.check(key, requestHash)
+        val checkResult = idempotencyRedisCacheAdapter.validateKey(key, requestHash)
         checkResult shouldBe IdempotencyCheckResult.Processing
     }
 
@@ -41,14 +42,20 @@ class IdempotencyRedisCacheAdapterIT(
         // given
         val key = "unique-key"
         val requestHash = "request-body-hash"
-        idempotencyRedisCacheAdapter.saveProcessing(key, requestHash)
+        idempotencyRedisCacheAdapter.markAsProcessing(key, requestHash)
 
         // when
-        val result = "result-data"
-        idempotencyRedisCacheAdapter.saveCompleted(key, result)
+        val response = IdempotencyResponse(
+            headers = mapOf("Content-Type" to listOf("application/json")),
+            body = JsonNodeFactory.instance.objectNode().apply {
+                put("key", "value")
+            },
+            status = 200
+        )
+        idempotencyRedisCacheAdapter.markAsCompleted(key, result)
 
         // then
-        val checkResult = idempotencyRedisCacheAdapter.check(key, requestHash)
+        val checkResult = idempotencyRedisCacheAdapter.validateKey(key, requestHash)
         checkResult shouldBe IdempotencyCheckResult.Completed(result)
     }
 
@@ -57,12 +64,12 @@ class IdempotencyRedisCacheAdapterIT(
         // given
         val key = "unique-key"
         val requestHash1 = "request-body-hash-1"
-        idempotencyRedisCacheAdapter.saveProcessing(key, requestHash1)
-        idempotencyRedisCacheAdapter.saveCompleted(key, "result-data")
+        idempotencyRedisCacheAdapter.markAsProcessing(key, requestHash1)
+        idempotencyRedisCacheAdapter.markAsCompleted(key, "result-data")
 
         // when
         val requestHash2 = "request-body-hash-2"
-        val result = idempotencyRedisCacheAdapter.check(key, requestHash2)
+        val result = idempotencyRedisCacheAdapter.validateKey(key, requestHash2)
 
         // then
         result shouldBe IdempotencyCheckResult.Conflict

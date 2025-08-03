@@ -135,7 +135,7 @@ class IdempotencyE2eTest(
             userId = userId,
             orderAmount = 20000,
             orderId = "unique-order-id-456" // 다른 주문 ID
-        ).apply { statusCode() shouldBe 500 }
+        ).apply { statusCode() shouldBe 422 }
     }
 
     @Test
@@ -151,7 +151,7 @@ class IdempotencyE2eTest(
             idempotencyKey = idempotencyKey,
             userId = userId,
             couponTemplateId = couponTemplateId
-        )
+        ).apply { statusCode() shouldBe 400 }
     }
 
     private fun `쿠폰 발급 요청`(

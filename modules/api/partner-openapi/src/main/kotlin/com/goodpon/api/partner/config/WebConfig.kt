@@ -1,7 +1,7 @@
 package com.goodpon.api.partner.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.goodpon.api.partner.idempotency.IdempotencyResponseInterceptor
+import com.goodpon.api.partner.idempotency.IdempotencyInterceptor
 import com.goodpon.application.partner.idempotency.port.`in`.IdempotencyUseCase
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
@@ -14,9 +14,9 @@ class WebConfig(
 ) : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        val idempotencyResponseInterceptor = IdempotencyResponseInterceptor(idempotencyUseCase, objectMapper)
+        val idempotencyInterceptor = IdempotencyInterceptor(idempotencyUseCase, objectMapper)
 
-        registry.addInterceptor(idempotencyResponseInterceptor)
+        registry.addInterceptor(idempotencyInterceptor)
             .addPathPatterns("/**")
     }
 }
