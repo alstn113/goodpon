@@ -1,6 +1,7 @@
-package com.goodpon.application.partner.idempotency.port.`in`
+package com.goodpon.application.partner.idempotency.service
 
 sealed class IdempotencyCheckResult {
+
     object NotExists : IdempotencyCheckResult()
     object Processing : IdempotencyCheckResult()
     object Conflict : IdempotencyCheckResult()

@@ -1,4 +1,6 @@
 package com.goodpon.application.partner.idempotency.port.`in`
 
-interface IdempotencySaveCompletedgUseCase {
+fun interface IdempotencySaveCompletedUseCase {
+
+    operator fun invoke(key: String, result: Any)
 }
