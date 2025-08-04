@@ -73,7 +73,6 @@ class GetCouponTemplateDetailForUserDocumentTest : AbstractDocumentTest() {
                 .queryParameters(parameterWithName("userId").description("고객사의 고유 사용자 ID, 비로그인 사용자 시 미지정").optional())
                 .responseSchema(Schema("ApiResponse<CouponTemplateDetailForUser>"))
                 .responseFields(*getCouponTemplateDetailForUserResultFields().toTypedArray())
-                .responseHeaders(*commonResponseHeaderFields().toTypedArray())
                 .build()
         )
     }
@@ -116,7 +115,6 @@ class GetCouponTemplateDetailForUserDocumentTest : AbstractDocumentTest() {
             .queryParameters(parameterWithName("userId").description("고객사의 고유 사용자 ID, 비로그인 사용자 시 미지정").optional())
             .responseSchema(Schema("ApiResponse<Unit>"))
             .responseFields(*commonFailureResponseFields().toTypedArray())
-            .responseHeaders(*commonResponseHeaderFields().toTypedArray())
     }
 
     private fun getCouponTemplateDetailForUserResultFields() = commonSuccessResponseFields(

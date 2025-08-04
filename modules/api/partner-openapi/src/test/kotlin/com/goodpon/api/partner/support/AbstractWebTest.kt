@@ -5,7 +5,7 @@ import com.goodpon.api.partner.config.WebConfig
 import com.goodpon.api.partner.controller.v1.CouponController
 import com.goodpon.api.partner.controller.v1.CouponQueryController
 import com.goodpon.api.partner.interceptor.IdempotencyInterceptor
-import com.goodpon.api.partner.interceptor.TraceIdProvider
+import com.goodpon.api.partner.security.filter.TraceIdProvider
 import com.goodpon.application.partner.coupon.port.`in`.*
 import com.ninjasquad.springmockk.MockkBean
 import org.springframework.beans.factory.annotation.Autowired

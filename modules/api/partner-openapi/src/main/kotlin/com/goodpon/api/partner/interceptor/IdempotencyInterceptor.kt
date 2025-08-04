@@ -24,7 +24,6 @@ import java.util.*
 @Component
 class IdempotencyInterceptor(
     private val idempotencyUseCase: IdempotencyUseCase,
-    private val traceIdProvider: TraceIdProvider,
     private val objectMapper: ObjectMapper,
 ) : HandlerInterceptor {
 
@@ -132,7 +131,6 @@ class IdempotencyInterceptor(
         stored.headers.forEach { (name, values) ->
             values.forEach { value -> response.addHeader(name, value) }
         }
-        response.setHeader(GOODPON_TRACE_ID_HEADER, traceIdProvider.getTraceId())
 
         response.writer.write(objectMapper.writeValueAsString(stored.body))
         response.copyBodyToResponse()

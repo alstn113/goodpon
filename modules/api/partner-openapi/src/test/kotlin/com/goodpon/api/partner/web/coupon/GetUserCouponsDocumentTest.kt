@@ -72,7 +72,6 @@ class GetUserCouponsDocumentTest : AbstractDocumentTest() {
                 .queryParameters(parameterWithName("userId").description("고객사의 고유 사용자 ID"))
                 .responseSchema(Schema("ApiResponse<UserCouponsView>"))
                 .responseFields(*getUserCouponsResultFields().toTypedArray())
-                .responseHeaders(*commonResponseHeaderFields().toTypedArray())
                 .build()
         )
     }

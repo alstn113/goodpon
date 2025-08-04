@@ -2,6 +2,8 @@ package com.goodpon.api.partner.security
 
 import com.goodpon.api.partner.security.filter.ApiKeyAuthenticationFilter
 import com.goodpon.api.partner.security.filter.RequestBodyCachingFilter
+import com.goodpon.api.partner.security.filter.TraceIdFilter
+import com.goodpon.api.partner.security.filter.TraceIdProvider
 import com.goodpon.application.partner.merchant.port.`in`.AuthenticateMerchantUseCase
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -12,6 +14,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.security.web.access.ExceptionTranslationFilter
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
@@ -22,10 +25,12 @@ class SecurityConfig(
     private val authenticateMerchantUseCase: AuthenticateMerchantUseCase,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val accessDeniedHandler: AccessDeniedHandler,
+    private val traceIdProvider: TraceIdProvider,
 ) {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        val traceIdFilter = TraceIdFilter(traceIdProvider)
         val apiKeyAuthenticationFilter = ApiKeyAuthenticationFilter(
             authenticateMerchantUseCase = authenticateMerchantUseCase,
             authenticationEntryPoint = authenticationEntryPoint,
@@ -46,6 +51,7 @@ class SecurityConfig(
                 it.authenticationEntryPoint(authenticationEntryPoint)
                 it.accessDeniedHandler(accessDeniedHandler)
             }
+            .addFilterBefore(traceIdFilter, UsernamePasswordAuthenticationFilter::class.java)
             .addFilterAfter(apiKeyAuthenticationFilter, ExceptionTranslationFilter::class.java)
             .addFilterAfter(requestBodyCachingFilter, ApiKeyAuthenticationFilter::class.java)
 

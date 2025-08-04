@@ -1,4 +1,4 @@
-package com.goodpon.api.partner.interceptor
+package com.goodpon.api.partner.security.filter
 
 import io.micrometer.tracing.Tracer
 import org.springframework.stereotype.Component

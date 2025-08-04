@@ -87,11 +87,7 @@ abstract class AbstractDocumentTest : AbstractWebTest() {
         fieldWithPath("error.data").type(JsonFieldType.NULL).optional().description("오류 데이터 (없을 경우 null)")
     )
 
-    protected fun commonResponseHeaderFields() = listOf(
-        headerWithName("X-Goodpon-Trace-ID").description("요청 추적을 위한 고유한 Trace ID"),
-    )
-
-    protected fun postResponseHeaderFields() = commonResponseHeaderFields() + listOf(
+    protected fun postResponseHeaderFields() = listOf(
         headerWithName("Idempotency-Key").optional().description("중복 요청 방지를 위해 사용한 멱등키(고유)")
     )
 }

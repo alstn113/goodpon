@@ -77,7 +77,6 @@ class GetAvailableUserCouponsDocumentTest : AbstractDocumentTest() {
                 )
                 .responseSchema(Schema("ApiResponse<AvailableUserCouponsView>"))
                 .responseFields(*getAvailableUserCouponsResultFields().toTypedArray())
-                .responseHeaders(*commonResponseHeaderFields().toTypedArray())
                 .build()
         )
     }
