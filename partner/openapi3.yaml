@@ -38,18 +38,13 @@ paths:
       responses:
         "200":
           description: "200"
-          headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse<UserCouponsView>'
               examples:
                 사용자가 보유한 쿠폰 목록 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\" : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-08-03T17:04:00.653044357\",\n      \"expiresAt\" : \"2025-09-02T17:04:00.653054406\",\n      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\" : 1000,\n      \"maxRedeemCount\" : null,\n      \"isRedeemable\" : true\n    } ]\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\" : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-08-04T02:31:07.864280536\",\n      \"expiresAt\" : \"2025-09-03T02:31:07.864291146\",\n      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\" : 1000,\n      \"maxRedeemCount\" : null,\n      \"isRedeemable\" : true\n    } ]\n  },\n  \"error\" : null\n}"
   /v1/coupon-templates/{couponTemplateId}:
     get:
       tags:
@@ -87,25 +82,15 @@ paths:
       responses:
         "200":
           description: "200"
-          headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse<CouponTemplateDetailForUser>'
               examples:
                 사용자에 따른 쿠폰 템플릿 상세 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\" : 1,\n    \"name\" : \"테스트 쿠폰\",\n    \"description\" : \"테스트 쿠폰 설명\",\n    \"discountType\" : \"FIXED_AMOUNT\",\n    \"discountValue\" : 1000,\n    \"maxDiscountAmount\" : null,\n    \"minOrderAmount\" : 15000,\n    \"status\" : \"ISSUABLE\",\n    \"validityDays\" : 30,\n    \"absoluteExpiresAt\" : \"2025-09-02T17:04:00.576569743\",\n    \"issueStartAt\" : \"2025-08-03T17:04:00.576582687\",\n    \"issueEndAt\" : \"2025-08-13T17:04:00.576588338\",\n    \"limitType\" : \"ISSUE_COUNT\",\n    \"maxIssueCount\" : 1000,\n    \"maxRedeemCount\" : null,\n    \"currentIssueCount\" : 200,\n    \"currentRedeemCount\" : 100,\n    \"issuanceStatus\" : \"AVAILABLE\"\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\" : 1,\n    \"name\" : \"테스트 쿠폰\",\n    \"description\" : \"테스트 쿠폰 설명\",\n    \"discountType\" : \"FIXED_AMOUNT\",\n    \"discountValue\" : 1000,\n    \"maxDiscountAmount\" : null,\n    \"minOrderAmount\" : 15000,\n    \"status\" : \"ISSUABLE\",\n    \"validityDays\" : 30,\n    \"absoluteExpiresAt\" : \"2025-09-03T02:31:07.693290495\",\n    \"issueStartAt\" : \"2025-08-04T02:31:07.693303008\",\n    \"issueEndAt\" : \"2025-08-14T02:31:07.693308378\",\n    \"limitType\" : \"ISSUE_COUNT\",\n    \"maxIssueCount\" : 1000,\n    \"maxRedeemCount\" : null,\n    \"currentIssueCount\" : 200,\n    \"currentRedeemCount\" : 100,\n    \"issuanceStatus\" : \"AVAILABLE\"\n  },\n  \"error\" : null\n}"
         "404":
           description: "404"
-          headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -150,18 +135,13 @@ paths:
       responses:
         "200":
           description: "200"
-          headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse<AvailableUserCouponsView>'
               examples:
                 사용자의 사용 가능한 쿠폰 목록 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\" : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-08-03T17:03:59.9777648\",\n      \"expiresAt\" : \"2025-09-02T17:03:59.977778386\",\n      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\" : 1000,\n      \"maxRedeemCount\" : null,\n      \"isMinOrderAmountReached\" : true\n    } ]\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"coupons\" : [ {\n      \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"테스트 쿠폰\",\n      \"couponTemplateDescription\" : \"테스트 쿠폰 설명\",\n      \"discountType\" : \"FIXED_AMOUNT\",\n      \"discountValue\" : 1000,\n      \"maxDiscountAmount\" : null,\n      \"minOrderAmount\" : 10000,\n      \"issuedAt\" : \"2025-08-04T02:31:07.088422194\",\n      \"expiresAt\" : \"2025-09-03T02:31:07.088433886\",\n      \"limitType\" : \"ISSUE_COUNT\",\n      \"maxIssueCount\" : 1000,\n      \"maxRedeemCount\" : null,\n      \"isMinOrderAmountReached\" : true\n    } ]\n  },\n  \"error\" : null\n}"
   /v1/coupon-templates/{couponTemplateId}/issue:
     post:
       tags:
@@ -220,10 +200,6 @@ paths:
         "400":
           description: "400"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -244,10 +220,6 @@ paths:
         "403":
           description: "403"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -262,10 +234,6 @@ paths:
         "404":
           description: "404"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -280,10 +248,6 @@ paths:
         "200":
           description: "200"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -294,7 +258,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<IssueCouponResult>'
               examples:
                 쿠폰 발급 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"userId\" : \"partner-unique-user-id\",\n    \"couponTemplateId\" : 1,\n    \"couponTemplateName\" : \"테스트 쿠폰\",\n    \"issuedAt\" : \"2025-08-03T17:04:01.07072443\",\n    \"expiresAt\" : \"2025-09-02T17:04:01.071893936\"\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"userId\" : \"partner-unique-user-id\",\n    \"couponTemplateId\" : 1,\n    \"couponTemplateName\" : \"테스트 쿠폰\",\n    \"issuedAt\" : \"2025-08-04T02:31:08.234914482\",\n    \"expiresAt\" : \"2025-09-03T02:31:08.234923398\"\n  },\n  \"error\" : null\n}"
   /v1/user-coupons/{userCouponId}/cancel:
     post:
       tags:
@@ -353,10 +317,6 @@ paths:
         "400":
           description: "400"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -375,10 +335,6 @@ paths:
         "403":
           description: "403"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -393,10 +349,6 @@ paths:
         "404":
           description: "404"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -413,10 +365,6 @@ paths:
         "200":
           description: "200"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -427,7 +375,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<CancelCouponRedemptionResult>'
               examples:
                 쿠폰 사용 취소 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"status\" : \"ISSUED\",\n    \"canceledAt\" : \"2025-08-03T17:03:59.903201696\",\n    \"cancelReason\" : \"결제 취소\"\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"status\" : \"ISSUED\",\n    \"canceledAt\" : \"2025-08-04T02:31:07.00488678\",\n    \"cancelReason\" : \"결제 취소\"\n  },\n  \"error\" : null\n}"
   /v1/user-coupons/{userCouponId}/redeem:
     post:
       tags:
@@ -494,10 +442,6 @@ paths:
         "400":
           description: "400"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -522,10 +466,6 @@ paths:
         "403":
           description: "403"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -542,10 +482,6 @@ paths:
         "404":
           description: "404"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -562,10 +498,6 @@ paths:
         "200":
           description: "200"
           headers:
-            X-Goodpon-Trace-ID:
-              description: 요청 추적을 위한 고유한 Trace ID
-              schema:
-                type: string
             Idempotency-Key:
               description: 중복 요청 방지를 위해 사용한 멱등키(고유)
               schema:
@@ -576,9 +508,41 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<RedeemCouponResult>'
               examples:
                 쿠폰 사용 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"discountAmount\" : 2000,\n    \"originalPrice\" : 15000,\n    \"finalPrice\" : 13000,\n    \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\",\n    \"redeemedAt\" : \"2025-08-03T17:04:01.503052591\"\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"userCouponId\" : \"8f3b95144877a0dcbaad2b321380\",\n    \"discountAmount\" : 2000,\n    \"originalPrice\" : 15000,\n    \"finalPrice\" : 13000,\n    \"orderId\" : \"a3d2bd95142487cb8f3b7a0a1380\",\n    \"redeemedAt\" : \"2025-08-04T02:31:08.557599497\"\n  },\n  \"error\" : null\n}"
 components:
   schemas:
+    ApiResponse<CancelCouponRedemptionResult>:
+      title: ApiResponse<CancelCouponRedemptionResult>
+      required:
+        - data
+        - error
+        - result
+      type: object
+      properties:
+        result:
+          type: string
+          description: 요청 결과 (SUCCESS/ERROR)
+        data:
+          required:
+            - cancelReason
+            - canceledAt
+            - status
+            - userCouponId
+          type: object
+          properties:
+            canceledAt:
+              type: string
+              description: 쿠폰 사용 취소 시각
+            userCouponId:
+              type: string
+              description: 사용 취소된 쿠폰의 ID
+            cancelReason:
+              type: string
+              description: 쿠폰 사용 취소 사유
+            status:
+              type: string
+              description: 쿠폰의 현재 상태
+          description: 응답 데이터
     ApiResponse<CouponTemplateDetailForUser>:
       title: ApiResponse<CouponTemplateDetailForUser>
       required:
@@ -666,38 +630,6 @@ components:
             status:
               type: string
               description: 쿠폰 템플릿 상태
-          description: 응답 데이터
-    ApiResponse<CancelCouponRedemptionResult>:
-      title: ApiResponse<CancelCouponRedemptionResult>
-      required:
-        - data
-        - error
-        - result
-      type: object
-      properties:
-        result:
-          type: string
-          description: 요청 결과 (SUCCESS/ERROR)
-        data:
-          required:
-            - cancelReason
-            - canceledAt
-            - status
-            - userCouponId
-          type: object
-          properties:
-            canceledAt:
-              type: string
-              description: 쿠폰 사용 취소 시각
-            userCouponId:
-              type: string
-              description: 사용 취소된 쿠폰의 ID
-            cancelReason:
-              type: string
-              description: 쿠폰 사용 취소 사유
-            status:
-              type: string
-              description: 쿠폰의 현재 상태
           description: 응답 데이터
     ApiResponse<Unit>:
       title: ApiResponse<Unit>
@@ -865,23 +797,6 @@ components:
         userId:
           type: string
           description: 고객사의 고유 사용자 ID
-    RedeemCouponRequest:
-      title: RedeemCouponRequest
-      required:
-        - orderAmount
-        - orderId
-        - userId
-      type: object
-      properties:
-        orderAmount:
-          type: number
-          description: 주문 금액
-        orderId:
-          type: string
-          description: 고유한 주문 ID
-        userId:
-          type: string
-          description: 고유한 사용자 ID
     ApiResponse<UserCouponsView>:
       title: ApiResponse<UserCouponsView>
       required:
@@ -1002,6 +917,23 @@ components:
               description: 쿠폰 만료 시간
               nullable: true
           description: 응답 데이터
+    RedeemCouponRequest:
+      title: RedeemCouponRequest
+      required:
+        - orderAmount
+        - orderId
+        - userId
+      type: object
+      properties:
+        orderAmount:
+          type: number
+          description: 주문 금액
+        orderId:
+          type: string
+          description: 고유한 주문 ID
+        userId:
+          type: string
+          description: 고유한 사용자 ID
   securitySchemes:
     clientId:
       type: apiKey

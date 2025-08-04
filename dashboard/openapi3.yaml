@@ -60,7 +60,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<MyMerchantSummaries>'
               examples:
                 내 상점 목록 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"merchants\" : [ {\n      \"id\" : 2,\n      \"name\" : \"두번째 상점\",\n      \"createdAt\" : \"2025-08-03T17:04:46.249387264\"\n    }, {\n      \"id\" : 1,\n      \"name\" : \"첫번째 상점\",\n      \"createdAt\" : \"2025-08-02T17:04:46.249398235\"\n    } ]\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"merchants\" : [ {\n      \"id\" : 2,\n      \"name\" : \"두번째 상점\",\n      \"createdAt\" : \"2025-08-04T02:31:49.8337704\"\n    }, {\n      \"id\" : 1,\n      \"name\" : \"첫번째 상점\",\n      \"createdAt\" : \"2025-08-03T02:31:49.83378099\"\n    } ]\n  },\n  \"error\" : null\n}"
     post:
       tags:
         - Merchant
@@ -261,13 +261,13 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<MyMerchantDetail>'
               examples:
                 상점 상세 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\" : 1,\n    \"name\" : \"테스트 상점\",\n    \"clientId\" : \"ck_dd144f3b95144877a0dcbaad2b321380\",\n    \"merchantAccounts\" : [ {\n      \"merchantAccountId\" : 1,\n      \"accountId\" : 1,\n      \"email\" : \"test@goodpon.site\",\n      \"name\" : \"테스트 사용자\",\n      \"role\" : \"OWNER\",\n      \"createdAt\" : \"2025-08-03T17:04:46.098599169\"\n    } ],\n    \"clientSecrets\" : [ {\n      \"merchantClientSecretId\" : 1,\n      \"secret\" : \"sk_8f3b95144877a0dcbaad2b321380\",\n      \"createdAt\" : \"2025-08-03T17:04:46.098628904\",\n      \"expiredAt\" : null\n    } ],\n    \"createdAt\" : \"2025-08-03T17:04:46.098632521\",\n    \"updatedAt\" : \"2025-08-03T17:04:46.098633543\"\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"id\" : 1,\n    \"name\" : \"테스트 상점\",\n    \"clientId\" : \"ck_dd144f3b95144877a0dcbaad2b321380\",\n    \"merchantAccounts\" : [ {\n      \"merchantAccountId\" : 1,\n      \"accountId\" : 1,\n      \"email\" : \"test@goodpon.site\",\n      \"name\" : \"테스트 사용자\",\n      \"role\" : \"OWNER\",\n      \"createdAt\" : \"2025-08-04T02:31:49.697982081\"\n    } ],\n    \"clientSecrets\" : [ {\n      \"merchantClientSecretId\" : 1,\n      \"secret\" : \"sk_8f3b95144877a0dcbaad2b321380\",\n      \"createdAt\" : \"2025-08-04T02:31:49.69800277\",\n      \"expiredAt\" : null\n    } ],\n    \"createdAt\" : \"2025-08-04T02:31:49.698006227\",\n    \"updatedAt\" : \"2025-08-04T02:31:49.698007148\"\n  },\n  \"error\" : null\n}"
         "404":
           description: "404"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId-1196333992'
+                $ref: '#/components/schemas/v1-merchants-merchantId-1196333992'
               examples:
                 상점 상세 조회 - 실패 - 존재하지 않는 상점:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\" : {\n    \"code\" : \"MERCHANT_NOT_FOUND\",\n    \"message\" : \"존재하지 않는 상점입니다.\",\n    \"data\" : null\n  }\n}"
@@ -417,7 +417,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse<CouponHistoryQueryResult>'
               examples:
                 쿠폰 내역 목록 조회 - 성공:
-                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"content\" : [ {\n      \"historyId\" : \"14bdd144f3b95ad23213804877a0dcba\",\n      \"actionType\" : \"ISSUE\",\n      \"recordedAt\" : \"2025-08-03T17:04:45.173095751\",\n      \"orderId\" : \"your-unique-order-id\",\n      \"reason\" : null,\n      \"userCouponId\" : \"213804877a0dcba14bdd144f3b95ad23\",\n      \"userId\" : \"your-unique-user-id\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"여름 할인 쿠폰\"\n    } ],\n    \"size\" : 20,\n    \"hasMore\" : true,\n    \"nextCursor\" : \"dd144f3b95144877a0dcbaad2b321380\"\n  },\n  \"error\" : null\n}"
+                  value: "{\n  \"result\" : \"SUCCESS\",\n  \"data\" : {\n    \"content\" : [ {\n      \"historyId\" : \"14bdd144f3b95ad23213804877a0dcba\",\n      \"actionType\" : \"ISSUE\",\n      \"recordedAt\" : \"2025-08-04T02:31:48.902393467\",\n      \"orderId\" : \"your-unique-order-id\",\n      \"reason\" : null,\n      \"userCouponId\" : \"213804877a0dcba14bdd144f3b95ad23\",\n      \"userId\" : \"your-unique-user-id\",\n      \"couponTemplateId\" : 1,\n      \"couponTemplateName\" : \"여름 할인 쿠폰\"\n    } ],\n    \"size\" : 20,\n    \"hasMore\" : true,\n    \"nextCursor\" : \"dd144f3b95144877a0dcbaad2b321380\"\n  },\n  \"error\" : null\n}"
   /v1/merchants/{merchantId}/coupon-templates:
     get:
       tags:
@@ -445,7 +445,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId-1196333992'
+                $ref: '#/components/schemas/v1-merchants-merchantId-1196333992'
               examples:
                 상점의 쿠폰 템플릿 목록 조회 - 실패 - 존재하지 않는 상점:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\" : {\n    \"code\" : \"MERCHANT_NOT_FOUND\",\n    \"message\" : \"존재하지 않는 상점입니다.\",\n    \"data\" : null\n  }\n}"
@@ -463,7 +463,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId-1196333992'
+                $ref: '#/components/schemas/v1-merchants-merchantId-1196333992'
               examples:
                 상점의 쿠폰 템플릿 목록 조회 - 실패 - 상점 접근 권한 없음:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\" : {\n    \"code\" : \"NO_MERCHANT_ACCESS_PERMISSION\",\n    \"message\" : \"해당 상점에 접근할 수 있는 권한이 없습니다.\",\n    \"data\" : null\n  }\n}"
@@ -498,7 +498,7 @@ paths:
               쿠폰 템플릿 생성 - 성공:
                 value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰 설명\",\n  \"minOrderAmount\" : 10000,\n  \"discountType\" : \"FIXED_AMOUNT\",\n  \"discountValue\" : 1000,\n  \"maxDiscountAmount\" : null,\n  \"issueStartDate\" : \"2025-07-13\",\n  \"issueEndDate\" : \"2025-07-20\",\n  \"validityDays\" : 30,\n  \"absoluteExpiryDate\" : \"2025-08-20\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\" : 2000,\n  \"maxRedeemCount\" : null\n}"
               쿠폰 템플릿 생성 - 실패 - 유효하지 않은 요청 데이터:
-                value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰 설명\",\n  \"minOrderAmount\" : 0,\n  \"discountType\" : \"PERCENTAGE\",\n  \"discountValue\" : 105,\n  \"maxDiscountAmount\" : 5000,\n  \"issueStartDate\" : \"2025-08-08\",\n  \"issueEndDate\" : \"2025-08-06\",\n  \"validityDays\" : 3,\n  \"absoluteExpiryDate\" : \"2025-07-26\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\" : 100,\n  \"maxRedeemCount\" : 200\n}"
+                value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰 설명\",\n  \"minOrderAmount\" : 0,\n  \"discountType\" : \"PERCENTAGE\",\n  \"discountValue\" : 105,\n  \"maxDiscountAmount\" : 5000,\n  \"issueStartDate\" : \"2025-08-09\",\n  \"issueEndDate\" : \"2025-08-07\",\n  \"validityDays\" : 3,\n  \"absoluteExpiryDate\" : \"2025-07-27\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\" : 100,\n  \"maxRedeemCount\" : 200\n}"
               쿠폰 템플릿 생성 - 실패 - 존재하지 않는 상점:
                 value: "{\n  \"name\" : \"테스트 쿠폰\",\n  \"description\" : \"테스트 쿠폰 설명\",\n  \"minOrderAmount\" : 10000,\n  \"discountType\" : \"FIXED_AMOUNT\",\n  \"discountValue\" : 1000,\n  \"maxDiscountAmount\" : null,\n  \"issueStartDate\" : \"2025-07-13\",\n  \"issueEndDate\" : \"2025-07-20\",\n  \"validityDays\" : 30,\n  \"absoluteExpiryDate\" : \"2025-08-20\",\n  \"limitType\" : \"ISSUE_COUNT\",\n  \"maxIssueCount\" : 2000,\n  \"maxRedeemCount\" : null\n}"
       responses:
@@ -571,7 +571,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId-1196333992'
+                $ref: '#/components/schemas/v1-merchants-merchantId-1196333992'
               examples:
                 쿠폰 템플릿 상세 조회 - 실패 - 상점 접근 권한 없음:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\" : {\n    \"code\" : \"NO_MERCHANT_ACCESS_PERMISSION\",\n    \"message\" : \"해당 상점에 접근할 수 있는 권한이 없습니다.\",\n    \"data\" : null\n  }\n}"
@@ -582,7 +582,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/v1-merchants-merchantId-coupon-templates-couponTemplateId-1196333992'
+                $ref: '#/components/schemas/v1-merchants-merchantId-1196333992'
               examples:
                 쿠폰 템플릿 상세 조회 - 실패 - 존재하지 않는 상점:
                   value: "{\n  \"result\" : \"ERROR\",\n  \"data\" : null,\n  \"error\" : {\n    \"code\" : \"MERCHANT_NOT_FOUND\",\n    \"message\" : \"존재하지 않는 상점입니다.\",\n    \"data\" : null\n  }\n}"
@@ -948,7 +948,7 @@ components:
         name:
           type: string
           description: 상점 이름
-    v1-merchants-merchantId-coupon-templates-couponTemplateId-1196333992:
+    v1-merchants-merchantId-1196333992:
       required:
         - data
         - error
