@@ -76,26 +76,31 @@ class SecurityConfig(
     @Profile("!prod")
     fun corsConfigurationSource(): CorsConfigurationSource {
         val corsConfiguration = baseCorsConfiguration(listOf("*"))
-        return UrlBasedCorsConfigurationSource().apply {
-            registerCorsConfiguration("/**", corsConfiguration)
-        }
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", corsConfiguration)
+
+        return source
     }
 
     @Bean
     @Profile("prod")
     fun prodCorsConfigurationSource(): CorsConfigurationSource {
-        val corsConfiguration = baseCorsConfiguration(
-            listOf("https://alstn113.github.io", "https://www.goodpon.site")
-        )
-        return UrlBasedCorsConfigurationSource().apply {
-            registerCorsConfiguration("/**", corsConfiguration)
-        }
+        val config = baseCorsConfiguration(listOf("https://alstn113.github.io", "https://www.goodpon.site"))
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", config)
+
+        return source
     }
 
-    fun baseCorsConfiguration(allowedOrigins: List<String>): CorsConfiguration = CorsConfiguration().apply {
-        this.allowedOrigins = allowedOrigins
-        allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
-        allowedHeaders = listOf("*")
-        allowCredentials = true
+    fun baseCorsConfiguration(allowedOrigins: List<String>): CorsConfiguration {
+        val config = CorsConfiguration()
+        config.allowedOrigins = allowedOrigins
+        config.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        config.allowedHeaders = listOf("*")
+        config.allowCredentials = true
+
+        return config
     }
 }
