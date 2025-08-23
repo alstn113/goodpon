@@ -9,6 +9,7 @@ server:
 spring.config.import:
   - classpath:app-config/infra-db.yml
   - classpath:app-config/infra-redis.yml
+  - classpath:app-config/infra-kafka.yml
 
 ---
 spring.config.activate.on-profile: local

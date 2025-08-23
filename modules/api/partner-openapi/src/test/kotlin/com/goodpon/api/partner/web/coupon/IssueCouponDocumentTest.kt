@@ -43,7 +43,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
             expiresAt = LocalDateTime.now().plusDays(30),
         )
 
-        every { issueCouponUseCase(any()) } returns issueCouponResult
+        every { issueCouponUseCase(any()) } returns Unit
 
         val result = mockMvc.perform(createIssueCouponRequestBuilder(1L))
 
@@ -51,10 +51,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
             status().isOk,
             jsonPath("$.result").value(ResultType.SUCCESS.name),
             jsonPath("$.error").value(null),
-            jsonPath("$.data.userCouponId").value(issueCouponResult.userCouponId),
-            jsonPath("$.data.userId").value(issueCouponResult.userId),
-            jsonPath("$.data.couponTemplateId").value(issueCouponResult.couponTemplateId),
-            jsonPath("$.data.couponTemplateName").value(issueCouponResult.couponTemplateName),
+            jsonPath("$.data").isString
         )
 
         result.andDocument(
@@ -219,11 +216,6 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
     )
 
     private fun issueCouponResultFields() = commonSuccessResponseFields(
-        fieldWithPath("data.userCouponId").type(JsonFieldType.STRING).description("발급된 쿠폰의 고유 ID"),
-        fieldWithPath("data.userId").type(JsonFieldType.STRING).description("고객사의 고유 사용자 ID"),
-        fieldWithPath("data.couponTemplateId").type(JsonFieldType.NUMBER).description("쿠폰 템플릿 ID"),
-        fieldWithPath("data.couponTemplateName").type(JsonFieldType.STRING).description("쿠폰 템플릿 이름"),
-        fieldWithPath("data.issuedAt").type(JsonFieldType.STRING).description("쿠폰 발급 시간"),
-        fieldWithPath("data.expiresAt").type(JsonFieldType.STRING).optional().description("쿠폰 만료 시간")
+        fieldWithPath("data").type(JsonFieldType.STRING).description("쿠폰 발급 성공 메세지")
     )
 }
