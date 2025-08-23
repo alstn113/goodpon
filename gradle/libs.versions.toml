@@ -48,6 +48,7 @@ aws-sdk-bom = { module = "software.amazon.awssdk:bom", version.ref = "aws-sdk-bo
 # testcontainers
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainers" }
+testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "testcontainers" }
 
 # restdocs
 epage-restdocs-mockmvc = { module = "com.epages:restdocs-api-spec-mockmvc", version.ref = "epage-restdocs" }
