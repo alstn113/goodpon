@@ -6,6 +6,7 @@ dependencies {
     runtimeOnly(project(":modules:infra:db:jpa"))
     runtimeOnly(project(":modules:infra:db:flyway"))
     runtimeOnly(project(":modules:infra:redis"))
+    runtimeOnly(project(":modules:infra:kafka"))
 
     implementation(project(":modules:domain"))
     implementation(project(":modules:application:partner-application"))
@@ -18,6 +19,7 @@ dependencies {
     testImplementation(project(":modules:infra:db:jpa"))
     testImplementation(project(":modules:infra:db:flyway"))
     testImplementation(project(":modules:infra:redis"))
+    testImplementation(project(":modules:infra:kafka"))
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(libs.epage.restdocs.mockmvc)
@@ -27,6 +29,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-data-redis")
     testImplementation(testFixtures(project(":modules:infra:db:jpa")))
     testImplementation(testFixtures(project(":modules:infra:redis")))
+    testImplementation(testFixtures(project(":modules:infra:kafka")))
 }
 
 openapi3 {

@@ -9,23 +9,20 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
         default_batch_fetch_size: 100
 
 ---
 spring.config.activate.on-profile: local
 
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   datasource:
-    url: jdbc:h2:mem:local;MODE=MySQL;DATABASE_TO_LOWER=TRUE
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/goodpon?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useUnicode=true&character_set_server=utf8mb4
+    username: appuser
+    password: apppassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true

@@ -35,7 +35,7 @@ class CancelCouponRedemptionService(
             cancelReason = command.cancelReason,
             cancelAt = now
         )
-        couponTemplateStatsCache.cancelRedeem(userCoupon.couponTemplateId)
+        couponTemplateStatsCache.cancelRedeem(couponTemplateId = couponTemplate.id, userId = userCoupon.userId)
 
         return CancelCouponRedemptionResult(
             userCouponId = canceledCoupon.id,
