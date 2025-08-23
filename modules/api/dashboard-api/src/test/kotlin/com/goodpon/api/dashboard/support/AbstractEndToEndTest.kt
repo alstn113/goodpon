@@ -43,9 +43,6 @@ import org.springframework.test.context.TestConstructor
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 abstract class AbstractEndToEndTest {
 
-    @MockkBean
-    protected lateinit var verificationTokenGenerator: VerificationTokenGenerator
-
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
