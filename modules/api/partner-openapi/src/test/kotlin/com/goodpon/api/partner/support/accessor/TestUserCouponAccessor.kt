@@ -42,10 +42,12 @@ class TestUserCouponAccessor(
         return userCoupon.toDomain()
     }
 
+    @Transactional(readOnly = true)
     fun findById(id: String): UserCouponEntity? {
         return entityManager.find(UserCouponEntity::class.java, id)
     }
 
+    @Transactional(readOnly = true)
     fun findByCouponTemplateId(
         couponTemplateId: Long,
     ): List<UserCouponEntity> {

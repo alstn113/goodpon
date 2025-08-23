@@ -1,4 +1,4 @@
-package com.goodpon.api.partner.support.accessor
+package com.goodpon.consumer.couponissuer.support.accessor
 
 import com.goodpon.infra.db.jpa.entity.CouponHistoryEntity
 import jakarta.persistence.EntityManager

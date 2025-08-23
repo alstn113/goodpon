@@ -19,7 +19,6 @@ dependencies {
     testImplementation(project(":modules:infra:db:jpa"))
     testImplementation(project(":modules:infra:db:flyway"))
     testImplementation(project(":modules:infra:redis"))
-    testImplementation(project(":modules:infra:kafka"))
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(libs.epage.restdocs.mockmvc)

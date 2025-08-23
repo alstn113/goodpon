@@ -1,7 +1,5 @@
 package com.goodpon.infra.redis.coupon.core
 
-import com.goodpon.application.partner.coupon.port.out.dto.IssueResult
-import com.goodpon.application.partner.coupon.port.out.dto.RedeemResult
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.data.redis.core.script.RedisScript
@@ -34,7 +32,7 @@ class CouponTemplateStatsRedisCommandCache(
         )
     }
 
-    fun issueCoupon(couponTemplateId: Long, userId: String, maxIssueCount: Long?): IssueResult {
+    fun issueCoupon(couponTemplateId: Long, userId: String, maxIssueCount: Long?): CouponIssueResult {
         val key = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
         val result = redisTemplate.execute(
             issueCouponScript,
@@ -44,14 +42,14 @@ class CouponTemplateStatsRedisCommandCache(
         )
 
         return when (result) {
-            0L -> IssueResult.SUCCESS
-            1L -> IssueResult.ALREADY_ISSUED
-            2L -> IssueResult.ISSUE_LIMIT_EXCEEDED
+            0L -> CouponIssueResult.SUCCESS
+            1L -> CouponIssueResult.ALREADY_ISSUED
+            2L -> CouponIssueResult.ISSUE_LIMIT_EXCEEDED
             else -> throw IllegalStateException("coupon issue redis script에서 예상치 못한 결과가 발생했습니다. result: $result")
         }
     }
 
-    fun redeemCoupon(couponTemplateId: Long, userId: String, maxRedeemCount: Long?): RedeemResult {
+    fun redeemCoupon(couponTemplateId: Long, userId: String, maxRedeemCount: Long?): CouponRedeemResult {
         val key = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
         val result = redisTemplate.execute(
             redeemCouponScript,
@@ -61,9 +59,9 @@ class CouponTemplateStatsRedisCommandCache(
         )
 
         return when (result) {
-            0L -> RedeemResult.SUCCESS
-            1L -> RedeemResult.ALREADY_REDEEMED
-            2L -> RedeemResult.REDEEM_LIMIT_EXCEEDED
+            0L -> CouponRedeemResult.SUCCESS
+            1L -> CouponRedeemResult.ALREADY_REDEEMED
+            2L -> CouponRedeemResult.REDEEM_LIMIT_EXCEEDED
             else -> throw IllegalStateException("coupon redeem redis script에서 예상치 못한 결과가 발생했습니다. result: $result")
         }
     }

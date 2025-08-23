@@ -1,7 +1,8 @@
 package com.goodpon.infra.redis.coupon
 
-import com.goodpon.application.partner.coupon.port.out.dto.IssueResult
 import com.goodpon.application.partner.coupon.port.out.dto.RedeemResult
+import com.goodpon.infra.redis.coupon.core.CouponIssueResult
+import com.goodpon.infra.redis.coupon.core.CouponRedeemResult
 import com.goodpon.infra.redis.coupon.core.CouponTemplateRedisKeyUtil
 import com.goodpon.infra.redis.coupon.core.CouponTemplateStatsRedisCommandCache
 import com.goodpon.infra.redis.support.AbstractIntegrationTest
@@ -63,10 +64,10 @@ class CouponTemplateStatsRedisCommandCacheIT(
         commandCache.initializeStats(couponTemplateId, null)
 
         // when
-        val issueResult = commandCache.issueCoupon(couponTemplateId, userId, null)
+        val couponIssueResult = commandCache.issueCoupon(couponTemplateId, userId, null)
 
         // then
-        issueResult shouldBe IssueResult.SUCCESS
+        couponIssueResult shouldBe CouponIssueResult.SUCCESS
         redisTemplate.opsForSet().size(issueSetKey) shouldBe 2L
         redisTemplate.opsForSet().isMember(issueSetKey, userId) shouldBe true
     }
@@ -82,10 +83,10 @@ class CouponTemplateStatsRedisCommandCacheIT(
         commandCache.issueCoupon(couponTemplateId, userId, null)
 
         // when
-        val issueResult = commandCache.issueCoupon(couponTemplateId, userId, null)
+        val couponIssueResult = commandCache.issueCoupon(couponTemplateId, userId, null)
 
         // then
-        issueResult shouldBe IssueResult.ALREADY_ISSUED
+        couponIssueResult shouldBe CouponIssueResult.ALREADY_ISSUED
         redisTemplate.opsForSet().size(issueSetKey) shouldBe 2L
         redisTemplate.opsForSet().isMember(issueSetKey, userId) shouldBe true
     }
@@ -101,10 +102,10 @@ class CouponTemplateStatsRedisCommandCacheIT(
         commandCache.issueCoupon(couponTemplateId, userId, maxIssueCount)
 
         // when
-        val issueResult = commandCache.issueCoupon(couponTemplateId, "user456", maxIssueCount)
+        val couponIssueResult = commandCache.issueCoupon(couponTemplateId, "user456", maxIssueCount)
 
         // then
-        issueResult shouldBe IssueResult.ISSUE_LIMIT_EXCEEDED
+        couponIssueResult shouldBe CouponIssueResult.ISSUE_LIMIT_EXCEEDED
         redisTemplate.opsForSet().size(issueSetKey) shouldBe 2L
         redisTemplate.opsForSet().isMember(issueSetKey, userId) shouldBe true
     }
@@ -120,10 +121,10 @@ class CouponTemplateStatsRedisCommandCacheIT(
         commandCache.issueCoupon(couponTemplateId, userId, null)
 
         // when
-        val redeemResult = commandCache.redeemCoupon(couponTemplateId, userId, null)
+        val couponRedeemResult = commandCache.redeemCoupon(couponTemplateId, userId, null)
 
         // then
-        redeemResult shouldBe RedeemResult.SUCCESS
+        couponRedeemResult shouldBe CouponRedeemResult.SUCCESS
         redisTemplate.opsForSet().size(redeemSetKey) shouldBe 2L
         redisTemplate.opsForSet().isMember(redeemSetKey, userId) shouldBe true
     }
@@ -140,10 +141,10 @@ class CouponTemplateStatsRedisCommandCacheIT(
         commandCache.redeemCoupon(couponTemplateId, userId, null)
 
         // when
-        val redeemResult = commandCache.redeemCoupon(couponTemplateId, userId, null)
+        val couponRedeemResult = commandCache.redeemCoupon(couponTemplateId, userId, null)
 
         // then
-        redeemResult shouldBe RedeemResult.ALREADY_REDEEMED
+        couponRedeemResult shouldBe CouponRedeemResult.ALREADY_REDEEMED
         redisTemplate.opsForSet().size(redeemSetKey) shouldBe 2L
         redisTemplate.opsForSet().isMember(redeemSetKey, userId) shouldBe true
     }
@@ -161,10 +162,10 @@ class CouponTemplateStatsRedisCommandCacheIT(
         commandCache.redeemCoupon(couponTemplateId, userId, maxRedeemCount)
 
         // when
-        val redeemResult = commandCache.redeemCoupon(couponTemplateId, "user456", maxRedeemCount)
+        val couponRedeemResult = commandCache.redeemCoupon(couponTemplateId, "user456", maxRedeemCount)
 
         // then
-        redeemResult shouldBe RedeemResult.REDEEM_LIMIT_EXCEEDED
+        couponRedeemResult shouldBe CouponRedeemResult.REDEEM_LIMIT_EXCEEDED
         redisTemplate.opsForSet().size(redeemSetKey) shouldBe 2L
         redisTemplate.opsForSet().isMember(redeemSetKey, userId) shouldBe true
     }
