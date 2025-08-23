@@ -46,13 +46,19 @@ class RedeemCouponServiceConcurrencyIT(
         )
         val userIds = (1..issueCount).map { index -> "user-$index" }
         val userIdToCouponIdMap: Map<String, String> = userIds.associateWith { userId ->
-            val command = IssueCouponCommand(
-                merchantId = merchantId,
-                couponTemplateId = couponTemplateId,
-                userId = userId
+            issueCouponService(
+                IssueCouponCommand(
+                    merchantId = merchantId,
+                    couponTemplateId = couponTemplateId,
+                    userId = userId
+                )
             )
-            val issuedCoupon = issueCouponService(command)
-            issuedCoupon.userCouponId
+            val userCoupon = testUserCouponAccessor.issueCouponAndRecord(
+                userId = userId,
+                couponTemplateId = couponTemplateId,
+                merchantId = merchantId
+            )
+            userCoupon.id
         }
 
         val successCount = AtomicInteger(0)
@@ -113,12 +119,18 @@ class RedeemCouponServiceConcurrencyIT(
             minOrderAmount = 10000,
         )
         val userId = "user-unique"
-        val issueCommand = IssueCouponCommand(
-            merchantId = merchantId,
-            couponTemplateId = couponTemplateId,
-            userId = userId
+        issueCouponService(
+            IssueCouponCommand(
+                merchantId = merchantId,
+                couponTemplateId = couponTemplateId,
+                userId = userId
+            )
         )
-        val issuedCoupon = issueCouponService(issueCommand)
+        val userCoupon = testUserCouponAccessor.issueCouponAndRecord(
+            userId = userId,
+            couponTemplateId = couponTemplateId,
+            merchantId = merchantId
+        )
 
         val concurrentRequests = 5
         val successCount = AtomicInteger(0)
@@ -131,7 +143,7 @@ class RedeemCouponServiceConcurrencyIT(
                     try {
                         val command = RedeemCouponCommand(
                             merchantId = merchantId,
-                            userCouponId = issuedCoupon.userCouponId,
+                            userCouponId = userCoupon.id,
                             userId = userId,
                             orderAmount = 15000,
                             orderId = "unique-order-id-$index"
@@ -150,7 +162,7 @@ class RedeemCouponServiceConcurrencyIT(
         successCount.get() shouldBe 1
         failureCount.get() shouldBe concurrentRequests - 1
 
-        val foundUserCouponEntity = testUserCouponAccessor.findById(issuedCoupon.userCouponId)
+        val foundUserCouponEntity = testUserCouponAccessor.findById(userCoupon.id)
         foundUserCouponEntity.shouldNotBeNull()
         foundUserCouponEntity.status shouldBe UserCouponStatus.REDEEMED
 

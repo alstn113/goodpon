@@ -8,8 +8,6 @@ interface UserCouponRepository {
 
     fun save(userCoupon: UserCoupon): UserCoupon
 
-    fun saveAndFlush(userCoupon: UserCoupon): UserCoupon
-
     fun findByIdForUpdate(id: String): UserCoupon?
 
     fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean

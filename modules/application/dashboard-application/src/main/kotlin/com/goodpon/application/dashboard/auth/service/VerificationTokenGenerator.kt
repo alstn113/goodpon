@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class VerificationTokenGenerator {
+interface VerificationTokenGenerator {
 
     fun generate(): String {
         return UUID.randomUUID().toString().replace("-", "")

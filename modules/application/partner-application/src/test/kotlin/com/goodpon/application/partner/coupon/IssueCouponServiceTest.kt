@@ -13,8 +13,6 @@ import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuanceLimitExceededException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.matchers.ints.exactly
-import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

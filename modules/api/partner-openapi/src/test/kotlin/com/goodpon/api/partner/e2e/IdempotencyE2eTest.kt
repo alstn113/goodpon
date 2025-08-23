@@ -5,9 +5,10 @@ import com.goodpon.api.partner.controller.v1.request.RedeemCouponRequest
 import com.goodpon.api.partner.support.AbstractEndToEndTest
 import com.goodpon.api.partner.support.accessor.TestCouponTemplateAccessor
 import com.goodpon.api.partner.support.accessor.TestMerchantAccessor
-import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponResult
+import com.goodpon.api.partner.support.accessor.TestUserCouponAccessor
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
+import com.goodpon.infra.redis.coupon.core.CouponTemplateStatsRedisQueryCache
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.restassured.RestAssured.given
@@ -18,6 +19,8 @@ import org.junit.jupiter.api.Test
 class IdempotencyE2eTest(
     private val testMerchantAccessor: TestMerchantAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
+    private val testUserCouponAccessor: TestUserCouponAccessor,
+    private val queryCache: CouponTemplateStatsRedisQueryCache,
 ) : AbstractEndToEndTest() {
 
     @Test
@@ -35,8 +38,6 @@ class IdempotencyE2eTest(
             statusCode() shouldBe 200
             headers().get("Idempotency-Key") shouldBe null
         }
-            .toApiResponse<IssueCouponResult>()
-            .apply { this.couponTemplateId shouldBe couponTemplateId }
     }
 
     @Test
@@ -71,23 +72,15 @@ class IdempotencyE2eTest(
         }.header("X-Goodpon-Trace-Id")
 
         traceId1 shouldNotBe traceId2
-        testCouponTemplateAccessor.countUserCoupons(couponTemplateId) shouldBe 1
+        queryCache.getStats(couponTemplateId).first shouldBe 1L
     }
 
     @Test
     fun `동일한 멱등키로 실패 응답을 받는 경우 동일한 응답을 받을 수 있다`() {
         val (merchantId, clientId, clientSecret) = testMerchantAccessor.createMerchant()
-        val couponTemplateId = createCouponTemplate(merchantId)
+        createCouponTemplate(merchantId)
         val userId = "unique-user-id"
         val idempotencyKey = "unique-idempotency-key"
-
-        `쿠폰 발급 요청`(
-            clientId = clientId,
-            clientSecret = clientSecret,
-            idempotencyKey = idempotencyKey,
-            userId = userId,
-            couponTemplateId = couponTemplateId
-        )
 
         `쿠폰 사용 요청`(
             clientId = clientId,
@@ -117,20 +110,24 @@ class IdempotencyE2eTest(
         val userId = "unique-user-id"
         val idempotencyKey = "unique-idempotency-key"
 
-        val userCouponId = `쿠폰 발급 요청`(
+        `쿠폰 발급 요청`(
             clientId = clientId,
             clientSecret = clientSecret,
             idempotencyKey = idempotencyKey,
             userId = userId,
             couponTemplateId = couponTemplateId
-        ).toApiResponse<IssueCouponResult>()
-            .userCouponId
+        ).apply { statusCode() shouldBe 200 }
+        val userCoupon = testUserCouponAccessor.issueCouponAndRecord(
+            userId = userId,
+            couponTemplateId = couponTemplateId,
+            merchantId = merchantId
+        )
 
         `쿠폰 사용 요청`(
             clientId = clientId,
             clientSecret = clientSecret,
             idempotencyKey = idempotencyKey,
-            userCouponId = userCouponId,
+            userCouponId = userCoupon.id,
             userId = userId,
             orderAmount = 30000,
             orderId = "order-id-123"
@@ -140,7 +137,7 @@ class IdempotencyE2eTest(
             clientId = clientId,
             clientSecret = clientSecret,
             idempotencyKey = idempotencyKey,
-            userCouponId = userCouponId,
+            userCouponId = userCoupon.id,
             userId = userId,
             orderAmount = 20000,
             orderId = "unique-order-id-456" // 다른 주문 ID

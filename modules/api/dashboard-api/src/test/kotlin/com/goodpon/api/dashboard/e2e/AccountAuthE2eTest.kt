@@ -9,7 +9,6 @@ import com.goodpon.api.dashboard.support.FakeVerificationTokenGenerator
 import com.goodpon.application.dashboard.account.port.`in`.dto.SignUpResult
 import com.goodpon.application.dashboard.auth.port.`in`.dto.LoginResult
 import io.kotest.matchers.shouldBe
-import io.mockk.every
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import io.restassured.response.Response

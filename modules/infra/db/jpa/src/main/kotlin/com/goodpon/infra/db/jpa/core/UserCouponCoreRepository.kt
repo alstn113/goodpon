@@ -31,13 +31,6 @@ class UserCouponCoreRepository(
     }
 
     @Transactional
-    fun saveAndFlush(userCoupon: UserCoupon): UserCoupon {
-        val saved = save(userCoupon)
-        userCouponJpaRepository.flush()
-        return saved
-    }
-
-    @Transactional
     fun saveAll(userCoupons: List<UserCoupon>): List<UserCoupon> {
         return userCoupons.map { UserCouponEntity.fromDomain(it) }
             .map { it.toDomain() }

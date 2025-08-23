@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class CouponKafkaEventListener(
     private val issueCouponUseCase: IssueCouponUseCase,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) {
 
     @KafkaListener(

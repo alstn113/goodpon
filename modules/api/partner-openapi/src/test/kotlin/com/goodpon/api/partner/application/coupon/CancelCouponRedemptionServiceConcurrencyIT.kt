@@ -48,19 +48,25 @@ class CancelCouponRedemptionServiceConcurrencyIT(
 
         // - 쿠폰 발급
         val userId = "unique-user-id"
-        val issueCouponCommand = IssueCouponCommand(
+        issueCouponService(
+            IssueCouponCommand(
+                userId = userId,
+                couponTemplateId = couponTemplateId,
+                merchantId = merchantId
+            )
+        )
+        val userCoupon = testUserCouponAccessor.issueCouponAndRecord(
             userId = userId,
             couponTemplateId = couponTemplateId,
             merchantId = merchantId
         )
-        val issueCouponResult = issueCouponService(issueCouponCommand)
 
         // - 쿠폰 사용
         val orderId = "unique-order-id"
         val orderAmount = 15000
         val redeemCouponCommand = RedeemCouponCommand(
             merchantId = merchantId,
-            userCouponId = issueCouponResult.userCouponId,
+            userCouponId = userCoupon.id,
             userId = userId,
             orderAmount = orderAmount,
             orderId = orderId

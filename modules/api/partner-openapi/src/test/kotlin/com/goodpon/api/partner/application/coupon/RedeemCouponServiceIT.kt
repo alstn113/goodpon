@@ -40,19 +40,25 @@ class RedeemCouponServiceIT(
         )
 
         val userId = "unique-user-id"
-        val issueCouponCommand = IssueCouponCommand(
+        issueCouponService(
+            IssueCouponCommand(
+                userId = userId,
+                couponTemplateId = couponTemplateId,
+                merchantId = merchantId
+            )
+        )
+        val userCoupon = testUserCouponAccessor.issueCouponAndRecord(
             userId = userId,
             couponTemplateId = couponTemplateId,
             merchantId = merchantId
         )
-        val issueCouponResult = issueCouponService(issueCouponCommand)
 
         // when
         val orderId = "unique-order-id"
         val orderAmount = 15000
         val redeemCouponCommand = RedeemCouponCommand(
             merchantId = merchantId,
-            userCouponId = issueCouponResult.userCouponId,
+            userCouponId = userCoupon.id,
             userId = userId,
             orderAmount = orderAmount,
             orderId = orderId
@@ -60,17 +66,17 @@ class RedeemCouponServiceIT(
         val redeemCouponResult = redeemCouponService(redeemCouponCommand)
 
         // then
-        redeemCouponResult.userCouponId shouldBe issueCouponResult.userCouponId
+        redeemCouponResult.userCouponId shouldBe userCoupon.id
         redeemCouponResult.discountAmount shouldBe discountAmount
         redeemCouponResult.originalPrice shouldBe orderAmount
         redeemCouponResult.finalPrice shouldBe (orderAmount - discountAmount)
         redeemCouponResult.orderId shouldBe orderId
 
-        val foundUserCouponEntity = testUserCouponAccessor.findById(issueCouponResult.userCouponId)
+        val foundUserCouponEntity = testUserCouponAccessor.findById(userCoupon.id)
         foundUserCouponEntity.shouldNotBeNull()
         foundUserCouponEntity.status shouldBe UserCouponStatus.REDEEMED
 
-        val foundCouponHistoryEntities = testCouponHistoryAccessor.findByUserCouponId(issueCouponResult.userCouponId)
+        val foundCouponHistoryEntities = testCouponHistoryAccessor.findByUserCouponId(userCoupon.id)
         foundCouponHistoryEntities.size shouldBe 2
         foundCouponHistoryEntities.sortedBy { it.createdAt }.also { sortedHistory ->
             sortedHistory[0].actionType shouldBe CouponActionType.ISSUE

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class CouponEventKafkaPublisher(
     private val kafkaTemplate: KafkaTemplate<String, String>,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) : CouponEventPublisher {
 
     override fun publishIssueCouponRequested(event: IssueCouponRequestedEvent) {

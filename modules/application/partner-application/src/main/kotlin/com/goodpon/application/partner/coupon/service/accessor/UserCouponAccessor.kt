@@ -17,16 +17,6 @@ class UserCouponAccessor(
             ?: throw UserCouponNotFoundException()
     }
 
-    @Transactional(readOnly = true)
-    fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean {
-        return userCouponRepository.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)
-    }
-
-    @Transactional
-    fun createUserCoupon(userCoupon: UserCoupon): UserCoupon {
-        return userCouponRepository.saveAndFlush(userCoupon)
-    }
-
     @Transactional
     fun update(userCoupon: UserCoupon): UserCoupon {
         return userCouponRepository.save(userCoupon)

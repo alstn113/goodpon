@@ -4,12 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.api.dashboard.response.ApiResponse
 import com.goodpon.api.dashboard.response.ErrorMessage
-import com.goodpon.application.dashboard.auth.service.VerificationTokenGenerator
 import com.goodpon.infra.db.jpa.MySQLContainerInitializer
 import com.goodpon.infra.db.jpa.MySQLDataCleanupExtension
 import com.goodpon.infra.redis.RedisContainerInitializer
 import com.goodpon.infra.redis.RedisDataCleanupExtension
-import com.ninjasquad.springmockk.MockkBean
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.builder.ResponseSpecBuilder

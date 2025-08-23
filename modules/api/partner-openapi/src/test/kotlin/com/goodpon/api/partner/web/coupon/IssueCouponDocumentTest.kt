@@ -8,7 +8,6 @@ import com.goodpon.api.partner.controller.v1.request.IssueCouponRequest
 import com.goodpon.api.partner.response.ResultType
 import com.goodpon.api.partner.support.AbstractDocumentTest
 import com.goodpon.api.partner.support.WithMockMerchant
-import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponResult
 import com.goodpon.application.partner.coupon.port.out.exception.CouponTemplateNotFoundException
 import com.goodpon.application.partner.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.application.partner.coupon.service.exception.UserCouponAlreadyIssuedException
@@ -24,7 +23,6 @@ import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.time.LocalDateTime
 
 class IssueCouponDocumentTest : AbstractDocumentTest() {
 
@@ -34,15 +32,6 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
     @Test
     @WithMockMerchant
     fun `쿠폰 발급 - 성공`() {
-        val issueCouponResult = IssueCouponResult(
-            userCouponId = "8f3b95144877a0dcbaad2b321380",
-            userId = userId,
-            couponTemplateId = 1L,
-            couponTemplateName = "테스트 쿠폰",
-            issuedAt = LocalDateTime.now(),
-            expiresAt = LocalDateTime.now().plusDays(30),
-        )
-
         every { issueCouponUseCase(any()) } returns Unit
 
         val result = mockMvc.perform(createIssueCouponRequestBuilder(1L))
@@ -51,7 +40,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
             status().isOk,
             jsonPath("$.result").value(ResultType.SUCCESS.name),
             jsonPath("$.error").value(null),
-            jsonPath("$.data").isString
+            jsonPath("$.data").value("쿠폰이 정상적으로 발급되었습니다.")
         )
 
         result.andDocument(
@@ -64,7 +53,7 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
                 .pathParameters(parameterWithName("couponTemplateId").description("쿠폰 템플릿 ID"))
                 .requestSchema(Schema("IssueCouponRequest"))
                 .requestFields(*issueCouponRequestFields().toTypedArray())
-                .responseSchema(Schema("ApiResponse<IssueCouponResult>"))
+                .responseSchema(Schema("ApiResponse<String>"))
                 .responseFields(*issueCouponResultFields().toTypedArray())
                 .responseHeaders(*postResponseHeaderFields().toTypedArray())
                 .build()
@@ -215,7 +204,9 @@ class IssueCouponDocumentTest : AbstractDocumentTest() {
         fieldWithPath("userId").type(JsonFieldType.STRING).description("고객사의 고유 사용자 ID"),
     )
 
-    private fun issueCouponResultFields() = commonSuccessResponseFields(
-        fieldWithPath("data").type(JsonFieldType.STRING).description("쿠폰 발급 성공 메세지")
+    private fun issueCouponResultFields() = listOf(
+        fieldWithPath("result").type(JsonFieldType.STRING).description("요청 결과 (SUCCESS/ERROR)"),
+        fieldWithPath("error").type(JsonFieldType.NULL).description("오류 정보"),
+        fieldWithPath("data").type(JsonFieldType.STRING).description("성공 메세지")
     )
 }
