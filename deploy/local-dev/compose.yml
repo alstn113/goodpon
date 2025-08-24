@@ -25,7 +25,7 @@ services:
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
       OTEL_TRACES_SAMPLER_ARG: 0.1 # 10% 샘플링
       OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true # Micrometer 사용
-    restart: unless-stopped
+    restart: on-failure:3
     depends_on:
       mysql:
         condition: service_healthy
@@ -74,7 +74,7 @@ services:
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
       OTEL_TRACES_SAMPLER_ARG: 0.1
       OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true
-    restart: unless-stopped
+    restart: on-failure:3
     depends_on:
       mysql:
         condition: service_healthy
@@ -123,7 +123,7 @@ services:
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
       OTEL_TRACES_SAMPLER_ARG: 0.1
       OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true
-    restart: unless-stopped
+    restart: on-failure:3
     depends_on:
       mysql:
         condition: service_healthy
@@ -243,6 +243,18 @@ services:
       interval: 1s
       timeout: 3s
       retries: 30
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8083:8080"
+    restart: always
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafka
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      - kafka
 
   loki:
     image: grafana/loki
