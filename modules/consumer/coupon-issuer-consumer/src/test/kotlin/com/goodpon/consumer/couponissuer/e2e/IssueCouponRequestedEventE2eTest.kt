@@ -13,7 +13,6 @@ import io.kotest.matchers.shouldBe
 import org.awaitility.Awaitility.await
 import org.junit.jupiter.api.Test
 import org.springframework.kafka.core.KafkaTemplate
-import scala.Product
 import java.time.Duration
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit

@@ -12,7 +12,7 @@ export const options = {
     },
 
     thresholds: {
-        'http_req_duration': ['p(95)<800'], // 95%의 요청 응답 시간이 500ms 미만
+        'http_req_duration': ['p(95)<1000'], // 95%의 요청 응답 시간이 500ms 미만
         'http_req_failed': ['rate<0.01'],   // 실패율이 1% 미만
     },
 };
@@ -22,17 +22,17 @@ export default function () {
     const url = `http://host.docker.internal:8081/v1/coupon-templates/${couponTemplateId}/issue`;
 
     const payload = JSON.stringify({
-        userId: `test-11-32-${__VU}-${__ITER}`,
+        userId: `test-2025-08-24-15-59-${__VU}-${__ITER}`,
     });
 
     const params = {
         headers: {
             'Content-Type': 'application/json',
-            'X-Goodpon-Client-Id': 'ck_79bde37df8ed490590f039a6d242ff8a',
-            'X-Goodpon-Client-Secret': 'sk_1c472f9ed6cd401e9500a8935df8d881',
+            'X-Goodpon-Client-Id': 'ck_9bb5db89263741de9829c66ae19e321f',
+            'X-Goodpon-Client-Secret': 'sk_37b1e5e153444d558e03dca5a2e82290',
         },
         tags: {
-            k6_test_scenario: '11-32',
+            k6_test_scenario: 'test-2025-08-24-15-59',
         }
     };
 

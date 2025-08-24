@@ -1,6 +1,5 @@
 package com.goodpon.infra.redis.coupon
 
-import com.goodpon.application.partner.coupon.port.out.dto.RedeemResult
 import com.goodpon.infra.redis.coupon.core.CouponIssueResult
 import com.goodpon.infra.redis.coupon.core.CouponRedeemResult
 import com.goodpon.infra.redis.coupon.core.CouponTemplateRedisKeyUtil

@@ -4,6 +4,8 @@ import com.goodpon.application.dashboard.coupon.port.out.CouponTemplateRepositor
 import com.goodpon.application.dashboard.coupon.port.out.exception.CouponTemplateNotFoundException
 import com.goodpon.domain.coupon.template.CouponTemplate
 import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
+import org.springframework.cache.CacheManager
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -11,6 +13,7 @@ import java.time.LocalDateTime
 @Component
 class CouponTemplateAccessor(
     private val couponTemplateRepository: CouponTemplateRepository,
+    private val cacheManager: CacheManager,
 ) {
 
     @Transactional(readOnly = true)
@@ -25,6 +28,7 @@ class CouponTemplateAccessor(
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = ["couponTemplates:byId"], key = "#couponTemplateId")
     fun readById(couponTemplateId: Long): CouponTemplate {
         return couponTemplateRepository.findById(couponTemplateId)
             ?: throw CouponTemplateNotFoundException()
@@ -37,6 +41,15 @@ class CouponTemplateAccessor(
 
     @Transactional
     fun saveAll(couponTemplates: List<CouponTemplate>): List<CouponTemplate> {
-        return couponTemplateRepository.saveAll(couponTemplates)
+        val savedCouponTemplates = couponTemplateRepository.saveAll(couponTemplates)
+        evictCouponTemplateCaches(couponTemplates.map { it.id })
+        return savedCouponTemplates
+    }
+
+    private fun evictCouponTemplateCaches(couponTemplateIds: List<Long>) {
+        val cache = cacheManager.getCache("couponTemplates:byId") ?: return
+        couponTemplateIds.forEach { couponTemplateId ->
+            cache.evict(couponTemplateId)
+        }
     }
 }
