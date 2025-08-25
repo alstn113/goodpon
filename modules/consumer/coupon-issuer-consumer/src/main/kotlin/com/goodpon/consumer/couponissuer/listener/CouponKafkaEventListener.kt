@@ -14,7 +14,8 @@ class CouponKafkaEventListener(
 
     @KafkaListener(
         topics = ["issue-coupon-requested"],
-        groupId = "\${spring.kafka.consumer.group-id}"
+        groupId = "\${spring.kafka.consumer.group-id}",
+        concurrency = "5",
     )
     fun handleIssueCouponRequestedEvent(eventJsonString: String) {
         val event = objectMapper.readValue(eventJsonString, IssueCouponRequestedEvent::class.java)
