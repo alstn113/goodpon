@@ -10,7 +10,6 @@ import com.goodpon.application.partner.coupon.port.`in`.CancelCouponRedemptionUs
 import com.goodpon.application.partner.coupon.port.`in`.IssueCouponUseCase
 import com.goodpon.application.partner.coupon.port.`in`.RedeemCouponUseCase
 import com.goodpon.application.partner.coupon.port.`in`.dto.CancelCouponRedemptionResult
-import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponResult
 import com.goodpon.application.partner.coupon.port.`in`.dto.RedeemCouponResult
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -32,14 +31,14 @@ class CouponController(
         @PathVariable couponTemplateId: Long,
         @RequestBody request: IssueCouponRequest,
         @AuthenticationPrincipal merchantPrincipal: MerchantPrincipal,
-    ): ResponseEntity<ApiResponse<IssueCouponResult>> {
+    ): ResponseEntity<ApiResponse<String>> {
         val command = request.toCommand(
             merchantId = merchantPrincipal.merchantId,
             couponTemplateId = couponTemplateId
         )
-        val result = issueCouponUseCase(command)
+        issueCouponUseCase(command)
 
-        return ResponseEntity.ok(ApiResponse.success(result))
+        return ResponseEntity.ok(ApiResponse.success("쿠폰이 정상적으로 발급되었습니다."))
     }
 
     @Idempotent

@@ -31,12 +31,12 @@ import org.springframework.test.context.TestConstructor
 @ContextConfiguration(
     initializers = [
         MySQLContainerInitializer::class,
-        RedisContainerInitializer::class
+        RedisContainerInitializer::class,
     ]
 )
 @ExtendWith(
     MySQLDataCleanupExtension::class,
-    RedisDataCleanupExtension::class
+    RedisDataCleanupExtension::class,
 )
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 abstract class AbstractEndToEndTest {

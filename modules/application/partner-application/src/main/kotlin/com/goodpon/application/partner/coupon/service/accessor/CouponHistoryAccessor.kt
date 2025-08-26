@@ -17,18 +17,6 @@ class CouponHistoryAccessor(
     }
 
     @Transactional
-    fun recordIssued(
-        userCouponId: String,
-        recordedAt: LocalDateTime,
-    ): CouponHistory {
-        val history = CouponHistory.issued(
-            userCouponId = userCouponId,
-            recordedAt = recordedAt
-        )
-        return couponHistoryRepository.save(history)
-    }
-
-    @Transactional
     fun recordRedeemed(
         userCouponId: String,
         orderId: String,

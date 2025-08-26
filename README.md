@@ -30,6 +30,7 @@
 - Spring Security
 - MySQL 8.4
 - Valkey 8
+- Apache Kafka 3.5
 - Oracle Cloud Infrastructure (OCI)
 - Testcontainers
 

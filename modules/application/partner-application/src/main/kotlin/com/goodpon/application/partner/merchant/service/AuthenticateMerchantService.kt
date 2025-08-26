@@ -4,6 +4,7 @@ import com.goodpon.application.partner.merchant.port.`in`.AuthenticateMerchantUs
 import com.goodpon.application.partner.merchant.port.`in`.dto.MerchantInfo
 import com.goodpon.application.partner.merchant.service.accessor.MerchantAccessor
 import com.goodpon.application.partner.merchant.service.exception.MerchantClientSecretMismatchException
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,6 +14,7 @@ class AuthenticateMerchantService(
 ) : AuthenticateMerchantUseCase {
 
     @Transactional(readOnly = true)
+    @Cacheable(value = ["merchants:info"], key = "#clientId")
     override fun invoke(clientId: String, clientSecret: String): MerchantInfo {
         val merchant = merchantAccessor.readByClientId(clientId)
 

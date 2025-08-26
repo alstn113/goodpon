@@ -1,12 +1,6 @@
 package com.goodpon.application.dashboard.auth.service
 
-import org.springframework.stereotype.Component
-import java.util.*
+fun interface VerificationTokenGenerator {
 
-@Component
-class VerificationTokenGenerator {
-
-    fun generate(): String {
-        return UUID.randomUUID().toString().replace("-", "")
-    }
+    fun generate(): String
 }

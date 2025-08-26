@@ -5,10 +5,10 @@ import com.goodpon.api.dashboard.controller.v1.auth.dto.LoginRequest
 import com.goodpon.api.dashboard.controller.v1.auth.dto.ResendVerificationEmailRequest
 import com.goodpon.api.dashboard.controller.v1.auth.dto.VerifyEmailRequest
 import com.goodpon.api.dashboard.support.AbstractEndToEndTest
+import com.goodpon.api.dashboard.support.FakeVerificationTokenGenerator
 import com.goodpon.application.dashboard.account.port.`in`.dto.SignUpResult
 import com.goodpon.application.dashboard.auth.port.`in`.dto.LoginResult
 import io.kotest.matchers.shouldBe
-import io.mockk.every
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import io.restassured.response.Response
@@ -81,16 +81,13 @@ class AccountAuthE2eTest : AbstractEndToEndTest() {
     private fun 회원가입_요청(email: String, password: String, name: String): Pair<Response, String> {
         val request = SignUpRequest(email = email, password = password, name = name)
 
-        val emailToken = "email-verification-token"
-        every { verificationTokenGenerator.generate() } returns emailToken
-
         val result = given()
             .contentType(ContentType.JSON)
             .body(request)
             .`when`()
             .post("/v1/accounts/sign-up")
 
-        return Pair(result, emailToken)
+        return Pair(result, FakeVerificationTokenGenerator.VERIFICATION_TOKEN)
     }
 
     private fun 로그인_요청(email: String, password: String): Response {
@@ -109,16 +106,13 @@ class AccountAuthE2eTest : AbstractEndToEndTest() {
     private fun 인증_이메일_재전송_요청(email: String): Pair<Response, String> {
         val request = ResendVerificationEmailRequest(email = email)
 
-        val newEmailToken = "new-email-verification-token"
-        every { verificationTokenGenerator.generate() } returns newEmailToken
-
         val response = given()
             .contentType(ContentType.JSON)
             .body(request)
             .`when`()
             .post("/v1/auth/verify/resend")
 
-        return Pair(response, newEmailToken)
+        return Pair(response, FakeVerificationTokenGenerator.VERIFICATION_TOKEN)
     }
 
     private fun 이메일_인증_요청(emailToken: String): Response {

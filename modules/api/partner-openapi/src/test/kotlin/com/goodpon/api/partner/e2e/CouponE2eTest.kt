@@ -6,9 +6,9 @@ import com.goodpon.api.partner.controller.v1.request.RedeemCouponRequest
 import com.goodpon.api.partner.support.AbstractEndToEndTest
 import com.goodpon.api.partner.support.accessor.TestCouponTemplateAccessor
 import com.goodpon.api.partner.support.accessor.TestMerchantAccessor
+import com.goodpon.api.partner.support.accessor.TestUserCouponAccessor
 import com.goodpon.application.partner.coupon.port.`in`.dto.CancelCouponRedemptionResult
 import com.goodpon.application.partner.coupon.port.`in`.dto.CouponIssuanceStatus
-import com.goodpon.application.partner.coupon.port.`in`.dto.IssueCouponResult
 import com.goodpon.application.partner.coupon.port.`in`.dto.RedeemCouponResult
 import com.goodpon.application.partner.coupon.service.dto.AvailableUserCouponsView
 import com.goodpon.application.partner.coupon.service.dto.CouponTemplateDetailForUser
@@ -26,6 +26,7 @@ import java.util.*
 class CouponE2eTest(
     private val testMerchantAccessor: TestMerchantAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
+    private val testUserCouponAccessor: TestUserCouponAccessor,
 ) : AbstractEndToEndTest() {
 
     @Test
@@ -87,15 +88,17 @@ class CouponE2eTest(
             }
 
         // Emma의 여름 쿠폰 발급 요청
-        val issuedEmmaSummerCouponId = `쿠폰 발급 요청`(
+        `쿠폰 발급 요청`(
             clientId = clientId,
             clientSecret = clientSecret,
             userId = emmaUserId,
             couponTemplateId = summerCouponTemplateId
         ).apply { statusCode() shouldBe 200 }
-            .toApiResponse<IssueCouponResult>()
-            .apply { couponTemplateId shouldBe summerCouponTemplateId }
-            .userCouponId
+        val issuedEmmaSummerCouponId = testUserCouponAccessor.issueCouponAndRecord(
+            userId = emmaUserId,
+            couponTemplateId = summerCouponTemplateId,
+            merchantId = merchantId
+        ).id
 
         // Emma의 여름 할인 쿠폰 템플릿 조회 (선착순 쿠폰 발급 페이지)
         `쿠폰 템플릿 상세 정보와 사용자에 따른 발급 가능 여부 조회 요청`(
@@ -143,15 +146,17 @@ class CouponE2eTest(
             }
 
         // Emma의 겨울 할인 쿠폰 발급 요청
-        val issuedEmmaWinterCouponId = `쿠폰 발급 요청`(
+        `쿠폰 발급 요청`(
             clientId = clientId,
             clientSecret = clientSecret,
             userId = emmaUserId,
             couponTemplateId = winterCouponTemplateId
         ).apply { statusCode() shouldBe 200 }
-            .toApiResponse<IssueCouponResult>()
-            .apply { couponTemplateId shouldBe winterCouponTemplateId }
-            .userCouponId
+        val issuedEmmaWinterCouponId = testUserCouponAccessor.issueCouponAndRecord(
+            userId = emmaUserId,
+            couponTemplateId = winterCouponTemplateId,
+            merchantId = merchantId
+        ).id
 
         // Stella의 겨울 할인 쿠폰 템플릿 조회 (선착순 쿠폰 발급 페이지)
         `쿠폰 템플릿 상세 정보와 사용자에 따른 발급 가능 여부 조회 요청`(
@@ -169,15 +174,17 @@ class CouponE2eTest(
             }
 
         // Stella의 겨울 할인 쿠폰 발급 요청
-        val issuedStellaWinterCouponId = `쿠폰 발급 요청`(
+        `쿠폰 발급 요청`(
             clientId = clientId,
             clientSecret = clientSecret,
             userId = stellaUserId,
             couponTemplateId = winterCouponTemplateId
         ).apply { statusCode() shouldBe 200 }
-            .toApiResponse<IssueCouponResult>()
-            .apply { couponTemplateId shouldBe winterCouponTemplateId }
-            .userCouponId
+        val issuedStellaWinterCouponId = testUserCouponAccessor.issueCouponAndRecord(
+            userId = stellaUserId,
+            couponTemplateId = winterCouponTemplateId,
+            merchantId = merchantId
+        ).id
 
         // Emma의 보유한 쿠폰 목록 조회 (마이페이지)
         `사용자가 보유한 쿠폰 목록 조회 요청`(
@@ -189,9 +196,10 @@ class CouponE2eTest(
             .apply {
                 val coupons = this.coupons
                 coupons.size shouldBe 2
-                coupons[0].userCouponId shouldBe issuedEmmaSummerCouponId
+                // 나중에 발급 받은 쿠폰이 위쪽에 노출됨
+                coupons[0].userCouponId shouldBe issuedEmmaWinterCouponId
                 coupons[0].isRedeemable shouldBe true
-                coupons[1].userCouponId shouldBe issuedEmmaWinterCouponId
+                coupons[1].userCouponId shouldBe issuedEmmaSummerCouponId
                 coupons[1].isRedeemable shouldBe true
             }
 

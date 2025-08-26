@@ -4,6 +4,7 @@ import com.goodpon.application.dashboard.merchant.port.out.MerchantRepository
 import com.goodpon.application.dashboard.merchant.port.out.exception.MerchantNotFoundException
 import com.goodpon.domain.account.Account
 import com.goodpon.domain.merchant.Merchant
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,6 +14,7 @@ class MerchantAccessor(
 ) {
 
     @Transactional(readOnly = true)
+    @Cacheable(value = ["merchants:byId"], key = "#merchantId")
     fun readById(merchantId: Long): Merchant {
         return merchantRepository.findById(merchantId)
             ?: throw MerchantNotFoundException()

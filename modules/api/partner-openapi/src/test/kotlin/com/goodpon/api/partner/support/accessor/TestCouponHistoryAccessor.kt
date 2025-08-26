@@ -3,12 +3,14 @@ package com.goodpon.api.partner.support.accessor
 import com.goodpon.infra.db.jpa.entity.CouponHistoryEntity
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class TestCouponHistoryAccessor(
     private val entityManager: EntityManager,
 ) {
 
+    @Transactional(readOnly = true)
     fun findAll(): List<CouponHistoryEntity> {
         return entityManager.createQuery(
             "SELECT ch FROM CouponHistoryEntity ch",
@@ -16,6 +18,7 @@ class TestCouponHistoryAccessor(
         ).resultList
     }
 
+    @Transactional(readOnly = true)
     fun findByUserCouponId(userCouponId: String): List<CouponHistoryEntity> {
         return entityManager.createQuery(
             "SELECT ch FROM CouponHistoryEntity ch WHERE ch.userCouponId = :userCouponId",

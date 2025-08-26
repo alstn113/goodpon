@@ -7,6 +7,7 @@ import com.goodpon.application.dashboard.coupon.service.accessor.CouponTemplateA
 import com.goodpon.application.dashboard.coupon.service.exception.CouponTemplateNotOwnedByMerchantException
 import com.goodpon.application.dashboard.coupon.service.exception.NoMerchantAccessPermissionException
 import com.goodpon.application.dashboard.merchant.service.accessor.MerchantAccessor
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,6 +18,7 @@ class PublishCouponTemplateService(
 ) : PublishCouponTemplateUseCase {
 
     @Transactional
+    @CacheEvict(value = ["couponTemplates:byId"], key = "#command.couponTemplateId")
     override fun invoke(command: PublishCouponTemplateCommand): PublishCouponTemplateResult {
         val merchant = merchantAccessor.readById(command.merchantId)
         if (!merchant.isAccessibleBy(command.accountId)) {

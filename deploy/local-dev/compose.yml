@@ -25,7 +25,7 @@ services:
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
       OTEL_TRACES_SAMPLER_ARG: 0.1 # 10% 샘플링
       OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true # Micrometer 사용
-    restart: unless-stopped
+    restart: on-failure:3
     depends_on:
       mysql:
         condition: service_healthy
@@ -63,6 +63,8 @@ services:
       # Redis 설정
       REDIS_HOST: ${REDIS_HOST}
       REDIS_PORT: ${REDIS_PORT}
+      # Kafka 설정
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
       # OpenTelemetry 설정
       OTEL_SERVICE_NAME: partner-openapi
       OTEL_RESOURCE_ATTRIBUTES: service.instance.id=partner-openapi
@@ -72,11 +74,13 @@ services:
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
       OTEL_TRACES_SAMPLER_ARG: 0.1
       OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true
-    restart: unless-stopped
+    restart: on-failure:3
     depends_on:
       mysql:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
 
   partner-openapi-alloy:
@@ -86,6 +90,55 @@ services:
       - '12346:12345'
     volumes:
       - ./partner-openapi/alloy/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    command: >
+      run --server.http.listen-addr=0.0.0.0:12345
+          --storage.path=/var/lib/alloy/data
+          /etc/alloy/config.alloy
+
+  coupon-issuer-consumer:
+    build:
+      context: ../../modules/consumer/coupon-issuer-consumer
+      dockerfile: Dockerfile
+    container_name: coupon-issuer-consumer
+    environment:
+      SPRING_PROFILES_ACTIVE: local-dev
+      # DB 설정
+      DB_URL: ${DB_URL}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      # Redis 설정
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      # Kafka 설정
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
+      # OpenTelemetry 설정
+      OTEL_SERVICE_NAME: coupon-issuer-consumer
+      OTEL_RESOURCE_ATTRIBUTES: service.instance.id=coupon-issuer-consumer
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://coupon-issuer-consumer-alloy:4317"
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+      OTEL_METRIC_EXPORT_INTERVAL: 30000
+      OTEL_TRACES_SAMPLER: parentbased_traceidratio
+      OTEL_TRACES_SAMPLER_ARG: 0.1
+      OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true
+    restart: on-failure:3
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+
+  coupon-issuer-consumer-alloy:
+    image: grafana/alloy
+    container_name: coupon-issuer-consumer-alloy
+    ports:
+      - '12347:12345'
+    volumes:
+      - ./coupon-issuer-consumer/alloy/config.alloy:/etc/alloy/config.alloy
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     command: >
@@ -157,6 +210,51 @@ services:
       redis:
         condition: service_healthy
     restart: unless-stopped
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.3
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      # KRaft 모드 필수 설정
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+
+      # 리스너 및 광고 주소
+      KAFKA_LISTENERS: INTERNAL://:29092,CONTROLLER://:29093,EXTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      # 클러스터 ID (고정값 또는 랜덤 생성해서 사용)
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+
+      # 단일 브로커용 기본값
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    restart:
+      unless-stopped
+    healthcheck:
+      test: [ "CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8083:8080"
+    restart: always
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafka
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      - kafka
 
   loki:
     image: grafana/loki

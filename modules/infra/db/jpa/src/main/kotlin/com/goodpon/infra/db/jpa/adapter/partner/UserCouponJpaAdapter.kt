@@ -16,10 +16,6 @@ class UserCouponJpaAdapter(
         return userCouponCoreRepository.save(userCoupon)
     }
 
-    override fun saveAndFlush(userCoupon: UserCoupon): UserCoupon {
-        return userCouponCoreRepository.saveAndFlush(userCoupon)
-    }
-
     override fun findByIdForUpdate(id: String): UserCoupon? {
         return userCouponCoreRepository.findByIdForUpdate(id)
     }
