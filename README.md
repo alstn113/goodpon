@@ -6,8 +6,8 @@
 - [기술 스택](#기술-스택)
 - [프로젝트 아키텍처](#프로젝트-아키텍처)
 - [프로젝트 API 명세서](#프로젝트-api-명세서)
-    - [Dashboard API 명세서](#dashboard-api-명세서)
-    - [Partner OpenAPI 명세서](#partner-openapi-명세서)
+  - [Dashboard API 명세서](#dashboard-api-명세서)
+  - [Partner OpenAPI 명세서](#partner-openapi-명세서)
 - [모니터링 시스템 구조](#모니터링-시스템-구조)
 - [서비스 핵심 흐름도](#서비스-핵심-흐름도)
 
@@ -47,6 +47,14 @@ Goodpon은 `Dashboard API`와 `Partner OpenAPI`로 서버가 분리되어 있습
 현재 다이어그램에는 `infra-db-jpa` 모듈만 표시되어 있으며, **지면의 제한**으로 인해 다른 인프라 모듈은 생략되었습니다.
 
 <img width="1656" height="1378" alt="프로젝트 아키텍처" src="https://github.com/user-attachments/assets/fd3fd55d-2958-4ddd-9487-8bdb7bb8afff" />
+
+---
+
+선착순 쿠폰 발급 기능은 **검증 로직과 발급 로직을 분리하여 Kafka로 비동기 처리**함으로써 처리량과 응답 속도를 개선했습니다.
+- **검증 로직**: Redis 집합(Set) 자료구조와 Lua Script를 활용하여 메모리/CPU 중심으로 고속 처리
+- **발급 로직**: Kafka 메시지를 컨슘하여 I/O 중심으로 처리, 발급 서버 수평 확장 가능
+
+<img width="1690" height="673" alt="image" src="https://github.com/user-attachments/assets/293fa73a-4b3e-444e-a417-2b954ac1bc32" />
 
 ## 프로젝트 API 명세서
 
@@ -97,8 +105,8 @@ Goodpon은 `Dashboard API`와 `Partner OpenAPI`로 서버가 분리되어 있습
 
 * **멱등키 규칙**:
 
-    * 300자 이하의 문자열로 구성하며 **UUID** 형식을 권장합니다.
-    * **24시간** 동안 유효하며, 이후에는 새로운 키를 사용해야 합니다.
+  * 300자 이하의 문자열로 구성하며 **UUID** 형식을 권장합니다.
+  * **24시간** 동안 유효하며, 이후에는 새로운 키를 사용해야 합니다.
 
 * **멱등성 관련 예외 처리**:
 
