@@ -11,7 +11,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.Ordered
 import org.springframework.data.redis.cache.RedisCacheConfiguration
 import org.springframework.data.redis.cache.RedisCacheManager
 import org.springframework.data.redis.connection.RedisConnectionFactory
@@ -26,7 +25,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 import java.time.Duration
 
 @Configuration
-@EnableCaching(order = Ordered.LOWEST_PRECEDENCE - 1) // 트랜잭션보다 먼저 캐시 적용
+@EnableCaching
 @EnableConfigurationProperties(RedisProperties::class)
 class RedisConfig(
     private val properties: RedisProperties,
