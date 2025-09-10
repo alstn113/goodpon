@@ -3,6 +3,7 @@ package com.goodpon.infra.db.jpa.core
 import com.goodpon.domain.account.Account
 import com.goodpon.infra.db.jpa.entity.AccountEntity
 import com.goodpon.infra.db.jpa.repository.AccountJpaRepository
+import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -11,21 +12,21 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 class AccountCoreRepository(
     private val accountJpaRepository: AccountJpaRepository,
+    private val em: EntityManager
 ) {
 
     @Transactional
     fun save(account: Account): Account {
         if (account.id == 0L) {
             val entity = AccountEntity.fromDomain(account)
-            val savedEntity = accountJpaRepository.save(entity)
-            return savedEntity.toDomain()
+            em.persist(entity)
+            return entity.toDomain()
         }
 
         val entity = accountJpaRepository.findByIdOrNull(account.id)
             ?: throw EntityNotFoundException()
         entity.update(account)
-        val savedEntity = accountJpaRepository.save(entity)
-        return savedEntity.toDomain()
+        return entity.toDomain()
     }
 
     @Transactional(readOnly = true)

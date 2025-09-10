@@ -10,6 +10,7 @@ import com.goodpon.infra.db.jpa.repository.MerchantClientSecretJpaRepository
 import com.goodpon.infra.db.jpa.repository.MerchantJpaRepository
 import com.goodpon.infra.db.jpa.repository.dto.MyMerchantDetailDto
 import com.goodpon.infra.db.jpa.repository.dto.MyMerchantSummaryDto
+import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -20,6 +21,7 @@ class MerchantCoreRepository(
     private val merchantJpaRepository: MerchantJpaRepository,
     private val merchantAccountJpaRepository: MerchantAccountJpaRepository,
     private val merchantClientSecretJpaRepository: MerchantClientSecretJpaRepository,
+    private val em: EntityManager
 ) {
 
     @Transactional
@@ -28,12 +30,13 @@ class MerchantCoreRepository(
 
         val savedMerchantEntity = if (isNew) {
             val entity = MerchantEntity.fromDomain(merchant)
-            merchantJpaRepository.save(entity)
+            em.persist(entity)
+            entity
         } else {
             val foundEntity = merchantJpaRepository.findByIdOrNull(merchant.id)
                 ?: throw EntityNotFoundException()
             foundEntity.update(merchant)
-            merchantJpaRepository.save(foundEntity)
+            foundEntity
         }
 
         val savedAccountEntities = synchronizeEntityList(

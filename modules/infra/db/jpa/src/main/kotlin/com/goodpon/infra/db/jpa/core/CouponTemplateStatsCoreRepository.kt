@@ -3,6 +3,7 @@ package com.goodpon.infra.db.jpa.core
 import com.goodpon.domain.coupon.stats.CouponTemplateStats
 import com.goodpon.infra.db.jpa.entity.CouponTemplateStatsEntity
 import com.goodpon.infra.db.jpa.repository.CouponTemplateStatsJpaRepository
+import jakarta.persistence.EntityManager
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.JdbcTemplate
@@ -14,6 +15,7 @@ import java.sql.PreparedStatement
 class CouponTemplateStatsCoreRepository(
     private val couponTemplateStatsJpaRepository: CouponTemplateStatsJpaRepository,
     private val jdbcTemplate: JdbcTemplate,
+    private val em: EntityManager
 ) {
 
     @Transactional
@@ -21,13 +23,12 @@ class CouponTemplateStatsCoreRepository(
         val entity = couponTemplateStatsJpaRepository.findByIdOrNull(couponTemplateStats.couponTemplateId)
         if (entity == null) {
             val newEntity = CouponTemplateStatsEntity.fromDomain(couponTemplateStats)
-            val savedEntity = couponTemplateStatsJpaRepository.save(newEntity)
-            return savedEntity.toDomain()
+            em.persist(newEntity)
+            return newEntity.toDomain()
         }
 
         entity.update(couponTemplateStats)
-        val savedEntity = couponTemplateStatsJpaRepository.save(entity)
-        return savedEntity.toDomain()
+        return entity.toDomain()
     }
 
     @Transactional

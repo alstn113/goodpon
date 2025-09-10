@@ -11,6 +11,7 @@ import com.goodpon.infra.db.jpa.repository.dto.CouponHistorySummaryDto
 import com.goodpon.infra.db.jpa.repository.dto.QCouponHistorySummaryDto
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
+import jakarta.persistence.EntityManager
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -20,6 +21,7 @@ import java.time.LocalDate
 class CouponHistoryCoreRepository(
     private val couponHistoryJpaRepository: CouponHistoryJpaRepository,
     private val queryFactory: JPAQueryFactory,
+    private val em: EntityManager
 ) {
 
     @Transactional
@@ -27,13 +29,12 @@ class CouponHistoryCoreRepository(
         val entity = couponHistoryJpaRepository.findByIdOrNull(couponHistory.id)
         if (entity == null) {
             val newEntity = CouponHistoryEntity.fromDomain(couponHistory)
-            val savedEntity = couponHistoryJpaRepository.save(newEntity)
-            return savedEntity.toDomain()
+            em.persist(newEntity)
+            return newEntity.toDomain()
         }
 
         entity.update(couponHistory)
-        val savedEntity = couponHistoryJpaRepository.save(entity)
-        return savedEntity.toDomain()
+        return entity.toDomain()
     }
 
     @Transactional(readOnly = true)

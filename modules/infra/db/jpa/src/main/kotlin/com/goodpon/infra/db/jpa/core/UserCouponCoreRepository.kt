@@ -6,6 +6,7 @@ import com.goodpon.infra.db.jpa.entity.UserCouponEntity
 import com.goodpon.infra.db.jpa.repository.UserCouponJpaRepository
 import com.goodpon.infra.db.jpa.repository.dto.AvailableUserCouponViewDto
 import com.goodpon.infra.db.jpa.repository.dto.UserCouponSummaryDto
+import jakarta.persistence.EntityManager
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -14,6 +15,7 @@ import java.time.LocalDateTime
 @Component
 class UserCouponCoreRepository(
     private val userCouponJpaRepository: UserCouponJpaRepository,
+    private val em: EntityManager
 ) {
 
     @Transactional
@@ -21,13 +23,12 @@ class UserCouponCoreRepository(
         val entity = userCouponJpaRepository.findByIdOrNull(userCoupon.id)
         if (entity == null) {
             val newEntity = UserCouponEntity.fromDomain(userCoupon)
-            val savedEntity = userCouponJpaRepository.save(newEntity)
-            return savedEntity.toDomain()
+            em.persist(newEntity)
+            return newEntity.toDomain()
         }
 
         entity.update(userCoupon)
-        val savedEntity = userCouponJpaRepository.save(entity)
-        return savedEntity.toDomain()
+        return entity.toDomain()
     }
 
     @Transactional
