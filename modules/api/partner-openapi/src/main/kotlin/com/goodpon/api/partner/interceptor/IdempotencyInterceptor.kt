@@ -35,10 +35,9 @@ class IdempotencyInterceptor(
         if (!isIdempotentHandler(handler)) return true
 
         val req = request as CachedBodyHttpServletRequest
-        val res = response as ContentCachingResponseWrapper
 
         val idempotencyKey = req.getHeader(IDEMPOTENCY_KEY_HEADER) ?: return true
-        res.setHeader(IDEMPOTENCY_KEY_HEADER, idempotencyKey)
+        response.setHeader(IDEMPOTENCY_KEY_HEADER, idempotencyKey)
 
         validateKeyLength(idempotencyKey)
 
@@ -55,7 +54,7 @@ class IdempotencyInterceptor(
             is IdempotencyCheckResult.Processing -> throw IdempotencyRequestProcessingException()
 
             is IdempotencyCheckResult.Completed -> {
-                writeStoredResponseToClient(res, result.response)
+                writeStoredResponseToClient(response, result.response)
                 false
             }
         }
@@ -121,7 +120,7 @@ class IdempotencyInterceptor(
     }
 
     private fun writeStoredResponseToClient(
-        response: ContentCachingResponseWrapper,
+        response: HttpServletResponse,
         stored: IdempotencyResponse,
     ) {
         response.status = stored.status
@@ -133,7 +132,6 @@ class IdempotencyInterceptor(
         }
 
         response.writer.write(objectMapper.writeValueAsString(stored.body))
-        response.copyBodyToResponse()
     }
 
     private fun isExcludedIdempotencyResponse(body: JsonNode, status: Int): Boolean {
