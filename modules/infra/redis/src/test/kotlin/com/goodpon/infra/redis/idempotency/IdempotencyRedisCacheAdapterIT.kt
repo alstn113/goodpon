@@ -16,30 +16,30 @@ class IdempotencyRedisCacheAdapterIT(
     private val objectMapper = ObjectMapper()
 
     @Test
-    fun `멱등성 키가 없으면 NotFound`() {
+    fun `멱등성 키가 없으면 FirstRequestProcessing`() {
         // when
-        val result = idempotencyRedisCacheAdapter.validateKey(key, requestHash);
+        val result = idempotencyRedisCacheAdapter.checkOrMarkAsProcessing(key, requestHash)
 
         // then
-        result shouldBe IdempotencyCheckResult.NotFound
+        result shouldBe IdempotencyCheckResult.FirstRequestProcessing
     }
 
     @Test
-    fun `markAsProcessing 이후 validateKey 결과는 Processing`() {
+    fun `checkOrMarkAsProcessing 이후 checkOrMarkAsProcessing 결과는 FirstRequestProcessing`() {
         // given
-        idempotencyRedisCacheAdapter.markAsProcessing(key, requestHash)
+        idempotencyRedisCacheAdapter.checkOrMarkAsProcessing(key, requestHash)
 
         // when
-        val result = idempotencyRedisCacheAdapter.validateKey(key, requestHash)
+        val result = idempotencyRedisCacheAdapter.checkOrMarkAsProcessing(key, requestHash)
 
         // then
-        result shouldBe IdempotencyCheckResult.Processing
+        result shouldBe IdempotencyCheckResult.CurrentlyProcessing
     }
 
     @Test
-    fun `markAsProcessing 이후 다른 hash로 validateKey 하면 Conflict`() {
+    fun `checkOrMarkAsProcessing 이후 다른 hash로 checkOrMarkAsProcessing 하면 RequestBodyMismatch`() {
         // given
-        idempotencyRedisCacheAdapter.markAsProcessing(key, requestHash)
+        idempotencyRedisCacheAdapter.checkOrMarkAsProcessing(key, requestHash)
         idempotencyRedisCacheAdapter.markAsCompleted(
             key, IdempotencyResponse(
                 status = 200,
@@ -50,16 +50,16 @@ class IdempotencyRedisCacheAdapterIT(
 
         // when
         val differentHash = "different-hash"
-        val result = idempotencyRedisCacheAdapter.validateKey(key, differentHash)
+        val result = idempotencyRedisCacheAdapter.checkOrMarkAsProcessing(key, differentHash)
 
         // then
-        result shouldBe IdempotencyCheckResult.Conflict
+        result shouldBe IdempotencyCheckResult.RequestBodyMismatch
     }
 
     @Test
-    fun `markAsCompleted 이후 validateKey 결과는 Completed`() {
+    fun `markAsCompleted 이후 checkOrMarkAsProcessing 결과는 AlreadyCompleted`() {
         // given
-        idempotencyRedisCacheAdapter.markAsProcessing(key, requestHash)
+        idempotencyRedisCacheAdapter.checkOrMarkAsProcessing(key, requestHash)
 
         // when
         val jsonNode = objectMapper.readTree("""{"message": "success"}""")
@@ -71,7 +71,7 @@ class IdempotencyRedisCacheAdapterIT(
         idempotencyRedisCacheAdapter.markAsCompleted(key, response)
 
         // then
-        val result = idempotencyRedisCacheAdapter.validateKey(key, requestHash)
-        result shouldBe IdempotencyCheckResult.Completed(response)
+        val result = idempotencyRedisCacheAdapter.checkOrMarkAsProcessing(key, requestHash)
+        result shouldBe IdempotencyCheckResult.AlreadyCompleted(response)
     }
 }

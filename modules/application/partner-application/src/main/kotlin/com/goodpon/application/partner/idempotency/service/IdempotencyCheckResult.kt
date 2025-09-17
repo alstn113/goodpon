@@ -2,8 +2,8 @@ package com.goodpon.application.partner.idempotency.service
 
 sealed class IdempotencyCheckResult {
 
-    data object NotFound : IdempotencyCheckResult()
-    data object Processing : IdempotencyCheckResult()
-    data object Conflict : IdempotencyCheckResult()
-    data class Completed(val response: IdempotencyResponse) : IdempotencyCheckResult()
+    data object FirstRequestProcessing : IdempotencyCheckResult()
+    data object CurrentlyProcessing : IdempotencyCheckResult()
+    data object RequestBodyMismatch : IdempotencyCheckResult()
+    data class AlreadyCompleted(val response: IdempotencyResponse) : IdempotencyCheckResult()
 }

@@ -18,23 +18,25 @@ class IdempotencyRedisCacheAdapter(
 
     private val objectMapper = redisConfig.redisObjectMapper()
 
-    override fun validateKey(key: String, requestHash: String): IdempotencyCheckResult {
+    override fun checkOrMarkAsProcessing(key: String, hashedRequestBody: String): IdempotencyCheckResult {
+        val entry = IdempotencyEntry(hashedRequestBody, IdempotencyStatus.PROCESSING, null)
+        val success = redisTemplate.opsForValue().setIfAbsent(
+            key,
+            objectMapper.writeValueAsString(entry),
+            TTL_PROCESSING,
+        )
+        if (success == true) return IdempotencyCheckResult.FirstRequestProcessing
+
         val raw = redisTemplate.opsForValue().get(key)
-            ?: return IdempotencyCheckResult.NotFound
         val stored = objectMapper.readValue(raw, IdempotencyEntry::class.java)
 
         return when (stored.status) {
-            IdempotencyStatus.PROCESSING -> IdempotencyCheckResult.Processing
+            IdempotencyStatus.PROCESSING -> IdempotencyCheckResult.CurrentlyProcessing
             IdempotencyStatus.COMPLETED -> {
-                if (stored.requestHash != requestHash) IdempotencyCheckResult.Conflict
-                else IdempotencyCheckResult.Completed(stored.response!!)
+                if (stored.requestHash != hashedRequestBody) IdempotencyCheckResult.RequestBodyMismatch
+                else IdempotencyCheckResult.AlreadyCompleted(stored.response!!)
             }
         }
-    }
-
-    override fun markAsProcessing(key: String, requestHash: String) {
-        val entry = IdempotencyEntry(requestHash, IdempotencyStatus.PROCESSING, null)
-        redisTemplate.opsForValue().set(key, objectMapper.writeValueAsString(entry), TTL_PROCESSING)
     }
 
     override fun markAsCompleted(key: String, response: IdempotencyResponse) {

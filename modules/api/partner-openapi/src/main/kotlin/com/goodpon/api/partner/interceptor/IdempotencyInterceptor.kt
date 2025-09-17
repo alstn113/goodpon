@@ -42,18 +42,13 @@ class IdempotencyInterceptor(
         validateKeyLength(idempotencyKey)
 
         val key = generateKey(req, idempotencyKey)
-        val hashedRequest = hash(getRequestBody(req))
+        val hashedRequestBody = hash(getRequestBody(req))
 
-        return when (val result = idempotencyUseCase.validateKey(key, hashedRequest)) {
-            is IdempotencyCheckResult.NotFound -> {
-                idempotencyUseCase.markAsProcessing(key, hashedRequest)
-                true
-            }
-
-            is IdempotencyCheckResult.Conflict -> throw IdempotencyRequestPayloadMismatchException()
-            is IdempotencyCheckResult.Processing -> throw IdempotencyRequestProcessingException()
-
-            is IdempotencyCheckResult.Completed -> {
+        return when (val result = idempotencyUseCase.checkOrMarkAsProcessing(key, hashedRequestBody)) {
+            is IdempotencyCheckResult.FirstRequestProcessing -> true
+            is IdempotencyCheckResult.CurrentlyProcessing -> throw IdempotencyRequestProcessingException() // 처리 중: 409
+            is IdempotencyCheckResult.RequestBodyMismatch -> throw IdempotencyRequestPayloadMismatchException() // 요청 본문 다름: 422
+            is IdempotencyCheckResult.AlreadyCompleted -> {
                 writeStoredResponseToClient(response, result.response)
                 false
             }

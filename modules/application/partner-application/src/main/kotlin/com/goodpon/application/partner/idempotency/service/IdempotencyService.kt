@@ -9,12 +9,8 @@ class IdempotencyService(
     private val idempotencyCachePort: IdempotencyCachePort,
 ) : IdempotencyUseCase {
 
-    override fun validateKey(key: String, requestHash: String): IdempotencyCheckResult {
-        return idempotencyCachePort.validateKey(key = key, requestHash = requestHash)
-    }
-
-    override fun markAsProcessing(key: String, requestHash: String) {
-        idempotencyCachePort.markAsProcessing(key = key, requestHash = requestHash)
+    override fun checkOrMarkAsProcessing(key: String, hashedRequestBody: String): IdempotencyCheckResult {
+        return idempotencyCachePort.checkOrMarkAsProcessing(key = key, hashedRequestBody = hashedRequestBody)
     }
 
     override fun markAsCompleted(key: String, response: IdempotencyResponse) {
