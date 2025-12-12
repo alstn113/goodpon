@@ -1,7 +1,6 @@
 package com.goodpon.consumer.couponissuer.e2e
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.goodpon.application.couponissuer.service.IssueCouponService
 import com.goodpon.consumer.couponissuer.support.AbstractE2eTest
 import com.goodpon.consumer.couponissuer.support.accessor.TestCouponTemplateAccessor
 import com.goodpon.consumer.couponissuer.support.accessor.TestMerchantAccessor
@@ -20,7 +19,6 @@ import java.util.concurrent.TimeUnit
 
 class IssueCouponRequestedEventE2eTest(
     private val kafkaTemplate: KafkaTemplate<String, String>,
-    private val issueCouponService: IssueCouponService,
     private val testMerchantAccessor: TestMerchantAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,

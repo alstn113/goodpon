@@ -4,21 +4,6 @@ spring.profiles.active: local
 spring.config.import:
   - classpath:app-config/infra-db.yml
   - classpath:app-config/infra-redis.yml
+  - classpath:app-config/infra-kafka.yml
 
 server.port: 8082
-
-spring:
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      group-id: coupon-consumer-group
-      auto-offset-reset: latest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
----
-spring.config.activate.on-profile: local-dev, prod
-
-spring:
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}

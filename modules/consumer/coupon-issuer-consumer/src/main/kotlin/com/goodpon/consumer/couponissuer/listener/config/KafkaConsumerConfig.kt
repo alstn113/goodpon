@@ -1,0 +1,58 @@
+package com.goodpon.consumer.couponissuer.listener.config
+
+import org.apache.kafka.common.TopicPartition
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
+import org.springframework.kafka.core.ConsumerFactory
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory
+import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.kafka.listener.ContainerProperties
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer
+import org.springframework.kafka.listener.DefaultErrorHandler
+import java.time.Duration
+
+@Configuration
+class KafkaConsumerConfig {
+
+    @Bean(name = [COUPON_ISSUER_LISTENER_CONTAINER_FACTORY])
+    fun couponIssuerKafkaListenerContainerFactory(
+        consumerFactory: ConsumerFactory<String, String>,
+        kafkaTemplate: KafkaTemplate<String, String>
+    ): ConcurrentKafkaListenerContainerFactory<String, String> {
+        return ConcurrentKafkaListenerContainerFactory<String, String>().apply {
+            this.consumerFactory = consumerFactory
+            this.setCommonErrorHandler(defaultErrorHandler(kafkaTemplate))
+            isBatchListener = false
+            containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
+        }
+    }
+
+    @Bean
+    fun consumerFactory(kafkaProperties: KafkaProperties): ConsumerFactory<String, String> {
+        return DefaultKafkaConsumerFactory(kafkaProperties.buildConsumerProperties())
+    }
+
+    @Bean
+    fun defaultErrorHandler(
+        kafkaTemplate: KafkaTemplate<String, String>,
+    ): DefaultErrorHandler {
+        val recoverer = DeadLetterPublishingRecoverer(kafkaTemplate) { record, _ ->
+            TopicPartition(record.topic() + DLT_SUFFIX, record.partition())
+        }
+        val backOff = ExponentialBackOffWithJitter(
+            initialInterval = Duration.ofSeconds(1),
+            multiplier = 2.0,
+            maxInterval = Duration.ofSeconds(10),
+            maxAttempts = 5,
+        )
+
+        return DefaultErrorHandler(recoverer, backOff)
+    }
+
+    companion object {
+        const val DLT_SUFFIX = ".DLT"
+        const val COUPON_ISSUER_LISTENER_CONTAINER_FACTORY = "couponIssuerKafkaListenerContainerFactory"
+    }
+}

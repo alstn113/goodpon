@@ -1,9 +1,9 @@
-package com.goodpon.infra.kafka.config
+package com.goodpon.consumer.couponissuer.listener.config
 
 import org.springframework.util.backoff.BackOff
 import org.springframework.util.backoff.BackOffExecution
 import java.time.Duration
-import java.util.*
+import java.util.Random
 
 class ExponentialBackOffWithJitter(
     private val initialInterval: Duration,

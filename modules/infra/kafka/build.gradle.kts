@@ -1,5 +1,3 @@
-import org.apache.tools.ant.util.ScriptManager.auto
-
 plugins {
     id("java-test-fixtures")
 }

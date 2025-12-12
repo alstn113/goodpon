@@ -3,7 +3,11 @@ package com.goodpon.consumer.couponissuer.listener
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.goodpon.application.couponissuer.port.`in`.IssueCouponUseCase
 import com.goodpon.application.couponissuer.port.`in`.dto.IssueCouponCommand
+import com.goodpon.consumer.couponissuer.listener.config.KafkaConsumerConfig
+import com.goodpon.consumer.couponissuer.listener.dto.IssueCouponRequestedEvent
 import org.springframework.kafka.annotation.KafkaListener
+import org.springframework.kafka.support.Acknowledgment
+import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 
 @Component
@@ -14,10 +18,12 @@ class CouponKafkaEventListener(
 
     @KafkaListener(
         topics = ["issue-coupon-requested"],
-        groupId = "\${spring.kafka.consumer.group-id}",
-        concurrency = "5",
+        containerFactory = KafkaConsumerConfig.COUPON_ISSUER_LISTENER_CONTAINER_FACTORY
     )
-    fun handleIssueCouponRequestedEvent(eventJsonString: String) {
+    fun handleIssueCouponRequestedEvent(
+        @Payload eventJsonString: String,
+        acknowledgment: Acknowledgment,
+    ) {
         val event = objectMapper.readValue(eventJsonString, IssueCouponRequestedEvent::class.java)
         val command = IssueCouponCommand(
             couponTemplateId = event.couponTemplateId,
@@ -25,5 +31,7 @@ class CouponKafkaEventListener(
             requestedAt = event.requestedAt
         )
         issueCouponUseCase(command)
+
+        acknowledgment.acknowledge()
     }
 }

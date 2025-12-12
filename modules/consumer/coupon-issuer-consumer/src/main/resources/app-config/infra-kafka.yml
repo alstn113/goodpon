@@ -1,0 +1,29 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: coupon-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: latest
+      properties:
+        enable-auto-commit: false
+    listener:
+      ack-mode: manual
+      concurrency: 3
+      batch-listener: false
+
+---
+spring.config.activate.on-profile: local-dev, prod
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+
+---
+spring.config.activate.on-profile: test
+
+spring:
+  kafka:
+    consumer:
+      auto-offset-reset: earliest

@@ -4,6 +4,7 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 3
 
 ---
 spring.config.activate.on-profile: local-dev, prod
