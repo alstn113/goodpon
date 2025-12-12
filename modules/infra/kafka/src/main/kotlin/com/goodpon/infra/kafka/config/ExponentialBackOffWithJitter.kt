@@ -3,48 +3,36 @@ package com.goodpon.infra.kafka.config
 import org.springframework.util.backoff.BackOff
 import org.springframework.util.backoff.BackOffExecution
 import java.time.Duration
-import kotlin.random.Random
+import java.util.*
 
 class ExponentialBackOffWithJitter(
     private val initialInterval: Duration,
     private val multiplier: Double,
-    private val maxElapsedTime: Duration,
+    private val maxInterval: Duration,
     private val maxAttempts: Int,
-): BackOff {
+) : BackOff {
 
-    override fun start(): BackOffExecution = Execution()
+    override fun start(): BackOffExecution {
+        return object : BackOffExecution {
+            private var currentInterval = initialInterval.toMillis()
+            private var attempt = 0
+            private val random = Random()
 
-    private inner class Execution : BackOffExecution {
-        private var currentInterval: Duration = initialInterval
-        private var attemptCount: Int = 0
-        private var elapsedTime: Duration = Duration.ZERO
+            override fun nextBackOff(): Long {
+                if (attempt >= maxAttempts) {
+                    return BackOffExecution.STOP
+                }
 
-        override fun nextBackOff(): Long {
-            if (attemptCount >= maxAttempts || elapsedTime >= maxElapsedTime) {
-                return BackOffExecution.STOP
+                // 0.5 * base ~ 1.0 * base
+                val jittered = currentInterval / 2 + random.nextLong(currentInterval / 2)
+                currentInterval = (currentInterval * multiplier).toLong()
+                if (currentInterval > maxInterval.toMillis()) {
+                    currentInterval = maxInterval.toMillis()
+                }
+                attempt++
+
+                return jittered
             }
-
-            val baseMillis = currentInterval.toMillis()
-
-            // 0 ~ baseMillis
-            val jitterMillis = if (baseMillis > 0) {
-                Random.nextLong(0, baseMillis)
-            } else {
-                0L
-            }
-
-            val jitterDuration = Duration.ofMillis(jitterMillis)
-
-            attemptCount++
-            elapsedTime = elapsedTime.plus(jitterDuration)
-
-            // 지수적 증가
-            val nextIntervalMillis = (currentInterval.toMillis() * multiplier).toLong()
-            currentInterval = Duration.ofMillis(
-                nextIntervalMillis.coerceAtMost(Long.MAX_VALUE / 2)
-            )
-
-            return jitterDuration.toMillis()
         }
     }
 }

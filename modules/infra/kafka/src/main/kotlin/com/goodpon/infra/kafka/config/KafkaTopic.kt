@@ -1,4 +1,4 @@
-package com.goodpon.infra.kafka
+package com.goodpon.infra.kafka.config
 
 enum class KafkaTopic(
     val topicName: String,
