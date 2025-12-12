@@ -41,7 +41,8 @@ class KafkaConsumerConfig {
     fun defaultErrorHandler(
         kafkaTemplate: KafkaTemplate<String, String>,
     ): DefaultErrorHandler {
-        val recoverer = DeadLetterPublishingRecoverer(kafkaTemplate) { record, _ ->
+        val recoverer = DeadLetterPublishingRecoverer(kafkaTemplate) { record, ex ->
+            log.error("[DeadLetter] record=$record, exception=${ex.message}")
             TopicPartition(record.topic() + DLT_SUFFIX, record.partition())
         }
 
@@ -52,12 +53,12 @@ class KafkaConsumerConfig {
             maxAttempts = 5,
         )
 
-        val defaultErrorHandler = DefaultErrorHandler(recoverer, backOff)
-        defaultErrorHandler.setRetryListeners({ record, ex, deliveryAttempt ->
-            log.warn("[RetryListener] deliveryAttempt=$deliveryAttempt, record=$record, exception=${ex.message}")
+        val errorHandler = DefaultErrorHandler(recoverer, backOff)
+        errorHandler.setRetryListeners({ record, ex, attempt ->
+            log.warn("[RetryListener] attempt=$attempt, record=$record, exception=${ex.message}")
         })
 
-        return defaultErrorHandler
+        return errorHandler
     }
 
     companion object {

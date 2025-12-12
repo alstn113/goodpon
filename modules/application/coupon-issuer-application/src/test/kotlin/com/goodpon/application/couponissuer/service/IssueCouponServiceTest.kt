@@ -5,7 +5,6 @@ import com.goodpon.application.couponissuer.service.accessor.CouponHistoryAccess
 import com.goodpon.application.couponissuer.service.accessor.CouponTemplateAccessor
 import com.goodpon.application.couponissuer.service.accessor.UserCouponAccessor
 import com.goodpon.application.couponissuer.service.exception.CouponTemplateNotFoundException
-import com.goodpon.application.couponissuer.service.exception.UserCouponAlreadyIssuedException
 import com.goodpon.domain.coupon.template.CouponTemplateFactory
 import com.goodpon.domain.coupon.template.vo.CouponDiscountType
 import com.goodpon.domain.coupon.template.vo.CouponLimitPolicyType
@@ -13,6 +12,7 @@ import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.domain.coupon.user.UserCoupon
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
+import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -82,7 +82,7 @@ class IssueCouponServiceTest : DescribeSpec({
             }
         }
 
-        it("사용자가 이미 쿠폰을 발급한 경우 예외를 던진다.") {
+        it("사용자가 이미 쿠폰을 발급한 경우 다음 로직을 실행하지 않는다.") {
             every {
                 userCouponAccessor.existsByUserIdAndCouponTemplateId(
                     command.userId,
@@ -90,9 +90,8 @@ class IssueCouponServiceTest : DescribeSpec({
                 )
             } returns true
 
-            shouldThrow<UserCouponAlreadyIssuedException> {
-                issueCouponService(command)
-            }
+
+            verify(exactly = 0) { userCouponAccessor.save(any()) }
         }
 
         it("쿠폰을 발급하고 쿠폰 내역을 기록한다.") {

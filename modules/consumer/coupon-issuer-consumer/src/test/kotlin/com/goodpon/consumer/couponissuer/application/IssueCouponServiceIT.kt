@@ -2,7 +2,6 @@ package com.goodpon.consumer.couponissuer.application
 
 import com.goodpon.application.couponissuer.port.`in`.dto.IssueCouponCommand
 import com.goodpon.application.couponissuer.service.IssueCouponService
-import com.goodpon.application.couponissuer.service.exception.UserCouponAlreadyIssuedException
 import com.goodpon.consumer.couponissuer.support.AbstractIntegrationTest
 import com.goodpon.consumer.couponissuer.support.accessor.TestCouponTemplateAccessor
 import com.goodpon.consumer.couponissuer.support.accessor.TestMerchantAccessor
@@ -11,6 +10,7 @@ import com.goodpon.domain.coupon.template.exception.CouponTemplateIssuancePeriod
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.infra.redis.coupon.core.CouponTemplateStatsRedisCommandCache
 import com.goodpon.infra.redis.coupon.core.CouponTemplateStatsRedisQueryCache
+import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -49,7 +49,7 @@ class IssueCouponServiceIT(
     }
 
     @Test
-    fun `이미 쿠폰을 발급한 사용자에게는 쿠폰을 발급할 수 없다`() {
+    fun `이미 쿠폰을 발급한 사용자에게는 중복 발급하지 않고, 무시한다`() {
         // given
         val (merchantId) = testMerchantAccessor.createMerchant()
         val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(merchantId = merchantId)
@@ -60,10 +60,8 @@ class IssueCouponServiceIT(
             userId = userId,
             requestedAt = LocalDateTime.now()
         )
-        issueCouponService(command)
 
-        // when & then
-        shouldThrow<UserCouponAlreadyIssuedException> {
+        shouldNotThrow<Exception> {
             issueCouponService(command)
         }
     }
