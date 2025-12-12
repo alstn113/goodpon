@@ -1,6 +1,7 @@
 package com.goodpon.consumer.couponissuer.listener.config
 
 import org.apache.kafka.common.TopicPartition
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,10 +17,12 @@ import java.time.Duration
 @Configuration
 class KafkaConsumerConfig {
 
+    private val log = LoggerFactory.getLogger(javaClass)
+
     @Bean(name = [COUPON_ISSUER_LISTENER_CONTAINER_FACTORY])
     fun couponIssuerKafkaListenerContainerFactory(
         consumerFactory: ConsumerFactory<String, String>,
-        kafkaTemplate: KafkaTemplate<String, String>
+        kafkaTemplate: KafkaTemplate<String, String>,
     ): ConcurrentKafkaListenerContainerFactory<String, String> {
         return ConcurrentKafkaListenerContainerFactory<String, String>().apply {
             this.consumerFactory = consumerFactory
@@ -41,6 +44,7 @@ class KafkaConsumerConfig {
         val recoverer = DeadLetterPublishingRecoverer(kafkaTemplate) { record, _ ->
             TopicPartition(record.topic() + DLT_SUFFIX, record.partition())
         }
+
         val backOff = ExponentialBackOffWithJitter(
             initialInterval = Duration.ofSeconds(1),
             multiplier = 2.0,
@@ -48,7 +52,12 @@ class KafkaConsumerConfig {
             maxAttempts = 5,
         )
 
-        return DefaultErrorHandler(recoverer, backOff)
+        val defaultErrorHandler = DefaultErrorHandler(recoverer, backOff)
+        defaultErrorHandler.setRetryListeners({ record, ex, deliveryAttempt ->
+            log.warn("[RetryListener] deliveryAttempt=$deliveryAttempt, record=$record, exception=${ex.message}")
+        })
+
+        return defaultErrorHandler
     }
 
     companion object {

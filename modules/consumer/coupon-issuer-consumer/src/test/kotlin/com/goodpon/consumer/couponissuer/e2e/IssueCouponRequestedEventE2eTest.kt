@@ -1,6 +1,7 @@
 package com.goodpon.consumer.couponissuer.e2e
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.goodpon.consumer.couponissuer.listener.dto.IssueCouponRequestedEvent
 import com.goodpon.consumer.couponissuer.support.AbstractE2eTest
 import com.goodpon.consumer.couponissuer.support.accessor.TestCouponTemplateAccessor
 import com.goodpon.consumer.couponissuer.support.accessor.TestMerchantAccessor
@@ -33,13 +34,8 @@ class IssueCouponRequestedEventE2eTest(
         val (merchantId) = testMerchantAccessor.createMerchant()
         val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(merchantId = merchantId)
         val userId = "unique-user-id"
-        commandCache.issueCoupon(
-            couponTemplateId = couponTemplateId,
-            userId = userId,
-            maxIssueCount = 10,
-        )
 
-        val event = IssueRequestedEvent(
+        val event = IssueCouponRequestedEvent(
             couponTemplateId = couponTemplateId,
             userId = userId,
             requestedAt = LocalDateTime.now()
@@ -63,10 +59,4 @@ class IssueCouponRequestedEventE2eTest(
                 stats.first shouldBe 1
             }
     }
-
-    data class IssueRequestedEvent(
-        val couponTemplateId: Long,
-        val userId: String,
-        val requestedAt: LocalDateTime,
-    )
 }
