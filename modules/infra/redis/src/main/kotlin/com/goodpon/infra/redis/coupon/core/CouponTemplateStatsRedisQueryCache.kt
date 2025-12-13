@@ -132,7 +132,7 @@ class CouponTemplateStatsRedisQueryCache(
     private fun pipelineForStats(
         issuedKeys: List<String>,
         reservedKeys: List<String>,
-        redeemedKeys: List<String>
+        redeemedKeys: List<String>,
     ): List<Long> {
         val results = redisTemplate.executePipelined { connection ->
             val stringCon = connection as StringRedisConnection

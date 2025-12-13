@@ -17,7 +17,7 @@ import java.time.LocalDateTime
 @Component
 class CouponTemplateCoreRepository(
     private val couponTemplateJpaRepository: CouponTemplateJpaRepository,
-    private val em: EntityManager
+    private val em: EntityManager,
 ) {
 
     @Transactional

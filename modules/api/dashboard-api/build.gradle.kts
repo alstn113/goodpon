@@ -8,6 +8,7 @@ dependencies {
     runtimeOnly(project(":modules:infra:aws:ses"))
     runtimeOnly(project(":modules:infra:redis"))
     runtimeOnly(project(":modules:infra:auth"))
+    runtimeOnly(project(":modules:infra:kafka"))
 
     implementation(project(":modules:domain"))
     implementation(project(":modules:application:dashboard-application"))
@@ -21,6 +22,7 @@ dependencies {
     testImplementation(project(":modules:infra:aws:ses"))
     testImplementation(project(":modules:infra:redis"))
     testImplementation(project(":modules:infra:auth"))
+    testImplementation(project(":modules:infra:kafka"))
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(libs.epage.restdocs.mockmvc)

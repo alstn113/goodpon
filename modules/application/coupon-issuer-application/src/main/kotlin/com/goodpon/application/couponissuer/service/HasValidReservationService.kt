@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class HasValidReservationService(
-    private val couponTemplateStatsCache: CouponTemplateStatsCache
+    private val couponTemplateStatsCache: CouponTemplateStatsCache,
 ) : HasValidReservationUseCase {
 
     override fun invoke(couponTemplateId: Long, userId: String): Boolean {

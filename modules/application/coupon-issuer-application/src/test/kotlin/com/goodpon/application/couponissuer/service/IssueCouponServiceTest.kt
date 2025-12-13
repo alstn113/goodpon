@@ -12,7 +12,6 @@ import com.goodpon.domain.coupon.template.vo.CouponTemplateStatus
 import com.goodpon.domain.coupon.user.UserCoupon
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
-import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

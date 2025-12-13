@@ -21,7 +21,7 @@ class MerchantCoreRepository(
     private val merchantJpaRepository: MerchantJpaRepository,
     private val merchantAccountJpaRepository: MerchantAccountJpaRepository,
     private val merchantClientSecretJpaRepository: MerchantClientSecretJpaRepository,
-    private val em: EntityManager
+    private val em: EntityManager,
 ) {
 
     @Transactional

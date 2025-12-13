@@ -15,7 +15,7 @@ import java.sql.PreparedStatement
 class CouponTemplateStatsCoreRepository(
     private val couponTemplateStatsJpaRepository: CouponTemplateStatsJpaRepository,
     private val jdbcTemplate: JdbcTemplate,
-    private val em: EntityManager
+    private val em: EntityManager,
 ) {
 
     @Transactional

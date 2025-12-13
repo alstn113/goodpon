@@ -21,7 +21,7 @@ import java.time.LocalDate
 class CouponHistoryCoreRepository(
     private val couponHistoryJpaRepository: CouponHistoryJpaRepository,
     private val queryFactory: JPAQueryFactory,
-    private val em: EntityManager
+    private val em: EntityManager,
 ) {
 
     @Transactional

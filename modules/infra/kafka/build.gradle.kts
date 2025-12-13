@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation(project(":modules:domain"))
     implementation(project(":modules:application:partner-application"))
+    implementation(project(":modules:application:dashboard-application"))
     implementation("org.springframework.kafka:spring-kafka")
     implementation("org.springframework.boot:spring-boot-autoconfigure")
 

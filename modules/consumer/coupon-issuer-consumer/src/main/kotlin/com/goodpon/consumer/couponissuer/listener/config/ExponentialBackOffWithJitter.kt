@@ -3,7 +3,7 @@ package com.goodpon.consumer.couponissuer.listener.config
 import org.springframework.util.backoff.BackOff
 import org.springframework.util.backoff.BackOffExecution
 import java.time.Duration
-import java.util.Random
+import java.util.*
 
 class ExponentialBackOffWithJitter(
     private val initialInterval: Duration,

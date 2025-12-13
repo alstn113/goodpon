@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 class AccountCoreRepository(
     private val accountJpaRepository: AccountJpaRepository,
-    private val em: EntityManager
+    private val em: EntityManager,
 ) {
 
     @Transactional
