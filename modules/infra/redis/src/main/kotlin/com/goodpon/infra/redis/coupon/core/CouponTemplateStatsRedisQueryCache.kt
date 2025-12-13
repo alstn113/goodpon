@@ -1,14 +1,17 @@
 package com.goodpon.infra.redis.coupon.core
 
-import com.goodpon.infra.redis.coupon.core.CouponTemplateRedisKeyUtil.COUPON_TEMPLATE_STATS_ISSUE_SET_KEY_PREFIX
-import com.goodpon.infra.redis.coupon.core.CouponTemplateRedisKeyUtil.COUPON_TEMPLATE_STATS_REDEEM_SET_KEY_PREFIX
+import com.goodpon.infra.redis.coupon.core.CouponTemplateRedisKeyUtil.COUPON_ISSUED_SET_KEY_PREFIX
+import com.goodpon.infra.redis.coupon.core.CouponTemplateRedisKeyUtil.COUPON_REDEEMED_SET_KEY_PREFIX
+import com.goodpon.infra.redis.coupon.core.CouponTemplateRedisKeyUtil.COUPON_RESERVED_SET_KEY_PREFIX
 import org.springframework.data.redis.connection.StringRedisConnection
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Component
 
 /**
- *  Redis Set 은 비어 있을 경우 삭제되기 때문에 dummy 값을 하나 넣어둔다.
- *  이 dummy 값은 실제로는 사용되지 않기 때문에 Size 계산에서 -1을 해준다.
+ * 통계 조회용 Cache
+ * - 발급 수(Issued) = (Issued Set Size - 1) + (Reserved ZSet Size - 1)
+ * - 사용 수(Redeemed) = (Redeemed Set Size - 1)
+ * * -1을 하는 이유는 init 시 생성한 dummy 값 제외를 위함.
  */
 @Component
 class CouponTemplateStatsRedisQueryCache(
@@ -16,53 +19,70 @@ class CouponTemplateStatsRedisQueryCache(
 ) {
 
     fun getStats(couponTemplateId: Long): Pair<Long, Long> {
-        val issueKey = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
-        val redeemKey = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+        val reservedKey = CouponTemplateRedisKeyUtil.buildReservedSetKey(couponTemplateId) // [New]
+        val issuedKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
+        val redeemedKey = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
 
-        val issueCount = redisTemplate.opsForSet().size(issueKey) ?: 1L
-        val redeemCount = redisTemplate.opsForSet().size(redeemKey) ?: 1L
+        val issuedCount = (redisTemplate.opsForSet().size(issuedKey) ?: 1L) - 1
+        val reservedCount = (redisTemplate.opsForZSet().size(reservedKey) ?: 1L) - 1
+        val redeemedCount = (redisTemplate.opsForSet().size(redeemedKey) ?: 1L) - 1
 
-        return issueCount - 1 to redeemCount - 1
+        return (issuedCount + reservedCount) to redeemedCount
     }
 
     fun getMultipleStats(couponTemplateIds: List<Long>): Map<Long, Pair<Long, Long>> {
-        val issueKeys = couponTemplateIds.map { CouponTemplateRedisKeyUtil.buildIssueSetKey(it) }
-        val redeemKeys = couponTemplateIds.map { CouponTemplateRedisKeyUtil.buildRedeemSetKey(it) }
-        return fetchStats(issueKeys, redeemKeys, couponTemplateIds)
+        val issuedKeys = couponTemplateIds.map { CouponTemplateRedisKeyUtil.buildIssuedSetKey(it) }
+        val reservedKeys = couponTemplateIds.map { CouponTemplateRedisKeyUtil.buildReservedSetKey(it) }
+        val redeemedKeys = couponTemplateIds.map { CouponTemplateRedisKeyUtil.buildRedeemedSetKey(it) }
+
+        return fetchStats(issuedKeys, reservedKeys, redeemedKeys, couponTemplateIds)
     }
 
     fun readAllStats(): Map<Long, Pair<Long, Long>> {
-        val issueKeys = redisTemplate.keys("$COUPON_TEMPLATE_STATS_ISSUE_SET_KEY_PREFIX*").toList()
-        val redeemKeys = redisTemplate.keys("$COUPON_TEMPLATE_STATS_REDEEM_SET_KEY_PREFIX*").toList()
+        val issuedKeys = redisTemplate.keys("$COUPON_ISSUED_SET_KEY_PREFIX*").toList()
+        val reservedKeys = redisTemplate.keys("$COUPON_RESERVED_SET_KEY_PREFIX*").toList()
+        val redeemedKeys = redisTemplate.keys("$COUPON_REDEEMED_SET_KEY_PREFIX*").toList()
 
-        val allIds = (issueKeys + redeemKeys)
+        val allIds = (issuedKeys + reservedKeys + redeemedKeys)
             .map { it.substringAfterLast(":").toLong() }
             .distinct()
 
-        val issueKeyList = allIds.map { CouponTemplateRedisKeyUtil.buildIssueSetKey(it) }
-        val redeemKeyList = allIds.map { CouponTemplateRedisKeyUtil.buildRedeemSetKey(it) }
+        val issuedKeyList = allIds.map { CouponTemplateRedisKeyUtil.buildIssuedSetKey(it) }
+        val reservedKeyList = allIds.map { CouponTemplateRedisKeyUtil.buildReservedSetKey(it) }
+        val redeemedKeyList = allIds.map { CouponTemplateRedisKeyUtil.buildRedeemedSetKey(it) }
 
-        return fetchStats(issueKeyList, redeemKeyList, allIds)
+        return fetchStats(issuedKeyList, reservedKeyList, redeemedKeyList, allIds)
     }
 
     private fun fetchStats(
-        issueKeys: List<String>,
-        redeemKeys: List<String>,
+        issuedKeys: List<String>,
+        reservedKeys: List<String>,
+        redeemedKeys: List<String>,
         ids: List<Long>,
     ): Map<Long, Pair<Long, Long>> {
         if (ids.isEmpty()) return emptyMap()
 
-        val results = pipelineForSets(issueKeys, redeemKeys)
+        val results = pipelineForStats(issuedKeys, reservedKeys, redeemedKeys)
+        val size = ids.size
+
         return ids.mapIndexed { i, id ->
-            id to (results[i] - 1 to results[i + ids.size] - 1)
+            val issuedCount = results[i] - 1
+            val reservedCount = results[i + size] - 1
+            val redeemedCount = results[i + (size * 2)] - 1
+            id to ((issuedCount + reservedCount) to redeemedCount)
         }.toMap()
     }
 
-    private fun pipelineForSets(issueKeys: List<String>, redeemKeys: List<String>): List<Long> {
+    private fun pipelineForStats(
+        issuedKeys: List<String>,
+        reservedKeys: List<String>,
+        redeemedKeys: List<String>
+    ): List<Long> {
         val results = redisTemplate.executePipelined { connection ->
             val stringCon = connection as StringRedisConnection
-            issueKeys.forEach { stringCon.sCard(it) }
-            redeemKeys.forEach { stringCon.sCard(it) }
+            issuedKeys.forEach { stringCon.sCard(it) }
+            reservedKeys.forEach { stringCon.zCard(it) }
+            redeemedKeys.forEach { stringCon.sCard(it) }
             null
         }
         return results.map { (it as? Long) ?: 1L }

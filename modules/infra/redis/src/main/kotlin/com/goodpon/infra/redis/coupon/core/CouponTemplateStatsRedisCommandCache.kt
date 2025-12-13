@@ -11,13 +11,15 @@ import java.time.ZoneId
 class CouponTemplateStatsRedisCommandCache(
     private val redisTemplate: StringRedisTemplate,
     @Qualifier("initStatsSetsScript") private val initStatsSetsScript: RedisScript<Long>,
-    @Qualifier("issueCouponScript") private val issueCouponScript: RedisScript<Long>,
+    @Qualifier("reserveCouponScript") private val reserveCouponScript: RedisScript<Long>,
+    @Qualifier("completeIssueCouponScript") private val completeIssueCouponScript: RedisScript<Long>,
     @Qualifier("redeemCouponScript") private val redeemCouponScript: RedisScript<Long>,
 ) {
 
     fun initializeStats(couponTemplateId: Long, expiresAt: LocalDateTime?) {
-        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
-        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedSetKey(couponTemplateId)
+        val issuedSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
+        val redeemedSetKey = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
 
         val ttlEpochSeconds: Long = expiresAt?.let {
             val expirationWithGrace = it.plusDays(1)
@@ -26,31 +28,57 @@ class CouponTemplateStatsRedisCommandCache(
 
         redisTemplate.execute(
             initStatsSetsScript,
-            listOf(issueSetKey, redeemSetKey),
+            listOf(reservedSetKey, issuedSetKey, redeemedSetKey),
             "dummy",
             ttlEpochSeconds.toString()
         )
     }
 
-    fun issueCoupon(couponTemplateId: Long, userId: String, maxIssueCount: Long?): CouponIssueResult {
-        val key = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
+    fun reserveCoupon(
+        couponTemplateId: Long,
+        userId: String,
+        maxIssueCount: Long?,
+    ): CouponIssueResult {
+        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedSetKey(couponTemplateId)
+        val issuedSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
+        val requestTime = System.currentTimeMillis()
+
         val result = redisTemplate.execute(
-            issueCouponScript,
-            listOf(key),
+            reserveCouponScript,
+            listOf(reservedSetKey, issuedSetKey),
             userId,
-            maxIssueCount?.toString() ?: "-1"
+            maxIssueCount?.toString() ?: "-1",
+            requestTime.toString()
         )
 
         return when (result) {
             0L -> CouponIssueResult.SUCCESS
             1L -> CouponIssueResult.ALREADY_ISSUED
             2L -> CouponIssueResult.ISSUE_LIMIT_EXCEEDED
-            else -> throw IllegalStateException("coupon issue redis script에서 예상치 못한 결과가 발생했습니다. result: $result")
+            else -> throw IllegalStateException("reserve coupon redis script에서 예상치 못한 결과가 발생했습니다. result: $result")
         }
     }
 
-    fun redeemCoupon(couponTemplateId: Long, userId: String, maxRedeemCount: Long?): CouponRedeemResult {
-        val key = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+    fun completeIssueCoupon(
+        couponTemplateId: Long,
+        userId: String,
+    ) {
+        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedSetKey(couponTemplateId)
+        val issuedSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
+
+        redisTemplate.execute(
+            completeIssueCouponScript,
+            listOf(reservedSetKey, issuedSetKey),
+            userId
+        )
+    }
+
+    fun redeemCoupon(
+        couponTemplateId: Long,
+        userId: String,
+        maxRedeemCount: Long?,
+    ): CouponRedeemResult {
+        val key = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
         val result = redisTemplate.execute(
             redeemCouponScript,
             listOf(key),
@@ -67,12 +95,12 @@ class CouponTemplateStatsRedisCommandCache(
     }
 
     fun cancelIssue(couponTemplateId: Long, userId: String) {
-        val key = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
+        val key = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
         redisTemplate.opsForSet().remove(key, userId)
     }
 
     fun cancelRedeem(couponTemplateId: Long, userId: String) {
-        val key = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+        val key = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
         redisTemplate.opsForSet().remove(key, userId)
     }
 }

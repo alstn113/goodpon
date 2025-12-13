@@ -15,23 +15,32 @@ class RedisScriptConfig {
     fun initStatsSetsScript(): RedisScript<Long> {
         return DefaultRedisScript<Long>().apply {
             setScriptSource(ResourceScriptSource(ClassPathResource("scripts/coupon/init-stats-sets.lua")))
-            setResultType(Long::class.java)
+            resultType = Long::class.java
         }
     }
 
-    @Bean("issueCouponScript")
-    fun issueCouponScript(): RedisScript<Long> {
+    @Bean("reserveCouponScript")
+    fun reserveCouponScript(): RedisScript<Long> {
         return DefaultRedisScript<Long>().apply {
-            setScriptSource(ResourceScriptSource(ClassPathResource("scripts/coupon/issue-coupon.lua")))
-            setResultType(Long::class.java)
+            setScriptSource(ResourceScriptSource(ClassPathResource("scripts/coupon/reserve-coupon.lua")))
+            resultType = Long::class.java
         }
     }
+
+    @Bean("completeIssueCouponScript")
+    fun completeIssueCouponScript(): RedisScript<Long> {
+        return DefaultRedisScript<Long>().apply {
+            setScriptSource(ResourceScriptSource(ClassPathResource("scripts/coupon/complete-issue-coupon.lua")))
+            resultType = Long::class.java
+        }
+    }
+
 
     @Bean("redeemCouponScript")
     fun redeemCouponScript(): RedisScript<Long> {
         return DefaultRedisScript<Long>().apply {
             setScriptSource(ResourceScriptSource(ClassPathResource("scripts/coupon/redeem-coupon.lua")))
-            setResultType(Long::class.java)
+            resultType = Long::class.java
         }
     }
 }

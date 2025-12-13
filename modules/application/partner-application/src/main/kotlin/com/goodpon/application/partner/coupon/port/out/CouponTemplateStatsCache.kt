@@ -5,7 +5,7 @@ import com.goodpon.application.partner.coupon.port.out.dto.RedeemResult
 
 interface CouponTemplateStatsCache {
 
-    fun issueCoupon(couponTemplateId: Long, userId: String, maxIssueCount: Long?): IssueResult
+    fun reserveCoupon(couponTemplateId: Long, userId: String, maxIssueCount: Long?): IssueResult
     fun redeemCoupon(couponTemplateId: Long, userId: String, maxRedeemCount: Long?): RedeemResult
     fun cancelIssue(couponTemplateId: Long, userId: String)
     fun cancelRedeem(couponTemplateId: Long, userId: String)

@@ -2,14 +2,19 @@ package com.goodpon.infra.redis.coupon.core
 
 object CouponTemplateRedisKeyUtil {
 
-    const val COUPON_TEMPLATE_STATS_ISSUE_SET_KEY_PREFIX = "coupon-template-stats:issue:"
-    const val COUPON_TEMPLATE_STATS_REDEEM_SET_KEY_PREFIX = "coupon-template-stats:redeem:"
+    const val COUPON_RESERVED_SET_KEY_PREFIX = "coupon:reserved:"
+    const val COUPON_ISSUED_SET_KEY_PREFIX = "coupon:issued:"
+    const val COUPON_REDEEMED_SET_KEY_PREFIX = "coupon:redeemed:"
 
-    fun buildIssueSetKey(couponTemplateId: Long): String {
-        return "$COUPON_TEMPLATE_STATS_ISSUE_SET_KEY_PREFIX$couponTemplateId"
+    fun buildReservedSetKey(couponTemplateId: Long): String {
+        return "$COUPON_RESERVED_SET_KEY_PREFIX$couponTemplateId"
     }
 
-    fun buildRedeemSetKey(couponTemplateId: Long): String {
-        return "$COUPON_TEMPLATE_STATS_REDEEM_SET_KEY_PREFIX$couponTemplateId"
+    fun buildIssuedSetKey(couponTemplateId: Long): String {
+        return "$COUPON_ISSUED_SET_KEY_PREFIX$couponTemplateId"
+    }
+
+    fun buildRedeemedSetKey(couponTemplateId: Long): String {
+        return "$COUPON_REDEEMED_SET_KEY_PREFIX$couponTemplateId"
     }
 }

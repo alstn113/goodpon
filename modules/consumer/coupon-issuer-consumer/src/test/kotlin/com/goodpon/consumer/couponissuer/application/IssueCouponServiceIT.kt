@@ -78,7 +78,7 @@ class IssueCouponServiceIT(
 
         )
         val userId = "unique-user-id"
-        commandCache.issueCoupon(
+        commandCache.reserveCoupon(
             couponTemplateId = couponTemplateId,
             userId = userId,
             maxIssueCount = 10

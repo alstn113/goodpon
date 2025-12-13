@@ -25,11 +25,11 @@ class CouponTemplateStatsRedisCommandCacheIT(
         commandCache.initializeStats(couponTemplateId, expiresAt)
 
         // then
-        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
+        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
         redisTemplate.hasKey(issueSetKey) shouldBe true
         redisTemplate.opsForSet().size(issueSetKey) shouldBe 1L
 
-        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
         redisTemplate.hasKey(redeemSetKey) shouldBe true
         redisTemplate.opsForSet().size(redeemSetKey) shouldBe 1L
     }
@@ -44,11 +44,11 @@ class CouponTemplateStatsRedisCommandCacheIT(
         commandCache.initializeStats(couponTemplateId, expiresAt)
 
         // then
-        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
+        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
         redisTemplate.hasKey(issueSetKey) shouldBe true
         redisTemplate.opsForSet().size(issueSetKey) shouldBe 1L
 
-        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
         redisTemplate.hasKey(redeemSetKey) shouldBe true
         redisTemplate.opsForSet().size(redeemSetKey) shouldBe 1L
     }
@@ -58,12 +58,12 @@ class CouponTemplateStatsRedisCommandCacheIT(
         // given
         val couponTemplateId = 1L
         val userId = "user123"
-        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
+        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
 
         commandCache.initializeStats(couponTemplateId, null)
 
         // when
-        val couponIssueResult = commandCache.issueCoupon(couponTemplateId, userId, null)
+        val couponIssueResult = commandCache.reserveCoupon(couponTemplateId, userId, null)
 
         // then
         couponIssueResult shouldBe CouponIssueResult.SUCCESS
@@ -76,13 +76,13 @@ class CouponTemplateStatsRedisCommandCacheIT(
         // given
         val couponTemplateId = 1L
         val userId = "user123"
-        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
+        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
 
         commandCache.initializeStats(couponTemplateId, null)
-        commandCache.issueCoupon(couponTemplateId, userId, null)
+        commandCache.reserveCoupon(couponTemplateId, userId, null)
 
         // when
-        val couponIssueResult = commandCache.issueCoupon(couponTemplateId, userId, null)
+        val couponIssueResult = commandCache.reserveCoupon(couponTemplateId, userId, null)
 
         // then
         couponIssueResult shouldBe CouponIssueResult.ALREADY_ISSUED
@@ -95,13 +95,13 @@ class CouponTemplateStatsRedisCommandCacheIT(
         // given
         val couponTemplateId = 1L
         val userId = "user123"
-        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
+        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
         val maxIssueCount = 1L
         commandCache.initializeStats(couponTemplateId, null)
-        commandCache.issueCoupon(couponTemplateId, userId, maxIssueCount)
+        commandCache.reserveCoupon(couponTemplateId, userId, maxIssueCount)
 
         // when
-        val couponIssueResult = commandCache.issueCoupon(couponTemplateId, "user456", maxIssueCount)
+        val couponIssueResult = commandCache.reserveCoupon(couponTemplateId, "user456", maxIssueCount)
 
         // then
         couponIssueResult shouldBe CouponIssueResult.ISSUE_LIMIT_EXCEEDED
@@ -114,10 +114,10 @@ class CouponTemplateStatsRedisCommandCacheIT(
         // given
         val couponTemplateId = 1L
         val userId = "user123"
-        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
 
         commandCache.initializeStats(couponTemplateId, null)
-        commandCache.issueCoupon(couponTemplateId, userId, null)
+        commandCache.reserveCoupon(couponTemplateId, userId, null)
 
         // when
         val couponRedeemResult = commandCache.redeemCoupon(couponTemplateId, userId, null)
@@ -133,10 +133,10 @@ class CouponTemplateStatsRedisCommandCacheIT(
         // given
         val couponTemplateId = 1L
         val userId = "user123"
-        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
 
         commandCache.initializeStats(couponTemplateId, null)
-        commandCache.issueCoupon(couponTemplateId, userId, null)
+        commandCache.reserveCoupon(couponTemplateId, userId, null)
         commandCache.redeemCoupon(couponTemplateId, userId, null)
 
         // when
@@ -153,11 +153,11 @@ class CouponTemplateStatsRedisCommandCacheIT(
         // given
         val couponTemplateId = 1L
         val userId = "user123"
-        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
         val maxRedeemCount = 1L
 
         commandCache.initializeStats(couponTemplateId, null)
-        commandCache.issueCoupon(couponTemplateId, userId, null)
+        commandCache.reserveCoupon(couponTemplateId, userId, null)
         commandCache.redeemCoupon(couponTemplateId, userId, maxRedeemCount)
 
         // when
@@ -174,9 +174,9 @@ class CouponTemplateStatsRedisCommandCacheIT(
         // given
         val couponTemplateId = 1L
         val userId = "user123"
-        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssueSetKey(couponTemplateId)
+        val issueSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
         commandCache.initializeStats(couponTemplateId, null)
-        commandCache.issueCoupon(couponTemplateId, userId, null)
+        commandCache.reserveCoupon(couponTemplateId, userId, null)
 
         // when
         commandCache.cancelIssue(couponTemplateId, userId)
@@ -191,7 +191,7 @@ class CouponTemplateStatsRedisCommandCacheIT(
         // given
         val couponTemplateId = 1L
         val userId = "user123"
-        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemSetKey(couponTemplateId)
+        val redeemSetKey = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
 
         commandCache.initializeStats(couponTemplateId, null)
         commandCache.redeemCoupon(couponTemplateId, userId, null)

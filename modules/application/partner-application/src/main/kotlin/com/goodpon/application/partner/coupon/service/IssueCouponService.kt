@@ -39,7 +39,7 @@ class IssueCouponService(
     }
 
     private fun handleIssueFailure(command: IssueCouponCommand, couponTemplate: CouponTemplate) {
-        val result = couponTemplateStatsCache.issueCoupon(
+        val result = couponTemplateStatsCache.reserveCoupon(
             couponTemplateId = couponTemplate.id,
             userId = command.userId,
             maxIssueCount = couponTemplate.maxIssueCount()

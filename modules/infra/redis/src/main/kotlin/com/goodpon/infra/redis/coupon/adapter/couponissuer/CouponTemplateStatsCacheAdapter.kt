@@ -9,6 +9,10 @@ class CouponTemplateStatsCacheAdapter(
     private val commandCache: CouponTemplateStatsRedisCommandCache,
 ) : CouponTemplateStatsCache {
 
+    override fun completeIssueCoupon(couponTemplateId: Long, userId: String) {
+        commandCache.completeIssueCoupon(couponTemplateId = couponTemplateId, userId = userId)
+    }
+
     override fun cancelIssue(couponTemplateId: Long, userId: String) {
         commandCache.cancelIssue(couponTemplateId = couponTemplateId, userId = userId)
     }

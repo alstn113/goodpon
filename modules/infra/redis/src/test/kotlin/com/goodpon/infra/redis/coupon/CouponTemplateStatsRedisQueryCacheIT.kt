@@ -30,8 +30,8 @@ class CouponTemplateStatsRedisQueryCacheIT(
         // given
         val couponTemplateId = 1L
         commandCache.initializeStats(couponTemplateId, null)
-        commandCache.issueCoupon(couponTemplateId, "user1", null)
-        commandCache.issueCoupon(couponTemplateId, "user2", null)
+        commandCache.reserveCoupon(couponTemplateId, "user1", null)
+        commandCache.reserveCoupon(couponTemplateId, "user2", null)
         commandCache.redeemCoupon(couponTemplateId, "user1", null)
 
         // when
@@ -75,20 +75,20 @@ class CouponTemplateStatsRedisQueryCacheIT(
     private fun initializeStats() {
         val couponTemplateId1 = 1L // issueCount: 2, redeemCount: 1
         commandCache.initializeStats(couponTemplateId1, null)
-        commandCache.issueCoupon(couponTemplateId1, "user1", null)
+        commandCache.reserveCoupon(couponTemplateId1, "user1", null)
         commandCache.redeemCoupon(couponTemplateId1, "user1", null)
-        commandCache.issueCoupon(couponTemplateId1, "user2", null)
+        commandCache.reserveCoupon(couponTemplateId1, "user2", null)
 
         val couponTemplateId2 = 2L
         commandCache.initializeStats(couponTemplateId2, null) // issueCount: 0, redeemCount: 0
 
         val couponTemplateId3 = 3L // issueCount: 1, redeemCount: 1
         commandCache.initializeStats(couponTemplateId3, null)
-        commandCache.issueCoupon(couponTemplateId3, "user4", null)
+        commandCache.reserveCoupon(couponTemplateId3, "user4", null)
         commandCache.redeemCoupon(couponTemplateId3, "user4", null)
 
         val couponTemplateId4 = 4L // issueCount: 1, redeemCount: 0
         commandCache.initializeStats(couponTemplateId4, null)
-        commandCache.issueCoupon(couponTemplateId4, "user5", null)
+        commandCache.reserveCoupon(couponTemplateId4, "user5", null)
     }
 }

@@ -34,7 +34,7 @@ class IssueCouponRequestedEventE2eTest(
         val (merchantId) = testMerchantAccessor.createMerchant()
         val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(merchantId = merchantId)
         val userId = "unique-user-id"
-        commandCache.issueCoupon(
+        commandCache.reserveCoupon(
             couponTemplateId = couponTemplateId,
             userId = userId,
             maxIssueCount = 10,

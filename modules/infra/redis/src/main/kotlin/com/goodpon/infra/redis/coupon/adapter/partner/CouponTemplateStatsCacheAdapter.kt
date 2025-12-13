@@ -15,8 +15,12 @@ class CouponTemplateStatsCacheAdapter(
     private val queryCache: CouponTemplateStatsRedisQueryCache,
 ) : CouponTemplateStatsCache {
 
-    override fun issueCoupon(couponTemplateId: Long, userId: String, maxIssueCount: Long?): IssueResult {
-        val result = commandCache.issueCoupon(
+    override fun reserveCoupon(
+        couponTemplateId: Long,
+        userId: String,
+        maxIssueCount: Long?,
+    ): IssueResult {
+        val result = commandCache.reserveCoupon(
             couponTemplateId = couponTemplateId,
             userId = userId,
             maxIssueCount = maxIssueCount
