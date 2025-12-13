@@ -13,9 +13,15 @@ class CouponEventListener(
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_ROLLBACK)
-    fun handleIssueCouponRollbackEvent(event: IssueCouponRollbackEvent) {
-        log.error("쿠폰 발급에 실패하여 쿠폰 통계 캐시를 롤백합니다. 이벤트: {}", event)
-        couponTemplateStatsCache.cancelIssue(couponTemplateId = event.couponTemplateId, userId = event.userId)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    fun handleCouponIssuedEvent(event: CouponIssuedEvent) {
+        try {
+            couponTemplateStatsCache.completeIssueCoupon(
+                couponTemplateId = event.couponTemplateId,
+                userId = event.userId,
+            )
+        } catch (ex: Exception) {
+            log.error("Redis 쿠폰 발급 선점 -> 확정 처리 중 오류가 발생했습니다. 이벤트: {}", event, ex)
+        }
     }
 }

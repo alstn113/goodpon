@@ -5,7 +5,7 @@ import com.goodpon.application.couponissuer.port.`in`.dto.IssueCouponCommand
 import com.goodpon.application.couponissuer.service.accessor.CouponHistoryAccessor
 import com.goodpon.application.couponissuer.service.accessor.CouponTemplateAccessor
 import com.goodpon.application.couponissuer.service.accessor.UserCouponAccessor
-import com.goodpon.application.couponissuer.service.listener.IssueCouponRollbackEvent
+import com.goodpon.application.couponissuer.service.listener.CouponIssuedEvent
 import com.goodpon.domain.coupon.service.CouponIssuer
 import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
@@ -24,11 +24,11 @@ class IssueCouponService(
 
     @Transactional
     override fun invoke(command: IssueCouponCommand) {
-        publishIssueCouponRollbackEvent(command)
+        publishCouponIssuedEvent(command = command)
 
         val couponTemplate = couponTemplateAccessor.readById(command.couponTemplateId)
         if (userCouponAccessor.existsByUserIdAndCouponTemplateId(command.userId, command.couponTemplateId)) {
-            log.warn("[IssueCouponService] 이미 발급된 쿠폰 userId=${command.userId}, couponTemplateId=${command.couponTemplateId}")
+            log.warn("이미 발급된 쿠폰이 요청되었습니다. couponTemplateId={}, userId={}", command.couponTemplateId, command.userId)
             return
         }
 
@@ -38,8 +38,11 @@ class IssueCouponService(
         couponHistoryAccessor.recordIssued(userCouponId = savedUserCoupon.id, recordedAt = command.requestedAt)
     }
 
-    private fun publishIssueCouponRollbackEvent(command: IssueCouponCommand) {
-        val event = IssueCouponRollbackEvent(userId = command.userId, couponTemplateId = command.couponTemplateId)
+    private fun publishCouponIssuedEvent(command: IssueCouponCommand) {
+        val event = CouponIssuedEvent(
+            userId = command.userId,
+            couponTemplateId = command.couponTemplateId
+        )
         eventPublisher.publishEvent(event)
     }
 }
