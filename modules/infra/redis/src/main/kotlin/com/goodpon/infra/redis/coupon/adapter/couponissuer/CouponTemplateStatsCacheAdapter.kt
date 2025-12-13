@@ -9,8 +9,16 @@ class CouponTemplateStatsCacheAdapter(
     private val commandCache: CouponTemplateStatsRedisCommandCache,
 ) : CouponTemplateStatsCache {
 
+    override fun hasValidReservation(couponTemplateId: Long, userId: String): Boolean {
+        return commandCache.hasValidReservation(couponTemplateId = couponTemplateId, userId = userId)
+    }
+
     override fun completeIssueCoupon(couponTemplateId: Long, userId: String) {
         commandCache.completeIssueCoupon(couponTemplateId = couponTemplateId, userId = userId)
+    }
+
+    override fun markAsFailedIssuance(couponTemplateId: Long, userId: String) {
+        commandCache.markAsFailedIssuance(couponTemplateId = couponTemplateId, userId = userId)
     }
 
     override fun cancelIssue(couponTemplateId: Long, userId: String) {

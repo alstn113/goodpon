@@ -17,7 +17,7 @@ class CouponTemplateStatsRedisCommandCache(
 ) {
 
     fun initializeStats(couponTemplateId: Long, expiresAt: LocalDateTime?) {
-        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedSetKey(couponTemplateId)
+        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedZSetKey(couponTemplateId)
         val issuedSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
         val redeemedSetKey = CouponTemplateRedisKeyUtil.buildRedeemedSetKey(couponTemplateId)
 
@@ -39,7 +39,7 @@ class CouponTemplateStatsRedisCommandCache(
         userId: String,
         maxIssueCount: Long?,
     ): CouponIssueResult {
-        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedSetKey(couponTemplateId)
+        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedZSetKey(couponTemplateId)
         val issuedSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
         val requestTime = System.currentTimeMillis()
 
@@ -63,7 +63,7 @@ class CouponTemplateStatsRedisCommandCache(
         couponTemplateId: Long,
         userId: String,
     ) {
-        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedSetKey(couponTemplateId)
+        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedZSetKey(couponTemplateId)
         val issuedSetKey = CouponTemplateRedisKeyUtil.buildIssuedSetKey(couponTemplateId)
 
         redisTemplate.execute(
@@ -71,6 +71,16 @@ class CouponTemplateStatsRedisCommandCache(
             listOf(reservedSetKey, issuedSetKey),
             userId
         )
+    }
+
+    fun hasValidReservation(couponTemplateId: Long, userId: String): Boolean {
+        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedZSetKey(couponTemplateId)
+        return redisTemplate.opsForZSet().score(reservedSetKey, userId) != null
+    }
+
+    fun markAsFailedIssuance(couponTemplateId: Long, userId: String) {
+        val reservedSetKey = CouponTemplateRedisKeyUtil.buildReservedZSetKey(couponTemplateId)
+        redisTemplate.opsForZSet().add(reservedSetKey, userId, -1.0)
     }
 
     fun redeemCoupon(
