@@ -2,8 +2,6 @@ package com.goodpon.dashboard.infra.support
 
 import com.goodpon.infra.jpa.MySQLContainerInitializer
 import com.goodpon.infra.jpa.MySQLDataCleanupExtension
-import com.goodpon.infra.kafka.KafkaContainerInitializer
-import com.goodpon.infra.kafka.KafkaTopicCleanupExtension
 import com.goodpon.infra.redis.RedisContainerInitializer
 import com.goodpon.infra.redis.RedisDataCleanupExtension
 import org.junit.jupiter.api.extension.ExtendWith
@@ -18,13 +16,11 @@ import org.springframework.test.context.TestConstructor
     initializers = [
         MySQLContainerInitializer::class,
         RedisContainerInitializer::class,
-        KafkaContainerInitializer::class,
     ]
 )
 @ExtendWith(
     MySQLDataCleanupExtension::class,
     RedisDataCleanupExtension::class,
-    KafkaTopicCleanupExtension::class
 )
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 abstract class AbstractIntegrationTest
