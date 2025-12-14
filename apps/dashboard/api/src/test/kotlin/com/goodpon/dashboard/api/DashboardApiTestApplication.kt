@@ -1,0 +1,6 @@
+package com.goodpon.dashboard.api
+
+import org.springframework.boot.autoconfigure.SpringBootApplication
+
+@SpringBootApplication
+class DashboardApiTestApplication
