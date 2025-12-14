@@ -2,10 +2,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation(project(":apps:coupon-issuer:worker"))
     runtimeOnly(project(":apps:coupon-issuer:infra"))
+    implementation(project(":supports:logging"))
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
     testImplementation(project(":domain"))
     testImplementation(project(":apps:coupon-issuer:application"))
     testImplementation(project(":infra:jpa"))

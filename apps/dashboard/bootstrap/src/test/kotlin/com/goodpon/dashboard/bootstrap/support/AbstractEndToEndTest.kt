@@ -6,6 +6,8 @@ import com.goodpon.dashboard.api.response.ApiResponse
 import com.goodpon.dashboard.api.response.ErrorMessage
 import com.goodpon.infra.jpa.MySQLContainerInitializer
 import com.goodpon.infra.jpa.MySQLDataCleanupExtension
+import com.goodpon.infra.kafka.KafkaContainerInitializer
+import com.goodpon.infra.kafka.KafkaTopicCleanupExtension
 import com.goodpon.infra.redis.RedisContainerInitializer
 import com.goodpon.infra.redis.RedisDataCleanupExtension
 import io.restassured.RestAssured
@@ -31,12 +33,14 @@ import org.springframework.test.context.TestConstructor
 @ContextConfiguration(
     initializers = [
         MySQLContainerInitializer::class,
-        RedisContainerInitializer::class
+        RedisContainerInitializer::class,
+        KafkaContainerInitializer::class
     ]
 )
 @ExtendWith(
     MySQLDataCleanupExtension::class,
-    RedisDataCleanupExtension::class
+    RedisDataCleanupExtension::class,
+    KafkaTopicCleanupExtension::class
 )
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 abstract class AbstractEndToEndTest {

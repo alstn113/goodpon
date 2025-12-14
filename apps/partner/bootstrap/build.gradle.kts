@@ -4,10 +4,7 @@ dependencies {
     runtimeOnly(project(":apps:partner:infra"))
     implementation(project(":supports:logging"))
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(libs.rest.assured)
-
-    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
     testImplementation(project(":domain"))
     testImplementation(project(":apps:partner:application"))
     testImplementation(project(":infra:jpa"))

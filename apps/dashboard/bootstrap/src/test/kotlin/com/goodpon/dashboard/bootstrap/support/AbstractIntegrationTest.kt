@@ -3,6 +3,8 @@ package com.goodpon.dashboard.bootstrap.support
 import com.goodpon.dashboard.application.auth.service.listener.VerificationEmailEventListener
 import com.goodpon.infra.jpa.MySQLContainerInitializer
 import com.goodpon.infra.jpa.MySQLDataCleanupExtension
+import com.goodpon.infra.kafka.KafkaContainerInitializer
+import com.goodpon.infra.kafka.KafkaTopicCleanupExtension
 import com.goodpon.infra.redis.RedisContainerInitializer
 import com.goodpon.infra.redis.RedisDataCleanupExtension
 import com.ninjasquad.springmockk.MockkBean
@@ -17,12 +19,14 @@ import org.springframework.test.context.TestConstructor
 @ContextConfiguration(
     initializers = [
         MySQLContainerInitializer::class,
-        RedisContainerInitializer::class
+        RedisContainerInitializer::class,
+        KafkaContainerInitializer::class
     ]
 )
 @ExtendWith(
     MySQLDataCleanupExtension::class,
-    RedisDataCleanupExtension::class
+    RedisDataCleanupExtension::class,
+    KafkaTopicCleanupExtension::class,
 )
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 abstract class AbstractIntegrationTest {
