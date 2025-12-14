@@ -1,7 +1,6 @@
 package com.goodpon.couponissuer.worker
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.goodpon.couponissuer.application.port.`in`.ExistsIssueReservationUseCase
 import com.goodpon.couponissuer.application.port.`in`.IssueCouponUseCase
 import com.goodpon.couponissuer.worker.config.KafkaConsumerConfig
 import com.goodpon.couponissuer.worker.dto.IssueCouponRequestedEvent
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class CouponKafkaEventListener(
-    private val existsIssueReservationUseCase: ExistsIssueReservationUseCase,
     private val issueCouponUseCase: IssueCouponUseCase,
     private val objectMapper: ObjectMapper,
 ) {
@@ -28,10 +26,7 @@ class CouponKafkaEventListener(
         val event = objectMapper.readValue(eventJsonString, IssueCouponRequestedEvent::class.java)
         val command = event.toIssueCouponCommand()
 
-        // 선점된(Reserved) 쿠폰이 없는 경우 무시
-        if (existsIssueReservationUseCase(couponTemplateId = command.couponTemplateId, userId = command.userId)) {
-            issueCouponUseCase(command)
-        }
+        issueCouponUseCase(command)
 
         acknowledgment.acknowledge()
     }

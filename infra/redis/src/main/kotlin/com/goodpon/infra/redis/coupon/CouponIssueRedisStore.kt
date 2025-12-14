@@ -78,7 +78,7 @@ class CouponIssueRedisStore(
         return redisTemplate.opsForZSet().score(reservedKey, userId) != null
     }
 
-    fun markAsFailed(couponTemplateId: Long, userId: String) {
+    fun markIssueReservationAsFailed(couponTemplateId: Long, userId: String) {
         val reservedKey = CouponRedisKeyUtils.reservedKey(couponTemplateId)
         redisTemplate.opsForZSet().add(reservedKey, userId, -1.0)
     }

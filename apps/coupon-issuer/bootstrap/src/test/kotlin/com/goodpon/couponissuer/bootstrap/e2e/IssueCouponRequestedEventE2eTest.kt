@@ -6,7 +6,6 @@ import com.goodpon.couponissuer.bootstrap.support.accessor.TestCouponTemplateAcc
 import com.goodpon.couponissuer.bootstrap.support.accessor.TestMerchantAccessor
 import com.goodpon.couponissuer.bootstrap.support.accessor.TestUserCouponAccessor
 import com.goodpon.couponissuer.worker.dto.IssueCouponRequestedEvent
-
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import com.goodpon.infra.redis.coupon.CouponIssueRedisStore
 import com.goodpon.infra.redis.coupon.CouponStatsRedisStore
@@ -24,8 +23,8 @@ class IssueCouponRequestedEventE2eTest(
     private val testMerchantAccessor: TestMerchantAccessor,
     private val testCouponTemplateAccessor: TestCouponTemplateAccessor,
     private val testUserCouponAccessor: TestUserCouponAccessor,
-    private val commandCache: CouponIssueRedisStore,
-    private val queryCache: CouponStatsRedisStore,
+    private val couponIssueStore: CouponIssueRedisStore,
+    private val couponStatsStore: CouponStatsRedisStore,
     private val objectMapper: ObjectMapper,
 ) : AbstractE2eTest() {
 
@@ -35,7 +34,7 @@ class IssueCouponRequestedEventE2eTest(
         val (merchantId) = testMerchantAccessor.createMerchant()
         val couponTemplateId = testCouponTemplateAccessor.createCouponTemplate(merchantId = merchantId)
         val userId = "unique-user-id"
-        commandCache.reserve(
+        couponIssueStore.reserve(
             couponTemplateId = couponTemplateId,
             userId = userId,
             maxIssueCount = 10,
@@ -61,7 +60,7 @@ class IssueCouponRequestedEventE2eTest(
                 foundCoupon.userId shouldBe userId
                 foundCoupon.status shouldBe UserCouponStatus.ISSUED
 
-                val stats = queryCache.getStats(couponTemplateId)
+                val stats = couponStatsStore.getStats(couponTemplateId)
                 stats.first shouldBe 1
             }
     }

@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation(project(":domain"))
     api("org.springframework.kafka:spring-kafka")
-    implementation("org.springframework.boot:spring-boot-autoconfigure")
+    api("org.springframework.boot:spring-boot-starter-json") // for ObjectMapper
 
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.kafka)

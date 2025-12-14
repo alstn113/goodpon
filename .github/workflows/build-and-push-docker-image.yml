@@ -43,7 +43,7 @@ jobs:
       - name: Build and push dashboard-api image
         uses: docker/build-push-action@v6
         with:
-          context: ./apps/dashboard/inbound
+          context: ./apps/dashboard/bootstrap
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.DASHBOARD_IMAGE_NAME }}:${{ github.sha }}
           platforms: linux/arm64
@@ -51,7 +51,7 @@ jobs:
       - name: Build and push partner-openapi image
         uses: docker/build-push-action@v6
         with:
-          context: ./apps/partner/inbound
+          context: ./apps/partner/bootstrap
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.PARTNER_IMAGE_NAME }}:${{ github.sha }}
           platforms: linux/arm64

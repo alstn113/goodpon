@@ -118,7 +118,7 @@ class CouponStatsRedisStoreIT(
         redisTemplate.opsForZSet().add(reservedKey, failedUserId, pastTime.toDouble())
 
         // 실패로 마킹
-        couponIssueStore.markAsFailed(couponTemplateId, failedUserId)
+        couponIssueStore.markIssueReservationAsFailed(couponTemplateId, failedUserId)
 
         // when
         val staleReservations = couponStatsStore.getAllStaleCouponIssueReservations(olderThan)

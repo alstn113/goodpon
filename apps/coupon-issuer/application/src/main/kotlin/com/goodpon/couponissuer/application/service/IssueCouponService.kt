@@ -2,6 +2,7 @@ package com.goodpon.couponissuer.application.service
 
 import com.goodpon.couponissuer.application.port.`in`.IssueCouponUseCase
 import com.goodpon.couponissuer.application.port.`in`.dto.IssueCouponCommand
+import com.goodpon.couponissuer.application.port.out.CouponIssueStore
 import com.goodpon.couponissuer.application.service.accessor.CouponHistoryAccessor
 import com.goodpon.couponissuer.application.service.accessor.CouponTemplateAccessor
 import com.goodpon.couponissuer.application.service.accessor.UserCouponAccessor
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class IssueCouponService(
+    private val couponIssueStore: CouponIssueStore,
     private val couponTemplateAccessor: CouponTemplateAccessor,
     private val userCouponAccessor: UserCouponAccessor,
     private val couponHistoryAccessor: CouponHistoryAccessor,
@@ -24,24 +26,32 @@ class IssueCouponService(
 
     @Transactional
     override fun invoke(command: IssueCouponCommand) {
-        publishCouponIssuedEvent(command = command)
+        val (couponTemplateId, userId, requestedAt) = command
 
-        val couponTemplate = couponTemplateAccessor.readById(command.couponTemplateId)
-        if (userCouponAccessor.existsByUserIdAndCouponTemplateId(command.userId, command.couponTemplateId)) {
-            log.warn("이미 발급된 쿠폰이 요청되었습니다. couponTemplateId={}, userId={}", command.couponTemplateId, command.userId)
+        if (!couponIssueStore.existsIssueReservation(couponTemplateId, userId)) {
+            log.warn("쿠폰 발급 예약이 존재하지 않습니다. templateId=$couponTemplateId, userId=$userId")
             return
         }
 
-        val userCoupon = CouponIssuer.issue(couponTemplate, userId = command.userId, issueAt = command.requestedAt)
-        val savedUserCoupon = userCouponAccessor.save(userCoupon)
+        publishCouponIssuedEvent(userId, couponTemplateId)
 
-        couponHistoryAccessor.recordIssued(userCouponId = savedUserCoupon.id, recordedAt = command.requestedAt)
+        // 이미 발급된 쿠폰도 정합성 위해 이벤트를 발행하여 reserved -> issued 처리
+        if (userCouponAccessor.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)) {
+            log.warn("이미 발급된 쿠폰이 요청되었습니다. templateId=$couponTemplateId, userId=$userId")
+            return
+        }
+
+        val couponTemplate = couponTemplateAccessor.readById(couponTemplateId)
+        val userCoupon = CouponIssuer.issue(couponTemplate, userId, requestedAt)
+
+        val savedUserCoupon = userCouponAccessor.save(userCoupon)
+        couponHistoryAccessor.recordIssued(savedUserCoupon.id, requestedAt)
     }
 
-    private fun publishCouponIssuedEvent(command: IssueCouponCommand) {
+    private fun publishCouponIssuedEvent(userId: String, templateId: Long) {
         val event = CouponIssuedEvent(
-            userId = command.userId,
-            couponTemplateId = command.couponTemplateId
+            userId = userId,
+            couponTemplateId = templateId
         )
         eventPublisher.publishEvent(event)
     }

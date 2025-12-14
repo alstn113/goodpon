@@ -134,7 +134,7 @@ class CouponIssueRedisStoreIT(
         couponIssueRedisStore.reserve(couponTemplateId, userId, null)
 
         // when
-        couponIssueRedisStore.markAsFailed(couponTemplateId, userId)
+        couponIssueRedisStore.markIssueReservationAsFailed(couponTemplateId, userId)
 
         // then
         val score = redisTemplate.opsForZSet().score(reservedKey, userId)

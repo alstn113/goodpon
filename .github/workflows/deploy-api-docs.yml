@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
 
 env:
-  DASHBOARD_OPENAPI_GENERATED_FILE: apps/dashboard/inbound/build/api-spec/openapi3.yaml
-  DASHBOARD_API_DOCS_DIR: apps/dashboard/inbound/build/resources/main/static/api-docs
+  DASHBOARD_OPENAPI_GENERATED_FILE: apps/dashboard/api/build/api-spec/openapi3.yaml
+  DASHBOARD_API_DOCS_DIR: apps/dashboard/api/build/resources/main/static/api-docs
 
-  PARTNER_OPENAPI_GENERATED_FILE: apps/partner/inbound/build/api-spec/openapi3.yaml
-  PARTNER_API_DOCS_DIR: apps/partner/inbound/build/resources/main/static/api-docs
+  PARTNER_OPENAPI_GENERATED_FILE: apps/partner/api/build/api-spec/openapi3.yaml
+  PARTNER_API_DOCS_DIR: apps/partner/api/build/resources/main/static/api-docs
 
 jobs:
   build-and-deploy:

@@ -1,0 +1,7 @@
+spring.config.activate.on-profile: test
+
+security:
+  jwt:
+    access-token:
+      secret-key: test-access-secret-key-test-access-secret-key-test-access-secret-key
+      expiration-time: 3600000 # 1 hour
