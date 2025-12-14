@@ -1,29 +1,31 @@
 rootProject.name = "goodpon"
 
 include(
-    // inbound - web
-    "modules:api:partner-openapi",
-    "modules:api:dashboard-api",
+    // dashboard
+    "apps:dashboard:bootstrap",
+    "apps:dashboard:api",
+    "apps:dashboard:scheduler",
+    "apps:dashboard:application",
+    "apps:dashboard:infra",
 
-    // inbound - messaging
-    "modules:consumer:coupon-issuer-consumer",
+    // partner
+    "apps:partner:bootstrap",
+    "apps:partner:api",
+    "apps:partner:application",
+    "apps:partner:infra",
 
-    // application
-    "modules:application:partner-application",
-    "modules:application:dashboard-application",
-    "modules:application:coupon-issuer-application",
+    // coupon-issuer
+    "apps:coupon-issuer:bootstrap",
+    "apps:coupon-issuer:worker",
+    "apps:coupon-issuer:application",
+    "apps:coupon-issuer:infra",
 
-    // domain
-    "modules:domain",
+    "domain",
 
-    // outbound - infra
-    "modules:infra:auth",
-    "modules:infra:aws:ses",
-    "modules:infra:redis",
-    "modules:infra:db:jpa",
-    "modules:infra:db:flyway",
-    "modules:infra:kafka",
+    "infra:redis",
+    "infra:jpa",
+    "infra:flyway",
+    "infra:kafka",
 
-    // support
-    "modules:support:logging",
+    "supports:logging",
 )

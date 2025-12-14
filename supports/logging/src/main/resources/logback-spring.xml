@@ -13,7 +13,6 @@
 
     <springProfile name="local,test">
         <logger name="com.goodpon" level="DEBUG"/>
-        <logger name="com.goodpon.consumer" level="DEBUG"/>
         <logger name="org.springframework" level="INFO"/>
 
         <root level="INFO">
@@ -23,7 +22,6 @@
 
     <springProfile name="local-dev">
         <logger name="com.goodpon" level="INFO"/>
-        <logger name="com.goodpon.consumer" level="INFO"/>
         <logger name="com.goodpon.infra" level="DEBUG"/>
         <logger name="org.springframework" level="WARN"/>
 
@@ -35,7 +33,6 @@
     <!--  운영환경은 OTLP 전송만, 콘솔 출력은 없음 -->
     <springProfile name="prod">
         <logger name="com.goodpon" level="INFO"/>
-        <logger name="com.goodpon.consumer" level="INFO"/>
         <logger name="org.springframework" level="WARN"/>
 
         <root level="INFO">
