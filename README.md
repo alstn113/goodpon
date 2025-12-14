@@ -36,25 +36,19 @@
 
 ## 프로젝트 아키텍처
 
-Goodpon은 `Dashboard API`와 `Partner OpenAPI`로 서버가 분리되어 있습니다.
-프로젝트가 진화함에 따라, 처리량이 많은 `Partner OpenAPI`는 향후 **Spring WebFlux**로 전환될 예정입니다.
+<img width="1903" height="1416" alt="프로젝트 아키텍처" src="https://github.com/user-attachments/assets/3fd7f72a-1a35-4b4d-a040-92393357185b" />
 
-이를 위해서는 기존 **Spring Web MVC** 기반에서 **WebFlux** 기반으로의 전환뿐만 아니라, **JPA에서 R2DBC로의 변경**도 수반되어야 합니다. 이러한 변경에 유연하게 대응할 수 있도록,
-헥사고날 아키텍처를 적용하여 인프라에 대한 의존성을 최소화했습니다.
-
-`api`, `application`, `domain` 모듈은 모두 컴파일 타임에 `infra`에 대한 의존성을 가지지 않으며, `infra`는 `api`의 **런타임 시점에만 주입**됩니다.
-
-현재 다이어그램에는 `infra-db-jpa` 모듈만 표시되어 있으며, **지면의 제한**으로 인해 다른 인프라 모듈은 생략되었습니다.
-
-<img width="1656" height="1378" alt="프로젝트 아키텍처" src="https://github.com/user-attachments/assets/fd3fd55d-2958-4ddd-9487-8bdb7bb8afff" />
-
+굿폰 프로젝트는 단일 도메인을 공유하되, 사용자·트래픽·인증 특성에 따라 실행 단위를 분리한 멀티 모듈 헥사고날 아키텍처 프로젝트입니다.
+- 서비스별 물리적 격리: 고객사 관리자용 `Dashboard`, 고객사 커머스 서비스 연동용 `Partner`, 대량 쿠폰 발급 처리용 `Coupon Issuer`로 시스템을 분리하여 각 특성에 맞는 독립적인 배포와 확장을 보장합니다.
+- 도메인 보호: Adapter ➔ Application ➔ Domain으로 향하는 단방향 의존성 규칙을 준수합니다. 특히 Bootstrap 모듈을 통해 런타임에 인프라를 주입함으로써, 컴파일 타임에는 도메인이 기술 구현체에 전혀 의존하지 않도록 했습니다.
+  
 ---
 
-선착순 쿠폰 발급 기능은 **검증 로직과 발급 로직을 분리하여 Kafka로 비동기 처리**함으로써 처리량과 응답 속도를 개선했습니다.
-- **검증 로직**: Redis 집합(Set) 자료구조와 Lua Script를 활용하여 메모리/CPU 중심으로 고속 처리
-- **발급 로직**: Kafka 메시지를 컨슘하여 I/O 중심으로 처리, 발급 서버 수평 확장 가능
+<img width="1714" height="697" alt="선착순 쿠폰 발급 아키텍처" src="https://github.com/user-attachments/assets/99db8470-7693-48f2-b184-ff163a6542ec" />
 
-<img width="1690" height="673" alt="image" src="https://github.com/user-attachments/assets/293fa73a-4b3e-444e-a417-2b954ac1bc32" />
+선착순 쿠폰 발급 기능은 **검증 로직과 발급 로직을 분리하여 Kafka로 비동기 처리**함으로써 처리량과 응답 속도를 개선했습니다.
+- 검증 로직: Redis 집합(Set) 자료구조와 Lua Script를 활용하여 메모리/CPU 중심으로 고속 처리
+- 발급 로직: Kafka 메시지를 컨슘하여 I/O 중심으로 처리, 발급 서버 수평 확장 가능
 
 ## 프로젝트 API 명세서
 
