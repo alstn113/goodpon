@@ -36,7 +36,7 @@
 
 ## 프로젝트 아키텍처
 
-<img width="1903" height="1416" alt="프로젝트 아키텍처" src="https://github.com/user-attachments/assets/3fd7f72a-1a35-4b4d-a040-92393357185b" />
+<img width="1923" height="1436" alt="프로젝트 아키텍처" src="https://github.com/user-attachments/assets/c8310ccd-916c-4ed7-83e8-5da84c5b2f05" />
 
 굿폰 프로젝트는 단일 도메인을 공유하되, 사용자·트래픽·인증 특성에 따라 실행 단위를 분리한 멀티 모듈 헥사고날 아키텍처 프로젝트입니다.
 - 서비스별 물리적 격리: 고객사 관리자용 `Dashboard`, 고객사 커머스 서비스 연동용 `Partner`, 대량 쿠폰 발급 처리용 `Coupon Issuer`로 시스템을 분리하여 각 특성에 맞는 독립적인 배포와 확장을 보장합니다.
