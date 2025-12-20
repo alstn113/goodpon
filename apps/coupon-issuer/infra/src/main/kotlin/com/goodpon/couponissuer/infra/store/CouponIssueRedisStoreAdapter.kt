@@ -9,10 +9,6 @@ class CouponIssueRedisStoreAdapter(
     private val couponIssueStore: CouponIssueRedisStore,
 ) : CouponIssueStore {
 
-    override fun existsIssueReservation(couponTemplateId: Long, userId: String): Boolean {
-        return couponIssueStore.existsReservation(couponTemplateId = couponTemplateId, userId = userId)
-    }
-
     override fun completeIssueCoupon(couponTemplateId: Long, userId: String) {
         couponIssueStore.complete(couponTemplateId = couponTemplateId, userId = userId)
     }

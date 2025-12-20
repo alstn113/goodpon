@@ -94,36 +94,6 @@ class CouponIssueRedisStoreIT(
     }
 
     @Test
-    fun `쿠폰 발급 예약이 있는 경우를 확인할 수 있다`() {
-        // given
-        val couponTemplateId = 1L
-        val userId = "user123"
-
-        couponIssueRedisStore.initialize(couponTemplateId, null)
-        couponIssueRedisStore.reserve(couponTemplateId, userId, null)
-
-        // when
-        val hasReservation = couponIssueRedisStore.existsReservation(couponTemplateId, userId)
-
-        // then
-        hasReservation shouldBe true
-    }
-
-    @Test
-    fun `쿠폰 발급 예약이 없는 경우를 확인할 수 있다`() {
-        // given
-        val couponTemplateId = 1L
-        val userId = "user123"
-        couponIssueRedisStore.initialize(couponTemplateId, null)
-
-        // when
-        val hasReservation = couponIssueRedisStore.existsReservation(couponTemplateId, userId)
-
-        // then
-        hasReservation shouldBe false
-    }
-
-    @Test
     fun `쿠폰 발급 실패로 표시할 수 있다`() {
         // given
         val couponTemplateId = 1L

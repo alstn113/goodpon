@@ -75,27 +75,6 @@ class IssueCouponServiceIT(
     }
 
     @Test
-    fun `예약 정보가 없으면 아무 동작도 하지 않고 종료한다`() {
-        // given
-        val command = IssueCouponCommand(
-            couponTemplateId = couponTemplateId,
-            userId = userId,
-            requestedAt = LocalDateTime.now()
-        )
-
-        // when
-        issueCouponService(command)
-
-        // then
-        testUserCouponAccessor.findAll().size shouldBe 0
-        reservedAndIssuedShouldBe(
-            couponTemplateId = couponTemplateId,
-            reserved = 0L,
-            issued = 0L,
-        )
-    }
-
-    @Test
     fun `이미 발급된 쿠폰이 있으면 새로 생성하지 않는다`() {
         // given
         couponIssueStore.reserve(couponTemplateId, userId, 100)

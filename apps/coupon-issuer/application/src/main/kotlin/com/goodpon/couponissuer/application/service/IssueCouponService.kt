@@ -2,7 +2,6 @@ package com.goodpon.couponissuer.application.service
 
 import com.goodpon.couponissuer.application.port.`in`.IssueCouponUseCase
 import com.goodpon.couponissuer.application.port.`in`.dto.IssueCouponCommand
-import com.goodpon.couponissuer.application.port.out.CouponIssueStore
 import com.goodpon.couponissuer.application.service.accessor.CouponHistoryAccessor
 import com.goodpon.couponissuer.application.service.accessor.CouponTemplateAccessor
 import com.goodpon.couponissuer.application.service.accessor.UserCouponAccessor
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class IssueCouponService(
-    private val couponIssueStore: CouponIssueStore,
     private val couponTemplateAccessor: CouponTemplateAccessor,
     private val userCouponAccessor: UserCouponAccessor,
     private val couponHistoryAccessor: CouponHistoryAccessor,
@@ -27,11 +25,6 @@ class IssueCouponService(
     @Transactional
     override fun invoke(command: IssueCouponCommand) {
         val (couponTemplateId, userId, requestedAt) = command
-
-        if (!couponIssueStore.existsIssueReservation(couponTemplateId, userId)) {
-            log.warn("쿠폰 발급 예약이 존재하지 않습니다. templateId=$couponTemplateId, userId=$userId")
-            return
-        }
 
         publishCouponIssuedEvent(userId, couponTemplateId)
 
