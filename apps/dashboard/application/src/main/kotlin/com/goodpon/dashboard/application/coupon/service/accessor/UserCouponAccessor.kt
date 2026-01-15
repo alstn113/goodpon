@@ -18,7 +18,7 @@ class UserCouponAccessor(
     }
 
     @Transactional
-    fun saveAll(userCoupons: List<UserCoupon>): List<UserCoupon> {
-        return userCouponRepository.saveAll(userCoupons)
+    fun saveAll(userCoupons: List<UserCoupon>) {
+         userCouponRepository.saveAll(userCoupons)
     }
 }

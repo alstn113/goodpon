@@ -101,4 +101,9 @@ interface UserCouponJpaRepository : JpaRepository<UserCouponEntity, String> {
         orderAmount: Int,
         userCouponStatus: UserCouponStatus = UserCouponStatus.ISSUED,
     ): List<AvailableUserCouponViewDto>
+
+    fun findAllByUserIdInAndCouponTemplateIdIn(
+        userIds: List<String>,
+        couponTemplateIds: List<Long>,
+    ): List<UserCouponEntity>
 }

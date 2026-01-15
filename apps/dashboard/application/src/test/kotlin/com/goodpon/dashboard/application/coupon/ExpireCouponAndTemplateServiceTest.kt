@@ -10,7 +10,9 @@ import com.goodpon.domain.coupon.user.UserCoupon
 import com.goodpon.domain.coupon.user.UserCouponStatus
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import io.mockk.verify
 import java.time.LocalDateTime
 
@@ -46,7 +48,7 @@ class ExpireCouponAndTemplateServiceTest : DescribeSpec({
                     recordedAt = now
                 )
             } returns mockk()
-            every { userCouponAccessor.saveAll(listOf(expiredCoupon)) } returns listOf(expiredCoupon)
+            every { userCouponAccessor.saveAll(listOf(expiredCoupon)) } just runs
 
             val couponTemplate = mockk<CouponTemplate>()
             every { couponTemplate.expire() } returns couponTemplate

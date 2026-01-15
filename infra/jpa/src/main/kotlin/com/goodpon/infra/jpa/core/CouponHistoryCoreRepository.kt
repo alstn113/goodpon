@@ -13,15 +13,19 @@ import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
+import java.sql.Timestamp
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Repository
 class CouponHistoryCoreRepository(
     private val couponHistoryJpaRepository: CouponHistoryJpaRepository,
     private val queryFactory: JPAQueryFactory,
     private val em: EntityManager,
+    private val jdbcTemplate: JdbcTemplate,
 ) {
 
     @Transactional
@@ -35,6 +39,34 @@ class CouponHistoryCoreRepository(
 
         entity.update(couponHistory)
         return entity.toDomain()
+    }
+
+    @Transactional
+    fun saveAll(couponHistories: List<CouponHistory>) {
+        val entities = couponHistories.map { CouponHistoryEntity.fromDomain(it) }
+
+        val now = Timestamp.valueOf(LocalDateTime.now())
+
+        val sql = """
+        INSERT INTO coupon_histories 
+        (id, user_coupon_id, action_type, order_id, reason, recorded_at, created_at, updated_at) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """.trimIndent()
+
+        jdbcTemplate.batchUpdate(
+            sql,
+            entities,
+            entities.size
+        ) { ps, entity ->
+            ps.setString(1, entity.id)
+            ps.setString(2, entity.userCouponId)
+            ps.setString(3, entity.actionType.name)
+            ps.setString(4, entity.orderId) // setString 은 null 값을 허용합니다
+            ps.setString(5, entity.reason) // setString 은 null 값을 허용합니다
+            ps.setTimestamp(6, Timestamp.valueOf(entity.recordedAt))
+            ps.setTimestamp(7, now)
+            ps.setTimestamp(8, now)
+        }
     }
 
     @Transactional(readOnly = true)

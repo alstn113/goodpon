@@ -17,6 +17,10 @@ class CouponTemplateAccessor(
     fun readById(couponTemplateId: Long): CouponTemplate {
         return couponTemplateRepository.findById(couponTemplateId)
             ?: throw CouponTemplateNotFoundException()
+    }
 
+    @Transactional(readOnly = true)
+    fun readAllByIdIn(couponTemplateIds: List<Long>): List<CouponTemplate> {
+        return couponTemplateRepository.findAllByIdIn(couponTemplateIds)
     }
 }

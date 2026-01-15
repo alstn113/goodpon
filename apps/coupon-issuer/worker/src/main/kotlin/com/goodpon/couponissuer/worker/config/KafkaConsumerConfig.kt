@@ -24,8 +24,10 @@ class KafkaConsumerConfig {
         return ConcurrentKafkaListenerContainerFactory<String, String>().apply {
             this.consumerFactory = consumerFactory
             this.setCommonErrorHandler(defaultErrorHandler)
-            isBatchListener = false
-            containerProperties.ackMode = ContainerProperties.AckMode.MANUAL
+
+            isBatchListener = true
+            setConcurrency(5)
+            containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         }
     }
 

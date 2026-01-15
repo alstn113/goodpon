@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 interface UserCouponRepository {
 
-    fun saveAll(userCoupons: List<UserCoupon>): List<UserCoupon>
+    fun saveAll(userCoupons: List<UserCoupon>)
 
     fun findByStatusAndExpiresAtLessThanEqual(status: UserCouponStatus, expiresAt: LocalDateTime): List<UserCoupon>
 }

@@ -19,4 +19,14 @@ class UserCouponAccessor(
     fun save(userCoupon: UserCoupon): UserCoupon {
         return userCouponRepository.save(userCoupon)
     }
+
+    @Transactional(readOnly = true)
+    fun readAllByUserIdInAndTemplateIdIn(userIds: List<String>, couponTemplateIds: List<Long>): List<UserCoupon> {
+        return userCouponRepository.findAllByUserIdInAndCouponTemplateIdIn(userIds, couponTemplateIds)
+    }
+
+    @Transactional
+    fun bulkInsertCoupons(userCoupons: List<UserCoupon>) {
+        userCouponRepository.saveAll(userCoupons)
+    }
 }

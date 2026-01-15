@@ -12,8 +12,8 @@ class UserCouponJpaAdapter(
     private val userCouponCoreRepository: UserCouponCoreRepository,
 ) : UserCouponRepository {
 
-    override fun saveAll(userCoupons: List<UserCoupon>): List<UserCoupon> {
-        return userCouponCoreRepository.saveAll(userCoupons)
+    override fun saveAll(userCoupons: List<UserCoupon>) {
+         userCouponCoreRepository.saveAll(userCoupons)
     }
 
     override fun findByStatusAndExpiresAtLessThanEqual(

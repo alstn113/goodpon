@@ -6,12 +6,13 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       auto-offset-reset: latest
+      max-poll-records: 500 # 한 번에 가져오는 최대 레코드 수
+      fetch-max-wait: 500ms # 기다리는 최대 시간
       properties:
         enable-auto-commit: false
     listener:
-      ack-mode: manual
-      concurrency: 3
-      batch-listener: false
+      ack-mode: manual_immediate
+      type: batch
 
 ---
 spring.config.activate.on-profile: local-dev, prod

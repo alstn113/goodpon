@@ -10,6 +10,7 @@ import com.goodpon.infra.jpa.repository.dto.CouponTemplateSummaryDto
 import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -18,6 +19,7 @@ import java.time.LocalDateTime
 class CouponTemplateCoreRepository(
     private val couponTemplateJpaRepository: CouponTemplateJpaRepository,
     private val em: EntityManager,
+    private val jdbcTemplate: JdbcTemplate
 ) {
 
     @Transactional
@@ -45,6 +47,12 @@ class CouponTemplateCoreRepository(
     fun findById(id: Long): CouponTemplate? {
         return couponTemplateJpaRepository.findByIdOrNull(id)
             ?.toDomain()
+    }
+
+    @Transactional(readOnly = true)
+    fun findAllByIdIn(ids: List<Long>): List<CouponTemplate> {
+        return couponTemplateJpaRepository.findAllByIdIn(ids)
+            .map { it.toDomain() }
     }
 
     @Transactional(readOnly = true)

@@ -13,4 +13,8 @@ class CouponTemplateJpaAdapter(
     override fun findById(couponTemplateId: Long): CouponTemplate? {
         return couponTemplateCoreRepository.findById(couponTemplateId)
     }
+
+    override fun findAllByIdIn(couponTemplateIds: List<Long>): List<CouponTemplate> {
+        return couponTemplateCoreRepository.findAllByIdIn(couponTemplateIds)
+    }
 }

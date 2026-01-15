@@ -5,4 +5,6 @@ import com.goodpon.domain.coupon.history.CouponHistory
 interface CouponHistoryRepository {
 
     fun save(couponHistory: CouponHistory): CouponHistory
+
+    fun saveAll(couponHistories: List<CouponHistory>)
 }

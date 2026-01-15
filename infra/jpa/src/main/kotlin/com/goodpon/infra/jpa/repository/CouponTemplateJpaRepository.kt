@@ -100,4 +100,6 @@ interface CouponTemplateJpaRepository : JpaRepository<CouponTemplateEntity, Long
         merchantId: Long,
         couponStatus: CouponTemplateStatus = CouponTemplateStatus.ISSUABLE,
     ): CouponTemplateDetailDto?
+
+    fun findAllByIdIn(ids: List<Long>): List<CouponTemplateEntity>
 }

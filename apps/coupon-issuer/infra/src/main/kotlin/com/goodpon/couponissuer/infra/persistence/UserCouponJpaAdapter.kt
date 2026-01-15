@@ -17,4 +17,15 @@ class UserCouponJpaAdapter(
     override fun existsByUserIdAndCouponTemplateId(userId: String, couponTemplateId: Long): Boolean {
         return userCouponCoreRepository.existsByUserIdAndCouponTemplateId(userId, couponTemplateId)
     }
+
+    override fun findAllByUserIdInAndCouponTemplateIdIn(
+        userIds: List<String>,
+        couponTemplateIds: List<Long>,
+    ): List<UserCoupon> {
+        return userCouponCoreRepository.findAllByUserIdInAndCouponTemplateIdIn(userIds, couponTemplateIds)
+    }
+
+    override fun saveAll(userCoupons: List<UserCoupon>) {
+        return userCouponCoreRepository.saveAll(userCoupons)
+    }
 }

@@ -16,4 +16,9 @@ class CouponHistoryAccessor(
         val history = CouponHistory.issued(userCouponId = userCouponId, recordedAt = recordedAt)
         return couponHistoryRepository.save(history)
     }
+
+    @Transactional
+    fun bulkInsertHistories(histories: List<CouponHistory>) {
+        couponHistoryRepository.saveAll(histories)
+    }
 }

@@ -13,4 +13,8 @@ class CouponHistoryJpaAdapter(
     override fun save(couponHistory: CouponHistory): CouponHistory {
         return couponHistoryCoreRepository.save(couponHistory)
     }
+
+    override fun saveAll(couponHistories: List<CouponHistory>) {
+        couponHistoryCoreRepository.saveAll(couponHistories)
+    }
 }
