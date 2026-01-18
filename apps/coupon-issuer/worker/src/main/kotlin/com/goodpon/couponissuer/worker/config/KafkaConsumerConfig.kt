@@ -25,14 +25,15 @@ class KafkaConsumerConfig {
             this.consumerFactory = consumerFactory
             this.setCommonErrorHandler(defaultErrorHandler)
 
-            isBatchListener = true
-            setConcurrency(5)
-            containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+            isBatchListener = true // 배치 리스너 설정
+            setConcurrency(5) // 논리 스레드 수 (concurrency)
+            containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE // 수동 즉시 커밋
         }
     }
 
     @Bean
     fun consumerFactory(kafkaProperties: KafkaProperties): ConsumerFactory<String, String> {
+        // spring.kafka.consumer 설정 주입
         return DefaultKafkaConsumerFactory(kafkaProperties.buildConsumerProperties())
     }
 

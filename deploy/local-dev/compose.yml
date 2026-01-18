@@ -23,7 +23,7 @@ services:
       OTEL_EXPORTER_OTLP_PROTOCOL: grpc
       OTEL_METRIC_EXPORT_INTERVAL: 30000 # default 60초 -> 30초로 변경
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
-      OTEL_TRACES_SAMPLER_ARG: 0.1 # 10% 샘플링
+      OTEL_TRACES_SAMPLER_ARG: 0.01 # 1% 샘플링
       OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true # Micrometer 사용
     restart: on-failure:3
     depends_on:
@@ -72,7 +72,7 @@ services:
       OTEL_EXPORTER_OTLP_PROTOCOL: grpc
       OTEL_METRIC_EXPORT_INTERVAL: 30000
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
-      OTEL_TRACES_SAMPLER_ARG: 0.1
+      OTEL_TRACES_SAMPLER_ARG: 0.01
       OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true
     restart: on-failure:3
     depends_on:
@@ -121,7 +121,7 @@ services:
       OTEL_EXPORTER_OTLP_PROTOCOL: grpc
       OTEL_METRIC_EXPORT_INTERVAL: 30000
       OTEL_TRACES_SAMPLER: parentbased_traceidratio
-      OTEL_TRACES_SAMPLER_ARG: 0.1
+      OTEL_TRACES_SAMPLER_ARG: 0.01
       OTEL_INSTRUMENTATION_MICROMETER_ENABLED: true
     restart: on-failure:3
     depends_on:
@@ -231,6 +231,9 @@ services:
 
       # 클러스터 ID (고정값 또는 랜덤 생성해서 사용)
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+
+      # 기본 파티션 수 설정
+      KAFKA_NUM_PARTITIONS: 10
 
       # 단일 브로커용 기본값
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
